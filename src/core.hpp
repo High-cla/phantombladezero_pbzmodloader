@@ -80,7 +80,7 @@ std::string config(const fs::path& root) {
     return result+"]};\n";
 }
 // PuerTS still reads from its JavaScript search root. Only this disposable cache
-// is replaced; user scripts and configuration live together under Mods.
+// is replaced; user scripts and configuration live together under ProjectPBZ/PBZModLoader.
 void syncMods(const fs::path& root,const fs::path& scripts) {
     const auto source=root/L"mods", cache=scripts/L"generated-mods";
     // Reject reparse points so neither copying nor cleanup follows a junction.

@@ -15,19 +15,25 @@ PBZ TS/JS MOD 加载器 0.3.0-preview（Windows x64，平台无关引导预览�
 
 安装后关键路径：
   <实际游戏 EXE 所在目录>\version.dll
-  PBZ\ProjectPBZ\Mods\PBZModLoader\mods.ini
+  PBZ\ProjectPBZ\PBZModLoader\mods.ini
   PBZ\ProjectPBZ\Content\JavaScript\PBZModLoader\bootstrap.js
   PBZ\ProjectPBZ\Content\JavaScript\PBZModLoader\manager.js
-  PBZ\ProjectPBZ\Mods\PBZModLoader\mods\...
+  PBZ\ProjectPBZ\PBZModLoader\mods\...
 
-配置和自定义 MOD 统一放在 ProjectPBZ\Mods\PBZModLoader 下。
+配置和自定义 MOD 统一放在 ProjectPBZ\PBZModLoader 下。
 Content\JavaScript\PBZModLoader 中保留加载器引导文件；启动时自动生成
 generated-mods 脚本缓存和 generated-config.js，不要在缓存中编辑 MOD。
 每次启动都会重新同步缓存，包括 MOD 的相对依赖文件，并清除已移除的脚本。
 
-从旧版升级：先备份 mods.ini 和自定义 MOD，将旧目录
+从带 Mods 层的旧版升级：先备份配置和自定义 MOD，将旧位置
+ProjectPBZ\Mods\PBZModLoader 整个移到 ProjectPBZ\PBZModLoader，
+保留自己的 mods.ini、mods 和日志；若目标目录已存在，先备份并合并，避免覆盖自定义内容。
+同步更新 version.dll、bootstrap.js 和 manager.js；新版仅从新位置读取配置和 MOD。
+旧 Mods 目录确认为空后可删除；mods.ini 中的 Entry 无需改动。
+
+从更早的脚本目录布局升级：先备份 mods.ini 和自定义 MOD，将旧目录
 ProjectPBZ\Content\JavaScript\PBZModLoader\mods 下的全部 MOD 文件移到
-ProjectPBZ\Mods\PBZModLoader\mods，保留自己的 mods.ini（Entry 无需改动）。
+ProjectPBZ\PBZModLoader\mods，并将自己的 mods.ini 放到 ProjectPBZ\PBZModLoader（Entry 无需改动）。
 同时更新 version.dll、bootstrap.js 和 manager.js；旧 mods 目录不再用于加载。
 
 特征来源为 CL-301524_JKS-17219。新版不再用 EXE 哈希作为加载白名单，
@@ -45,7 +51,7 @@ WeGame 尚未实机验证，是否能加载代理 DLL、内部接口是否兼容
 
 三、配置多个 MOD
 
-编辑 ProjectPBZ\Mods\PBZModLoader\mods.ini，下次启动生效。
+编辑 ProjectPBZ\PBZModLoader\mods.ini，下次启动生效。
 
   [Loader]
   Enabled=1
@@ -69,14 +75,14 @@ Id 不能重复，目录和文件基名只使用英文字母、数字、下划�
 
 例如新增 my-mod：
 1. 将其编译后的 CommonJS JS 文件放到：
-   ProjectPBZ\Mods\PBZModLoader\mods\my-mod\main.js
+   ProjectPBZ\PBZModLoader\mods\my-mod\main.js
 2. 将 Count 改为 3，并在配置末尾添加：
   [Mod.2]
   Id=my-mod
   Enabled=1
   Entry=mods/my-mod/main.js
 
-Entry 相对于 mods.ini 所在的 ProjectPBZ\Mods\PBZModLoader 目录。
+Entry 相对于 mods.ini 所在的 ProjectPBZ\PBZModLoader 目录。
 入口必须为 .js，不能直接填写 .ts；玩家使用 MOD 作者提供的编译产物。
 不接受绝对路径或 ..。单个 MOD 加载报错会记录日志，后续 MOD 继续加载。
 所有 MOD 共享主 PuerTS 环境，请只安装可信来源的 MOD；目前不支持热重载。
@@ -84,7 +90,7 @@ Entry 相对于 mods.ini 所在的 ProjectPBZ\Mods\PBZModLoader 目录。
 
 四、检查日志
 
-日志目录：ProjectPBZ\Mods\PBZModLoader\evidence\<日期时间-PID>-dll\loader.log
+日志目录：ProjectPBZ\PBZModLoader\evidence\<日期时间-PID>-dll\loader.log
 正常加载默认示例时能看到：
   [PBZMOD] loaded hello
   [PBZMOD] loaded world-watch
@@ -100,7 +106,7 @@ failed 后会给出对应 MOD 和错误内容。没有日志时先检查解压�
 2. 删除实际游戏 EXE 旁由本包安装的 version.dll，即可取消自动引导。
    如果此文件后来被其他加载器替换，不要将其当作本包文件删除。
 3. 如需彻底清理，先备份自定义 MOD、配置和想保留的日志，再删除：
-   PBZ\ProjectPBZ\Mods\PBZModLoader
+   PBZ\ProjectPBZ\PBZModLoader
    PBZ\ProjectPBZ\Content\JavaScript\PBZModLoader
 4. 本说明文件也可删除。
 

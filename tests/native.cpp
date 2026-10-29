@@ -73,12 +73,12 @@ int main() {
     fs::remove_all(temp);
     auto layout=fs::temp_directory_path()/(L"pbz-layout-test-"+std::to_wstring(GetCurrentProcessId()));
     fs::create_directories(layout/L"ProjectPBZ/Content/JavaScript/PBZModLoader");
-    fs::create_directories(layout/L"ProjectPBZ/Mods/PBZModLoader");
-    { std::ofstream f(layout/L"ProjectPBZ/Mods/PBZModLoader/mods.ini"); f<<"fixture"; }
+    fs::create_directories(layout/L"ProjectPBZ/PBZModLoader");
+    { std::ofstream f(layout/L"ProjectPBZ/PBZModLoader/mods.ini"); f<<"fixture"; }
     { std::ofstream f(layout/L"ProjectPBZ/Content/JavaScript/PBZModLoader/bootstrap.js"); f<<"fixture"; }
     for(const auto& relative:{L"platform/steam/PBZ.exe",L"platform/wegame/PBZ.exe",L"ProjectPBZ/Binaries/Win64/PBZ.exe",L"PBZ.exe"})
         assert(findProject(layout/relative)==fs::canonical(layout/L"ProjectPBZ"));
-    fs::remove(layout/L"ProjectPBZ/Mods/PBZModLoader/mods.ini");
+    fs::remove(layout/L"ProjectPBZ/PBZModLoader/mods.ini");
     bool missing=false; try { findProject(layout/L"platform/wegame/PBZ.exe"); } catch(const std::exception&) { missing=true; } assert(missing);
     fs::remove_all(layout);
     std::cout<<"PASS platform-independent project discovery and missing runtime rejection\n";

@@ -91,7 +91,7 @@ HookSites resolveSites(const ImageView& image) {
 fs::path findProject(const fs::path& executable) {
     for(auto dir=fs::absolute(executable).parent_path();!dir.empty();) {
         auto candidate=dir.filename()==L"ProjectPBZ"?dir:dir/L"ProjectPBZ";
-        if(fs::is_directory(candidate/L"Content") && fs::is_regular_file(candidate/L"Mods/PBZModLoader/mods.ini") &&
+        if(fs::is_directory(candidate/L"Content") && fs::is_regular_file(candidate/L"PBZModLoader/mods.ini") &&
            fs::is_regular_file(candidate/L"Content/JavaScript/PBZModLoader/bootstrap.js")) return fs::canonical(candidate);
         auto parent=dir.parent_path(); if(parent==dir) break; dir=parent;
     }

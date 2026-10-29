@@ -25,8 +25,8 @@ try {
         $fixtureRoot=Join-Path $PSScriptRoot ('build/proxy-fixture/'+$layout.Replace('/','-'))
         $fixture=Join-Path $fixtureRoot $layout
         $runtime=Join-Path $fixtureRoot 'ProjectPBZ'
-        New-Item -ItemType Directory -Force "$runtime/Mods/PBZModLoader","$runtime/Content/JavaScript/PBZModLoader" | Out-Null
-        Set-Content "$runtime/Mods/PBZModLoader/mods.ini" '[Loader]'
+        New-Item -ItemType Directory -Force "$runtime/PBZModLoader","$runtime/Content/JavaScript/PBZModLoader" | Out-Null
+        Set-Content "$runtime/PBZModLoader/mods.ini" '[Loader]'
         Set-Content "$runtime/Content/JavaScript/PBZModLoader/bootstrap.js" '// fixture'
         New-Item -ItemType Directory -Force $fixture | Out-Null
         & $Compiler -std=c++17 -O2 -Wall -Wextra -static tests/proxy-host.cpp -lversion -o "$fixture/PBZ.exe"
@@ -34,7 +34,7 @@ try {
         Copy-Item -LiteralPath build/version.dll -Destination "$fixture/version.dll" -Force
         & "$fixture/PBZ.exe"
         if ($LASTEXITCODE -ne 0) { throw 'Proxy tests failed' }
-        $logs=@(Get-ChildItem "$runtime/Mods/PBZModLoader/evidence" -Filter loader.log -Recurse | Sort-Object LastWriteTime -Descending)
+        $logs=@(Get-ChildItem "$runtime/PBZModLoader/evidence" -Filter loader.log -Recurse | Sort-Object LastWriteTime -Descending)
         if (!$logs.Count -or !(Select-String -LiteralPath $logs[0].FullName -SimpleMatch 'MainStart signature requires one validated match; found=0')) { throw 'Missing signature rejection evidence' }
         Write-Output "PASS platform layout: $layout, entry restored and unsupported host skipped"
         }

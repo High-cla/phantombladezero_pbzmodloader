@@ -75,7 +75,7 @@ extern "C" void pbz_initialize() noexcept {
         wchar_t exe[32768]; check(GetModuleFileNameW(nullptr,exe,32768)>0,"game path");
         const fs::path game=exe;
         const fs::path project=findProject(game);
-        const fs::path root=project/L"Mods/PBZModLoader", scripts=project/L"Content/JavaScript/PBZModLoader";
+        const fs::path root=project/L"PBZModLoader", scripts=project/L"Content/JavaScript/PBZModLoader";
         SYSTEMTIME st; GetLocalTime(&st); wchar_t name[80];
         swprintf(name,80,L"%04u%02u%02u-%02u%02u%02u-%lu-dll",st.wYear,st.wMonth,st.wDay,st.wHour,st.wMinute,st.wSecond,GetCurrentProcessId());
         fs::path evidence=root/L"evidence"/name; fs::create_directories(evidence);

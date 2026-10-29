@@ -48,8 +48,10 @@ npm run build:mods
 .\package.ps1 -Version 0.3.0-preview
 ```
 
-TS 输出到 runtime/ProjectPBZ/Mods/PBZModLoader/mods。
-玩家的 mods.ini 与 mods/ 均位于 ProjectPBZ/Mods/PBZModLoader，Entry 相对于该目录。
+TS 输出到 runtime/ProjectPBZ/PBZModLoader/mods。
+玩家的 mods.ini 与 mods/ 均位于 ProjectPBZ/PBZModLoader，Entry 相对于该目录。
+旧版带 Mods 层的目录需整体上移到 ProjectPBZ/PBZModLoader，并同步更新 DLL；
+具体迁移步骤见安装说明，mods.ini 中的 Entry 无需修改。
 启动时 DLL 校验配置，将 mods/ 同步到 Content/JavaScript/PBZModLoader/generated-mods，
 供原有 PuerTS 搜索路径加载；该缓存每次启动重建，不应直接编辑。
 Content/JavaScript 下只需随包安装 bootstrap.js 和 manager.js，MOD 源文件无需放在那里。
