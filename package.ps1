@@ -23,8 +23,11 @@ foreach ($relative in $files) {
     New-Item -ItemType Directory -Force (Split-Path $destination) | Out-Null
     Copy-Item -LiteralPath (Join-Path "$PSScriptRoot/runtime" $relative) -Destination $destination
 }
-Copy-Item -LiteralPath "$PSScriptRoot/build/version.dll" -Destination "$release/version.dll"
-$files += 'version.dll'
+$dllRelative='platform/steam/version.dll'
+$dllDestination=Join-Path $release $dllRelative
+New-Item -ItemType Directory -Force (Split-Path $dllDestination) | Out-Null
+Copy-Item -LiteralPath "$PSScriptRoot/build/version.dll" -Destination $dllDestination
+$files += $dllRelative
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::CreateFromDirectory($release,$zip,[IO.Compression.CompressionLevel]::Optimal,$false)
 $archive=[IO.Compression.ZipFile]::OpenRead($zip)

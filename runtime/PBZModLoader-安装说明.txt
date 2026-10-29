@@ -1,119 +1,13 @@
-PBZ TS/JS MOD 加载器 0.3.0-preview（Windows x64，平台无关引导预览版）
+PBZModLoader 安装说明
 
-一、安装
+1. 退出游戏，打开游戏安装目录（能看到 ProjectPBZ 文件夹的位置）。
+2. 将本 MOD 压缩包的内容覆盖解压到游戏安装目录。
+   例如：游戏装在 D:\Games\PBZ，就解压到 D:\Games\PBZ。
+   正确：D:\Games\PBZ\ProjectPBZ
+   错误：D:\Games\PBZ\PBZModLoader\ProjectPBZ（多了一层文件夹）
+3. 从原游戏平台启动游戏即可。
 
-1. 正常退出游戏。
-2. 在游戏平台中打开游戏安装目录，找到 ProjectPBZ 文件夹及实际游戏进程的 EXE。
-   Steam 已知实际 EXE 为 platform\steam\PBZ.exe；WeGame 的实际位置需要按安装情况确认，
-   不要假定一定是 platform\wegame，也不要把平台客户端或外层启动壳当成实际游戏 EXE。
-3. 检查实际游戏 EXE 旁的 version.dll 是否已存在。如果已有其他工具的同名 DLL，
-   不要直接覆盖：本包不支持自动串联其他代理加载器。更新本加载器时，先备份配置和自定义 MOD。
-4. 将包中的 ProjectPBZ 合并到游戏的 ProjectPBZ，将包顶层的 version.dll 单独复制到
-   实际游戏 EXE 所在目录。不要将 ProjectPBZ 再嵌套一层，不要复制 DLL 到 Windows 系统目录。
-5. 从原平台正常点“开始”。无需另开启动器，无需安装 Python、Node.js 或编译器。
-   DLL 从 EXE 位置向上查找 ProjectPBZ，不依赖平台目录名、EXE 文件名或启动时工作目录。
+WeGame：启动前，还需将包内 platform\steam\version.dll 复制到实际游戏 EXE 旁。
+WeGame 尚未实机验证，具体 EXE 位置需自行确认。
 
-安装后关键路径：
-  <实际游戏 EXE 所在目录>\version.dll
-  PBZ\ProjectPBZ\PBZModLoader\mods.ini
-  PBZ\ProjectPBZ\Content\JavaScript\PBZModLoader\bootstrap.js
-  PBZ\ProjectPBZ\Content\JavaScript\PBZModLoader\manager.js
-  PBZ\ProjectPBZ\PBZModLoader\mods\...
-
-配置和自定义 MOD 统一放在 ProjectPBZ\PBZModLoader 下。
-Content\JavaScript\PBZModLoader 中保留加载器引导文件；启动时自动生成
-generated-mods 脚本缓存和 generated-config.js，不要在缓存中编辑 MOD。
-每次启动都会重新同步缓存，包括 MOD 的相对依赖文件，并清除已移除的脚本。
-
-从带 Mods 层的旧版升级：先备份配置和自定义 MOD，将旧位置
-ProjectPBZ\Mods\PBZModLoader 整个移到 ProjectPBZ\PBZModLoader，
-保留自己的 mods.ini、mods 和日志；若目标目录已存在，先备份并合并，避免覆盖自定义内容。
-同步更新 version.dll、bootstrap.js 和 manager.js；新版仅从新位置读取配置和 MOD。
-旧 Mods 目录确认为空后可删除；mods.ini 中的 Entry 无需改动。
-
-从更早的脚本目录布局升级：先备份 mods.ini 和自定义 MOD，将旧目录
-ProjectPBZ\Content\JavaScript\PBZModLoader\mods 下的全部 MOD 文件移到
-ProjectPBZ\PBZModLoader\mods，并将自己的 mods.ini 放到 ProjectPBZ\PBZModLoader（Entry 无需改动）。
-同时更新 version.dll、bootstrap.js 和 manager.js；旧 mods 目录不再用于加载。
-
-特征来源为 CL-301524_JKS-17219。新版不再用 EXE 哈希作为加载白名单，
-而是联合验证指令特征、MainStart 字符串、PuerTS 日志源码引用和相互关联的地址。
-仅在各位置唯一匹配且全部通过校验后安装挂钩。缺失或歧义时跳过 MOD，继续原游戏。
-不能通过关闭校验来适配未知版本；内部接口变化时仍需更新加载器。
-WeGame 尚未实机验证，是否能加载代理 DLL、内部接口是否兼容仍需实测。
-
-二、默认示例
-
-默认启用两个只读示例：
-  hello：读取 GameInstance 并记录日志。
-  world-watch：记录地图变化和心跳。
-它们不主动切图，也不修改游戏数值；没有屏幕内菜单，是否加载请查看日志。
-
-三、自动发现和禁用 MOD
-
-每次启动自动扫描 ProjectPBZ\PBZModLoader\mods 的直接子目录，
-将 mods/<目录名>/main.js 作为入口，目录名作为 MOD ID，默认启用。
-新增 MOD 只需放入上述目录并重启游戏，无需添加配置或修改 Count。
-只扫描这一层 main.js，不会把辅助 JS、嵌套目录或 .ts 文件当作独立 MOD。
-没有 main.js 的目录会被忽略；目录名仅支持英文字母、数字、下划线和连字符。
-
-mods.ini 保留以下基本配置：
-  [Loader]
-  Enabled=1
-  Version=1
-
-要禁用指定 MOD，在 mods.ini 的 [Mods] 下添加其 ID：
-  [Mods]
-  hello=0
-  world-watch=0
-
-删除对应行或改为 1 即可恢复，下次启动生效。
-Loader.Enabled=0 可临时停用所有 MOD；改回 1 恢复。
-自动发现的 MOD 按 ID 排序加载（区分大小写的字符顺序），最多共 128 项。
-mods.ini 仍需保留，但不再需要维护完整 MOD 列表。
-
-兼容旧配置：已有 Count 和 [Mod.0]、[Mod.1] 等配置仍按编号顺序优先加载，
-其 Id、Entry 和 Enabled 继续有效；未配置的 MOD 自动追加，不会重复加载同一入口。
-[Mods] 下同一 Id 的开关优先于旧配置的 Enabled。
-Count 现在仅表示旧配置项数量，不包含自动发现的 MOD。
-需要自定义入口或加载顺序时仍可使用旧配置；普通 MOD 不需要。
-旧配置中启用的 Entry 若已不存在，仍会按原有规则报错；删除 MOD 时也请移除其旧配置。
-
-Entry 相对于 mods.ini 所在的 ProjectPBZ\PBZModLoader 目录。
-入口必须为 .js，不能直接填写 .ts；玩家使用 MOD 作者提供的编译产物。
-不接受绝对路径或 ..。单个 MOD 加载报错会记录日志，后续 MOD 继续加载。
-所有 MOD 共享主 PuerTS 环境，请只安装可信来源的 MOD；目前不支持热重载。
-不要手工修改自动生成的 generated-config.js 或 generated-mods 目录。
-
-四、检查日志
-
-日志目录：ProjectPBZ\PBZModLoader\evidence\<日期时间-PID>-dll\loader.log
-正常加载默认示例时能看到：
-  [PBZMOD] loaded hello
-  [PBZMOD] loaded world-watch
-  [PBZMOD] ready loaded=2 failed=0
-
-MODs skipped 表示游戏版本、配置或入口检查未通过，请查看后面的原因。
-failed 后会给出对应 MOD 和错误内容。没有日志时先检查解压层级及 version.dll 的位置。
-游戏更新后可能需要新版加载器。日志中的进程退出通知本身不等于正常退出码证明。
-
-五、卸载
-
-1. 正常退出游戏。
-2. 删除实际游戏 EXE 旁由本包安装的 version.dll，即可取消自动引导。
-   如果此文件后来被其他加载器替换，不要将其当作本包文件删除。
-3. 如需彻底清理，先备份自定义 MOD、配置和想保留的日志，再删除：
-   PBZ\ProjectPBZ\PBZModLoader
-   PBZ\ProjectPBZ\Content\JavaScript\PBZModLoader
-4. 本说明文件也可删除。
-
-不需要删除任何游戏 EXE、pak、存档或 Windows 系统 DLL。
-
-六、验证范围
-
-旧版 DLL 已验证 Steam 直接启动、两个 MOD 按配置加载、主菜单与溪谷往返及退出码 0。
-本预览版已通过已知 EXE 的只读特征扫描、地址重排及 ASLR 模拟、错误匹配拒绝、
-Steam/WeGame/UE 目录布局代理宿主测试、原生与 JS 测试。目录夹具不代表实际平台运行测试。
-新版 DLL 尚待 Steam 和 WeGame 实际游戏启动、切图及正常退出验收。
-未验证其他游戏版本、所有地图、长时间运行和第三方 MOD 之间的兼容性。
-本包不包含旧原型、独立启动器、源码、测试工具、开发依赖或个人存档。
+更新前请备份自己的配置和 MOD；不要覆盖其他工具的同名 version.dll。

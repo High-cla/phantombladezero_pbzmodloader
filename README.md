@@ -25,8 +25,10 @@ platform/wegame 只是目录布局夹具，并非对 WeGame 实际目录、DLL �
 ```
 -GameExe 只读文件，不启动或修改游戏；该回归测试针对已知 Steam 基准文件，
 验证扫描结果、地址重排、ASLR、调用位移变化及歧义/损坏拒绝。
-通用安装包顶层为 version.dll、ProjectPBZ、安装说明，不再内置 platform/steam 目录。
-DLL 需单独放在实际游戏 EXE 旁；ProjectPBZ 合并至游戏项目目录。
+安装包顶层为 ProjectPBZ、platform 和安装说明，DLL 位于 platform/steam/version.dll。
+Steam 首次安装可直接解压到游戏根目录，合并同名文件夹，DLL 随包放到 PBZ.exe 旁。
+WeGame 只需合并 ProjectPBZ，再将包内 platform/steam/version.dll 手动放到实际游戏 EXE 旁；
+不假定 WeGame 的目录结构。遇到已有同名 DLL 应先确认来源，更新时保留自己的配置和 MOD。
 当前新版通过静态匹配、原生/JS 测试及多布局代理宿主测试，尚待实际游戏启动、切图和退出验收。
 
 ## 目录
