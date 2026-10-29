@@ -1,4 +1,4 @@
-param([string]$Version='0.2.1')
+param([string]$Version='0.3.0-preview')
 $ErrorActionPreference='Stop'
 if ($Version -notmatch '^\d+\.\d+\.\d+(?:-[A-Za-z0-9-]+)?$') { throw 'Invalid release version' }
 $files=@(
@@ -23,9 +23,8 @@ foreach ($relative in $files) {
     New-Item -ItemType Directory -Force (Split-Path $destination) | Out-Null
     Copy-Item -LiteralPath (Join-Path "$PSScriptRoot/runtime" $relative) -Destination $destination
 }
-New-Item -ItemType Directory -Force "$release/platform/steam" | Out-Null
-Copy-Item -LiteralPath "$PSScriptRoot/build/version.dll" -Destination "$release/platform/steam/version.dll"
-$files += 'platform/steam/version.dll'
+Copy-Item -LiteralPath "$PSScriptRoot/build/version.dll" -Destination "$release/version.dll"
+$files += 'version.dll'
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::CreateFromDirectory($release,$zip,[IO.Compression.CompressionLevel]::Optimal,$false)
 $archive=[IO.Compression.ZipFile]::OpenRead($zip)

@@ -74,7 +74,7 @@ extern "C" void pbz_initialize() noexcept {
     try {
         wchar_t exe[32768]; check(GetModuleFileNameW(nullptr,exe,32768)>0,"game path");
         const fs::path game=exe;
-        const fs::path project=game.parent_path().parent_path().parent_path()/L"ProjectPBZ";
+        const fs::path project=findProject(game);
         const fs::path root=project/L"Mods/PBZModLoader", scripts=project/L"Content/JavaScript/PBZModLoader";
         SYSTEMTIME st; GetLocalTime(&st); wchar_t name[80];
         swprintf(name,80,L"%04u%02u%02u-%02u%02u%02u-%lu-dll",st.wYear,st.wMonth,st.wDay,st.wHour,st.wMinute,st.wSecond,GetCurrentProcessId());
@@ -89,16 +89,20 @@ extern "C" void pbz_initialize() noexcept {
         pbz_resolve_version(0);
         wchar_t system[32768]; check(GetModuleFileNameW(realVersion,system,32768)>0,"system version path");
         log("proxy-system="+utf8(system));
-        if(sha256(game)!=HASH) { log("MODs skipped: unsupported PBZ.exe SHA-256; original game continues"); SetLastError(savedError); return; }
+        log("project="+utf8(project.wstring()));
         auto enabled=ini(root/L"mods.ini",L"Loader",L"Enabled");
         if(!enabled.empty() && number(enabled,1)==0) { log("MODs disabled by Loader.Enabled=0; original game continues"); SetLastError(savedError); return; }
+        auto image=snapshotImage(GetCurrentProcess(),(U64)GetModuleHandleW(nullptr));
+        const auto sites=resolveSites(image);
+        { std::ostringstream message; message<<"signatures validated; call-rva=0x"<<std::hex<<sites.call<<" start-rva=0x"<<sites.start;
+          for(auto rva:sites.loggers) message<<" logger-rva=0x"<<rva; log(message.str()); }
         auto generated=config(root);
         for(auto file:{L"bootstrap.js",L"manager.js"}) if(!fs::is_regular_file(scripts/file)) throw std::runtime_error("Missing loader JS");
         syncMods(root,scripts);
         auto temporary=scripts/(L"generated-config."+std::to_wstring(GetCurrentProcessId())+L".tmp");
         { std::ofstream f(temporary,std::ios::binary); f<<generated; f.close(); check(bool(f),"write config"); }
         check(MoveFileExW(temporary.c_str(),(scripts/L"generated-config.js").c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH),"publish config");
-        auto installed=install(GetCurrentProcess(),(U64)GetModuleHandleW(nullptr));
+        auto installed=install(GetCurrentProcess(),(U64)GetModuleHandleW(nullptr),image,sites);
         log("native hooks installed; configuration published");
         HANDLE worker=CreateThread(nullptr,0,monitor,(void*)installed.slab,0,nullptr);
         if(worker) CloseHandle(worker); else log("ERROR monitor: CreateThread failed; MOD loading remains enabled");
@@ -116,12 +120,9 @@ __attribute__((noinline)) static void armEntry(HMODULE module) noexcept {
     DWORD a=GetModuleFileNameW(nullptr,exe,32768),b=GetModuleFileNameW(module,dll,32768);
     if(!a || a>=32768 || !b || b>=32768) return;
     wchar_t* exeName=wcsrchr(exe,L'\\'); wchar_t* dllName=wcsrchr(dll,L'\\');
-    if(!exeName || !dllName || _wcsicmp(exeName+1,L"PBZ.exe")) return;
+    if(!exeName || !dllName) return;
     if(exeName-exe!=dllName-dll || _wcsnicmp(exe,dll,exeName-exe)) return;
-    // Only the real game's platform/steam directory, not the Steam wrapper.
-    const wchar_t suffix[]=L"\\platform\\steam";
-    const size_t folderLength=exeName-exe;
-    if(folderLength<std::size(suffix)-1 || _wcsnicmp(exe+folderLength-(std::size(suffix)-1),suffix,std::size(suffix)-1)) return;
+    // No platform path assumptions. Unsupported wrappers fail signature validation.
     auto base=(unsigned char*)GetModuleHandleW(nullptr);
     auto dos=(IMAGE_DOS_HEADER*)base;
     if(dos->e_magic!=IMAGE_DOS_SIGNATURE || dos->e_lfanew<=0 || dos->e_lfanew>0x100000) return;

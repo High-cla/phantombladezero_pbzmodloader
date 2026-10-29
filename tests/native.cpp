@@ -71,6 +71,17 @@ int main() {
     iniTest(prefix+"Enabled=2\nEntry=mods/a/main.js\n",false);
     iniTest("[Loader]\nVersion=1\nCount=2\n[Mod.0]\nId=a\nEnabled=1\nEntry=mods/a/main.js\n[Mod.1]\nId=a\nEnabled=0\nEntry=mods/a/main.js\n",false);
     fs::remove_all(temp);
+    auto layout=fs::temp_directory_path()/(L"pbz-layout-test-"+std::to_wstring(GetCurrentProcessId()));
+    fs::create_directories(layout/L"ProjectPBZ/Content/JavaScript/PBZModLoader");
+    fs::create_directories(layout/L"ProjectPBZ/Mods/PBZModLoader");
+    { std::ofstream f(layout/L"ProjectPBZ/Mods/PBZModLoader/mods.ini"); f<<"fixture"; }
+    { std::ofstream f(layout/L"ProjectPBZ/Content/JavaScript/PBZModLoader/bootstrap.js"); f<<"fixture"; }
+    for(const auto& relative:{L"platform/steam/PBZ.exe",L"platform/wegame/PBZ.exe",L"ProjectPBZ/Binaries/Win64/PBZ.exe",L"PBZ.exe"})
+        assert(findProject(layout/relative)==fs::canonical(layout/L"ProjectPBZ"));
+    fs::remove(layout/L"ProjectPBZ/Mods/PBZModLoader/mods.ini");
+    bool missing=false; try { findProject(layout/L"platform/wegame/PBZ.exe"); } catch(const std::exception&) { missing=true; } assert(missing);
+    fs::remove_all(layout);
+    std::cout<<"PASS platform-independent project discovery and missing runtime rejection\n";
     std::cout<<"PASS MOD cache: nested dependencies, stale cleanup, source and loader preservation\n";
     std::cout<<"PASS native redirect, argv, counter, relocated flags, filtering, bounds, concurrency, ring wrap\n";
     std::cout<<"PASS native config: valid, missing, disabled, traversal, TS, invalid switch, duplicate ID\n";

@@ -19,9 +19,7 @@
 namespace fs = std::filesystem;
 using Bytes = std::vector<unsigned char>;
 using U64 = unsigned long long;
-constexpr U64 CALL_RVA=0x6686768, START_RVA=0x6284a20;
 constexpr size_t SLAB_SIZE=8192+256*2048;
-constexpr char HASH[]="7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4";
 #ifdef PBZ_DLL
 void log(const std::string& s);
 #else
@@ -99,7 +97,17 @@ void syncMods(const fs::path& root,const fs::path& scripts) {
     else fs::create_directories(cache);
 }
 #ifdef PBZ_DLL
-void read(HANDLE,U64 address,void* dest,size_t n) { std::memcpy(dest,(void*)address,n); }
+void read(HANDLE,U64 address,void* dest,size_t n) {
+    size_t done=0;
+    while(done<n) {
+        MEMORY_BASIC_INFORMATION region{};
+        check(VirtualQuery((void*)(address+done),&region,sizeof(region))!=0,"query image memory");
+        if(region.State!=MEM_COMMIT || (region.Protect&(PAGE_NOACCESS|PAGE_GUARD))) throw std::runtime_error("Unreadable image memory");
+        size_t count=std::min(n-done,(size_t)((U64)region.BaseAddress+region.RegionSize-address-done));
+        if(!count) throw std::runtime_error("Invalid image region");
+        std::memcpy((unsigned char*)dest+done,(void*)(address+done),count); done+=count;
+    }
+}
 void write(HANDLE,U64 address,const void* data,size_t n) { std::memcpy((void*)address,data,n); }
 BOOL protect(HANDLE,void* address,size_t n,DWORD flags,DWORD* old) { return VirtualProtect(address,n,flags,old); }
 void* allocate(HANDLE,void* address,size_t n) { return VirtualAlloc(address,n,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE); }
@@ -124,9 +132,33 @@ void rel32(Bytes& b,U64 from,U64 to) {
     auto d=(long long)to-(long long)from; if(d<INT32_MIN||d>INT32_MAX) throw std::runtime_error("rel32 out of range"); imm32(b,(int)d);
 }
 void absoluteJump(Bytes& b,U64 target) { b.insert(b.end(),{0xff,0x25,0,0,0,0}); imm64(b,target); }
-U64 allocateNear(HANDLE p,U64 base) {
+#include "signatures.hpp"
+ImageView snapshotImage(HANDLE p,U64 base) {
+    IMAGE_DOS_HEADER dos{}; read(p,base,&dos,sizeof(dos));
+    if(dos.e_magic!=IMAGE_DOS_SIGNATURE || dos.e_lfanew<=0 || dos.e_lfanew>0x100000) throw std::runtime_error("Invalid PE DOS header");
+    IMAGE_NT_HEADERS64 nt{}; read(p,base+dos.e_lfanew,&nt,sizeof(nt));
+    if(nt.Signature!=IMAGE_NT_SIGNATURE || nt.FileHeader.Machine!=IMAGE_FILE_MACHINE_AMD64 ||
+       nt.OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR64_MAGIC || nt.FileHeader.SizeOfOptionalHeader!=sizeof(IMAGE_OPTIONAL_HEADER64) ||
+       !nt.FileHeader.NumberOfSections || nt.FileHeader.NumberOfSections>96 ||
+       !nt.OptionalHeader.SizeOfImage || nt.OptionalHeader.SizeOfImage>1024*1024*1024)
+        throw std::runtime_error("Unsupported PE image");
+    ImageView image{Bytes(nt.OptionalHeader.SizeOfImage),base,{}};
+    U64 table=dos.e_lfanew+24+nt.FileHeader.SizeOfOptionalHeader;
+    if(table+nt.FileHeader.NumberOfSections*sizeof(IMAGE_SECTION_HEADER)>nt.OptionalHeader.SizeOfHeaders) throw std::runtime_error("Invalid PE section table");
+    for(unsigned i=0;i<nt.FileHeader.NumberOfSections;++i) {
+        IMAGE_SECTION_HEADER s{}; read(p,base+table+i*sizeof(s),&s,sizeof(s));
+        size_t size=s.Misc.VirtualSize;
+        if(s.VirtualAddress>image.bytes.size() || size>image.bytes.size()-s.VirtualAddress) throw std::runtime_error("PE section exceeds image");
+        if(!size || !(s.Characteristics&IMAGE_SCN_MEM_READ) || (s.Characteristics&IMAGE_SCN_MEM_DISCARDABLE)) continue;
+        for(auto other:image.sections) if(s.VirtualAddress<other.begin+other.size && other.begin<s.VirtualAddress+size) throw std::runtime_error("Overlapping PE sections");
+        read(p,base+s.VirtualAddress,image.bytes.data()+s.VirtualAddress,size);
+        image.sections.push_back({s.VirtualAddress,size,s.Characteristics});
+    }
+    return image;
+}
+U64 allocateNear(HANDLE p,U64 callAddress) {
     // 64 KiB aligned allocations, all hooks and relocated operands must fit rel32.
-    U64 center=(base+CALL_RVA)&~U64(65535);
+    U64 center=callAddress&~U64(65535);
     for(U64 d=0x10000;d<0x70000000;d+=0x10000) {
         for(U64 addr:{center+d,center-d}) {
             auto v=allocate(p,(void*)addr,SLAB_SIZE);
@@ -169,17 +201,19 @@ Bytes loggerStub(U64 at,U64 ring,U64 original,const Bytes& stolen) {
 }
 struct Patch { U64 address; Bytes old; };
 struct Installed { U64 slab=0; std::vector<Patch> patches; };
-Installed install(HANDLE p,U64 base) {
+Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& sites) {
     Installed state;
-    const std::array<U64,3> loggers={0x62ab700,0x62b2e00,0x62a56b0};
-    const std::array<Bytes,3> signatures={Bytes{0x80,0x3d,0x61,0xc8,0xd5,0x07,0x05},Bytes{0x80,0x3d,0x61,0x51,0xd5,0x07,0x03},Bytes{0x80,0x3d,0xb1,0x28,0xd6,0x07,0x02}};
+    const auto& loggers=sites.loggers;
+    std::array<Bytes,3> signatures;
+    for(int i=0;i<3;++i) signatures[i]=Bytes(image.bytes.begin()+loggers[i],image.bytes.begin()+loggers[i]+7);
+    const Bytes originalCall(image.bytes.begin()+sites.call,image.bytes.begin()+sites.call+5);
     auto verify=[&](U64 addr,const Bytes& expected) { Bytes got(expected.size()); read(p,addr,got.data(),got.size()); if(got!=expected) throw std::runtime_error("Instruction signature mismatch"); };
-    verify(base+CALL_RVA,{0xe8,0xb3,0xe2,0xbf,0xff});
-    verify(base+START_RVA,{0x48,0x8b,0x09,0x48,0x8b,0x01,0x48,0xff,0x20});
+    verify(base+sites.call,originalCall);
+    verify(base+sites.start,{0x48,0x8b,0x09,0x48,0x8b,0x01,0x48,0xff,0x20});
     for(int i=0;i<3;++i) verify(base+loggers[i],signatures[i]);
-    state.slab=allocateNear(p,base);
+    state.slab=allocateNear(p,base+sites.call);
     try {
-        Bytes blob(3072); auto stub=startStub(state.slab,base+START_RVA); std::copy(stub.begin(),stub.end(),blob.begin());
+        Bytes blob(3072); auto stub=startStub(state.slab,base+sites.start); std::copy(stub.begin(),stub.end(),blob.begin());
         for(int i=0;i<3;++i) {
             auto logger=loggerStub(state.slab+256+i*512,state.slab+4096,base+loggers[i],signatures[i]);
             if(logger.size()>512) throw std::runtime_error("Logger stub overflow");
@@ -191,12 +225,17 @@ Installed install(HANDLE p,U64 base) {
         write(p,state.slab+4128,&name,sizeof(name)); write(p,state.slab+4160,module,sizeof(module));
         // Executable code is RX; counters, FString and bounded ring are on RW pages.
         DWORD ignored; check(protect(p,(void*)state.slab,4096,PAGE_EXECUTE_READ,&ignored),"stub RX");
+        check(FlushInstructionCache(p,(void*)state.slab,4096),"flush stubs");
+        // Prove every rel32 branch fits before changing any game instruction.
+        Bytes call={0xe8}; rel32(call,base+sites.call+5,state.slab);
+        std::array<Bytes,3> hooks;
+        for(int i=0;i<3;++i) { hooks[i]={0xe9}; rel32(hooks[i],base+loggers[i]+5,state.slab+256+i*512); hooks[i].insert(hooks[i].end(),{0x90,0x90}); }
         for(int i=0;i<3;++i) {
             state.patches.push_back({base+loggers[i],signatures[i]});
-            Bytes hook={0xe9}; rel32(hook,base+loggers[i]+5,state.slab+256+i*512); hook.insert(hook.end(),{0x90,0x90}); patch(p,base+loggers[i],hook);
+            patch(p,base+loggers[i],hooks[i]);
         }
-        state.patches.push_back({base+CALL_RVA,{0xe8,0xb3,0xe2,0xbf,0xff}});
-        Bytes call={0xe8}; rel32(call,base+CALL_RVA+5,state.slab); patch(p,base+CALL_RVA,call);
+        state.patches.push_back({base+sites.call,originalCall});
+        patch(p,base+sites.call,call);
         return state;
     } catch(...) {
         bool restored=true; for(auto it=state.patches.rbegin();it!=state.patches.rend();++it) try{patch(p,it->address,it->old);}catch(...){restored=false;}

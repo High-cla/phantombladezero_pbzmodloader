@@ -1,4 +1,4 @@
-param([string]$Compiler='clang++',[switch]$Test,[switch]$VerifyOnly)
+param([string]$Compiler='clang++',[switch]$Test,[switch]$VerifyOnly,[string]$GameExe)
 $ErrorActionPreference='Stop'
 Push-Location $PSScriptRoot
 try {
@@ -13,15 +13,31 @@ try {
         if ($LASTEXITCODE -ne 0) { throw 'Native test build failed' }
         & ./build/native-test.exe
         if ($LASTEXITCODE -ne 0) { throw 'Native tests failed' }
+        if ($GameExe) {
+            & $Compiler -std=c++17 -O2 -Wall -Wextra -static tests/signatures.cpp -lbcrypt -o build/signature-test.exe
+            if ($LASTEXITCODE -ne 0) { throw 'Signature test build failed' }
+            & ./build/signature-test.exe $GameExe
+            if ($LASTEXITCODE -ne 0) { throw 'Signature tests failed' }
+        }
         node --test tests/manager.test.cjs
         if ($LASTEXITCODE -ne 0) { throw 'JS tests failed' }
-        $fixture=Join-Path $PSScriptRoot 'build/proxy-fixture/platform/steam'
+        foreach ($layout in @('platform/steam','platform/wegame','ProjectPBZ/Binaries/Win64')) {
+        $fixtureRoot=Join-Path $PSScriptRoot ('build/proxy-fixture/'+$layout.Replace('/','-'))
+        $fixture=Join-Path $fixtureRoot $layout
+        $runtime=Join-Path $fixtureRoot 'ProjectPBZ'
+        New-Item -ItemType Directory -Force "$runtime/Mods/PBZModLoader","$runtime/Content/JavaScript/PBZModLoader" | Out-Null
+        Set-Content "$runtime/Mods/PBZModLoader/mods.ini" '[Loader]'
+        Set-Content "$runtime/Content/JavaScript/PBZModLoader/bootstrap.js" '// fixture'
         New-Item -ItemType Directory -Force $fixture | Out-Null
         & $Compiler -std=c++17 -O2 -Wall -Wextra -static tests/proxy-host.cpp -lversion -o "$fixture/PBZ.exe"
         if ($LASTEXITCODE -ne 0) { throw 'Proxy host build failed' }
         Copy-Item -LiteralPath build/version.dll -Destination "$fixture/version.dll" -Force
         & "$fixture/PBZ.exe"
         if ($LASTEXITCODE -ne 0) { throw 'Proxy tests failed' }
+        $logs=@(Get-ChildItem "$runtime/Mods/PBZModLoader/evidence" -Filter loader.log -Recurse | Sort-Object LastWriteTime -Descending)
+        if (!$logs.Count -or !(Select-String -LiteralPath $logs[0].FullName -SimpleMatch 'MainStart signature requires one validated match; found=0')) { throw 'Missing signature rejection evidence' }
+        Write-Output "PASS platform layout: $layout, entry restored and unsupported host skipped"
+        }
         $readobj=Join-Path (Split-Path (Get-Command $Compiler).Source) 'llvm-readobj.exe'
         $imports=& $readobj --coff-imports build/version.dll
         if ($LASTEXITCODE -ne 0) { throw 'Import inspection failed' }

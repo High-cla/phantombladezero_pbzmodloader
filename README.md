@@ -2,6 +2,33 @@
 
 这是后续开发入口。玩家运行包位于 releases，游戏安装目录只保留运行文件。
 
+## 0.3.0-preview：平台无关引导
+
+DLL 不再检查 Steam 路径、进程文件名或固定 EXE 哈希。将 version.dll 放在实际游戏进程的 EXE 旁；
+从该 EXE 目录向上寻找含 Content、加载器配置和 bootstrap.js 的 ProjectPBZ。
+启动壳进程、未知构建和错误安装不会通过完整特征校验。必须由游戏在 EXE 入口执行前加载代理 DLL。
+
+src/signatures.hpp 仅扫描可执行 PE 节，使用带通配符的指令序列，结合 MainStart 字符串、
+Start 跳板指令、JSLogger.cpp 源文件引用、日志等级和共享日志类别地址定位挂钩。
+所有匹配必须唯一，引用须位于有效 PE 节，所有挂钩验证完成后才修改游戏代码。
+跳板及调用原始字节从实际匹配位置取得，不再依赖固定 RVA 或固定相对位移。
+特征不匹配或歧义时跳过 MOD，继续原游戏；不会回退到旧固定地址。
+
+这组特征来自 CL-301524_JKS-17219，允许地址和相对位移变化，但不是任意版本的通用 ABI。
+编译器、运行时结构或保护机制变化仍可能需要新特征。WeGame 尚无实机验证；测试中的
+platform/wegame 只是目录布局夹具，并非对 WeGame 实际目录、DLL 加载行为的断言。
+
+新增检查：
+```powershell
+.\build.ps1 -Compiler C:\path\to\clang++.exe -Test -GameExe C:\path\to\PBZ.exe
+.\package.ps1 -Version 0.3.0-preview
+```
+-GameExe 只读文件，不启动或修改游戏；该回归测试针对已知 Steam 基准文件，
+验证扫描结果、地址重排、ASLR、调用位移变化及歧义/损坏拒绝。
+通用安装包顶层为 version.dll、ProjectPBZ、安装说明，不再内置 platform/steam 目录。
+DLL 需单独放在实际游戏 EXE 旁；ProjectPBZ 合并至游戏项目目录。
+当前新版通过静态匹配、原生/JS 测试及多布局代理宿主测试，尚待实际游戏启动、切图和退出验收。
+
 ## 目录
 
 - src：原生 DLL 源码，无旧启动器源码。
@@ -18,7 +45,7 @@
 npm ci
 npm run build:mods
 .\build.ps1 -Compiler C:\path\to\llvm-mingw\bin\clang++.exe -Test
-.\package.ps1 -Version 0.2.1
+.\package.ps1 -Version 0.3.0-preview
 ```
 
 TS 输出到 runtime/ProjectPBZ/Mods/PBZModLoader/mods。
