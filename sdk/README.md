@@ -1,51 +1,23 @@
 # PBZ TypeScript 游戏 API
 
-`@pbz-mod-loader/game-api` 是仅供开发的类型声明包，为 `ue`、`puerts` 和游戏脚本全局提供补全与严格类型检查。
-运行时仍由游戏自带的 PuerTS 执行调用；SDK 不包含游戏实现，也不需要安装到玩家目录。
+`@pbz-mod-loader/game-api` 0.2.0 是 MOD 开发使用的类型声明包，为游戏提供的 `ue`、`puerts` 模块补全和检查类型。包内没有运行时代码，发布 MOD 时只携带编译后的 MOD 文件。
 
-## 在模板中使用
+适用构建：Steam Win64 `CL-301524_JKS-17219`，EXE SHA256 为 `7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4`。其他游戏构建和 WeGame 尚未验证。
 
-新版 `templates/ts-mod/` 已包含 `vendor/game-api/` 和本地开发依赖。复制整个模板后：
+## 安装与使用
 
-```powershell
-npm ci
-npm run check
-npm run build
-```
+复制仓库的 `templates/ts-mod/`，在副本中执行 `npm ci`、`npm run check`、`npm run build`，即可使用随模板提供的 SDK。
 
-编写代码时直接引用游戏模块：
-
-```ts
-import { argv } from 'puerts';
-import { GameplayStatics, KismetSystemLibrary } from 'ue';
-
-const gi = argv.getByName('GameInstance');
-if (!gi) throw new Error('GameInstance missing');
-const pawn = GameplayStatics.GetPlayerPawn(gi, 0);
-if (pawn && KismetSystemLibrary.IsValid(pawn)) {
-    const location = pawn.K2_GetActorLocation();
-    console.log(`[PBZMOD] position=${location.X},${location.Y},${location.Z}`);
-}
-```
-
-不要写 `import '@pbz-mod-loader/game-api'`：这个包没有运行时代码，通过 `tsconfig.json` 自动载入声明。
-只在开发依赖中安装 SDK；发布时携带构建后的 MOD 目录。
-
-## 已有项目接入
-
-在 PBZModLoader 仓库根目录生成可离线转交的 npm 包：
+已有 MOD 工程可安装离线包：
 
 ```powershell
+# 在 PBZModLoader 仓库中生成压缩包
 npm run sdk:pack
+# 将 build/sdk/pbz-mod-loader-game-api-0.2.0.tgz 复制到 MOD 的 vendor/ 后
+npm install --save-dev ./vendor/pbz-mod-loader-game-api-0.2.0.tgz
 ```
 
-把生成的 `build/sdk/pbz-mod-loader-game-api-0.1.0.tgz` 复制到 MOD 工程的 `vendor/`，然后在该工程执行：
-
-```powershell
-npm install --save-dev ./vendor/pbz-mod-loader-game-api-0.1.0.tgz
-```
-
-`tsconfig.json` 的配置至少包含：
+MOD 的 `tsconfig.json` 至少包含以下配置；保持完整声明检查，不需要 `skipLibCheck`：
 
 ```json
 {
@@ -56,40 +28,94 @@ npm install --save-dev ./vendor/pbz-mod-loader-game-api-0.1.0.tgz
     "types": ["@pbz-mod-loader/game-api"],
     "strict": true,
     "noEmitOnError": true
-  }
+  },
+  "include": ["src/**/*.ts", "types/**/*.d.ts"]
 }
 ```
 
-旧模板需删除 `types/ue.d.ts`、`types/puerts.d.ts`、`types/globals.d.ts` 中原有的重复声明。
-自己的扩展声明可保留在 `types/custom.d.ts`，并继续将 `types/**/*.d.ts` 放入 `include`。
-不要为游戏代码引入 DOM 或 `@types/node`，它们会让实际不存在的运行时 API 看起来可用。
+直接导入游戏模块，不要 `import '@pbz-mod-loader/game-api'`。不要引入 DOM 或 `@types/node`，游戏没有这些宿主 API。旧项目应移除重复的 `ue`/`puerts` 全局声明，自定义接口可以保留在 `types/custom.d.ts`。
 
-## 覆盖范围与版本
+```ts
+import * as UE from 'ue';
+import { argv, $ref, $unref } from 'puerts';
 
-这是依据本机游戏实测维护的接口子集，不是完整反射导出。验证构建、方法清单、排除项记录在 `api-surface.json`。
-目前覆盖：
+const gi = argv.getByName('GameInstance');
+if (!gi) throw new Error('GameInstance missing');
+const pawn = UE.GameplayStatics.GetPlayerPawn(gi, 0);
+if (pawn && UE.KismetSystemLibrary.IsValid(pawn)) {
+    const x = $ref(0), y = $ref(0), z = $ref(0);
+    UE.KismetMathLibrary.BreakVector(pawn.K2_GetActorLocation(), x, y, z);
+    console.log(`position=${$unref(x)},${$unref(y)},${$unref(z)}`);
+}
+const sum: bigint = UE.KismetMathLibrary.Add_Int64Int64(9007199254740993n, 2n);
+const values = UE.NewArray(UE.BuiltinInt);
+values.Add(1, 2); // 原生容器使用 Num/Get/Add 等方法，不是 JS 数组。
+```
 
-- 对象名称、类型、Outer、GameInstance/World。
-- 当前地图、玩家控制器/Pawn/Character/CameraManager、GameMode/GameState。
-- 世界时间、暂停状态、Actor 位置/旋转/缩放/速度、Pawn 控制器。
-- 对象路径、显示名称、有效性检查、引擎版本及游戏名称。
-- 当前显示分辨率与窗口模式。
-- PuerTS 启动参数及 `$ref` / `$unref` / `$set`，console 与定时器。
+## 蓝图与路径索引
 
-UE 对象用接口描述，不宣称具有可调用的 JS 构造器。可能为空的对象返回值保留 `null | undefined`；
-在主菜单中 `GetPlayerCharacter()` 就可能为空。切图后重新获取对象，长期持有的包装对象应先检查 `IsValid()`。
-`UObject` 是原最小模板的兼容类型别名，PuerTS 对应的正式类型名是 `Object`。
+`type-index.json` 将反射完整路径关联到声明文件、类型符号和验证状态。原生类型可以直接使用 `UE.PBZGameInstance` 等名称；蓝图使用 `ReflectedTypes`/`ReflectedClasses` 的路径键，避免重名和猜测运行时命名空间。
 
-未声明的方法并不代表游戏一定不支持，只表示本包尚未核实。`PlayerController.GetPawn()` 已探测失败，
-获取玩家 Pawn 请使用 `GameplayStatics.GetPlayerPawn()`。对其他游戏构建、WeGame 平台及写入/生成对象等接口不作兼容承诺。
+```ts
+import * as UE from 'ue';
+import { argv, blueprint } from 'puerts';
 
-## 维护与扩展
+type GameInstanceBP = UE.ReflectedTypes['/Game/PBZContent/Blueprint/BP_GameInstance.BP_GameInstance_C'];
+// 仅在已确认对象实际类型时断言；断言不会执行运行时转换。
+const gi = argv.getByName('GameInstance') as GameInstanceBP | undefined;
+console.log(gi?.AllowedMap.Num());
 
-`sdk/` 是声明的唯一编辑源。修改后执行 `npm run sdk:sync`，重建模板内的副本，再执行 `npm test`。
-`vendor/game-api/` 是生成目录，不要在其中放自己的文件；自定义声明放在 `types/custom.d.ts`。
-接口变更须更新版本、`api-surface.json` 和相应锁文件；游戏探测源文件位于 `tests/api-probe.js`，不会随加载器发布。
-自动化测试检查模板副本一致性、独立安装、类型约束以及 CommonJS 输出，不能替代新接口的游戏验证。
+const cls = UE.Class.Load('/Game/PBZContent/Blueprint/BP_GameInstance.BP_GameInstance_C');
+if (cls) {
+    const jsType = blueprint.tojs(cls);
+    console.log(jsType.StaticClass().GetName());
+}
+```
 
-游戏松散文件中没有发现可直接使用的游戏 `.d.ts`；主 Pak 索引加密，因此尚未判断包内是否有声明。
-后续完整导出应读取游戏构建对应的反射信息并适配 PuerTS 类型映射，不能仅靠枚举 JS 属性推断参数和返回类型。
-PuerTS 上游的声明生成依赖编辑器流程，参见[开发环境文档](https://github.com/Tencent/puerts/blob/master/doc/unreal/en/dev_environment.md)。
+`$Blueprint`、`$Static` 和 `ReflectedTypes` 等是声明辅助类型，没有可直接读取的运行时值。`Class.Load` 得到类对象，`blueprint.tojs` 得到 PuerTS 类型包装；它们不创建实例。`Load` 可能加载资产，调用方需选择适当场景。未采集路径只能使用保守的 `Class` 类型。
+
+## 覆盖与验证程度
+
+本版合并主菜单与 `PBZ_Xigu_WP` 两次采集，生成 **21,253 个类型**（18,453 个原生类型、2,800 个资产类型）、**32,959 个声明函数**及 **75,040 个已映射属性**，并保留原 SDK 的手工实测补充层。计数不展开继承成员，也不重复计算手工补充成员。
+
+- `generation-report.json`：输入文件哈希、采集构建、合并变化、继承覆盖、排除项和未解析项。
+- `type-index.json`：每个类型的完整路径、声明位置及 `reflection-generated` 状态。
+- `api-surface.json`：原手工接口证据及本版运行测试；区分反射生成、绑定可见、调用验证。
+
+生成声明不代表每项 API 都经过调用测试，也不代表所有蓝图都已采集。未加载资产、未反射且未注册绑定的成员不在覆盖范围内。函数只使用参数与返回字段，局部变量不进入声明。
+
+80 个属性保留为只读 `$Unresolved<Path>`：其中 6 个反射解析失败，74 个属于尚未验证的 PuerTS 映射（Optional、FieldPath、Utf8Str、AnsiStr）。另有 1 个依赖 FieldPath 的函数、1,268 个内部蓝图入口/委托签名、244 个临时类型及 8 个超出 JS 安全整数范围的枚举值被明确排除。具体路径均在报告中，不使用 `any` 兜底。
+
+## 映射约定
+
+| 反射类型或行为 | 声明 |
+| --- | --- |
+| 普通数值 / 64 位整数 | `number` / `bigint` |
+| 字符串、Name、Text | `string` |
+| 对象、接口、弱引用与延迟引用 | 目标类型加 `null \| undefined` |
+| 数组、集合、映射、定长数组 | `TArray`、`TSet`、`TMap`、`FixSizeArray` |
+| 非 const 的 out 参数 | `puerts.$Ref<T>`；使用 `$ref`/`$unref` |
+| const 引用参数 | 直接传值，不加 `$Ref` |
+| 软引用 | `TSoftObjectPtr<T>` / `TSoftClassPtr<T>`，保留可空返回 |
+| 委托 | 使用反射签名的 `$Delegate` / `$MulticastDelegate` |
+
+不推测默认参数；没有默认值证据的参数均必填。对象输入和输出使用保守的可空声明，原有实测补充接口保留原先约束。类属性是实例成员，静态函数放在类型值上；继承时同名成员以派生类型签名为准，并在报告中记录。静态函数目前在声明它的类型上提供，请通过该类型调用。
+
+只有 `new UE.Vector(x, y, z)` 被声明为可构造。游戏没有 `Cast()` 方法；`PlayerController.GetPawn()` 也未通过旧版探测，获取玩家 Pawn 使用 `GameplayStatics.GetPlayerPawn()`。容器创建辅助函数当前支持内建基础类型，反射返回的对象/结构容器仍有完整元素类型。切图后重新获取对象，使用前检查 `IsValid()`。
+
+## 维护与重建
+
+仓库的 `sdk/` 是发布源，`types/ue.d.ts` 为手工补充层，`types/runtime.d.ts` 为 PuerTS 包装类型。`types/generated/`、`types/generated.d.ts`、类型索引与生成报告由脚本维护，不直接编辑。
+
+在仓库根目录使用 Node.js 24+ 重建：
+
+```powershell
+npm run sdk:generate -- build/reflection/main-menu-final/reflection.json build/reflection/PBZ_Xigu_WP/reflection.json
+npm run sdk:sync
+npm test
+npm run sdk:pack
+```
+
+原始采集是本地 `build/` 产物，不随 npm 包分发；生成结果和来源哈希随源码保留。重新采集参见仓库的 `scripts/REFLECTION.md`。生成器拒绝未通过校验、混用构建或签名冲突的输入；PuerTS mixin 别名及仅实现标志变化会规范化，新增成员取并集并报告。
+
+`npm test` 覆盖生成器边界、可用原始数据的可重复生成、完整声明检查、模板同步一致性、离线 npm 安装和独立 MOD 编译。游戏探测源位于 `tests/generated-api-probe.js`，验证工具为 `tests/verify-generated-api.cjs`，仅供开发测试。

@@ -5,7 +5,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const source = path.join(root, 'sdk');
 const target = path.join(root, 'templates/ts-mod/vendor/game-api');
-const files = ['package.json', 'index.d.ts', 'types', 'api-surface.json', 'README.md'];
+const files = ['package.json', 'index.d.ts', 'types', 'api-surface.json', 'generation-report.json', 'type-index.json', 'README.md'];
 for (const file of files) fs.accessSync(path.join(source, file));
 // Rebuild only this generated directory; do not follow redirected destinations.
 if (fs.existsSync(target)) {

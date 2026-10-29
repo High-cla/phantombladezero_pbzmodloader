@@ -6,7 +6,8 @@
     "build:mods": "tsc -p tsconfig.json",
     "sdk:sync": "node scripts/sync-sdk.cjs",
     "sdk:pack": "node scripts/package-sdk.cjs",
-    "test": "node --test tests/manager.test.cjs tests/template.test.cjs tests/sdk.test.cjs"
+    "test": "node --test tests/manager.test.cjs tests/template.test.cjs tests/sdk.test.cjs tests/generate-sdk.test.cjs tests/sdk-package.test.cjs",
+    "sdk:generate": "node scripts/generate-sdk.cjs"
   },
   "devDependencies": {
     "@pbz-mod-loader/game-api": "file:sdk",

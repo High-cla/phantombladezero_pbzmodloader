@@ -36,7 +36,7 @@ WeGame 只需合并 ProjectPBZ，再将包内 platform/steam/version.dll 手动�
 - src：原生 DLL 源码，无旧启动器源码。
 - runtime：玩家文件模板，按游戏根目录布局；JS 管理器也在此维护。
 - typescript：示例 MOD 的 TS 源码。
-- sdk：已实测的 UE/PuerTS 类型声明和构建版本清单，仅供 MOD 开发引用。
+- sdk：反射生成的 UE/PuerTS 类型声明、实测补充及构建清单，仅供 MOD 开发引用。
 - tests：原生、代理 DLL、JS 和运行验收工具。
 - build：编译输出及测试产物，不直接给玩家。
 - releases：玩家目录及 ZIP；只从明确的文件白名单打包。
@@ -49,13 +49,15 @@ WeGame 只需合并 ProjectPBZ，再将包内 platform/steam/version.dll 手动�
 游戏的 `ProjectPBZ/PBZModLoader/mods/`。模板独立维护开发依赖，不需要编译加载器 DLL。
 
 模板已通过本地开发依赖引用 [游戏 API SDK](sdk/README.md)，直接 `import ... from 'ue'` / `'puerts'`
-即可获得补全和类型检查。SDK 当前为 Steam 构建 CL-301524_JKS-17219 实测后的接口子集，
-包括世界、玩家对象、位置和时间等常用读取接口，尚非完整反射导出。
+即可获得补全和类型检查。SDK 0.2.0 基于 Steam 构建 CL-301524_JKS-17219 的两次反射采集，
+包含 21,253 个类型、32,959 个函数和 75,040 个已映射属性，并保留实测补充接口；
+生成覆盖、未解析项与调用验证分别记录，详见 SDK 说明。
 已有 MOD 可运行 `npm run sdk:pack`，将 `build/sdk/` 中的 npm 包安装为开发依赖；迁移步骤见 SDK 说明。
 维护者修改 `sdk/` 后运行 `npm run sdk:sync` 更新模板副本，再执行 `npm test`。
 
 开发者可使用[只读反射导出工具](scripts/REFLECTION.md)，采集当前构建的原生类型与已加载蓝图，
-输出完整元数据清单、数量统计和解析失败报告。该清单尚未转换为 PuerTS 类型声明。
+输出完整元数据清单、数量统计和解析失败报告。使用 `npm run sdk:generate -- <reflection.json> [<reflection.json> ...]`
+可转换为 PuerTS 类型声明；随后同步模板、运行测试并打包。
 
 ```powershell
 npm ci

@@ -33,9 +33,10 @@ test('SDK checks real usage, nullability, ref types and module extensions in an 
     fs.cpSync(sdk, dependency, { recursive: true });
     fs.writeFileSync(path.join(scratch, 'tsconfig.json'), JSON.stringify({
         compilerOptions: { target: 'ES2020', module: 'CommonJS', lib: ['ES2020'], types: ['@pbz-mod-loader/game-api'], strict: true, noEmitOnError: true, outDir: 'dist' },
-        include: ['main.ts', 'custom.d.ts']
+        include: ['main.ts', 'custom.d.ts', 'generated-usage.ts']
     }));
     fs.writeFileSync(path.join(scratch, 'custom.d.ts'), `declare module 'ue' { interface GameInstance { TestExtension(): string; } }`);
+    fs.copyFileSync(path.join(__dirname, 'fixtures/sdk-usage.ts'), path.join(scratch, 'generated-usage.ts'));
     fs.writeFileSync(path.join(scratch, 'main.ts'), `
 import { argv, $ref, $unref, $set } from 'puerts';
 import * as UE from 'ue';
@@ -68,7 +69,7 @@ const value: number = $unref(ref);
 $set(ref, 'invalid');
 // @ts-expect-error Ref wrappers cannot be fabricated with a plain object.
 const forged: $Ref<number> = {};
-// @ts-expect-error This is a type-only interface, not an exposed constructor.
+// @ts-expect-error The verified Vector constructor requires three components.
 new UE.Vector();
 // @ts-expect-error This is not a declared gameplay API.
 UE.GameplayStatics.DoesNotExist();

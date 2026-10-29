@@ -26,7 +26,7 @@ npm run build
 
 ```text
 src/main.ts          MOD 入口
-vendor/game-api/     已验证的 UE / PuerTS 类型 SDK，本地开发依赖
+vendor/game-api/     反射生成并附实测补充的 UE / PuerTS 类型 SDK，本地开发依赖
 types/custom.d.ts    自己新增的已验证 API 声明（可选）
 scripts/clean.cjs    开发机上的输出清理工具
 tsconfig.json       严格检查、ES2020/CommonJS 输出

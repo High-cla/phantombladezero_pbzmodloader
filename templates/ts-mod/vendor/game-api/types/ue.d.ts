@@ -1,6 +1,7 @@
 // Handwritten, runtime-verified subset. See api-surface.json for build and evidence.
 // Object interfaces describe engine-owned values; no constructors are implied.
 declare module 'ue' {
+    import * as UE from 'ue';
     export interface Object {
         GetName(): string;
         GetClass(): Class;
@@ -36,30 +37,34 @@ declare module 'ue' {
     export interface GameModeBase extends Actor {}
     export interface GameStateBase extends Actor {}
 
-    export namespace GameplayStatics {
-        function GetCurrentLevelName(worldContextObject: Object, removePrefix: boolean): string;
-        function GetGameInstance(worldContextObject: Object): GameInstance | null | undefined;
-        function GetGameMode(worldContextObject: Object): GameModeBase | null | undefined;
-        function GetGameState(worldContextObject: Object): GameStateBase | null | undefined;
-        function GetPlayerController(worldContextObject: Object, playerIndex: number): PlayerController | null | undefined;
-        function GetPlayerPawn(worldContextObject: Object, playerIndex: number): Pawn | null | undefined;
+    export namespace $Static {
+    export interface GameplayStatics {
+        GetCurrentLevelName(worldContextObject: UE.Object, removePrefix: boolean): string;
+        GetGameInstance(worldContextObject: UE.Object): UE.GameInstance | null | undefined;
+        GetGameMode(worldContextObject: UE.Object): UE.GameModeBase | null | undefined;
+        GetGameState(worldContextObject: UE.Object): UE.GameStateBase | null | undefined;
+        GetPlayerController(worldContextObject: UE.Object, playerIndex: number): UE.PlayerController | null | undefined;
+        GetPlayerPawn(worldContextObject: UE.Object, playerIndex: number): UE.Pawn | null | undefined;
         /** May be null even when a player controller exists (for example, the main menu). */
-        function GetPlayerCharacter(worldContextObject: Object, playerIndex: number): Character | null | undefined;
-        function GetPlayerCameraManager(worldContextObject: Object, playerIndex: number): PlayerCameraManager | null | undefined;
-        function GetTimeSeconds(worldContextObject: Object): number;
-        function GetRealTimeSeconds(worldContextObject: Object): number;
-        function GetWorldDeltaSeconds(worldContextObject: Object): number;
-        function IsGamePaused(worldContextObject: Object): boolean;
+        GetPlayerCharacter(worldContextObject: UE.Object, playerIndex: number): UE.Character | null | undefined;
+        GetPlayerCameraManager(worldContextObject: UE.Object, playerIndex: number): UE.PlayerCameraManager | null | undefined;
+        GetTimeSeconds(worldContextObject: UE.Object): number;
+        GetRealTimeSeconds(worldContextObject: UE.Object): number;
+        GetWorldDeltaSeconds(worldContextObject: UE.Object): number;
+        IsGamePaused(worldContextObject: UE.Object): boolean;
+    }
     }
 
-    export namespace KismetSystemLibrary {
-        function GetObjectName(object: Object): string;
-        function GetPathName(object: Object): string;
-        function GetDisplayName(object: Object): string;
+    export namespace $Static {
+    export interface KismetSystemLibrary {
+        GetObjectName(object: UE.Object): string;
+        GetPathName(object: UE.Object): string;
+        GetDisplayName(object: UE.Object): string;
         /** Checks engine lifetime as well as null; a non-null JS wrapper can be invalid. */
-        function IsValid(object: Object | null | undefined): object is Object;
-        function GetEngineVersion(): string;
-        function GetGameName(): string;
+        IsValid(object: UE.Object | null | undefined): object is UE.Object;
+        GetEngineVersion(): string;
+        GetGameName(): string;
+    }
     }
 
     export interface GameUserSettings extends Object {
@@ -67,7 +72,9 @@ declare module 'ue' {
         /** Numeric engine value; the verified windowed mode is 2. */
         GetFullscreenMode(): number;
     }
-    export namespace GameUserSettings {
-        function GetGameUserSettings(): GameUserSettings | null | undefined;
+    export namespace $Static {
+    export interface GameUserSettings {
+        GetGameUserSettings(): UE.GameUserSettings | null | undefined;
+    }
     }
 }
