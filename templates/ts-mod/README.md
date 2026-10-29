@@ -26,7 +26,7 @@ npm run build
 
 ```text
 src/main.ts          MOD 入口
-vendor/game-api/     反射生成并附实测补充的 UE / PuerTS 类型 SDK，本地开发依赖
+vendor/game-api/     SDK 0.2.0：反射生成并附实测补充的 UE / PuerTS 类型，本地开发依赖
 types/custom.d.ts    自己新增的已验证 API 声明（可选）
 scripts/clean.cjs    开发机上的输出清理工具
 tsconfig.json       严格检查、ES2020/CommonJS 输出
@@ -61,15 +61,30 @@ ID 只使用英文字母、数字、下划线、连字符，并选择不与其�
   热重载前会调用并等待旧实例导出的 `stop()`；在其中清除全部定时器和事件订阅，支持返回 Promise。
   切图和游戏退出不会自动调用此回调。
 - 修改后重新构建并覆盖安装目录中的 JS，切回游戏按 Ctrl+F5 重载，无需重启游戏；完成后左上角显示提示。
-  缺少 `stop()` 或清理失败会阻止该 MOD 重载。入口执行失败后，为避免部分注册重复执行，该 MOD 本次运行不再重试。
+  仅游戏窗口在前台时响应，不监听文件变化，按住不连发；每次重载整组 MOD，包括未修改的 MOD。
+  新增、删除 MOD 和 `mods.ini` 的 `[Mods]` 开关变化也会生效，删除和禁用前同样需要执行 `stop()`。
+  加载器先等待所有旧实例的清理，再执行新入口；无持久资源也应保留空 `stop()`。
+  缺少 `stop()` 或清理失败会保留旧实例并阻止该 MOD 重载；未结束的 Promise 会阻塞后续重载。
+  入口执行失败后，为避免部分注册重复执行，该 MOD 本次运行不再重试，修复后需重启游戏。
+  初始化代码应自行清理抛错前已创建的资源。
+- 热重载隔离入口和 MOD 目录内相对依赖的 CommonJS 缓存，不要用加载器缓存的绝对路径引用模块。
+  `Content/JavaScript/PBZModLoader/generated-mods/` 和 `generated-reloads/` 均为自动缓存，勿直接编辑。
+  重载版本保留至下次启动，供旧实例及延迟 `require` 使用；长期大量重载会增加磁盘和模块缓存占用。
+  排查时在日志中搜索 `hot reload published`、`stopped`、`reload complete` 和 `reload blocked`。
 - 游戏提供 `ue`、`puerts` 模块，不能在普通 Node.js 中直接运行 `main.js`。
   开发构建脚本可以用 Node API，MOD 源码不要假定存在 `fs`、`process`、浏览器 `window` 等 API。
   配置刻意不引入 Node/DOM 全局类型；也不提供任意字符串 `require()` 来绕过检查。
 - `@pbz-mod-loader/game-api` 通过 `tsconfig.json` 的 `types` 加载，直接 `import ... from 'ue'` 或 `'puerts'` 即有补全。
   不要在源码中导入 SDK 包本身，它只有类型，没有运行时代码。
-  [SDK 说明与迁移方法](vendor/game-api/README.md)列出了覆盖范围，`vendor/game-api/api-surface.json` 记录验证构建。
-  声明仍是实测后的手写子集，不是完整自动 Dump；新增 API 前需核实实际可调用性。
+  SDK 0.2.0 基于 Steam Win64 `CL-301524_JKS-17219` 的主菜单与 `PBZ_Xigu_WP` 两次反射采集，
+  包含 21,253 个类型、32,959 个函数和 75,040 个已映射属性，并保留手工实测补充层。
+  生成声明不代表每项 API 都经过调用验证，也不覆盖所有未加载蓝图；其他游戏构建和 WeGame 尚未验证。
+  [SDK 说明与迁移方法](vendor/game-api/README.md)列出了映射约定、蓝图路径用法及限制。
+  `type-index.json` 可按反射完整路径定位声明，`generation-report.json` 记录生成覆盖和未解析项，
+  `api-surface.json` 记录实测证据；这些文件均位于 `vendor/game-api/`。
+  新增调用前核实实际可调用性，不要直接修改生成声明；自己的补充放在 `types/custom.d.ts`。
 - 当前加载器也支持直接安装 TS，但启动时转换不执行完整类型检查且忽略 `tsconfig.json`。
+  运行中按 Ctrl+F5 会先重新编译，编译失败保留旧实例，修复后可再次重载。
   本模板统一使用本地检查并发布 JS 的流程。
 
 模板的编译和模拟加载检查不等于游戏实测；发布自己的 MOD 前仍需验证实际启动、切图和退出。
