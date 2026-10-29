@@ -4,7 +4,7 @@
     "module": "CommonJS",
     "strict": true,
     "rootDir": "typescript",
-    "outDir": "runtime/ProjectPBZ/Content/JavaScript/PBZModLoader/mods",
+    "outDir": "runtime/ProjectPBZ/Mods/PBZModLoader/mods",
     "noEmitOnError": true,
     "skipLibCheck": true
   },

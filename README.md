@@ -21,7 +21,11 @@ npm run build:mods
 .\package.ps1 -Version 0.2.1
 ```
 
-TS 输出到 runtime/ProjectPBZ/Content/JavaScript/PBZModLoader/mods。
+TS 输出到 runtime/ProjectPBZ/Mods/PBZModLoader/mods。
+玩家的 mods.ini 与 mods/ 均位于 ProjectPBZ/Mods/PBZModLoader，Entry 相对于该目录。
+启动时 DLL 校验配置，将 mods/ 同步到 Content/JavaScript/PBZModLoader/generated-mods，
+供原有 PuerTS 搜索路径加载；该缓存每次启动重建，不应直接编辑。
+Content/JavaScript 下只需随包安装 bootstrap.js 和 manager.js，MOD 源文件无需放在那里。
 原生编译输出 build/version.dll。-VerifyOnly -Test 可检查已有 DLL 而不重新编译它。
 package.ps1 拒绝覆盖已有版本，并检查 ZIP 根目录、白名单及解压后全部文件哈希。
 发布前仍需对新代码进行实际 Steam 启动和切图验收；静态及宿主测试不能替代游戏实测。

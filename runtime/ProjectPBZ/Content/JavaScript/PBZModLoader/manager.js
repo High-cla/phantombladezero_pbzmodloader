@@ -21,7 +21,7 @@ exports.load = function load(config, importMod, log) {
             continue;
         }
         try {
-            const instance = importMod('./' + mod.entry);
+            const instance = importMod('./generated-mods/' + mod.entry.slice('mods/'.length));
             result.push({ id: mod.id, status: 'loaded', instance });
             log('loaded ' + mod.id);
         } catch (error) {

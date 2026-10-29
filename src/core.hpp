@@ -60,7 +60,7 @@ int number(const std::wstring& s,int max) {
     if(s.empty() || s.find_first_not_of(L"0123456789")!=std::wstring::npos) throw std::runtime_error("Invalid numeric config");
     auto n=std::stoul(s); if(n>(unsigned)max) throw std::runtime_error("Config number out of range"); return (int)n;
 }
-std::string config(const fs::path& root,const fs::path& scripts) {
+std::string config(const fs::path& root) {
     fs::path p=root/L"mods.ini"; if(!fs::is_regular_file(p)) throw std::runtime_error("Missing mods.ini");
     if(ini(p,L"Loader",L"Version")!=L"1") throw std::runtime_error("Unsupported config version");
     int count=number(ini(p,L"Loader",L"Count"),128); std::set<std::string> ids;
@@ -72,14 +72,31 @@ std::string config(const fs::path& root,const fs::path& scripts) {
         if(!std::regex_match(id,std::regex("[A-Za-z0-9_-]+")) || !ids.insert(id).second ||
            !std::regex_match(entry,std::regex("mods/([A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.js"))) throw std::runtime_error("Invalid or duplicate MOD: "+id);
         if(enabled) {
-            auto file=fs::weakly_canonical(scripts/fs::u8path(entry));
-            auto relative=file.lexically_relative(fs::canonical(scripts));
+            auto file=fs::weakly_canonical(root/fs::u8path(entry));
+            auto relative=file.lexically_relative(fs::canonical(root/L"mods"));
             if(relative.empty() || *relative.begin()==L".." || !fs::is_regular_file(file)) throw std::runtime_error("Missing or escaped entry: "+entry);
         }
         if(i) result+=",";
         result+="{\"id\":\""+id+"\",\"enabled\":"+(enabled?"true":"false")+",\"entry\":\""+entry+"\"}";
     }
     return result+"]};\n";
+}
+// PuerTS still reads from its JavaScript search root. Only this disposable cache
+// is replaced; user scripts and configuration live together under Mods.
+void syncMods(const fs::path& root,const fs::path& scripts) {
+    const auto source=root/L"mods", cache=scripts/L"generated-mods";
+    // Reject reparse points so neither copying nor cleanup follows a junction.
+    auto rejectLink=[](const fs::path& path) {
+        auto attributes=GetFileAttributesW(path.c_str());
+        if(attributes!=INVALID_FILE_ATTRIBUTES && (attributes&FILE_ATTRIBUTE_REPARSE_POINT))
+            throw std::runtime_error("MOD source/cache must not contain reparse points");
+    };
+    rejectLink(source); rejectLink(cache);
+    if(fs::exists(source)) for(const auto& item:fs::recursive_directory_iterator(source)) rejectLink(item.path());
+    if(fs::exists(cache)) for(const auto& item:fs::recursive_directory_iterator(cache)) rejectLink(item.path());
+    fs::remove_all(cache);
+    if(fs::exists(source)) fs::copy(source,cache,fs::copy_options::recursive);
+    else fs::create_directories(cache);
 }
 #ifdef PBZ_DLL
 void read(HANDLE,U64 address,void* dest,size_t n) { std::memcpy(dest,(void*)address,n); }

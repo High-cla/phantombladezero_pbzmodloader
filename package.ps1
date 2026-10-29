@@ -1,4 +1,4 @@
-param([string]$Version='0.2.0')
+param([string]$Version='0.2.1')
 $ErrorActionPreference='Stop'
 if ($Version -notmatch '^\d+\.\d+\.\d+(?:-[A-Za-z0-9-]+)?$') { throw 'Invalid release version' }
 $files=@(
@@ -7,8 +7,8 @@ $files=@(
     'ProjectPBZ/Mods/PBZModLoader/TOOLCHAIN-LICENSE.txt',
     'ProjectPBZ/Content/JavaScript/PBZModLoader/bootstrap.js',
     'ProjectPBZ/Content/JavaScript/PBZModLoader/manager.js',
-    'ProjectPBZ/Content/JavaScript/PBZModLoader/mods/hello/main.js',
-    'ProjectPBZ/Content/JavaScript/PBZModLoader/mods/world-watch/main.js'
+    'ProjectPBZ/Mods/PBZModLoader/mods/hello/main.js',
+    'ProjectPBZ/Mods/PBZModLoader/mods/world-watch/main.js'
 )
 $release=Join-Path $PSScriptRoot "releases/PBZModLoader-$Version-win64"
 $zip="$release.zip"

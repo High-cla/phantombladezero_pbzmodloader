@@ -12,7 +12,7 @@ test('ordered loading, disabled entries, failure isolation', () => {
     const result = load({ version: 1, mods: [mod('a'), mod('off', false), mod('bad'), mod('b')] }, entry => {
         calls.push(entry); if (entry.includes('/bad/')) throw new Error('intentional'); return { entry };
     }, line => logs.push(line));
-    assert.deepEqual(calls, ['./mods/a/main.js', './mods/bad/main.js', './mods/b/main.js']);
+    assert.deepEqual(calls, ['./generated-mods/a/main.js', './generated-mods/bad/main.js', './generated-mods/b/main.js']);
     assert.deepEqual(result.map(m => m.status), ['loaded', 'disabled', 'failed', 'loaded']);
     assert.match(logs[2], /intentional/);
 });

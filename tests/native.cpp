@@ -40,17 +40,30 @@ int main() {
     for(U64 i=174;i<430;++i) assert(*(U64*)(slab+8192+(i%256)*2048)==i+1);
     VirtualFree((void*)slab,0,MEM_RELEASE);
     auto temp=fs::temp_directory_path()/(L"pbz-loader-test-"+std::to_wstring(GetCurrentProcessId()));
-    assert(fs::create_directory(temp)); fs::create_directories(temp/L"scripts/mods/a");
-    { std::ofstream f(temp/L"scripts/mods/a/main.js"); f<<"module.exports={};"; }
+    assert(fs::create_directory(temp)); fs::create_directories(temp/L"mods/a");
+    { std::ofstream f(temp/L"mods/a/main.js"); f<<"module.exports={};"; }
     auto iniTest=[&](const std::string& content,bool expected) {
         { std::ofstream f(temp/L"mods.ini"); f<<content; }
         // Invalidate Windows INI cache between fixture writes.
         WritePrivateProfileStringW(nullptr,nullptr,nullptr,(temp/L"mods.ini").c_str());
-        bool accepted=false; try { config(temp,temp/L"scripts"); accepted=true; } catch(const std::exception&) {}
+        bool accepted=false; try { config(temp); accepted=true; } catch(const std::exception&) {}
         assert(accepted==expected);
     };
     const std::string prefix="[Loader]\nVersion=1\nCount=1\n[Mod.0]\nId=a\n";
     iniTest(prefix+"Enabled=1\nEntry=mods/a/main.js\n",true);
+    fs::create_directories(temp/L"scripts/generated-mods/removed");
+    { std::ofstream f(temp/L"scripts/generated-mods/removed/main.js"); f<<"stale"; }
+    { std::ofstream f(temp/L"mods/a/helper.js"); f<<"module.exports=42;"; }
+    { std::ofstream f(temp/L"scripts/manager.js"); f<<"keep"; }
+    syncMods(temp,temp/L"scripts");
+    assert(fs::is_regular_file(temp/L"scripts/generated-mods/a/main.js"));
+    assert(fs::is_regular_file(temp/L"scripts/generated-mods/a/helper.js"));
+    assert(!fs::exists(temp/L"scripts/generated-mods/removed"));
+    assert(fs::is_regular_file(temp/L"scripts/manager.js"));
+    assert(fs::is_regular_file(temp/L"mods/a/main.js"));
+    fs::remove(temp/L"mods/a/helper.js");
+    syncMods(temp,temp/L"scripts");
+    assert(!fs::exists(temp/L"scripts/generated-mods/a/helper.js"));
     iniTest(prefix+"Enabled=1\nEntry=mods/missing/main.js\n",false);
     iniTest(prefix+"Enabled=0\nEntry=mods/missing/main.js\n",true);
     iniTest(prefix+"Enabled=1\nEntry=../escape.js\n",false);
@@ -58,6 +71,7 @@ int main() {
     iniTest(prefix+"Enabled=2\nEntry=mods/a/main.js\n",false);
     iniTest("[Loader]\nVersion=1\nCount=2\n[Mod.0]\nId=a\nEnabled=1\nEntry=mods/a/main.js\n[Mod.1]\nId=a\nEnabled=0\nEntry=mods/a/main.js\n",false);
     fs::remove_all(temp);
+    std::cout<<"PASS MOD cache: nested dependencies, stale cleanup, source and loader preservation\n";
     std::cout<<"PASS native redirect, argv, counter, relocated flags, filtering, bounds, concurrency, ring wrap\n";
     std::cout<<"PASS native config: valid, missing, disabled, traversal, TS, invalid switch, duplicate ID\n";
 }
