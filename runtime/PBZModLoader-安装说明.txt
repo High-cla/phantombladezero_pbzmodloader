@@ -49,38 +49,35 @@ WeGame 尚未实机验证，是否能加载代理 DLL、内部接口是否兼容
   world-watch：记录地图变化和心跳。
 它们不主动切图，也不修改游戏数值；没有屏幕内菜单，是否加载请查看日志。
 
-三、配置多个 MOD
+三、自动发现和禁用 MOD
 
-编辑 ProjectPBZ\PBZModLoader\mods.ini，下次启动生效。
+每次启动自动扫描 ProjectPBZ\PBZModLoader\mods 的直接子目录，
+将 mods/<目录名>/main.js 作为入口，目录名作为 MOD ID，默认启用。
+新增 MOD 只需放入上述目录并重启游戏，无需添加配置或修改 Count。
+只扫描这一层 main.js，不会把辅助 JS、嵌套目录或 .ts 文件当作独立 MOD。
+没有 main.js 的目录会被忽略；目录名仅支持英文字母、数字、下划线和连字符。
 
+mods.ini 保留以下基本配置：
   [Loader]
   Enabled=1
   Version=1
-  Count=2
 
-  [Mod.0]
-  Id=hello
-  Enabled=1
-  Entry=mods/hello/main.js
+要禁用指定 MOD，在 mods.ini 的 [Mods] 下添加其 ID：
+  [Mods]
+  hello=0
+  world-watch=0
 
-  [Mod.1]
-  Id=world-watch
-  Enabled=1
-  Entry=mods/world-watch/main.js
-
+删除对应行或改为 1 即可恢复，下次启动生效。
 Loader.Enabled=0 可临时停用所有 MOD；改回 1 恢复。
-各 Mod 节的 Enabled=0 只禁用对应 MOD，保留 Count 和原有编号。
-加载顺序为 Mod.0、Mod.1……，Count 必须等于配置项数量，最多 128 项。
-Id 不能重复，目录和文件基名只使用英文字母、数字、下划线或连字符。
+自动发现的 MOD 按 ID 排序加载（区分大小写的字符顺序），最多共 128 项。
+mods.ini 仍需保留，但不再需要维护完整 MOD 列表。
 
-例如新增 my-mod：
-1. 将其编译后的 CommonJS JS 文件放到：
-   ProjectPBZ\PBZModLoader\mods\my-mod\main.js
-2. 将 Count 改为 3，并在配置末尾添加：
-  [Mod.2]
-  Id=my-mod
-  Enabled=1
-  Entry=mods/my-mod/main.js
+兼容旧配置：已有 Count 和 [Mod.0]、[Mod.1] 等配置仍按编号顺序优先加载，
+其 Id、Entry 和 Enabled 继续有效；未配置的 MOD 自动追加，不会重复加载同一入口。
+[Mods] 下同一 Id 的开关优先于旧配置的 Enabled。
+Count 现在仅表示旧配置项数量，不包含自动发现的 MOD。
+需要自定义入口或加载顺序时仍可使用旧配置；普通 MOD 不需要。
+旧配置中启用的 Entry 若已不存在，仍会按原有规则报错；删除 MOD 时也请移除其旧配置。
 
 Entry 相对于 mods.ini 所在的 ProjectPBZ\PBZModLoader 目录。
 入口必须为 .js，不能直接填写 .ts；玩家使用 MOD 作者提供的编译产物。

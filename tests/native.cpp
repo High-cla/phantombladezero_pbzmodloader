@@ -70,6 +70,34 @@ int main() {
     iniTest(prefix+"Enabled=1\nEntry=mods/a/main.ts\n",false);
     iniTest(prefix+"Enabled=2\nEntry=mods/a/main.js\n",false);
     iniTest("[Loader]\nVersion=1\nCount=2\n[Mod.0]\nId=a\nEnabled=1\nEntry=mods/a/main.js\n[Mod.1]\nId=a\nEnabled=0\nEntry=mods/a/main.js\n",false);
+    const std::string automatic="[Loader]\nVersion=1\n";
+    iniTest(automatic,true);
+    assert(config(temp).find("\"id\":\"a\",\"enabled\":true")!=std::string::npos);
+    fs::create_directories(temp/L"mods/z");
+    fs::create_directories(temp/L"mods/helper/nested");
+    { std::ofstream f(temp/L"mods/z/main.js"); f<<"module.exports={};"; }
+    { std::ofstream f(temp/L"mods/helper/nested/main.js"); f<<"module.exports={};"; }
+    { std::ofstream f(temp/L"mods/loose.js"); f<<"module.exports={};"; }
+    auto generated=config(temp);
+    assert(generated.find("\"id\":\"a\"")<generated.find("\"id\":\"z\""));
+    assert(generated.find("helper")==std::string::npos && generated.find("loose")==std::string::npos);
+    iniTest(automatic+"[Mods]\na=0\nz=1\nabsent=0\n",true);
+    assert(config(temp).find("\"id\":\"a\",\"enabled\":false")!=std::string::npos);
+    iniTest(automatic+"[Mods]\na=2\n",false);
+    iniTest(prefix+"Enabled=0\nEntry=mods/a/main.js\n",true);
+    generated=config(temp);
+    assert(generated.find("\"id\":\"a\",\"enabled\":false")!=std::string::npos);
+    assert(generated.find("\"id\":\"a\"",generated.find("\"id\":\"a\"")+1)==std::string::npos);
+    assert(generated.find("\"id\":\"z\"")!=std::string::npos);
+    iniTest("[Loader]\nVersion=1\nCount=1\n[Mod.0]\nId=alias\nEnabled=0\nEntry=mods/a/main.js\n",true);
+    assert(config(temp).find("\"id\":\"a\"")==std::string::npos);
+    iniTest(prefix+"Enabled=1\nEntry=mods/a/main.js\n[Mods]\na=0\n",true);
+    assert(config(temp).find("\"id\":\"a\",\"enabled\":false")!=std::string::npos);
+    fs::remove(temp/L"mods/z/main.js");
+    assert(config(temp).find("\"id\":\"z\"")==std::string::npos);
+    fs::remove_all(temp/L"mods");
+    iniTest(automatic,true);
+    assert(config(temp).find("\"mods\":[]")!=std::string::npos);
     fs::remove_all(temp);
     auto layout=fs::temp_directory_path()/(L"pbz-layout-test-"+std::to_wstring(GetCurrentProcessId()));
     fs::create_directories(layout/L"ProjectPBZ/Content/JavaScript/PBZModLoader");
@@ -85,4 +113,5 @@ int main() {
     std::cout<<"PASS MOD cache: nested dependencies, stale cleanup, source and loader preservation\n";
     std::cout<<"PASS native redirect, argv, counter, relocated flags, filtering, bounds, concurrency, ring wrap\n";
     std::cout<<"PASS native config: valid, missing, disabled, traversal, TS, invalid switch, duplicate ID\n";
+    std::cout<<"PASS automatic discovery: sorting, dependencies ignored, switches, legacy merge, removal, empty directory\n";
 }

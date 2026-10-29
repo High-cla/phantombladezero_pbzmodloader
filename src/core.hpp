@@ -61,7 +61,10 @@ int number(const std::wstring& s,int max) {
 std::string config(const fs::path& root) {
     fs::path p=root/L"mods.ini"; if(!fs::is_regular_file(p)) throw std::runtime_error("Missing mods.ini");
     if(ini(p,L"Loader",L"Version")!=L"1") throw std::runtime_error("Unsupported config version");
-    int count=number(ini(p,L"Loader",L"Count"),128); std::set<std::string> ids;
+    auto countValue=ini(p,L"Loader",L"Count");
+    int count=countValue.empty()?0:number(countValue,128); std::set<std::string> ids;
+    struct Mod { std::string id,entry; bool enabled; };
+    std::vector<Mod> mods;
     std::string result="'use strict';\nmodule.exports = {\"version\":1,\"mods\":[";
     for(int i=0;i<count;++i) {
         auto section=L"Mod."+std::to_wstring(i);
@@ -69,6 +72,31 @@ std::string config(const fs::path& root) {
         auto enabled=number(ini(p,section,L"Enabled"),1);
         if(!std::regex_match(id,std::regex("[A-Za-z0-9_-]+")) || !ids.insert(id).second ||
            !std::regex_match(entry,std::regex("mods/([A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.js"))) throw std::runtime_error("Invalid or duplicate MOD: "+id);
+        auto overrideValue=ini(p,L"Mods",fs::u8path(id).wstring().c_str());
+        if(!overrideValue.empty()) enabled=number(overrideValue,1);
+        mods.push_back({id,entry,enabled!=0});
+    }
+    // Only immediate child directories with main.js are MODs; other JS files
+    // are dependencies. Sort by ID so filesystem enumeration cannot reorder MODs.
+    std::map<std::string,std::string> discovered;
+    if(fs::is_directory(root/L"mods")) for(const auto& item:fs::directory_iterator(root/L"mods")) {
+        auto id=utf8(item.path().filename().wstring());
+        if(!item.is_directory() || !std::regex_match(id,std::regex("[A-Za-z0-9_-]+")) ||
+           !fs::is_regular_file(item.path()/L"main.js")) continue;
+        auto entry="mods/"+id+"/main.js";
+        bool configured=false;
+        for(const auto& mod:mods) if(_stricmp(mod.id.c_str(),id.c_str())==0 ||
+            _stricmp(mod.entry.c_str(),entry.c_str())==0) { configured=true; break; }
+        if(!configured) discovered.emplace(id,entry);
+    }
+    for(const auto& [id,entry]:discovered) {
+        auto enabled=ini(p,L"Mods",fs::u8path(id).wstring().c_str());
+        mods.push_back({id,entry,enabled.empty() || number(enabled,1)!=0});
+    }
+    if(mods.size()>128) throw std::runtime_error("Too many MODs (maximum 128)");
+    for(size_t i=0;i<mods.size();++i) {
+        const auto& mod=mods[i];
+        const auto& id=mod.id; const auto& entry=mod.entry; bool enabled=mod.enabled;
         if(enabled) {
             auto file=fs::weakly_canonical(root/fs::u8path(entry));
             auto relative=file.lexically_relative(fs::canonical(root/L"mods"));

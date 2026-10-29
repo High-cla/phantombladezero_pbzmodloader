@@ -49,6 +49,10 @@ npm run build:mods
 ```
 
 TS 输出到 runtime/ProjectPBZ/PBZModLoader/mods。
+每次启动自动发现 `mods/<ID>/main.js`，按 ID 排序加载；新增 MOD 无需修改配置。
+在 mods.ini 的 `[Mods]` 下设置 `ID=0` 可禁用，删除该行或设为 `1` 恢复。
+`[Loader]` 的 Enabled、Version 保留；Count 可省略。旧 Count / Mod.N 配置仍优先按编号加载，
+自动发现结果随后追加并去重；`[Mods]` 开关优先于旧项 Enabled。辅助脚本不会作为独立 MOD 加载。
 玩家的 mods.ini 与 mods/ 均位于 ProjectPBZ/PBZModLoader，Entry 相对于该目录。
 旧版带 Mods 层的目录需整体上移到 ProjectPBZ/PBZModLoader，并同步更新 DLL；
 具体迁移步骤见安装说明，mods.ini 中的 Entry 无需修改。
