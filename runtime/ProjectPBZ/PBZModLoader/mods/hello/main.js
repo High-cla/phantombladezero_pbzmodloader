@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.name = void 0;
-const gi = require('puerts').argv.getByName('GameInstance');
+const puerts_1 = require("puerts");
+const gi = puerts_1.argv.getByName('GameInstance');
 if (!gi)
     throw new Error('GameInstance missing');
 console.log('[PBZMOD] hello GameInstance=' + gi.GetName());

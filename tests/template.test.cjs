@@ -13,9 +13,12 @@ const compiler = path.join(path.dirname(require.resolve('typescript/package.json
 test('TS template compiles and works with the current CommonJS manager', async t => {
     const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'pbz template '));
     t.after(() => fs.rmSync(scratch, { recursive: true, force: true }));
-    for (const entry of ['src', 'types', 'tsconfig.json']) {
+    for (const entry of ['src', 'types', 'vendor', 'tsconfig.json']) {
         fs.cpSync(path.join(template, entry), path.join(scratch, entry), { recursive: true });
     }
+    // Same package resolution as npm's local dependency, without network use in unit tests.
+    fs.mkdirSync(path.join(scratch, 'node_modules/@pbz-mod-loader'), { recursive: true });
+    fs.cpSync(path.join(scratch, 'vendor/game-api'), path.join(scratch, 'node_modules/@pbz-mod-loader/game-api'), { recursive: true });
     function compile(...args) {
         const result = spawnSync(process.execPath, [compiler, '-p', path.join(scratch, 'tsconfig.json'), ...args], { encoding: 'utf8' });
         assert.ifError(result.error);

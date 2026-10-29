@@ -8,6 +8,7 @@
     "build": "npm run clean && tsc -p tsconfig.json"
   },
   "devDependencies": {
+    "@pbz-mod-loader/game-api": "file:vendor/game-api",
     "typescript": "7.0.2"
   }
 }

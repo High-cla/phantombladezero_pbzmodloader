@@ -1,0 +1,9 @@
+{
+  "name": "@pbz-mod-loader/game-api",
+  "version": "0.1.0",
+  "description": "Verified TypeScript declarations for PBZ's embedded UE/PuerTS runtime",
+  "private": true,
+  "types": "index.d.ts",
+  "files": ["index.d.ts", "types/", "api-surface.json", "README.md"],
+  "license": "UNLICENSED"
+}

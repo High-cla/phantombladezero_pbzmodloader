@@ -26,9 +26,8 @@ npm run build
 
 ```text
 src/main.ts          MOD 入口
-types/globals.d.ts   最小 console / 定时器声明
-types/puerts.d.ts    最小 PuerTS 声明
-types/ue.d.ts        最小 UE 声明
+vendor/game-api/     已验证的 UE / PuerTS 类型 SDK，本地开发依赖
+types/custom.d.ts    自己新增的已验证 API 声明（可选）
 scripts/clean.cjs    开发机上的输出清理工具
 tsconfig.json       严格检查、ES2020/CommonJS 输出
 dist/my-mod/main.js  构建产物，发布给玩家
@@ -45,7 +44,7 @@ ID 只使用英文字母、数字、下划线、连字符，并选择不与其�
 2. 退出游戏，把 `dist/my-mod/` 整个文件夹复制到游戏的 `ProjectPBZ/PBZModLoader/mods/` 下。
 3. 确认最终路径是 `ProjectPBZ/PBZModLoader/mods/my-mod/main.js`，启动游戏。
 
-发布时打包整个 `my-mod/` 文件夹；不要携带 `node_modules`、`src`、`types` 或开发脚本。
+发布时打包整个 `my-mod/` 文件夹；不要携带 `node_modules`、`src`、`types`、`vendor` 或开发脚本。
 模板不会自动复制 JSON、图片等资源，也不会打包 npm 运行时依赖；需要这些能力时再扩展构建过程。
 不要把 `dist/` 这一层安装到 `mods/`，也不要把产物写进 `Content/JavaScript` 的加载器缓存。
 更新已有 MOD 时，退出游戏后用新构建的整个目录替换旧目录，避免遗留脚本。
@@ -64,8 +63,10 @@ ID 只使用英文字母、数字、下划线、连字符，并选择不与其�
 - 游戏提供 `ue`、`puerts` 模块，不能在普通 Node.js 中直接运行 `main.js`。
   开发构建脚本可以用 Node API，MOD 源码不要假定存在 `fs`、`process`、浏览器 `window` 等 API。
   配置刻意不引入 Node/DOM 全局类型；也不提供任意字符串 `require()` 来绕过检查。
-- 这些 `.d.ts` 是依据现有示例手写的接口子集，不是完整游戏 SDK 或自动 Dump，不能创建新的运行时能力。
-  新增 API 前需核实实际可调用性；之后可替换成生成的声明，避免重复声明。
+- `@pbz-mod-loader/game-api` 通过 `tsconfig.json` 的 `types` 加载，直接 `import ... from 'ue'` 或 `'puerts'` 即有补全。
+  不要在源码中导入 SDK 包本身，它只有类型，没有运行时代码。
+  [SDK 说明与迁移方法](vendor/game-api/README.md)列出了覆盖范围，`vendor/game-api/api-surface.json` 记录验证构建。
+  声明仍是实测后的手写子集，不是完整自动 Dump；新增 API 前需核实实际可调用性。
 - 当前加载器也支持直接安装 TS，但启动时转换不执行完整类型检查且忽略 `tsconfig.json`。
   本模板统一使用本地检查并发布 JS 的流程。
 

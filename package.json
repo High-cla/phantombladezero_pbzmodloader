@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "build:mods": "tsc -p tsconfig.json",
-    "test": "node --test tests/manager.test.cjs tests/template.test.cjs"
+    "sdk:sync": "node scripts/sync-sdk.cjs",
+    "sdk:pack": "node scripts/package-sdk.cjs",
+    "test": "node --test tests/manager.test.cjs tests/template.test.cjs tests/sdk.test.cjs"
   },
   "devDependencies": {
+    "@pbz-mod-loader/game-api": "file:sdk",
     "typescript": "7.0.2"
   }
 }

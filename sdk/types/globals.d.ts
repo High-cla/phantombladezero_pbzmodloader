@@ -1,4 +1,4 @@
-// Minimal game globals; intentionally excludes browser DOM and Node.js types.
+// The game's embedded JS environment, without Node.js or browser globals.
 declare const console: {
     log(...values: unknown[]): void;
     warn(...values: unknown[]): void;

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "sdkVersion": "0.1.0",
+  "kind": "handwritten-runtime-verified-subset",
+  "testedAt": "2026-10-29",
+  "game": {
+    "platform": "Steam Win64",
+    "build": "CL-301524_JKS-17219",
+    "engine": "5.7.4-301524+42ecbfa37f78",
+    "exeSha256": "7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4",
+    "maps": ["PBZ_StartMenu_CE_WP", "PBZ_Xigu_WP"],
+    "display": { "width": 1280, "height": 720, "mode": "windowed" }
+  },
+  "evidence": {
+    "probe": "tests/api-probe.js",
+    "run": "20261029-172759-60680-dll",
+    "localArchive": "build/api-game-test-20261029/",
+    "previousTemplateRun": "build/template-game-test-20261029/",
+    "note": "Paths are relative to the loader source checkout; full logs are local build artifacts. Both maps tested; interfaces and nullable annotations are conservative handwritten models, not extracted native signatures."
+  },
+  "modules": {
+    "ue": {
+      "Object": ["GetName", "GetClass", "GetOuter"],
+      "GameInstance": ["GetWorld"],
+      "GameplayStatics": ["GetCurrentLevelName", "GetGameInstance", "GetGameMode", "GetGameState", "GetPlayerController", "GetPlayerPawn", "GetPlayerCharacter", "GetPlayerCameraManager", "GetTimeSeconds", "GetRealTimeSeconds", "GetWorldDeltaSeconds", "IsGamePaused"],
+      "KismetSystemLibrary": ["GetObjectName", "GetPathName", "GetDisplayName", "IsValid", "GetEngineVersion", "GetGameName"],
+      "Actor": ["K2_GetActorLocation", "K2_GetActorRotation", "GetActorScale3D", "GetVelocity"],
+      "Pawn": ["GetController"],
+      "GameUserSettings": ["GetGameUserSettings", "GetScreenResolution", "GetFullscreenMode"],
+      "Vector": ["X", "Y", "Z"],
+      "Rotator": ["Pitch", "Yaw", "Roll"],
+      "IntPoint": ["X", "Y"]
+    },
+    "puerts": ["argv.getByName(GameInstance)", "argv.getByIndex(0)", "$ref", "$unref", "$set"]
+  },
+  "globals": ["console.log", "console.warn", "console.error", "setInterval", "clearInterval"],
+  "excluded": [
+    { "symbol": "Controller.GetPawn", "reason": "Both maps returned TypeError: pc.GetPawn is not a function. Use GameplayStatics.GetPlayerPawn(context, index)." },
+    { "symbol": "constructors, writable gameplay APIs, game-specific class members", "reason": "Not verified by this SDK; no arbitrary any/index signature fallback." }
+  ],
+  "assetInspection": {
+    "looseGameDeclarationsFound": false,
+    "pakIndex": "encrypted; repak v0.2.3 could not list without a key",
+    "embeddedDeclarations": "unknown"
+  }
+}
