@@ -1,0 +1,19 @@
+LIBRARY version
+EXPORTS
+    GetFileVersionInfoA=pbz_version_0 @1
+    GetFileVersionInfoByHandle=pbz_version_1 @2
+    GetFileVersionInfoExA=pbz_version_2 @3
+    GetFileVersionInfoExW=pbz_version_3 @4
+    GetFileVersionInfoSizeA=pbz_version_4 @5
+    GetFileVersionInfoSizeExA=pbz_version_5 @6
+    GetFileVersionInfoSizeExW=pbz_version_6 @7
+    GetFileVersionInfoSizeW=pbz_version_7 @8
+    GetFileVersionInfoW=pbz_version_8 @9
+    VerFindFileA=pbz_version_9 @10
+    VerFindFileW=pbz_version_10 @11
+    VerInstallFileA=pbz_version_11 @12
+    VerInstallFileW=pbz_version_12 @13
+    VerLanguageNameA=pbz_version_13 @14
+    VerLanguageNameW=pbz_version_14 @15
+    VerQueryValueA=pbz_version_15 @16
+    VerQueryValueW=pbz_version_16 @17

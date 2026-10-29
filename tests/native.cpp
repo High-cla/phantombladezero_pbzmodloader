@@ -1,0 +1,63 @@
+// Exercise the actual machine-code generators in an isolated native process.
+#include "../src/core.hpp"
+#include <thread>
+#include <cassert>
+struct FString { const wchar_t* data; int count; int capacity; };
+void* expectedContext; void* expectedArgv;
+void capture(void* context,const FString* name,void* argv) {
+    assert(context==expectedContext && argv==expectedArgv);
+    assert(std::wstring(name->data)==L"PBZModLoader/bootstrap");
+    assert(name->count==22 && name->capacity==22);
+}
+int main() {
+    HANDLE process=GetCurrentProcess();
+    auto slab=(U64)VirtualAlloc(nullptr,SLAB_SIZE,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE); assert(slab);
+    auto start=startStub(slab,(U64)&capture); write(process,slab,start.data(),start.size());
+    const wchar_t text[]=L"PBZModLoader/bootstrap";
+    FString name={(wchar_t*)(slab+4160),22,22}; write(process,slab+4128,&name,sizeof(name)); write(process,slab+4160,text,sizeof(text));
+    U64 original=slab+2048, operand=slab+4208;
+    Bytes stolen={0x80,0x3d}; rel32(stolen,original+7,operand); stolen.push_back(5);
+    // Original cmp followed by setae al; ret. The relocated cmp must preserve flags.
+    Bytes fake=stolen; fake.insert(fake.end(),{0x0f,0x93,0xc0,0xc3}); write(process,original,fake.data(),fake.size());
+    *(unsigned char*)operand=5;
+    auto logger=loggerStub(slab+256,slab+4096,original,stolen); write(process,slab+256,logger.data(),logger.size());
+    DWORD old; assert(VirtualProtect((void*)slab,4096,PAGE_EXECUTE_READ,&old)); FlushInstructionCache(process,(void*)slab,4096);
+    expectedContext=(void*)0x1234; expectedArgv=(void*)0x5678;
+    ((void(*)(void*,FString*,void*))slab)(expectedContext,nullptr,expectedArgv);
+    assert(*(U64*)(slab+4104)==1);
+    auto emit=(unsigned char(*)(void*,const FString*))(slab+256);
+    const wchar_t message[]=L"[PBZMOD] native stub test"; FString msg={message,(int)std::size(message),(int)std::size(message)};
+    assert(emit(nullptr,&msg)==1); assert(*(U64*)(slab+4096)==1);
+    assert(*(U64*)(slab+8192)==1); assert(std::wstring((wchar_t*)(slab+8192+16),std::size(message)-1)==message);
+    const wchar_t other[]=L"unrelated"; FString skip={other,10,10}; emit(nullptr,&skip); emit(nullptr,nullptr); assert(*(U64*)(slab+4096)==1);
+    std::wstring longMessage=L"[PBZMOD]"+std::wstring(3000,L'x'); FString longMsg={longMessage.c_str(),(int)longMessage.size()+1,(int)longMessage.size()+1}; emit(nullptr,&longMsg);
+    assert(*(unsigned*)(slab+8192+2048+8)==1000);
+    std::vector<std::thread> workers; for(int i=0;i<8;++i) workers.emplace_back([&]{for(int j=0;j<16;++j) assert(emit(nullptr,&msg)==1);});
+    for(auto& t:workers)t.join(); assert(*(U64*)(slab+4096)==130);
+    for(int i=0;i<130;++i) assert(*(U64*)(slab+8192+i*2048)==(U64)i+1);
+    for(int i=0;i<300;++i) emit(nullptr,&msg);
+    assert(*(U64*)(slab+4096)==430);
+    for(U64 i=174;i<430;++i) assert(*(U64*)(slab+8192+(i%256)*2048)==i+1);
+    VirtualFree((void*)slab,0,MEM_RELEASE);
+    auto temp=fs::temp_directory_path()/(L"pbz-loader-test-"+std::to_wstring(GetCurrentProcessId()));
+    assert(fs::create_directory(temp)); fs::create_directories(temp/L"scripts/mods/a");
+    { std::ofstream f(temp/L"scripts/mods/a/main.js"); f<<"module.exports={};"; }
+    auto iniTest=[&](const std::string& content,bool expected) {
+        { std::ofstream f(temp/L"mods.ini"); f<<content; }
+        // Invalidate Windows INI cache between fixture writes.
+        WritePrivateProfileStringW(nullptr,nullptr,nullptr,(temp/L"mods.ini").c_str());
+        bool accepted=false; try { config(temp,temp/L"scripts"); accepted=true; } catch(const std::exception&) {}
+        assert(accepted==expected);
+    };
+    const std::string prefix="[Loader]\nVersion=1\nCount=1\n[Mod.0]\nId=a\n";
+    iniTest(prefix+"Enabled=1\nEntry=mods/a/main.js\n",true);
+    iniTest(prefix+"Enabled=1\nEntry=mods/missing/main.js\n",false);
+    iniTest(prefix+"Enabled=0\nEntry=mods/missing/main.js\n",true);
+    iniTest(prefix+"Enabled=1\nEntry=../escape.js\n",false);
+    iniTest(prefix+"Enabled=1\nEntry=mods/a/main.ts\n",false);
+    iniTest(prefix+"Enabled=2\nEntry=mods/a/main.js\n",false);
+    iniTest("[Loader]\nVersion=1\nCount=2\n[Mod.0]\nId=a\nEnabled=1\nEntry=mods/a/main.js\n[Mod.1]\nId=a\nEnabled=0\nEntry=mods/a/main.js\n",false);
+    fs::remove_all(temp);
+    std::cout<<"PASS native redirect, argv, counter, relocated flags, filtering, bounds, concurrency, ring wrap\n";
+    std::cout<<"PASS native config: valid, missing, disabled, traversal, TS, invalid switch, duplicate ID\n";
+}

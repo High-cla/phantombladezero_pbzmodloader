@@ -1,0 +1,99 @@
+PBZ TS/JS MOD 加载器 0.2.0（Windows x64）
+
+一、安装
+
+1. 正常退出游戏。
+2. 在 Steam 库中右键游戏 → 管理 → 浏览本地文件，打开游戏根目录 PBZ。
+   正确的根目录中同时存在 platform 和 ProjectPBZ 文件夹。
+3. 检查 platform\steam\version.dll 是否已存在。如果已有其他工具的同名 DLL，
+   不要直接覆盖：本包不支持自动串联其他代理加载器。更新本加载器时，先备份配置和自定义 MOD。
+4. 将压缩包里的 platform、ProjectPBZ 文件夹及本说明直接解压到游戏根目录，合并文件夹。
+   不要解压到 ProjectPBZ 内，也不要在游戏根目录中再套一层压缩包名称文件夹。
+5. 从 Steam 正常点“开始”。无需另开启动器，无需安装 Python、Node.js 或编译器。
+
+安装后关键路径：
+  PBZ\platform\steam\version.dll
+  PBZ\ProjectPBZ\Mods\PBZModLoader\mods.ini
+  PBZ\ProjectPBZ\Content\JavaScript\PBZModLoader\bootstrap.js
+  PBZ\ProjectPBZ\Content\JavaScript\PBZModLoader\manager.js
+  PBZ\ProjectPBZ\Content\JavaScript\PBZModLoader\mods\...
+
+本版适配 CL-301524_JKS-17219。游戏 EXE SHA-256：
+7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4
+版本不匹配时加载器会跳过 MOD 并继续原游戏。不要为了适配新游戏版本移除版本校验。
+
+二、默认示例
+
+默认启用两个只读示例：
+  hello：读取 GameInstance 并记录日志。
+  world-watch：记录地图变化和心跳。
+它们不主动切图，也不修改游戏数值；没有屏幕内菜单，是否加载请查看日志。
+
+三、配置多个 MOD
+
+编辑 ProjectPBZ\Mods\PBZModLoader\mods.ini，下次启动生效。
+
+  [Loader]
+  Enabled=1
+  Version=1
+  Count=2
+
+  [Mod.0]
+  Id=hello
+  Enabled=1
+  Entry=mods/hello/main.js
+
+  [Mod.1]
+  Id=world-watch
+  Enabled=1
+  Entry=mods/world-watch/main.js
+
+Loader.Enabled=0 可临时停用所有 MOD；改回 1 恢复。
+各 Mod 节的 Enabled=0 只禁用对应 MOD，保留 Count 和原有编号。
+加载顺序为 Mod.0、Mod.1……，Count 必须等于配置项数量，最多 128 项。
+Id 不能重复，目录和文件基名只使用英文字母、数字、下划线或连字符。
+
+例如新增 my-mod：
+1. 将其编译后的 CommonJS JS 文件放到：
+   ProjectPBZ\Content\JavaScript\PBZModLoader\mods\my-mod\main.js
+2. 将 Count 改为 3，并在配置末尾添加：
+  [Mod.2]
+  Id=my-mod
+  Enabled=1
+  Entry=mods/my-mod/main.js
+
+Entry 相对于 Content\JavaScript\PBZModLoader，不是相对于 mods.ini。
+入口必须为 .js，不能直接填写 .ts；玩家使用 MOD 作者提供的编译产物。
+不接受绝对路径或 ..。单个 MOD 加载报错会记录日志，后续 MOD 继续加载。
+所有 MOD 共享主 PuerTS 环境，请只安装可信来源的 MOD；目前不支持热重载。
+不要手工修改自动生成的 generated-config.js。
+
+四、检查日志
+
+日志目录：ProjectPBZ\Mods\PBZModLoader\evidence\<日期时间-PID>-dll\loader.log
+正常加载默认示例时能看到：
+  [PBZMOD] loaded hello
+  [PBZMOD] loaded world-watch
+  [PBZMOD] ready loaded=2 failed=0
+
+MODs skipped 表示游戏版本、配置或入口检查未通过，请查看后面的原因。
+failed 后会给出对应 MOD 和错误内容。没有日志时先检查解压层级及 version.dll 的位置。
+游戏更新后可能需要新版加载器。日志中的进程退出通知本身不等于正常退出码证明。
+
+五、卸载
+
+1. 正常退出游戏。
+2. 删除本包安装的 PBZ\platform\steam\version.dll，即可取消自动引导。
+   如果此文件后来被其他加载器替换，不要将其当作本包文件删除。
+3. 如需彻底清理，先备份自定义 MOD、配置和想保留的日志，再删除：
+   PBZ\ProjectPBZ\Mods\PBZModLoader
+   PBZ\ProjectPBZ\Content\JavaScript\PBZModLoader
+4. 本说明文件也可删除。
+
+不需要删除任何游戏 EXE、pak、存档或 Windows 系统 DLL。
+
+六、验证范围
+
+当前 DLL 已验证 Steam 直接启动、两个 MOD 按配置加载、主菜单与溪谷往返及退出码 0。
+未验证其他游戏版本、所有地图、长时间运行和第三方 MOD 之间的兼容性。
+本包不包含旧原型、独立启动器、源码、测试工具、开发依赖或个人存档。

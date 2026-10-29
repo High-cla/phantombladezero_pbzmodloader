@@ -1,0 +1,12 @@
+{
+  "name": "pbz-mod-loader-dev",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "build:mods": "tsc -p tsconfig.json",
+    "test": "node --test tests/manager.test.cjs"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2"
+  }
+}
