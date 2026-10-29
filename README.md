@@ -43,6 +43,10 @@ WeGame 只需合并 ProjectPBZ，再将包内 platform/steam/version.dll 手动�
 
 ## 开发与打包
 
+开发自己的 TS MOD 可从 [最小开发模板](templates/ts-mod/README.md) 开始：复制 `templates/ts-mod/`，
+在副本中执行 `npm ci`、`npm run check`、`npm run build`，将输出的 `dist/my-mod/` 安装到
+游戏的 `ProjectPBZ/PBZModLoader/mods/`。模板独立维护开发依赖，不需要编译加载器 DLL。
+
 ```powershell
 npm ci
 npm run build:mods

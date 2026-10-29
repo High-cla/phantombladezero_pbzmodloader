@@ -1,0 +1,13 @@
+{
+  "name": "pbz-ts-mod-template",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "check": "tsc -p tsconfig.json --noEmit",
+    "clean": "node scripts/clean.cjs",
+    "build": "npm run clean && tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2"
+  }
+}
