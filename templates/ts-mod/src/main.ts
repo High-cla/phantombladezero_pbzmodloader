@@ -6,8 +6,8 @@ const SAMPLE_LIMIT = 5;
 let samples = 0;
 let timer: ReturnType<typeof setInterval> | undefined;
 
-// A local cleanup helper, also exported for callers. The current loader does
-// not automatically call stop() on unload, map changes, or game exit.
+// The loader awaits stop() before hot reload or removal. Release every timer
+// and event subscription here. Map changes and game exit do not call this hook.
 export function stop(): void {
     if (timer !== undefined) {
         clearInterval(timer);

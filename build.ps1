@@ -9,7 +9,7 @@ try {
     Copy-Item "$compilerSource/lib/*" $compilerTarget -Force
     Copy-Item "$compilerSource/LICENSE","$compilerSource/NOTICE.txt" $compilerTarget -Force
     if (!$VerifyOnly) {
-        & $Compiler -std=c++17 -O2 -Wall -Wextra -static -shared src/proxy.cpp src/proxy.S src/version.def -lbcrypt '-Wl,--exclude-all-symbols' -o build/version.dll
+        & $Compiler -std=c++17 -O2 -Wall -Wextra -static -shared src/proxy.cpp src/proxy.S src/version.def -lbcrypt -luser32 '-Wl,--exclude-all-symbols' -o build/version.dll
         if ($LASTEXITCODE -ne 0) { throw 'DLL build failed' }
     }
     if (!(Test-Path build/version.dll)) { throw 'Missing build/version.dll' }

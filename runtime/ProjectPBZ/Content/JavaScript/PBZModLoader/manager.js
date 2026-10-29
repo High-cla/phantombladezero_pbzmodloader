@@ -1,6 +1,6 @@
 'use strict';
 // CommonJS, deliberately independent of Node APIs: runs in the game's PuerTS VM.
-exports.load = function load(config, importMod, log) {
+function validate(config) {
     if (!config || config.version !== 1 || !Array.isArray(config.mods)) {
         throw new Error('Unsupported MOD configuration');
     }
@@ -13,6 +13,9 @@ exports.load = function load(config, importMod, log) {
         }
         ids.add(mod.id);
     }
+}
+exports.load = function load(config, importMod, log, prefix = './generated-mods/') {
+    validate(config);
     const result = [];
     for (const mod of config.mods) {
         if (!mod.enabled) {
@@ -21,7 +24,7 @@ exports.load = function load(config, importMod, log) {
             continue;
         }
         try {
-            const instance = importMod('./generated-mods/' + mod.entry.slice('mods/'.length));
+            const instance = importMod(prefix + mod.entry.slice('mods/'.length));
             result.push({ id: mod.id, status: 'loaded', instance });
             log('loaded ' + mod.id);
         } catch (error) {
@@ -30,4 +33,107 @@ exports.load = function load(config, importMod, log) {
         }
     }
     return result;
+};
+
+// A failed import may already have registered callbacks. Do not retry it in this
+// session: there is no exported instance with which to clean up those effects.
+exports.reload = async function reload(previous, config, importMod, log, prefix) {
+    validate(config);
+    const blocked = new Map();
+    for (const mod of previous) {
+        if (mod.status === 'disabled' || mod.status === 'stopped') continue;
+        if (mod.status === 'failed') { blocked.set(mod.id, mod); continue; }
+        try {
+            if (!mod.instance || typeof mod.instance.stop !== 'function') {
+                throw new Error('export stop() to enable hot reload');
+            }
+            await mod.instance.stop();
+            delete mod.reloadError;
+            mod.status = 'stopped';
+            log('stopped ' + mod.id);
+        } catch (error) {
+            mod.reloadError = true;
+            blocked.set(mod.id, mod);
+            log('reload blocked ' + mod.id + ': ' + String(error && error.stack || error));
+        }
+    }
+    const next = [];
+    for (const mod of config.mods) {
+        if (blocked.has(mod.id)) {
+            next.push(blocked.get(mod.id));
+            blocked.delete(mod.id);
+        } else {
+            next.push(...exports.load({ version: 1, mods: [mod] }, importMod, log, prefix));
+        }
+    }
+    // Keep failed cleanup instances reachable even if removed from configuration.
+    return next.concat(Array.from(blocked.values()));
+};
+
+exports.watch = function watch(state, importMod, log, schedule = setInterval, notify = () => {}) {
+    let revision = 1, busy = false;
+    return schedule(async () => {
+        if (busy) return;
+        busy = true;
+        try {
+            let config;
+            const prefix = './generated-reloads/' + revision + '/';
+            // Publication is atomic. A missing next revision is the normal idle state.
+            try { config = importMod(prefix + 'config'); } catch (_) { return; }
+            if (config.error) throw new Error(config.error);
+            state.mods = await exports.reload(state.mods, config, importMod, log, prefix + 'generated-mods/');
+            log('reload complete revision=' + revision);
+            const failed = state.mods.filter(mod => mod.status === 'failed' || mod.reloadError).length;
+            const loaded = state.mods.filter(mod => mod.status === 'loaded' && !mod.reloadError).length;
+            notify(failed ? 'MOD 重载完成：成功 ' + loaded + '，失败或跳过 ' + failed : 'MOD 重载成功（' + loaded + ' 个）', failed > 0);
+            revision++;
+        } catch (error) {
+            log('reload failed: ' + String(error && error.stack || error));
+            notify('MOD 重载失败，请查看 loader.log', true);
+            revision++;
+        } finally { busy = false; }
+    }, 1000);
+};
+
+// Use a real UMG overlay: debug PrintString may be compiled out in Shipping.
+exports.createNotifier = function createNotifier(importMod, log, delay = setTimeout, cancel = clearTimeout) {
+    let widget, viewport, timer;
+    return (message, failed) => {
+        try {
+            const UE = importMod('ue');
+            const gi = importMod('puerts').argv.getByName('GameInstance');
+            if (timer !== undefined) { cancel(timer); timer = undefined; }
+            if (widget && viewport) { viewport.RemoveWidget(widget); widget = undefined; }
+            viewport = UE.SubsystemBlueprintLibrary.GetEngineSubsystem(UE.GameViewportSubsystem.StaticClass());
+            if (!viewport || !gi) throw new Error('viewport unavailable');
+            widget = new UE.TextBlock(gi);
+            widget.SetText(UE.KismetTextLibrary.Conv_StringToText('[PBZModLoader] ' + message));
+            widget.SetVisibility(UE.ESlateVisibility.HitTestInvisible);
+            const color = new UE.SlateColor();
+            const tint = new UE.LinearColor();
+            tint.R = failed ? 1 : 0.3; tint.G = failed ? 0.65 : 1; tint.B = 0.3; tint.A = 1;
+            color.SpecifiedColor = tint;
+            widget.SetColorAndOpacity(color);
+            const shadow = new UE.LinearColor(); shadow.A = 1;
+            widget.SetShadowColorAndOpacity(shadow);
+            const shadowOffset = new UE.Vector2D(); shadowOffset.X = 1; shadowOffset.Y = 1;
+            widget.SetShadowOffset(shadowOffset);
+            const slot = new UE.GameViewportWidgetSlot();
+            // Reflected structs do not all implement positional constructors.
+            const offsets = new UE.Margin();
+            offsets.Left = 24; offsets.Top = 24; offsets.Right = 800; offsets.Bottom = 50;
+            slot.Offsets = offsets;
+            slot.ZOrder = 1000000;
+            slot.bAutoRemoveOnWorldRemoved = true;
+            if (!viewport.AddWidget(widget, slot)) throw new Error('AddWidget failed');
+            timer = delay(() => {
+                timer = undefined;
+                try { if (widget) viewport.RemoveWidget(widget); }
+                catch (error) { log('notification cleanup failed: ' + String(error)); }
+                widget = undefined;
+            }, 4000);
+        } catch (error) {
+            log('notification unavailable: ' + String(error));
+        }
+    };
 };

@@ -107,6 +107,27 @@ int main() {
     syncMods(temp,temp/L"scripts");
     generated=config(temp,temp/L"scripts");
     assert(generated.find("\"id\":\"a\",\"enabled\":false")!=std::string::npos);
+    resetReloads(temp/L"scripts");
+    assert(!fs::exists(temp/L"scripts/generated-reloads/1"));
+    { std::ofstream f(temp/L"mods/a/main.ts"); f<<"import { value } from './helper'; export const answer = value;"; }
+    publishReload(temp,temp/L"scripts",1);
+    assert(fs::exists(temp/L"scripts/generated-reloads/1/config.js"));
+    auto first=sha256(temp/L"scripts/generated-reloads/1/generated-mods/a/helper.js");
+    { std::ofstream f(temp/L"mods/a/helper.ts"); f<<"export const value: number = 43;"; }
+    publishReload(temp,temp/L"scripts",2);
+    assert(fs::exists(temp/L"scripts/generated-reloads/2/config.js"));
+    assert(first==sha256(temp/L"scripts/generated-reloads/1/generated-mods/a/helper.js"));
+    assert(first!=sha256(temp/L"scripts/generated-reloads/2/generated-mods/a/helper.js"));
+    { std::ofstream f(temp/L"mods/a/main.ts"); f<<"export const broken: = ;"; }
+    bool rejected=false; try { publishReload(temp,temp/L"scripts",3); } catch(const std::exception&) { rejected=true; }
+    assert(rejected && !fs::exists(temp/L"scripts/generated-reloads/3"));
+    publishReloadFailure(temp/L"scripts",3);
+    { std::ifstream f(temp/L"scripts/generated-reloads/3/config.js"); std::ostringstream content; content<<f.rdbuf();
+      assert(content.str().find("error:")!=std::string::npos); }
+    fs::remove(temp/L"mods/a/main.ts");
+    publishReload(temp,temp/L"scripts",4);
+    assert(fs::exists(temp/L"scripts/generated-reloads/4/config.js"));
+    std::cout<<"PASS hot reload immutable dependencies, compile failure and recovery\n";
     fs::remove_all(temp/L"mods");
     iniTest(automatic,true);
     assert(config(temp).find("\"mods\":[]")!=std::string::npos);

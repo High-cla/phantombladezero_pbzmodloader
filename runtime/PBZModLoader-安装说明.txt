@@ -11,3 +11,10 @@ WeGame：启动前，还需将包内 platform\steam\version.dll 复制到实际�
 WeGame 尚未实机验证，具体 EXE 位置需自行确认。
 
 更新前请备份自己的配置和 MOD；不要覆盖其他工具的同名 version.dll。
+
+热重载：安装新版加载器并启动游戏后，修改 PBZModLoader\mods 下的 JS/TS 或依赖文件，
+保存后切回游戏按 Ctrl+F5 重载整组 MOD，无需重启。mods.ini 的 MOD 开关也会生效。
+不监听文件变化，按住快捷键不连发。完成后左上角显示约 4 秒结果提示。
+MOD 必须导出 stop() 清理定时器和事件；加载器等待旧 stop 完成后才加载新入口。
+缺少 stop 或清理失败会跳过该 MOD 的重载。TS 编译失败保留旧实例；JS 入口执行失败后需修复并重启。
+generated-mods 和 generated-reloads 都是自动缓存，请勿直接编辑。

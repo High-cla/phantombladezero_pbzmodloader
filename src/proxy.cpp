@@ -9,6 +9,7 @@ static HANDLE logFile=INVALID_HANDLE_VALUE;
 static INIT_ONCE versionOnce=INIT_ONCE_STATIC_INIT;
 static HMODULE realVersion=nullptr;
 static FARPROC versionFunctions[17]{};
+static fs::path reloadRoot,reloadScripts;
 static const char* const versionNames[]={
     "GetFileVersionInfoA","GetFileVersionInfoByHandle","GetFileVersionInfoExA","GetFileVersionInfoExW",
     "GetFileVersionInfoSizeA","GetFileVersionInfoSizeExA","GetFileVersionInfoSizeExW","GetFileVersionInfoSizeW",
@@ -47,15 +48,49 @@ void log(const std::string& s) {
 }
 static DWORD WINAPI monitor(void* context) noexcept {
     U64 slab=(U64)context,next=0,starts=0;
+    bool hotkeyRegistered=false,hotkeyWarning=false;
+    constexpr int hotkeyId=0x5042;
+    unsigned revision=1;
     try {
         for(;;) {
             drain(GetCurrentProcess(),slab,next);
             U64 current=0; read(GetCurrentProcess(),slab+4104,&current,8);
             if(current!=starts) { starts=current; log("main-start count="+std::to_string(starts)); }
-            Sleep(250);
+            DWORD foregroundProcess=0;
+            GetWindowThreadProcessId(GetForegroundWindow(),&foregroundProcess);
+            bool focused=foregroundProcess==GetCurrentProcessId();
+            if(focused && !hotkeyRegistered) {
+                hotkeyRegistered=RegisterHotKey(nullptr,hotkeyId,MOD_CONTROL|MOD_NOREPEAT,VK_F5)!=0;
+                if(!hotkeyRegistered && !hotkeyWarning) {
+                    log("Ctrl+F5 registration failed; shortcut may be in use"); hotkeyWarning=true;
+                }
+            } else if(!focused && hotkeyRegistered) {
+                UnregisterHotKey(nullptr,hotkeyId); hotkeyRegistered=false;
+            }
+            if(!focused) hotkeyWarning=false;
+            MSG message{};
+            bool requested=false;
+            while(PeekMessageW(&message,nullptr,WM_HOTKEY,WM_HOTKEY,PM_REMOVE))
+                if(message.wParam==hotkeyId && focused) requested=true;
+            if(requested) {
+                // Compilation may take time; do not reserve another app's
+                // shortcut or queue repeated requests while preparing a batch.
+                UnregisterHotKey(nullptr,hotkeyId); hotkeyRegistered=false;
+                try {
+                    publishReload(reloadRoot,reloadScripts,revision);
+                    log("hot reload published revision="+std::to_string(revision++));
+                }
+                catch(const std::exception& e) {
+                    log(std::string("hot reload preparation failed: ")+e.what());
+                    try { publishReloadFailure(reloadScripts,revision); ++revision; }
+                    catch(const std::exception& failure) { log(std::string("reload failure notification: ")+failure.what()); }
+                }
+            }
+            Sleep(50);
         }
     } catch(const std::exception& e) { log(std::string("ERROR monitor: ")+e.what()); }
     catch(...) { log("ERROR monitor: unknown exception"); }
+    if(hotkeyRegistered) UnregisterHotKey(nullptr,hotkeyId);
     return 0;
 }
 extern "C" void pbz_initialize() noexcept {
@@ -97,6 +132,8 @@ extern "C" void pbz_initialize() noexcept {
         { std::ostringstream message; message<<"signatures validated; call-rva=0x"<<std::hex<<sites.call<<" start-rva=0x"<<sites.start;
           for(auto rva:sites.loggers) message<<" logger-rva=0x"<<rva; log(message.str()); }
         for(auto file:{L"bootstrap.js",L"manager.js"}) if(!fs::is_regular_file(scripts/file)) throw std::runtime_error("Missing loader JS");
+        resetReloads(scripts);
+        reloadRoot=root; reloadScripts=scripts;
         syncMods(root,scripts);
         auto generated=config(root,scripts);
         auto temporary=scripts/(L"generated-config."+std::to_wstring(GetCurrentProcessId())+L".tmp");

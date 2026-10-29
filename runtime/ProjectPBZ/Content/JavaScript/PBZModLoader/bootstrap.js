@@ -8,6 +8,9 @@ if (!globalThis.__PBZModLoader) {
         state.mods = require('./manager').load(require('./generated-config'), require,
             message => console.log('[PBZMOD] ' + message));
         state.status = 'ready';
+        state.reloadTimer = require('./manager').watch(state, require,
+            message => console.log('[PBZMOD] ' + message), setInterval,
+            require('./manager').createNotifier(require, message => console.log('[PBZMOD] ' + message)));
         console.log('[PBZMOD] ready loaded=' + state.mods.filter(m => m.status === 'loaded').length +
             ' failed=' + state.mods.filter(m => m.status === 'failed').length);
     } catch (error) {

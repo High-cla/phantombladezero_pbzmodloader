@@ -89,7 +89,7 @@ void compileTs(const fs::path& root,const fs::path& scripts,const std::string& e
     auto output=destination/source.filename(); output.replace_extension(L".js");
     if(!fs::is_regular_file(output)) throw std::runtime_error("TS compiler produced no entry");
 }
-std::string config(const fs::path& root,const fs::path& scripts={}) {
+std::string config(const fs::path& root,const fs::path& scripts={},bool strict=false) {
     fs::path p=root/L"mods.ini"; if(!fs::is_regular_file(p)) throw std::runtime_error("Missing mods.ini");
     if(ini(p,L"Loader",L"Version")!=L"1") throw std::runtime_error("Unsupported config version");
     auto countValue=ini(p,L"Loader",L"Count");
@@ -136,7 +136,7 @@ std::string config(const fs::path& root,const fs::path& scripts={}) {
         if(fs::u8path(entry).extension()==L".ts") {
             if(enabled && !scripts.empty()) {
                 try { compileTs(root,scripts,entry); }
-                catch(const std::exception& e) { enabled=false; log("MOD "+id+" skipped: "+e.what()); }
+                catch(const std::exception& e) { if(strict) throw; enabled=false; log("MOD "+id+" skipped: "+e.what()); }
             }
             entry=entry.substr(0,entry.size()-3)+".js";
         }
@@ -162,6 +162,41 @@ void syncMods(const fs::path& root,const fs::path& scripts) {
     if(fs::exists(source)) fs::copy(source,cache,fs::copy_options::recursive);
     else fs::create_directories(cache);
 }
+
+void resetReloads(const fs::path& scripts) {
+    auto cache=scripts/L"generated-reloads";
+    auto reject=[](const fs::path& p) {
+        auto a=GetFileAttributesW(p.c_str());
+        if(a!=INVALID_FILE_ATTRIBUTES && (a&FILE_ATTRIBUTE_REPARSE_POINT))
+            throw std::runtime_error("Hot reload cache contains reparse point");
+    };
+    reject(cache);
+    if(fs::exists(cache)) for(const auto& item:fs::recursive_directory_iterator(cache)) reject(item.path());
+    fs::remove_all(cache); fs::create_directories(cache);
+}
+
+void publishReload(const fs::path& root,const fs::path& scripts,unsigned revision) {
+    auto cache=scripts/L"generated-reloads";
+    auto stage=cache/L"pending";
+    fs::create_directories(stage);
+    // Owned staging directory; reuse syncMods' reparse checks before cleanup.
+    syncMods(root,stage);
+    auto generated=config(root,stage,true);
+    auto enabled=ini(root/L"mods.ini",L"Loader",L"Enabled");
+    if(!enabled.empty() && number(enabled,1)==0) generated="module.exports={version:1,mods:[]};\n";
+    { std::ofstream f(stage/L"config.js",std::ios::binary); f<<generated; f.close(); check(bool(f),"write reload config"); }
+    fs::rename(stage,cache/std::to_wstring(revision));
+}
+
+void publishReloadFailure(const fs::path& scripts,unsigned revision) {
+    auto cache=scripts/L"generated-reloads", stage=cache/L"pending";
+    fs::create_directories(stage);
+    { std::ofstream f(stage/L"config.js",std::ios::binary);
+      f<<"module.exports={error:'Reload preparation failed; see loader.log'};\n";
+      f.close(); check(bool(f),"write reload failure"); }
+    fs::rename(stage,cache/std::to_wstring(revision));
+}
+
 #ifdef PBZ_DLL
 void read(HANDLE,U64 address,void* dest,size_t n) {
     size_t done=0;

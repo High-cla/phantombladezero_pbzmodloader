@@ -75,7 +75,7 @@ TS 输出到 runtime/ProjectPBZ/PBZModLoader/mods。
 旧版带 Mods 层的目录需整体上移到 ProjectPBZ/PBZModLoader，并同步更新 DLL；
 具体迁移步骤见安装说明，mods.ini 中的 Entry 无需修改。
 启动时 DLL 校验配置，将 mods/ 同步到 Content/JavaScript/PBZModLoader/generated-mods，
-供原有 PuerTS 搜索路径加载；该缓存每次启动重建，不应直接编辑。
+供原有 PuerTS 搜索路径加载；该缓存每次启动重建，不应直接编辑。运行中按 Ctrl+F5 可触发热重载，详见下文。
 Content/JavaScript 下只需随包安装 bootstrap.js 和 manager.js，MOD 源文件无需放在那里。
 原生编译输出 build/version.dll。-VerifyOnly -Test 可检查已有 DLL 而不重新编译它。
 package.ps1 拒绝覆盖已有版本，并检查 ZIP 根目录、白名单及解压后全部文件哈希。
@@ -92,6 +92,16 @@ package.ps1 拒绝覆盖已有版本，并检查 ZIP 根目录、白名单及解
 
 将 `main.ts` 及它引用的 `.ts`/`.js` 文件放在 `mods/<MOD ID>/`，自动发现时优先使用 `main.ts`，没有时使用 `main.js`。显式 INI Entry 可以选择 `.ts` 或 `.js`。
 
-启动时使用随包提供的原生 TypeScript 编译器生成 ES2020/CommonJS，产物位于 `Content/JavaScript/PBZModLoader/generated-mods/`，不覆盖源码。每次启动重建缓存，不做热重载。编译只转换语法，不执行完整类型检查；语法错误、编译器缺失或超时会禁用本次启动中的对应 MOD，诊断写入加载器日志及缓存中的 `compile.log`。引用文件应位于入口目录内，运行时依赖仍须随 MOD 提供。
+启动时使用随包提供的原生 TypeScript 编译器生成 ES2020/CommonJS，产物位于 `Content/JavaScript/PBZModLoader/generated-mods/`，不覆盖源码。每次启动重建缓存。编译只转换语法，不执行完整类型检查；语法错误、编译器缺失或超时会禁用本次启动中的对应 MOD，诊断写入加载器日志及缓存中的 `compile.log`。引用文件应位于入口目录内，运行时依赖仍须随 MOD 提供。
 
 构建前运行 `npm ci`；`build.ps1` 自动准备随包编译器及许可证，玩家不需要安装 Node.js。
+
+### MOD 热重载
+
+安装新版 DLL、bootstrap.js 和 manager.js 并启动游戏后，保存 `ProjectPBZ/PBZModLoader/mods/` 下的 JS/TS 或依赖文件，切回游戏按 **Ctrl+F5**。仅游戏窗口在前台时响应，按住不连发，不监听文件变化。JS 线程每秒接收一次重载请求，TS 会先编译。本地构建的 MOD 需先把新产物覆盖到安装目录。完成后左上角显示约 4 秒提示，区分成功、失败或跳过；提示不拦截鼠标。
+
+每次快捷键重载整组 MOD（包括未修改的 MOD），以独立版本目录隔离 CommonJS 入口及相对依赖缓存。加载新入口前，先调用并等待所有旧实例导出的 `stop()`，支持 Promise；MOD 须在其中清除定时器、取消事件订阅并释放持有的资源。无持久资源的 MOD 也应导出空 `stop()`。缺少该函数或清理抛错时保留旧实例并跳过该 MOD，新版本不会重复注册。挂起的 stop 会等待其完成，期间不会启动另一轮重载。切图和游戏退出不触发 stop。
+
+新增、删除及 `[Mods] ID=0` 的变化按 Ctrl+F5 后同样生效；删除或禁用前也会调用 stop。TS 编译失败时保留旧实例并显示失败提示，修复后再次按 Ctrl+F5 重试。请保存完成后再触发重载，编译期间避免继续改写文件。JS 入口执行异常可能已经产生副作用且无法取得其导出，因此失败实例在本次游戏运行中不再自动重试，修复后需重启。MOD 应自行清理初始化失败前产生的资源。
+
+临时产物在 `Content/JavaScript/PBZModLoader/generated-reloads/`，版本目录保留至下一次启动清理，以支持旧实例和延迟 require；长时间大量重载会增加磁盘和模块缓存占用。仅 MOD 目录内的相对依赖随版本隔离，勿用加载器缓存绝对路径跨版本引用。日志查找 `hot reload published`、`stopped`、`reload complete` 和 `reload blocked`。2026-10-29 已通过 24 项 JS 测试、原生与代理宿主回归，并在 Steam 游戏主菜单以 1280×720 窗口模式验证 Ctrl+F5、依赖更新、stop 顺序、旧定时器停止、成功/失败屏幕提示和编译失败保留旧实例；本次未验证切图。实测证据保存在 build/hot-reload-evidence。
