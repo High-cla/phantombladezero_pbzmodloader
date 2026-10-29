@@ -54,6 +54,9 @@ WeGame 只需合并 ProjectPBZ，再将包内 platform/steam/version.dll 手动�
 已有 MOD 可运行 `npm run sdk:pack`，将 `build/sdk/` 中的 npm 包安装为开发依赖；迁移步骤见 SDK 说明。
 维护者修改 `sdk/` 后运行 `npm run sdk:sync` 更新模板副本，再执行 `npm test`。
 
+开发者可使用[只读反射导出工具](scripts/REFLECTION.md)，采集当前构建的原生类型与已加载蓝图，
+输出完整元数据清单、数量统计和解析失败报告。该清单尚未转换为 PuerTS 类型声明。
+
 ```powershell
 npm ci
 npm run build:mods
