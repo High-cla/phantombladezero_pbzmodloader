@@ -3,6 +3,11 @@ $ErrorActionPreference='Stop'
 Push-Location $PSScriptRoot
 try {
     New-Item -ItemType Directory -Force build | Out-Null
+    $compilerSource=Join-Path $PSScriptRoot 'node_modules/@typescript/typescript-win32-x64'
+    $compilerTarget=Join-Path $PSScriptRoot 'runtime/ProjectPBZ/PBZModLoader/compiler'
+    New-Item -ItemType Directory -Force $compilerTarget | Out-Null
+    Copy-Item "$compilerSource/lib/*" $compilerTarget -Force
+    Copy-Item "$compilerSource/LICENSE","$compilerSource/NOTICE.txt" $compilerTarget -Force
     if (!$VerifyOnly) {
         & $Compiler -std=c++17 -O2 -Wall -Wextra -static -shared src/proxy.cpp src/proxy.S src/version.def -lbcrypt '-Wl,--exclude-all-symbols' -o build/version.dll
         if ($LASTEXITCODE -ne 0) { throw 'DLL build failed' }
@@ -41,7 +46,7 @@ try {
         $readobj=Join-Path (Split-Path (Get-Command $Compiler).Source) 'llvm-readobj.exe'
         $imports=& $readobj --coff-imports build/version.dll
         if ($LASTEXITCODE -ne 0) { throw 'Import inspection failed' }
-        if ($imports -match 'Symbol: (DebugActiveProcess|DebugActiveProcessStop|WaitForDebugEvent|ContinueDebugEvent|DebugSetProcessKillOnExit|CheckRemoteDebuggerPresent|IsDebuggerPresent|CreateProcessW|ReadProcessMemory|WriteProcessMemory|CreateRemoteThread)\b') { throw 'Unexpected debugger or remote process API' }
+        if ($imports -match 'Symbol: (DebugActiveProcess|DebugActiveProcessStop|WaitForDebugEvent|ContinueDebugEvent|DebugSetProcessKillOnExit|CheckRemoteDebuggerPresent|IsDebuggerPresent|ReadProcessMemory|WriteProcessMemory|CreateRemoteThread)\b') { throw 'Unexpected debugger or remote process API' }
         $exports=& $readobj --coff-exports build/version.dll
         if ($LASTEXITCODE -ne 0 -or @($exports -match '^Export \{').Count -ne 17) { throw 'Unexpected exports' }
         Write-Output 'PASS DLL import audit and 17 exports'

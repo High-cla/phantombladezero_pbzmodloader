@@ -10,6 +10,8 @@ $files=@(
     'ProjectPBZ/PBZModLoader/mods/hello/main.js',
     'ProjectPBZ/PBZModLoader/mods/world-watch/main.js'
 )
+$files += @(Get-ChildItem "$PSScriptRoot/runtime/ProjectPBZ/PBZModLoader/compiler" -File | ForEach-Object { 'ProjectPBZ/PBZModLoader/compiler/'+$_.Name })
+if (!($files -contains 'ProjectPBZ/PBZModLoader/compiler/tsc.exe')) { throw 'Build bundled compiler first.' }
 $release=Join-Path $PSScriptRoot "releases/PBZModLoader-$Version-win64"
 $zip="$release.zip"
 if ((Test-Path -LiteralPath $release) -or (Test-Path -LiteralPath $zip)) { throw 'Release already exists; choose a new version or archive the existing release first.' }

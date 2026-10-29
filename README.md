@@ -51,7 +51,7 @@ npm run build:mods
 ```
 
 TS 输出到 runtime/ProjectPBZ/PBZModLoader/mods。
-每次启动自动发现 `mods/<ID>/main.js`，按 ID 排序加载；新增 MOD 无需修改配置。
+每次启动自动发现 `mods/<ID>/main.ts` 或 `main.js`，按 ID 排序加载；新增 MOD 无需修改配置。
 在 mods.ini 的 `[Mods]` 下设置 `ID=0` 可禁用，删除该行或设为 `1` 恢复。
 `[Loader]` 的 Enabled、Version 保留；Count 可省略。旧 Count / Mod.N 配置仍优先按编号加载，
 自动发现结果随后追加并去重；`[Mods]` 开关优先于旧项 Enabled。辅助脚本不会作为独立 MOD 加载。
@@ -69,5 +69,13 @@ package.ps1 拒绝覆盖已有版本，并检查 ZIP 根目录、白名单及解
 其 SHA-256 为 0727d3c15b7453425df0538f30de9a6e6372e03ba9e41da4e77ee425ad0cb54b。
 来源记录为 build/tested-build-info.json；完整游戏证据保存在 archive/installed-development-0.2/evidence/20261029-132016-33200-dll。
 
-玩家不需要本主工程、Node.js、编译器、Python、独立启动器或测试观察器。
+玩家不需要本主工程、Node.js、额外安装的编译器、Python、独立启动器或测试观察器。
 玩家安装、配置及卸载说明在 runtime/PBZModLoader-安装说明.txt，并随 ZIP 发布。
+
+### 启动时编译 TypeScript
+
+将 `main.ts` 及它引用的 `.ts`/`.js` 文件放在 `mods/<MOD ID>/`，自动发现时优先使用 `main.ts`，没有时使用 `main.js`。显式 INI Entry 可以选择 `.ts` 或 `.js`。
+
+启动时使用随包提供的原生 TypeScript 编译器生成 ES2020/CommonJS，产物位于 `Content/JavaScript/PBZModLoader/generated-mods/`，不覆盖源码。每次启动重建缓存，不做热重载。编译只转换语法，不执行完整类型检查；语法错误、编译器缺失或超时会禁用本次启动中的对应 MOD，诊断写入加载器日志及缓存中的 `compile.log`。引用文件应位于入口目录内，运行时依赖仍须随 MOD 提供。
+
+构建前运行 `npm ci`；`build.ps1` 自动准备随包编译器及许可证，玩家不需要安装 Node.js。

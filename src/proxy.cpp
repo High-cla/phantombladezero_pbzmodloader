@@ -96,9 +96,9 @@ extern "C" void pbz_initialize() noexcept {
         const auto sites=resolveSites(image);
         { std::ostringstream message; message<<"signatures validated; call-rva=0x"<<std::hex<<sites.call<<" start-rva=0x"<<sites.start;
           for(auto rva:sites.loggers) message<<" logger-rva=0x"<<rva; log(message.str()); }
-        auto generated=config(root);
         for(auto file:{L"bootstrap.js",L"manager.js"}) if(!fs::is_regular_file(scripts/file)) throw std::runtime_error("Missing loader JS");
         syncMods(root,scripts);
+        auto generated=config(root,scripts);
         auto temporary=scripts/(L"generated-config."+std::to_wstring(GetCurrentProcessId())+L".tmp");
         { std::ofstream f(temporary,std::ios::binary); f<<generated; f.close(); check(bool(f),"write config"); }
         check(MoveFileExW(temporary.c_str(),(scripts/L"generated-config.js").c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH),"publish config");

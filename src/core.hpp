@@ -58,7 +58,38 @@ int number(const std::wstring& s,int max) {
     if(s.empty() || s.find_first_not_of(L"0123456789")!=std::wstring::npos) throw std::runtime_error("Invalid numeric config");
     auto n=std::stoul(s); if(n>(unsigned)max) throw std::runtime_error("Config number out of range"); return (int)n;
 }
-std::string config(const fs::path& root) {
+// Compile in a separate bundled native compiler process; diagnostics stay in cache.
+void compileTs(const fs::path& root,const fs::path& scripts,const std::string& entry) {
+    auto source=root/fs::u8path(entry);
+    auto destination=scripts/L"generated-mods"/fs::u8path(entry.substr(5)).parent_path();
+    fs::create_directories(destination);
+    auto compiler=root/L"compiler/tsc.exe";
+    if(!fs::is_regular_file(compiler)) throw std::runtime_error("Missing bundled compiler/tsc.exe");
+    auto quote=[](const fs::path& p){return L"\""+p.wstring()+L"\"";};
+    std::wstring command=quote(compiler)+L" --ignoreConfig --noCheck --noEmitOnError --target ES2020 --module commonjs --pretty false --rootDir "+quote(source.parent_path())+L" --outDir "+quote(destination)+L" "+quote(source);
+    SECURITY_ATTRIBUTES security{sizeof(SECURITY_ATTRIBUTES),nullptr,TRUE};
+    auto diagnostic=destination/L"compile.log";
+    Handle out(CreateFileW(diagnostic.c_str(),GENERIC_WRITE,FILE_SHARE_READ,&security,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,nullptr));
+    check(out.h!=INVALID_HANDLE_VALUE,"compiler log");
+    Handle input(CreateFileW(L"NUL",GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE,&security,OPEN_EXISTING,0,nullptr));
+    STARTUPINFOW startup{}; startup.cb=sizeof(startup); startup.dwFlags=STARTF_USESTDHANDLES;
+    startup.hStdOutput=out.h; startup.hStdError=out.h; startup.hStdInput=input.h;
+    PROCESS_INFORMATION info{};
+    check(CreateProcessW(compiler.c_str(),command.data(),nullptr,nullptr,TRUE,CREATE_NO_WINDOW,nullptr,root.c_str(),&startup,&info),"start TS compiler");
+    Handle process(info.hProcess),thread(info.hThread);
+    if(WaitForSingleObject(process.h,60000)!=WAIT_OBJECT_0) {
+        TerminateProcess(process.h,1); WaitForSingleObject(process.h,INFINITE);
+        throw std::runtime_error("TS compiler timed out");
+    }
+    DWORD code=1; check(GetExitCodeProcess(process.h,&code),"compiler exit");
+    if(code) {
+        std::ifstream f(diagnostic); std::ostringstream message; message<<f.rdbuf();
+        throw std::runtime_error("TS compilation failed: "+message.str());
+    }
+    auto output=destination/source.filename(); output.replace_extension(L".js");
+    if(!fs::is_regular_file(output)) throw std::runtime_error("TS compiler produced no entry");
+}
+std::string config(const fs::path& root,const fs::path& scripts={}) {
     fs::path p=root/L"mods.ini"; if(!fs::is_regular_file(p)) throw std::runtime_error("Missing mods.ini");
     if(ini(p,L"Loader",L"Version")!=L"1") throw std::runtime_error("Unsupported config version");
     auto countValue=ini(p,L"Loader",L"Count");
@@ -71,22 +102,22 @@ std::string config(const fs::path& root) {
         auto id=utf8(ini(p,section,L"Id")), entry=utf8(ini(p,section,L"Entry"));
         auto enabled=number(ini(p,section,L"Enabled"),1);
         if(!std::regex_match(id,std::regex("[A-Za-z0-9_-]+")) || !ids.insert(id).second ||
-           !std::regex_match(entry,std::regex("mods/([A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.js"))) throw std::runtime_error("Invalid or duplicate MOD: "+id);
+           !std::regex_match(entry,std::regex("mods/([A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(js|ts)"))) throw std::runtime_error("Invalid or duplicate MOD: "+id);
         auto overrideValue=ini(p,L"Mods",fs::u8path(id).wstring().c_str());
         if(!overrideValue.empty()) enabled=number(overrideValue,1);
         mods.push_back({id,entry,enabled!=0});
     }
-    // Only immediate child directories with main.js are MODs; other JS files
+    // Only immediate child directories with main.ts/main.js are MODs; other files
     // are dependencies. Sort by ID so filesystem enumeration cannot reorder MODs.
     std::map<std::string,std::string> discovered;
     if(fs::is_directory(root/L"mods")) for(const auto& item:fs::directory_iterator(root/L"mods")) {
         auto id=utf8(item.path().filename().wstring());
         if(!item.is_directory() || !std::regex_match(id,std::regex("[A-Za-z0-9_-]+")) ||
-           !fs::is_regular_file(item.path()/L"main.js")) continue;
-        auto entry="mods/"+id+"/main.js";
+           (!fs::is_regular_file(item.path()/L"main.js") && !fs::is_regular_file(item.path()/L"main.ts"))) continue;
+        auto entry="mods/"+id+(fs::is_regular_file(item.path()/L"main.ts")?"/main.ts":"/main.js");
         bool configured=false;
         for(const auto& mod:mods) if(_stricmp(mod.id.c_str(),id.c_str())==0 ||
-            _stricmp(mod.entry.c_str(),entry.c_str())==0) { configured=true; break; }
+            _stricmp(fs::u8path(mod.entry).replace_extension().string().c_str(),fs::u8path(entry).replace_extension().string().c_str())==0) { configured=true; break; }
         if(!configured) discovered.emplace(id,entry);
     }
     for(const auto& [id,entry]:discovered) {
@@ -96,11 +127,18 @@ std::string config(const fs::path& root) {
     if(mods.size()>128) throw std::runtime_error("Too many MODs (maximum 128)");
     for(size_t i=0;i<mods.size();++i) {
         const auto& mod=mods[i];
-        const auto& id=mod.id; const auto& entry=mod.entry; bool enabled=mod.enabled;
+        const auto& id=mod.id; auto entry=mod.entry; bool enabled=mod.enabled;
         if(enabled) {
             auto file=fs::weakly_canonical(root/fs::u8path(entry));
             auto relative=file.lexically_relative(fs::canonical(root/L"mods"));
             if(relative.empty() || *relative.begin()==L".." || !fs::is_regular_file(file)) throw std::runtime_error("Missing or escaped entry: "+entry);
+        }
+        if(fs::u8path(entry).extension()==L".ts") {
+            if(enabled && !scripts.empty()) {
+                try { compileTs(root,scripts,entry); }
+                catch(const std::exception& e) { enabled=false; log("MOD "+id+" skipped: "+e.what()); }
+            }
+            entry=entry.substr(0,entry.size()-3)+".js";
         }
         if(i) result+=",";
         result+="{\"id\":\""+id+"\",\"enabled\":"+(enabled?"true":"false")+",\"entry\":\""+entry+"\"}";

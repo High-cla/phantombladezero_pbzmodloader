@@ -95,6 +95,18 @@ int main() {
     assert(config(temp).find("\"id\":\"a\",\"enabled\":false")!=std::string::npos);
     fs::remove(temp/L"mods/z/main.js");
     assert(config(temp).find("\"id\":\"z\"")==std::string::npos);
+    { std::ofstream f(temp/L"mods/a/main.ts"); f<<"import { value } from './helper'; export const answer: number = value;"; }
+    { std::ofstream f(temp/L"mods/a/helper.ts"); f<<"export const value: number = 42;"; }
+    fs::copy(fs::current_path()/L"runtime/ProjectPBZ/PBZModLoader/compiler",temp/L"compiler",fs::copy_options::recursive);
+    iniTest(automatic,true);
+    syncMods(temp,temp/L"scripts");
+    generated=config(temp,temp/L"scripts");
+    assert(generated.find("\"id\":\"a\",\"enabled\":true")!=std::string::npos);
+    assert(fs::is_regular_file(temp/L"scripts/generated-mods/a/helper.js"));
+    { std::ofstream f(temp/L"mods/a/main.ts"); f<<"export const broken: = ;"; }
+    syncMods(temp,temp/L"scripts");
+    generated=config(temp,temp/L"scripts");
+    assert(generated.find("\"id\":\"a\",\"enabled\":false")!=std::string::npos);
     fs::remove_all(temp/L"mods");
     iniTest(automatic,true);
     assert(config(temp).find("\"mods\":[]")!=std::string::npos);
