@@ -66,6 +66,9 @@ type UnknownField = UE.SoftObjectPath['SubPathString'];
 const unknownField: UnknownField = 1;
 declare const attribute: UE.GameplayAttribute;
 const fieldPath: string = attribute.Attribute;
+const largeEnumFlag: UE.ESkeletalMeshAsyncProperties = UE.ESkeletalMeshAsyncProperties.TargetMeshDeformers;
+// @ts-expect-error This native integer loses precision in the game's number binding.
+UE.ESkeletalMeshAsyncProperties.ESkeletalMeshAsyncProperties_MAX;
 attribute.Attribute = '/Script/Engine.Actor:bHidden';
 UE.KismetSystemLibrary.SetFieldPathPropertyByName(null, 'Missing', fieldPath);
 // @ts-expect-error Field paths require strings.

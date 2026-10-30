@@ -1095,6 +1095,7 @@ declare module 'ue' {
     /** /Script/MovieSceneTracks.MovieSceneDirectorBlueprintConditionData — reflection-generated, not individually call-tested. */
     interface MovieSceneDirectorBlueprintConditionData {
         "Function": UE.Function | null | undefined;
+        /** FieldPath target kind: Property. Runtime string conversion may not enforce this constraint. */
         "ConditionContextProperty": string;
     }
     namespace $Static {
@@ -1274,6 +1275,7 @@ declare module 'ue' {
     /** /Script/MovieSceneTracks.MovieSceneEventPtrs — reflection-generated, not individually call-tested. */
     interface MovieSceneEventPtrs {
         "Function": UE.Function | null | undefined;
+        /** FieldPath target kind: Property. Runtime string conversion may not enforce this constraint. */
         "BoundObjectProperty": string;
     }
     namespace $Static {

@@ -1,0 +1,918 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-30",
+  "gameBuild": "CL-301524_JKS-17219",
+  "exeSha256": "7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4",
+  "sources": [
+    {
+      "path": "build/binding-support-20261030/loader-final.log",
+      "sha256": "4639efdfe32a35bbfe0ab0a9b4af69dab5f3382bf1fb800210fd7da9a5f5cea1"
+    },
+    {
+      "path": "build/binding-support-20261030/loader-first.log",
+      "sha256": "528317de2d6e416e36738396bac1ae4d0b32fa84239e523e59f4368604af3412"
+    },
+    {
+      "path": "build/binding-support-20261030/0001.js",
+      "sha256": "9a37a833186f5cc072cfadcef0dae77deb24f194996a5160819f66c14b926e9d"
+    },
+    {
+      "path": "build/binding-support-20261030/0002.js",
+      "sha256": "0d5f92e7aef93c89c3efa633220dcd96a2a7d036fba7cdf11c235bf9d1bd3aad"
+    },
+    {
+      "path": "build/binding-support-20261030/0003.js",
+      "sha256": "44c39b43964d402977f3ac3b4cd7c7193b6eef366a48daefec0f55fd1b33109d"
+    },
+    {
+      "path": "build/binding-support-20261030/0004.js",
+      "sha256": "eb0a18f018a60fb4b02c3078ba0ad0f5b3594871d5067f0d6e25b557901c310d"
+    },
+    {
+      "path": "build/binding-support-20261030/0005.js",
+      "sha256": "3bca613a332c74cb6237e98a4db407400a1b6d6698a4a4b14731bbec0eeba75e"
+    },
+    {
+      "path": "build/binding-support-20261030/safe-fieldpath.js",
+      "sha256": "2d3bfe986d8eeaf960d659883c1615d7524f06c6ba615db73a27291db54b994a"
+    },
+    {
+      "path": "build/binding-support-20261030/crash.dmp",
+      "sha256": "bfc960796e55e8e451771b5c0246dcf2d98f06077b7b5bab619a18d3fe151da1"
+    }
+  ],
+  "scope": "55 accessors; 35 readable struct fields; 4 sample writes; all 61 enum members; exact-integer check of 8 large enum members; two FieldPath writes on a fresh transient UObject. Not a universal callable-API guarantee.",
+  "properties": [
+    {
+      "target": "/Script/CoreUObject.SoftObjectPath:SubPathString",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/CoreUObject.VerseClass:PredictsVarNames",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/CoreUObject.VerseEnum:QualifiedName",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/CoreUObject.VerseIntConstraints:ClampMin",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/CoreUObject.VerseIntConstraints:ClampMax",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/CoreUObject.VerseStruct:QualifiedName",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/Engine.FontFace:PlatformRasterizationModeOverrides",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/Engine.MaterialInterface:CachedTexturesSamplingInfo",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/Engine.SkeletalMeshSourceModel:CachedHasVertexColors",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/Engine.TextureLODGroup:MipBias",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/Engine.WorldPartitionRuntimeCellData:CellBounds",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/InteractiveToolsFramework.GizmoPerStateValueDouble:Default",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/InteractiveToolsFramework.GizmoPerStateValueDouble:Hover",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/InteractiveToolsFramework.GizmoPerStateValueDouble:Interact",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/InteractiveToolsFramework.GizmoPerStateValueDouble:Select",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/InteractiveToolsFramework.GizmoPerStateValueDouble:Subdue",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/InteractiveToolsFramework.GizmoPerStateValueLinearColor:Default",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/InteractiveToolsFramework.GizmoPerStateValueLinearColor:Hover",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/InteractiveToolsFramework.GizmoPerStateValueLinearColor:Interact",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/InteractiveToolsFramework.GizmoPerStateValueLinearColor:Select",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/InteractiveToolsFramework.GizmoPerStateValueLinearColor:Subdue",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/LegoAbility.LegoCameraShakePreviewerAddParams:DurationOverride",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/MovieScene.MovieSceneShotMetaData:bIsNoGood",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/MovieScene.MovieSceneShotMetaData:bIsFlagged",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/MovieScene.MovieSceneShotMetaData:bIsRecorded",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/MovieScene.MovieSceneShotMetaData:bIsSubSequence",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/MovieScene.MovieSceneShotMetaData:FavoriteRating",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/Niagara.NiagaraEditorPreviewActor:CircleEndRadius",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/Niagara.NiagaraEditorPreviewActor:CircleRotationRate",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/Niagara.NiagaraRendererMaterialStaticBoolParameter:StaticValue",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/Niagara.NiagaraRendererReadbackParameters:ViewIndexToCapture",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/Niagara.NiagaraSystem:LargeWorldCoordinateTileUpdateMode",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/PBZCombatAsset.GA_ReinforceNextAbilityBase:PreCalculationModification",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/PBZCombatAsset.GA_ReinforceNextAbilityBase:PreTakeModification",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/PBZCombatAsset.ReinforceNextAbilityGameplayEffectComponent:PreCalculationModification",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/PBZCombatAsset.ReinforceNextAbilityGameplayEffectComponent:PreTakeModification",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/PCG.PCGGraphTaskInput:UpstreamPin",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/PCG.PCGGraphTaskInput:DownstreamPin",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/SGameCombatSystem.BulletEvent_FilterEventActor:PlayerControlled",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/SGameCombatSystem.BulletEvent_FilterEventActor:IsBulletTarget",
+      "get": "function",
+      "set": "function",
+      "instance": false,
+      "read": null,
+      "status": "binding-only-no-instance"
+    },
+    {
+      "target": "/Script/SGameCombatSystem.RuntimeSlomoDataItem:ActiveItem",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/Serialization.StructSerializerOptionalTestStruct:StrOptional",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/Serialization.StructSerializerOptionalTestStruct:StrOptionalUnset",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/Serialization.StructSerializerOptionalTestStruct:IntOptional",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/Serialization.StructSerializerOptionalTestStruct:IntOptionalUnset",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/Serialization.StructSerializerOptionalTestStruct:NameOptional",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/Serialization.StructSerializerOptionalTestStruct:NameOptionalUnset",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/Serialization.StructSerializerOptionalTestStruct:StructOptional",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/Serialization.StructSerializerOptionalTestStruct:StructOptionalUnset",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/SlateCore.SearchBoxStyle:ImageSizeOverride",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/SlateCore.ToolBarStyle:VerticalAlignmentOverride",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/SlateCore.WrapButtonStyle:ComboButtonStyle",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/SlateCore.WrapButtonStyle:SeparatorBrush",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/SlateCore.WrapButtonStyle:SeparatorThickness",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    },
+    {
+      "target": "/Script/SlateCore.WrapButtonStyle:SeparatorPadding",
+      "get": "function",
+      "set": "function",
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "status": "read-undefined"
+    }
+  ],
+  "enumValues": [
+    {
+      "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+      "member": "ESkeletalMeshAsyncProperties::bSupportRayTracing",
+      "value": "9007199254740992",
+      "runtimeType": "number",
+      "runtimeInteger": "9007199254740992",
+      "exact": true
+    },
+    {
+      "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+      "member": "ESkeletalMeshAsyncProperties::RayTracingMinLOD",
+      "value": "18014398509481984",
+      "runtimeType": "number",
+      "runtimeInteger": "18014398509481984",
+      "exact": true
+    },
+    {
+      "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+      "member": "ESkeletalMeshAsyncProperties::ClothLODBiasMode",
+      "value": "36028797018963968",
+      "runtimeType": "number",
+      "runtimeInteger": "36028797018963968",
+      "exact": true
+    },
+    {
+      "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+      "member": "ESkeletalMeshAsyncProperties::DefaultMeshDeformer",
+      "value": "72057594037927936",
+      "runtimeType": "number",
+      "runtimeInteger": "72057594037927936",
+      "exact": true
+    },
+    {
+      "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+      "member": "ESkeletalMeshAsyncProperties::OverlayMaterial",
+      "value": "144115188075855872",
+      "runtimeType": "number",
+      "runtimeInteger": "144115188075855872",
+      "exact": true
+    },
+    {
+      "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+      "member": "ESkeletalMeshAsyncProperties::OverlayMaterialMaxDrawDistance",
+      "value": "288230376151711744",
+      "runtimeType": "number",
+      "runtimeInteger": "288230376151711744",
+      "exact": true
+    },
+    {
+      "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+      "member": "ESkeletalMeshAsyncProperties::TargetMeshDeformers",
+      "value": "576460752303423488",
+      "runtimeType": "number",
+      "runtimeInteger": "576460752303423488",
+      "exact": true
+    },
+    {
+      "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+      "member": "ESkeletalMeshAsyncProperties::ESkeletalMeshAsyncProperties_MAX",
+      "value": "576460752303423489",
+      "runtimeType": "number",
+      "runtimeInteger": "576460752303423488",
+      "exact": false
+    }
+  ],
+  "conversions": [
+    {
+      "event": "after",
+      "sequence": 4,
+      "step": "new StructSerializerOptionalTestStruct",
+      "result": {}
+    },
+    {
+      "event": "after",
+      "sequence": 4,
+      "step": "StructSerializerOptionalTestStruct.IntOptional",
+      "result": {
+        "before": {
+          "type": "undefined"
+        },
+        "after": {
+          "type": "undefined"
+        }
+      }
+    },
+    {
+      "event": "after",
+      "sequence": 4,
+      "step": "StructSerializerOptionalTestStruct.StrOptional",
+      "result": {
+        "before": {
+          "type": "undefined"
+        },
+        "after": {
+          "type": "undefined"
+        }
+      }
+    },
+    {
+      "event": "after",
+      "sequence": 4,
+      "step": "StructSerializerOptionalTestStruct.NameOptional",
+      "result": {
+        "before": {
+          "type": "undefined"
+        },
+        "after": {
+          "type": "undefined"
+        }
+      }
+    },
+    {
+      "event": "after",
+      "sequence": 4,
+      "step": "new SoftObjectPath",
+      "result": {}
+    },
+    {
+      "event": "after",
+      "sequence": 4,
+      "step": "SoftObjectPath.SubPathString",
+      "result": {
+        "before": {
+          "type": "undefined"
+        },
+        "after": {
+          "type": "undefined"
+        }
+      }
+    },
+    {
+      "event": "after",
+      "sequence": 4,
+      "step": "enum-exact-integers",
+      "result": [
+        {
+          "name": "bSupportRayTracing",
+          "type": "number",
+          "integer": "9007199254740992"
+        },
+        {
+          "name": "RayTracingMinLOD",
+          "type": "number",
+          "integer": "18014398509481984"
+        },
+        {
+          "name": "ClothLODBiasMode",
+          "type": "number",
+          "integer": "36028797018963968"
+        },
+        {
+          "name": "DefaultMeshDeformer",
+          "type": "number",
+          "integer": "72057594037927936"
+        },
+        {
+          "name": "OverlayMaterial",
+          "type": "number",
+          "integer": "144115188075855872"
+        },
+        {
+          "name": "OverlayMaterialMaxDrawDistance",
+          "type": "number",
+          "integer": "288230376151711744"
+        },
+        {
+          "name": "TargetMeshDeformers",
+          "type": "number",
+          "integer": "576460752303423488"
+        },
+        {
+          "name": "ESkeletalMeshAsyncProperties_MAX",
+          "type": "number",
+          "integer": "576460752303423488"
+        }
+      ]
+    }
+  ],
+  "fieldPath": [
+    {
+      "event": "after",
+      "sequence": 5,
+      "step": "new VersePersistentVar",
+      "result": {}
+    },
+    {
+      "event": "after",
+      "sequence": 5,
+      "step": "VersePersistentVar.write-valid",
+      "result": {
+        "type": "string",
+        "value": "/Script/CoreUObject.VerseClass:VarAccessors"
+      }
+    },
+    {
+      "event": "after",
+      "sequence": 5,
+      "step": "VersePersistentVar.reject-wrong-kind",
+      "result": {
+        "rejected": false,
+        "readback": {
+          "type": "string",
+          "value": "/Script/Engine.Actor:bHidden"
+        }
+      }
+    },
+    {
+      "event": "after",
+      "sequence": 5,
+      "step": "new ArrayPropertyNetSerializerConfig",
+      "result": {}
+    },
+    {
+      "event": "after",
+      "sequence": 5,
+      "step": "ArrayPropertyNetSerializerConfig.write-valid",
+      "result": {
+        "type": "string",
+        "value": "/Script/Engine.Actor:Tags"
+      }
+    },
+    {
+      "event": "after",
+      "sequence": 5,
+      "step": "ArrayPropertyNetSerializerConfig.reject-wrong-kind",
+      "result": {
+        "rejected": false,
+        "readback": {
+          "type": "string",
+          "value": "/Script/Engine.Actor:bHidden"
+        }
+      }
+    },
+    {
+      "event": "after",
+      "sequence": 5,
+      "step": "new GameplayAttribute",
+      "result": {}
+    },
+    {
+      "event": "after",
+      "sequence": 5,
+      "step": "GameplayAttribute.write-valid",
+      "result": {
+        "type": "string",
+        "value": "/Script/Engine.Actor:bHidden"
+      }
+    },
+    {
+      "event": "after",
+      "sequence": 5,
+      "step": "new-transient-GEAR_AttributeRange",
+      "result": {}
+    },
+    {
+      "event": "after",
+      "sequence": 5,
+      "step": "valid-object",
+      "result": {
+        "valid": true,
+        "name": "GEAR_AttributeRange_2147478516"
+      }
+    },
+    {
+      "event": "after",
+      "sequence": 5,
+      "step": "write-object-fieldpath",
+      "result": {
+        "before": {
+          "type": "string",
+          "value": ""
+        },
+        "readback": {
+          "type": "string",
+          "value": "/Script/Engine.Actor:bHidden"
+        }
+      }
+    },
+    {
+      "event": "after",
+      "sequence": 5,
+      "step": "second-write-object-fieldpath",
+      "result": {
+        "type": "string",
+        "value": "/Script/Engine.Actor:bReplicates"
+      }
+    }
+  ],
+  "fieldPathFunction": {
+    "status": "unsafe-unverified",
+    "directFieldPathClassOwnersInCaptures": 0,
+    "positiveMutationVerified": false,
+    "observedCrash": {
+      "sequence": 5,
+      "lastOperation": "function-valid-object-nested-name",
+      "objectClass": "/Script/SGameUtils.GEAR_AttributeRange",
+      "propertyName": "Attribute.Attribute",
+      "parameterValue": "/Script/Engine.Actor:bReplicates",
+      "processId": 62588,
+      "log": "build/binding-support-20261030/loader-first.log"
+    },
+    "note": "Direct nested property assignment succeeded twice on a fresh transient UObject. The Kismet function terminated the process on a nested property name. No successful non-null function mutation was established. Do not use nested names or assume invalid names are ignored."
+  },
+  "previousExit": {
+    "processId": 62008,
+    "status": "unresolved-not-reproduced",
+    "oldLog": "build/property-mapping-20261030/loader-second.log",
+    "lastEvent": "begin, before first property result",
+    "replays": 2,
+    "replayTarget": [
+      {
+        "event": "after",
+        "sequence": 1,
+        "step": "Class.Load",
+        "result": {}
+      },
+      {
+        "event": "after",
+        "sequence": 1,
+        "step": "blueprint.tojs"
+      },
+      {
+        "event": "after",
+        "sequence": 1,
+        "step": "property-descriptor",
+        "result": {
+          "get": "function",
+          "set": "function"
+        }
+      },
+      {
+        "event": "after",
+        "sequence": 1,
+        "step": "load-default-object",
+        "result": {}
+      },
+      {
+        "event": "after",
+        "sequence": 1,
+        "step": "read-enum",
+        "result": {
+          "type": "number",
+          "value": 5
+        }
+      }
+    ],
+    "note": "First target succeeded in both warm and fresh processes. Old crash report had already disappeared; encrypted game logs are not readable stack traces. The new nested-name crash is a distinct observation, not proof of the old cause."
+  },
+  "upstreamComparison": {
+    "url": "https://github.com/Tencent/puerts/blob/master/unreal/Puerts/Source/JsEnv/Private/PropertyTranslator.cpp",
+    "sha256": "49d4d1486ddaa9f15291f3af4e8fa3e924ea888653669b3dd3853922155c45ae",
+    "finding": "No Optional/Utf8/Ansi branches; fallback DoNothingPropertyTranslator returns undefined and accepts writes without conversion.",
+    "limitation": "Reference only; not the exact game source. Game accepted mismatched FieldPath target kinds unlike this upstream source."
+  },
+  "cleanup": {
+    "probeRemoved": true,
+    "configRestored": true,
+    "sha256": "8AC9142CE65A2692CCDD4478F468AC590706002FA6D433B09EC4CC963538A22E",
+    "gameExited": true
+  }
+}

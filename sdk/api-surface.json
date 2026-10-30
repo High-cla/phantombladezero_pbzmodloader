@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "sdkVersion": "0.3.1",
+  "sdkVersion": "0.3.2",
   "kind": "reflection-generated-with-runtime-verified-supplements",
   "testedAt": "2026-10-30",
   "game": {
@@ -133,7 +133,7 @@
     "enums": 3253,
     "functions": 49540,
     "properties": 119260,
-    "enumValues": 19511,
+    "enumValues": 19518,
     "manualMembers": 34,
     "uniqueRecords": 90946,
     "excludedTypes": 352,
@@ -227,5 +227,14 @@
     "functions": 1,
     "remainingUnresolved": 55,
     "note": "Optional/UTF-8 samples return undefined; ANSI and remaining class-only fields have no verified value mapping. One incomplete process-exit run excluded; successful first and third runs retained. Field-path function tested with null target for parameter marshaling only."
+  },
+  "bindingSupportVerification": {
+    "report": "binding-support-verification.json",
+    "verifiedLargeEnumFlags": 7,
+    "precisionLossEnumValues": 1,
+    "unresolvedProperties": 55,
+    "validObjectFieldPathWrites": 2,
+    "fieldPathFunction": "unsafe-unverified",
+    "previousExit": "unresolved-not-reproduced"
   }
 }

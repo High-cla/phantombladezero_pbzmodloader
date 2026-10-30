@@ -22,6 +22,7 @@ declare module 'ue' {
     interface ArrayPropertyNetSerializerConfig extends UE.NetSerializerConfig {
         "MaxElementCount": number;
         "ElementCountBitCount": number;
+        /** FieldPath target kind: ArrayProperty. Runtime string conversion may not enforce this constraint. */
         "Property": string;
     }
     namespace $Static {
@@ -248,6 +249,7 @@ declare module 'ue' {
     const FieldOfViewNetObjectPrioritizerConfig: UE.$Static.FieldOfViewNetObjectPrioritizerConfig & UE.$ClassType<UE.FieldOfViewNetObjectPrioritizerConfig>;
     /** /Script/IrisCore.FieldPathNetSerializerConfig — reflection-generated, not individually call-tested. */
     interface FieldPathNetSerializerConfig extends UE.NetSerializerConfig {
+        /** FieldPath target kind: Property. Runtime string conversion may not enforce this constraint. */
         "Property": string;
     }
     namespace $Static {
@@ -378,6 +380,7 @@ declare module 'ue' {
     const IrisObjectReferencePackageMap: UE.$Static.IrisObjectReferencePackageMap & UE.$ClassType<UE.IrisObjectReferencePackageMap>;
     /** /Script/IrisCore.LastResortPropertyNetSerializerConfig — reflection-generated, not individually call-tested. */
     interface LastResortPropertyNetSerializerConfig extends UE.NetSerializerConfig {
+        /** FieldPath target kind: Property. Runtime string conversion may not enforce this constraint. */
         "Property": string;
         "bExcludeFromDefaultStateHash": boolean;
         "MaxQuantizedSizeBits": number;

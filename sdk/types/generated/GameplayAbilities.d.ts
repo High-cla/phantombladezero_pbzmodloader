@@ -2117,6 +2117,7 @@ declare module 'ue' {
     /** /Script/GameplayAbilities.GameplayAttribute — reflection-generated, not individually call-tested. */
     interface GameplayAttribute {
         "AttributeName": string;
+        /** FieldPath target kind: Property. Runtime string conversion may not enforce this constraint. */
         "Attribute": string;
         "AttributeOwner": UE.Struct | null | undefined;
     }
@@ -3050,6 +3051,7 @@ declare module 'ue' {
     /** /Script/GameplayAbilities.GameplayTagBlueprintPropertyMapping — reflection-generated, not individually call-tested. */
     interface GameplayTagBlueprintPropertyMapping {
         "TagToMap": UE.GameplayTag;
+        /** FieldPath target kind: Property. Runtime string conversion may not enforce this constraint. */
         "PropertyToEdit": string;
         "PropertyName": string;
         "PropertyGuid": UE.Guid;

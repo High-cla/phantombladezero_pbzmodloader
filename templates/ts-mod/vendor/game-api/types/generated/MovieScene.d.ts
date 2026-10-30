@@ -787,6 +787,7 @@ declare module 'ue' {
     /** /Script/MovieScene.MovieSceneDynamicBinding — reflection-generated, not individually call-tested. */
     interface MovieSceneDynamicBinding {
         "Function": UE.Function | null | undefined;
+        /** FieldPath target kind: Property. Runtime string conversion may not enforce this constraint. */
         "ResolveParamsProperty": string;
     }
     namespace $Static {

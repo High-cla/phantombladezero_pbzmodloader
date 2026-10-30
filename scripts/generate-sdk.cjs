@@ -39,7 +39,7 @@ function canonical(value) {
 function generate(inputs, supplemental) {
     const records = new Map(), origins = new Map();
     const memberNameVariants = new Map();
-    const report = {schemaVersion:1, generatorVersion:3, captures:[], conflicts:[], implementationChanges:[], propertyResolutions:[], metadataLimitedProperties:[], excludedTypes:[], omittedMembers:[], omittedEnumValues:[], unresolvedProperties:[], ignoredLocals:0, nameCollisions:[], inheritanceOverrides:[], counts:{}};
+    const report = {schemaVersion:1, generatorVersion:4, captures:[], conflicts:[], implementationChanges:[], propertyResolutions:[], metadataLimitedProperties:[], excludedTypes:[], omittedMembers:[], omittedEnumValues:[], verifiedLargeEnumValues:[], unresolvedProperties:[], ignoredLocals:0, nameCollisions:[], inheritanceOverrides:[], counts:{}};
     let build, exeSha256;
     for (const input of inputs.slice().sort((a,b) => a.name.localeCompare(b.name, 'en'))) {
         // Read one capture at a time: batch inventories repeat a large native graph.
@@ -99,6 +99,8 @@ function generate(inputs, supplemental) {
     }
     if (report.conflicts.length) throw Error('Conflicting definitions: ' + quote(report.conflicts.slice(0,20)));
     report.build = build; report.exeSha256 = exeSha256;
+    const binding = supplemental.bindingVerification;
+    if(binding && (binding.build!==build || binding.exeSha256!==exeSha256)) throw Error('Runtime verification build mismatch');
     report.memberNameVariants=[...memberNameVariants.values()].sort((a,b)=>a.owner.localeCompare(b.owner,'en'));
     const all = [...records.values()].sort((a,b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
     const types = all.filter(r => r.kind !== 'Function' && !ephemeral(r) && !r.unresolved);
@@ -196,7 +198,17 @@ function generate(inputs, supplemental) {
             if (r.kind === 'Enum') {
                 stats.enums++; const values=[], entries=[];
                 for (const v of r.values || []) {
-                    if (!Number.isSafeInteger(v.value)) {report.omittedEnumValues.push({path:r.path,member:v.name,value:v.value,reason:'enum value outside safe JS integer range; runtime enum representation unverified'});continue;}
+                    if (!Number.isSafeInteger(v.value)) {
+                        const evidence=binding?.enumValues?.find(e=>e.path===r.path && e.member===v.name && e.value===String(v.value));
+                        const n=Number(v.value);
+                        // Permission to emit is build- and member-specific. A rounded
+                        // JS number must never be presented as the native integer.
+                        const exact=Number.isInteger(n) && BigInt(n).toString()===String(v.value);
+                        if(!exact || evidence?.runtimeType!=='number' || evidence.runtimeInteger!==String(v.value)) {
+                            report.omittedEnumValues.push({path:r.path,member:v.name,value:v.value,reason:evidence ? 'runtime number loses native integer precision' : 'enum value outside safe JS integer range; runtime enum representation unverified'});continue;
+                        }
+                        report.verifiedLargeEnumValues.push({...evidence,evidence:binding.evidence});
+                    }
                     entries.push(v);
                     values.push(v.value); stats.enumValues++;
                 }
@@ -204,7 +216,10 @@ function generate(inputs, supplemental) {
                 if (nested) lines.push('    type '+id+' = '+([...new Set(values)].join(' | ')||'never')+';');
                 else {
                     lines.push('    enum '+id+' {');
-                    for (const v of entries) lines.push('        '+quote(v.name.split('::').pop())+' = '+v.value+',');
+                    for (const v of entries) {
+                        if(!Number.isSafeInteger(v.value)) lines.push('        /** Verified exact runtime number; outside safe integer range. Do not use JS bitwise operators. */');
+                        lines.push('        '+quote(v.name.split('::').pop())+' = '+v.value+',');
+                    }
                     lines.push('    }');
                 }
             } else {
@@ -217,6 +232,7 @@ function generate(inputs, supplemental) {
                     own.push(...propertyNames);
                     try {
                         const t=mapped(p);
+                        if(p.kind==='FieldPathProperty' && p.fieldClass) props.push('        /** FieldPath target kind: '+p.fieldClass+'. Runtime string conversion may not enforce this constraint. */');
                         if(p.enumMetadataMissing) {
                             report.metadataLimitedProperties.push({owner:r.path,member:p.name,reason:'UEnum metadata absent; verified numeric storage, enumerator names unavailable'});
                             props.push('        /** Numeric enum storage; UEnum metadata and enumerator names are absent. */');
@@ -241,6 +257,8 @@ function generate(inputs, supplemental) {
                     if (!f.static) own.push(f.name);
                     try {
                         const decl='        '+quote(f.name)+signature(f)+';';
+                        const warning=binding?.memberWarnings?.[fp];
+                        if(warning) (f.static?statics:methods).push('        /** @deprecated '+warning.replace(/\*\//g,'* /')+' */');
                         (f.static?statics:methods).push(decl); stats.functions++;
                     } catch(e) {report.omittedMembers.push({path:fp,reason:e.message});}
                 }

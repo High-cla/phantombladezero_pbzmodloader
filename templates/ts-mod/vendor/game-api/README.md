@@ -1,6 +1,6 @@
 # PBZ TypeScript 游戏 API
 
-`@pbz-mod-loader/game-api` 0.3.1 是 MOD 开发使用的类型声明包，为游戏提供的 `ue`、`puerts` 模块补全和检查类型。包内没有运行时代码，发布 MOD 时只携带编译后的 MOD 文件。
+`@pbz-mod-loader/game-api` 0.3.2 是 MOD 开发使用的类型声明包，为游戏提供的 `ue`、`puerts` 模块补全和检查类型。包内没有运行时代码，发布 MOD 时只携带编译后的 MOD 文件。
 
 适用构建：Steam Win64 `CL-301524_JKS-17219`，EXE SHA256 为 `7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4`。其他游戏构建和 WeGame 尚未验证。
 
@@ -13,8 +13,8 @@
 ```powershell
 # 在 PBZModLoader 仓库中生成压缩包
 npm run sdk:pack
-# 将 build/sdk/pbz-mod-loader-game-api-0.3.1.tgz 复制到 MOD 的 vendor/ 后
-npm install --save-dev ./vendor/pbz-mod-loader-game-api-0.3.1.tgz
+# 将 build/sdk/pbz-mod-loader-game-api-0.3.2.tgz 复制到 MOD 的 vendor/ 后
+npm install --save-dev ./vendor/pbz-mod-loader-game-api-0.3.2.tgz
 ```
 
 MOD 的 `tsconfig.json` 至少包含以下配置；保持完整声明检查，不需要 `skipLibCheck`：
@@ -84,7 +84,7 @@ if (cls) {
 
 生成声明不代表每项 API 都经过调用测试，也不代表所有蓝图都已采集。未加载资产、未反射且未注册绑定的成员不在覆盖范围内。函数只使用参数与返回字段，局部变量不进入声明。
 
-55 个属性保留为只读 `$Unresolved<Path>`：51 个 OptionalProperty、3 个 Utf8StrProperty、1 个 AnsiStrProperty。所有目标均确认有 getter/setter 绑定；Optional 与 UTF-8 的可实例化样本读值（含写入后读回）为 undefined，其余只检查了绑定，不能宣称可用映射。另有 5434 个内部蓝图入口/委托签名、352 个临时类型及 8 个大整数枚举值被排除。
+55 个属性保留为只读 `$Unresolved<Path>`：51 个 OptionalProperty、3 个 Utf8StrProperty、1 个 AnsiStrProperty。所有目标均确认有 getter/setter 绑定；Optional 与 UTF-8 的可实例化样本读值（含写入后读回）为 undefined，其余只检查了绑定，不能宣称可用映射。另有 5434 个内部蓝图入口/委托签名、352 个临时类型及 1 个丢失精度的大整数枚举值被排除。
 
 本次资产加载共处理 12,400 个登记表已确认的未覆盖路径，12,399 个成功。PBZCombatAsset、Game、HuaShira 三个优先目录全部完成；其余目录中 `Narrative/NarrativeUI/Widgets/Editor/WBP_DefaultQuestNode_C` 对应的类加载返回空值，未生成声明。具体完整路径和结果见仓库 `build/type-batches-20261030/final/report.md`；不代表全部游戏脚本或未反射 C++ API 已覆盖。
 
@@ -92,7 +92,19 @@ if (cls) {
 
 0.3.1 修复了 10 个空 UEnum 指针字段的解析：底层整数描述完整，实测读值为 number，声明保留数字存储并标注枚举名称元数据缺失，不猜测枚举常量。新增 19 个 FieldPath 属性映射及 `KismetSystemLibrary.SetFieldPathPropertyByName` 签名。完整逐项证据见 `property-mapping-verification.json`。
 
-FieldPath 映射为字符串，形如 `/Script/Engine.Actor:bHidden`；读取未设置字段可能得到空字符串，但写入空字符串会抛 `invalid FieldPath`。实测临时 `GameplayAttribute` 的读写回环，以及该函数的空对象目标参数转换；未验证对现有游戏对象的写入效果。一次中途进程退出的探测未计入成功结果，保留于本地证据目录。
+FieldPath 映射为字符串，形如 `/Script/Engine.Actor:bHidden`；读取未设置字段可能得到空字符串，但写入空字符串会抛 `invalid FieldPath`。实测临时 `GameplayAttribute` 的读写回环，以及该函数的空对象目标参数转换；0.3.2 另在新建临时 UObject 的嵌套 GameplayAttribute 字段上完成两次直接写入并读回；不修改现有游戏对象或类默认对象。
+
+## 0.3.2 绑定调查与安全边界
+
+逐项结果和来源哈希见 [binding-support-verification.json](binding-support-verification.json)。
+
+- **55 个属性仍保留只读未解析声明**：55 个访问器均存在，35 个可实例化结构字段均读出 undefined；Optional 的整数、字符串、Name 与 UTF-8 样本赋值后仍读出 undefined。其余 20 项没有取得实例，包括含 ANSI 字符串的 Map，不能宣称已验证其值映射。此行为与上游 PuerTS 未支持类型的空转换器一致，但上游源码不是游戏的精确版本；无法仅靠补 TypeScript 声明修复运行时转换。
+- **补入 7 个精确的大整数枚举标志位**：ESkeletalMeshAsyncProperties 的 2^53 至 2^59 均实测为 number，并用 BigInt(number) 对照原始十进制整数确认精确。它们不是 bigint，不应使用 JS 的 32 位位运算。_MAX 的原始值为 576460752303423489，游戏转换后却为 576460752303423488，与 TargetMeshDeformers 相等，继续排除。
+- **FieldPath 的有效对象写入已验证**：在临时 GEAR_AttributeRange 对象上，通过 obj.Attribute.Attribute 连续设置两个有效路径，重新读取均一致。MapProperty/ArrayProperty 的临时字段也完成匹配种类的路径回环。该游戏的转换器还接受了不匹配种类的路径，因此 string 类型并不能保证目标种类正确；生成声明现在显示反射要求的种类。
+- **SetFieldPathPropertyByName 标记为 deprecated**：向有效临时对象传入嵌套名 Attribute.Attribute 时进程在调用内退出，不能靠 JS try/catch 兜底。已采集记录中没有直接持有 FieldPath 字段的 UObject 类，所以没有取得该函数成功写入的证据。优先使用已知对象上的直接字段赋值，不把空目标测试当成有效目标测试，也不假设错误字段名会被忽略。
+- **上轮异常退出仍未定因**：旧日志只有批次开始，旧转储已不在崩溃目录；本轮对首个目标在两个进程中分步复测均成功。本轮嵌套名崩溃是独立发现，不能倒推为旧退出的原因。新转储为游戏自定义 KZ1 格式，尚无可读取的原生调用栈。
+
+完整通过的复测日志与中途退出日志分开保存，后者不计作成功验证。测试保持 1280×720 普通窗口；游戏已退出，原 MOD 配置恢复且哈希一致，临时探针已移出游戏目录。
 
 ## 映射约定
 

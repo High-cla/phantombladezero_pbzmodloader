@@ -13,6 +13,20 @@ const fn = (name,properties,extra={}) => ({path:'/Script/Test.Owner.'+name,name,
 const capture = (records, name='one', extra={}) => ({name,sha256:'fixture',data:{manifest:{schemaVersion:1,build:'test',exeSha256:'test',checks,...extra},records}});
 const decls = r => [...r.files.values()].join('\n');
 
+test('large enum constants require exact build-specific runtime evidence; rounded values stay omitted',()=>{
+    const e=type('E',{kind:'Enum',values:[{name:'E::Flag',value:'576460752303423488'},{name:'E::MAX',value:'576460752303423489'}]});
+    const bindingVerification={build:'test',exeSha256:'test',evidence:'fixture.json',enumValues:e.values.map(v=>({path:e.path,member:v.name,value:v.value,runtimeType:'number',runtimeInteger:'576460752303423488'}))};
+    const result=generate([capture([e])],{...supplemental,bindingVerification});
+    assert.match(decls(result),/"Flag" = 576460752303423488/);
+    assert.doesNotMatch(decls(result),/"MAX"/);
+    assert.equal(result.report.verifiedLargeEnumValues.length,1);
+    assert.equal(result.report.omittedEnumValues[0].reason,'runtime number loses native integer precision');
+    assert.equal(generate([capture([e])],supplemental).report.omittedEnumValues.length,2);
+    assert.throws(()=>generate([capture([e])],{...supplemental,bindingVerification:{...bindingVerification,exeSha256:'other'}}),/verification build mismatch/);
+    const wrong={...bindingVerification,enumValues:bindingVerification.enumValues.map(v=>({...v,runtimeType:'bigint'}))};
+    assert.equal(generate([capture([e])],{...supplemental,bindingVerification:wrong}).report.verifiedLargeEnumValues.length,0);
+});
+
 test('mapping preserves bigint, nullable objects, containers, out/const-ref and parameter order',()=>{
     const f=fn('Call',[
         prop('large','Int64Property',{parameter:true}),

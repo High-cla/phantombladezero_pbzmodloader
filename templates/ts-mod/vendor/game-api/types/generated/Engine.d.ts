@@ -12765,6 +12765,20 @@ declare module 'ue' {
         "PreviewAttachedAssetContainer" = 1125899906842624,
         "DefaultEditorCameraOrthoZoom" = 2251799813685248,
         "RequiresLODHysteresisConversion" = 4503599627370496,
+        /** Verified exact runtime number; outside safe integer range. Do not use JS bitwise operators. */
+        "bSupportRayTracing" = 9007199254740992,
+        /** Verified exact runtime number; outside safe integer range. Do not use JS bitwise operators. */
+        "RayTracingMinLOD" = 18014398509481984,
+        /** Verified exact runtime number; outside safe integer range. Do not use JS bitwise operators. */
+        "ClothLODBiasMode" = 36028797018963968,
+        /** Verified exact runtime number; outside safe integer range. Do not use JS bitwise operators. */
+        "DefaultMeshDeformer" = 72057594037927936,
+        /** Verified exact runtime number; outside safe integer range. Do not use JS bitwise operators. */
+        "OverlayMaterial" = 144115188075855872,
+        /** Verified exact runtime number; outside safe integer range. Do not use JS bitwise operators. */
+        "OverlayMaterialMaxDrawDistance" = 288230376151711744,
+        /** Verified exact runtime number; outside safe integer range. Do not use JS bitwise operators. */
+        "TargetMeshDeformers" = 576460752303423488,
         "All" = -1,
     }
     /** /Script/Engine.ESkeletalMeshVertexAttributeDataType — reflection-generated, not individually call-tested. */
@@ -19298,6 +19312,7 @@ declare module 'ue' {
         "SetCollisionProfileNameProperty"(Object: UE.Object | null | undefined, PropertyName: string, Value: UE.CollisionProfileName): void;
         "SetColorPropertyByName"(Object: UE.Object | null | undefined, PropertyName: string, Value: UE.Color): void;
         "SetDoublePropertyByName"(Object: UE.Object | null | undefined, PropertyName: string, Value: number): void;
+        /** @deprecated Unsafe on unverified property names: a nested name terminated this game build. Successful non-null mutation is unverified. Prefer direct typed property assignment; see binding-support-verification.json. */
         "SetFieldPathPropertyByName"(Object: UE.Object | null | undefined, PropertyName: string, Value: string): void;
         "SetGamepadsBlockDeviceFeedback"(bBlock: boolean): void;
         "SetInt64PropertyByName"(Object: UE.Object | null | undefined, PropertyName: string, Value: bigint): void;
@@ -31710,6 +31725,7 @@ declare module 'ue' {
     const PropertyAccessCopyBatch: UE.$Static.PropertyAccessCopyBatch & UE.$StructType<UE.PropertyAccessCopyBatch>;
     /** /Script/Engine.PropertyAccessIndirection — reflection-generated, not individually call-tested. */
     interface PropertyAccessIndirection {
+        /** FieldPath target kind: Property. Runtime string conversion may not enforce this constraint. */
         "Property": string;
         "Function": UE.Function | null | undefined;
         "ReturnBufferSize": number;
@@ -31726,6 +31742,7 @@ declare module 'ue' {
     const PropertyAccessIndirection: UE.$Static.PropertyAccessIndirection & UE.$StructType<UE.PropertyAccessIndirection>;
     /** /Script/Engine.PropertyAccessIndirectionChain — reflection-generated, not individually call-tested. */
     interface PropertyAccessIndirectionChain {
+        /** FieldPath target kind: Property. Runtime string conversion may not enforce this constraint. */
         "Property": string;
         "IndirectionStartIndex": number;
         "IndirectionEndIndex": number;
@@ -31761,6 +31778,7 @@ declare module 'ue' {
     interface PropertyAccessSegment {
         "Name": string;
         "Struct": UE.Struct | null | undefined;
+        /** FieldPath target kind: Property. Runtime string conversion may not enforce this constraint. */
         "Property": string;
         "Function": UE.Function | null | undefined;
         "ArrayIndex": number;

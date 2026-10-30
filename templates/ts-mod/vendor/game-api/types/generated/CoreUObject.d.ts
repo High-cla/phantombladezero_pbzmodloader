@@ -2877,6 +2877,7 @@ declare module 'ue' {
     /** /Script/CoreUObject.VersePersistentVar — reflection-generated, not individually call-tested. */
     interface VersePersistentVar {
         "Path": string;
+        /** FieldPath target kind: MapProperty. Runtime string conversion may not enforce this constraint. */
         "Property": string;
     }
     namespace $Static {
@@ -2896,6 +2897,7 @@ declare module 'ue' {
     const VerseRational: UE.$Static.VerseRational & UE.$StructType<UE.VerseRational>;
     /** /Script/CoreUObject.VerseSessionVar — reflection-generated, not individually call-tested. */
     interface VerseSessionVar {
+        /** FieldPath target kind: MapProperty. Runtime string conversion may not enforce this constraint. */
         "Property": string;
     }
     namespace $Static {

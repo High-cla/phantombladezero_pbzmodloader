@@ -42,5 +42,79 @@
     "looseGameDeclarationsFound": false,
     "pakIndex": "encrypted; repak v0.2.3 could not list without a key",
     "embeddedDeclarations": "unknown"
+  },
+  "bindingVerification": {
+    "build": "CL-301524_JKS-17219",
+    "exeSha256": "7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4",
+    "evidence": "binding-support-verification.json",
+    "enumValues": [
+      {
+        "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+        "member": "ESkeletalMeshAsyncProperties::bSupportRayTracing",
+        "value": "9007199254740992",
+        "runtimeType": "number",
+        "runtimeInteger": "9007199254740992",
+        "exact": true
+      },
+      {
+        "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+        "member": "ESkeletalMeshAsyncProperties::RayTracingMinLOD",
+        "value": "18014398509481984",
+        "runtimeType": "number",
+        "runtimeInteger": "18014398509481984",
+        "exact": true
+      },
+      {
+        "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+        "member": "ESkeletalMeshAsyncProperties::ClothLODBiasMode",
+        "value": "36028797018963968",
+        "runtimeType": "number",
+        "runtimeInteger": "36028797018963968",
+        "exact": true
+      },
+      {
+        "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+        "member": "ESkeletalMeshAsyncProperties::DefaultMeshDeformer",
+        "value": "72057594037927936",
+        "runtimeType": "number",
+        "runtimeInteger": "72057594037927936",
+        "exact": true
+      },
+      {
+        "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+        "member": "ESkeletalMeshAsyncProperties::OverlayMaterial",
+        "value": "144115188075855872",
+        "runtimeType": "number",
+        "runtimeInteger": "144115188075855872",
+        "exact": true
+      },
+      {
+        "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+        "member": "ESkeletalMeshAsyncProperties::OverlayMaterialMaxDrawDistance",
+        "value": "288230376151711744",
+        "runtimeType": "number",
+        "runtimeInteger": "288230376151711744",
+        "exact": true
+      },
+      {
+        "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+        "member": "ESkeletalMeshAsyncProperties::TargetMeshDeformers",
+        "value": "576460752303423488",
+        "runtimeType": "number",
+        "runtimeInteger": "576460752303423488",
+        "exact": true
+      },
+      {
+        "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+        "member": "ESkeletalMeshAsyncProperties::ESkeletalMeshAsyncProperties_MAX",
+        "value": "576460752303423489",
+        "runtimeType": "number",
+        "runtimeInteger": "576460752303423488",
+        "exact": false
+      }
+    ],
+    "memberWarnings": {
+      "/Script/Engine.KismetSystemLibrary.SetFieldPathPropertyByName": "Unsafe on unverified property names: a nested name terminated this game build. Successful non-null mutation is unverified. Prefer direct typed property assignment; see binding-support-verification.json."
+    }
   }
 }

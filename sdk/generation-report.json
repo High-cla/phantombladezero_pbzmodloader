@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatorVersion": 3,
+  "generatorVersion": 4,
   "captures": [
     {
       "name": "loaded-20261030-001-pilot/reflection.json",
@@ -28178,51 +28178,74 @@
   "omittedEnumValues": [
     {
       "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
+      "member": "ESkeletalMeshAsyncProperties::ESkeletalMeshAsyncProperties_MAX",
+      "value": "576460752303423489",
+      "reason": "runtime number loses native integer precision"
+    }
+  ],
+  "verifiedLargeEnumValues": [
+    {
+      "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
       "member": "ESkeletalMeshAsyncProperties::bSupportRayTracing",
       "value": "9007199254740992",
-      "reason": "enum value outside safe JS integer range; runtime enum representation unverified"
+      "runtimeType": "number",
+      "runtimeInteger": "9007199254740992",
+      "exact": true,
+      "evidence": "binding-support-verification.json"
     },
     {
       "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
       "member": "ESkeletalMeshAsyncProperties::RayTracingMinLOD",
       "value": "18014398509481984",
-      "reason": "enum value outside safe JS integer range; runtime enum representation unverified"
+      "runtimeType": "number",
+      "runtimeInteger": "18014398509481984",
+      "exact": true,
+      "evidence": "binding-support-verification.json"
     },
     {
       "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
       "member": "ESkeletalMeshAsyncProperties::ClothLODBiasMode",
       "value": "36028797018963968",
-      "reason": "enum value outside safe JS integer range; runtime enum representation unverified"
+      "runtimeType": "number",
+      "runtimeInteger": "36028797018963968",
+      "exact": true,
+      "evidence": "binding-support-verification.json"
     },
     {
       "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
       "member": "ESkeletalMeshAsyncProperties::DefaultMeshDeformer",
       "value": "72057594037927936",
-      "reason": "enum value outside safe JS integer range; runtime enum representation unverified"
+      "runtimeType": "number",
+      "runtimeInteger": "72057594037927936",
+      "exact": true,
+      "evidence": "binding-support-verification.json"
     },
     {
       "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
       "member": "ESkeletalMeshAsyncProperties::OverlayMaterial",
       "value": "144115188075855872",
-      "reason": "enum value outside safe JS integer range; runtime enum representation unverified"
+      "runtimeType": "number",
+      "runtimeInteger": "144115188075855872",
+      "exact": true,
+      "evidence": "binding-support-verification.json"
     },
     {
       "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
       "member": "ESkeletalMeshAsyncProperties::OverlayMaterialMaxDrawDistance",
       "value": "288230376151711744",
-      "reason": "enum value outside safe JS integer range; runtime enum representation unverified"
+      "runtimeType": "number",
+      "runtimeInteger": "288230376151711744",
+      "exact": true,
+      "evidence": "binding-support-verification.json"
     },
     {
       "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
       "member": "ESkeletalMeshAsyncProperties::TargetMeshDeformers",
       "value": "576460752303423488",
-      "reason": "enum value outside safe JS integer range; runtime enum representation unverified"
-    },
-    {
-      "path": "/Script/Engine.ESkeletalMeshAsyncProperties",
-      "member": "ESkeletalMeshAsyncProperties::ESkeletalMeshAsyncProperties_MAX",
-      "value": "576460752303423489",
-      "reason": "enum value outside safe JS integer range; runtime enum representation unverified"
+      "runtimeType": "number",
+      "runtimeInteger": "576460752303423488",
+      "exact": true,
+      "evidence": "binding-support-verification.json"
     }
   ],
   "unresolvedProperties": [
@@ -64415,7 +64438,7 @@
     "enums": 3253,
     "functions": 49540,
     "properties": 119260,
-    "enumValues": 19511,
+    "enumValues": 19518,
     "manualMembers": 34,
     "uniqueRecords": 90946,
     "excludedTypes": 352,

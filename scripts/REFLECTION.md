@@ -164,3 +164,27 @@ SDK 合并使用原有两次采集和检查点指向的有效 `reflection.json`�
 字段路径读写已验证为字符串，空字符串可被读出但不能作为写入参数；Optional/UTF-8 样本
 虽有访问器，读写后仍返回 undefined，因此不能用“访问器存在”推断值映射已支持。
 ANSI 仅有绑定证据，仍保留未解析声明。原始采集目录为 `build/property-mapping-20261030/`。
+
+## 绑定支持与异常退出复核
+
+`tests/binding-support-probe.js` 按 `commands/0001.js`、`0002.js` 顺序接收开发命令。
+每个命令导出 `label` 和 `run({UE,puerts,step,describe,hold})`；每个原生操作必须用
+`step` 包装，记录操作前后边界。先备份 MOD 配置、隔离其他 MOD，按上文验证实际
+1280×720 普通窗口后再发布命令；不要将已发布命令带入下一次游戏进程。
+最后关闭游戏、恢复配置并校验哈希、移走安装及生成目录内的临时探针。
+
+`tests/verify-binding-support.cjs <log> <generation-report.json> <out.json>` 仅接受完整
+连续命令和成对操作日志，拒绝中途退出、错序、重复及缺失的操作结果。
+0.3.2 的完整命令、窗口检查和日志位于 `build/binding-support-20261030/`，发布摘要为
+`sdk/binding-support-verification.json`。`loader-first.log` 含崩溃尾部，不可计入通过；
+`loader-final.log` 是独立进程中完成的复测。
+
+不要重放 `0005.js` 中的 Kismet 嵌套属性名实验；该调用已观察到进程退出。
+复测使用 `safe-fieldpath.js`：只在新建临时对象上直接赋值并重新读取嵌套字段。
+采集范围内没有直接持有 FieldPath 属性的 UObject 类，不能用无关对象或错误字段名
+替代该函数的成功写入验证。FieldPath 声明中的目标种类来自反射；游戏转换器接受了
+部分不匹配种类的路径，不代表这些值可供引擎后续使用。
+
+大整数枚举证据保存在 `scripts/sdk-supplemental.json` 的 `bindingVerification` 中，
+绑定构建、EXE 哈希、完整成员名、原始整数和运行时精确整数。只有实测为 number 且
+`BigInt(Number(raw))` 与原始整数一致的条目可以进入声明；不能将四舍五入后的值用于补全。
