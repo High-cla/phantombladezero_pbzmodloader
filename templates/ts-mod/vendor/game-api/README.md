@@ -1,6 +1,6 @@
 # PBZ TypeScript 游戏 API
 
-`@pbz-mod-loader/game-api` 0.2.0 是 MOD 开发使用的类型声明包，为游戏提供的 `ue`、`puerts` 模块补全和检查类型。包内没有运行时代码，发布 MOD 时只携带编译后的 MOD 文件。
+`@pbz-mod-loader/game-api` 0.3.0 是 MOD 开发使用的类型声明包，为游戏提供的 `ue`、`puerts` 模块补全和检查类型。包内没有运行时代码，发布 MOD 时只携带编译后的 MOD 文件。
 
 适用构建：Steam Win64 `CL-301524_JKS-17219`，EXE SHA256 为 `7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4`。其他游戏构建和 WeGame 尚未验证。
 
@@ -13,8 +13,8 @@
 ```powershell
 # 在 PBZModLoader 仓库中生成压缩包
 npm run sdk:pack
-# 将 build/sdk/pbz-mod-loader-game-api-0.2.0.tgz 复制到 MOD 的 vendor/ 后
-npm install --save-dev ./vendor/pbz-mod-loader-game-api-0.2.0.tgz
+# 将 build/sdk/pbz-mod-loader-game-api-0.3.0.tgz 复制到 MOD 的 vendor/ 后
+npm install --save-dev ./vendor/pbz-mod-loader-game-api-0.3.0.tgz
 ```
 
 MOD 的 `tsconfig.json` 至少包含以下配置；保持完整声明检查，不需要 `skipLibCheck`：
@@ -76,7 +76,7 @@ if (cls) {
 
 ## 覆盖与验证程度
 
-本版合并主菜单与 `PBZ_Xigu_WP` 两次采集，生成 **21,253 个类型**（18,453 个原生类型、2,800 个资产类型）、**32,959 个声明函数**及 **75,040 个已映射属性**，并保留原 SDK 的手工实测补充层。计数不展开继承成员，也不重复计算手工补充成员。
+本版合并原主菜单与 `PBZ_Xigu_WP` 两次采集，以及 27 批资产加载后的有效采集，生成 **34,597 个类型**（18,453 个原生类型、16,144 个资产类型）、**49,539 个声明函数**及 **119,231 个已映射属性**，并保留原 SDK 的手工实测补充层。计数不展开继承成员，也不重复计算手工补充成员。
 
 - `generation-report.json`：输入文件哈希、采集构建、合并变化、继承覆盖、排除项和未解析项。
 - `type-index.json`：每个类型的完整路径、声明位置及 `reflection-generated` 状态。
@@ -84,7 +84,11 @@ if (cls) {
 
 生成声明不代表每项 API 都经过调用测试，也不代表所有蓝图都已采集。未加载资产、未反射且未注册绑定的成员不在覆盖范围内。函数只使用参数与返回字段，局部变量不进入声明。
 
-80 个属性保留为只读 `$Unresolved<Path>`：其中 6 个反射解析失败，74 个属于尚未验证的 PuerTS 映射（Optional、FieldPath、Utf8Str、AnsiStr）。另有 1 个依赖 FieldPath 的函数、1,268 个内部蓝图入口/委托签名、244 个临时类型及 8 个超出 JS 安全整数范围的枚举值被明确排除。具体路径均在报告中，不使用 `any` 兜底。
+84 个属性保留为只读 `$Unresolved<Path>`：其中 10 个反射解析失败，74 个尚无已验证的 PuerTS 映射。另有 5435 个函数成员被排除（含内部蓝图入口/委托签名及无法映射的函数），352 个类型被排除，8 个大整数枚举值被排除。具体原因与路径见报告，不使用 `any` 兜底。
+
+本次资产加载共处理 12,400 个登记表已确认的未覆盖路径，12,399 个成功。PBZCombatAsset、Game、HuaShira 三个优先目录全部完成；其余目录中 `Narrative/NarrativeUI/Widgets/Editor/WBP_DefaultQuestNode_C` 对应的类加载返回空值，未生成声明。具体完整路径和结果见仓库 `build/type-batches-20261030/final/report.md`；不代表全部游戏脚本或未反射 C++ API 已覆盖。
+
+部分 FName 属性在不同运行中出现大小写拼写差异；仅在其余反射结构一致时提供可选别名，并在 `memberNameVariants` 中记录。使用前应确认本次运行实际提供的拼写。
 
 ## 映射约定
 
@@ -110,7 +114,8 @@ if (cls) {
 在仓库根目录使用 Node.js 24+ 重建：
 
 ```powershell
-npm run sdk:generate -- build/reflection/main-menu-final/reflection.json build/reflection/PBZ_Xigu_WP/reflection.json
+$captures = (Get-Content sdk/generation-report.json -Raw | ConvertFrom-Json).captures | ForEach-Object { Join-Path 'build/reflection' $_.name }
+npm run sdk:generate -- @captures
 npm run sdk:sync
 npm test
 npm run sdk:pack

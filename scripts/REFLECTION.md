@@ -12,10 +12,11 @@
 需要 Windows x64、64 位 Python 3.10+。按项目约束启动游戏：
 
 ```powershell
-& 'D:\Program Files\Steam\Steam.exe' -applaunch 4115450 -windowed -ResX=1280 -ResY=720
+& './scripts/影之刃零-窗口模式1280x720.cmd'
 ```
 
-确认实际为 1280×720 窗口模式，等待主菜单或存档地图加载稳定，再在仓库根目录执行：
+确认实际为 1280×720 客户区的普通窗口模式（可用 `scripts/PBZ-Windowed.ps1 -Status` 检查），
+已运行或尺寸异常时先执行 `scripts/影之刃零-恢复1280x720.cmd`，等待主菜单或存档地图加载稳定，再在仓库根目录执行：
 
 ```powershell
 ./scripts/export-reflection.ps1 -Python 'C:\path\to\python.exe' -Label PBZ_Xigu_WP
@@ -79,3 +80,69 @@ Vector 字段、Actor 继承、GetPlayerPawn 签名、EAxis 枚举。
 
 更换游戏构建应重新定位并验证布局，添加新的哈希配置和对应回归样本，不能仅修改哈希跳过限制。
 新增属性类型时保留显式失败处理。后续可以在此原始清单之上增加资产加载补全和 PuerTS 类型转换。
+
+## 资产覆盖差异采集
+
+`asset-inventory-probe.js` 是临时开发 MOD：调用 `GetAllAssets(..., true)` 读取当前磁盘资产登记表，
+统计全部资产类别，详细导出类名含 Blueprint/Class/Struct/Enum 的类型候选及生成类/父类标签。
+它不主动加载资产、不创建 Actor，也不采集函数签名。`IsSearchAllAssets=false` 时尤其不能将该快照
+宣称为全部可发现资产；报告不能衡量普通 JS 模块或未反射 C++ 的覆盖率。
+
+1. 备份游戏安装目录的 `PBZModLoader/mods.ini`，临时禁用其他 MOD。
+2. 将探针复制为 `PBZModLoader/mods/asset-inventory-dev/main.js`。
+3. 必须通过 `scripts/影之刃零-窗口模式1280x720.cmd` 启动；已运行时用恢复脚本。
+   `powershell -NoProfile -File scripts/PBZ-Windowed.ps1 -Status` 提供只读客户区检查，
+   返回 `valid=true` 才能开始测试。探针另外检查游戏设置的 1280×720、窗口模式 2。
+4. 等待探针的 `end` 记录全部输出，将本次 `evidence/<run>/loader.log` 复制到新的本地采集目录。
+   同时保留游戏 EXE 哈希、探针哈希、启动命令和采集前后窗口检查结果。
+5. 使用下列命令生成报告；输出目录必须尚不存在：
+
+   ```powershell
+   npm run sdk:coverage -- build/<capture>/loader.log sdk/type-index.json build/<capture>/coverage
+   ```
+
+6. 关闭本次测试游戏，恢复备份的 `mods.ini`，移走临时探针，并校验恢复文件哈希。
+
+输出包括 `report.md`、`asset-coverage.json`、`summary.json` 和按类型路径去重的
+`load-candidates.json`。`covered` 仅表示 SDK 含此类型路径；`not-in-sdk` 有登记表路径依据；
+`candidate-unverified` 只是缺少生成类标签时的命名推测，不应直接称作已确认缺失。
+蓝图资产与 GeneratedClass 可各占一条资产记录，因此报告另外提供独立类型路径计数。
+日志按帧重组，缺帧、重复帧、错误记录、不完整结束及计数不一致都会拒绝生成报告。
+
+## 按队列加载并采集签名
+
+`prepare-type-batches.cjs <asset-coverage.json> <new-batches.json> [label-prefix]` 按
+PBZCombatAsset、Game、HuaShira、其他目录排序，只处理有登记表依据的未覆盖类型。
+首批包含少量类/结构/枚举用于验证加载路径，后续每批最多 512 个路径。
+
+开发 MOD `load-types-probe.js` 每次只读取一个 `./commands/0001.js` 形式的命令模块，
+使用 `UE.Object.Load` 加载指定类型对象并检查实际完整路径；不创建 Actor、切图、调用游戏逻辑或保存。
+当前批次的对象引用保留到下一批开始；每帧限制调用数量与时间预算，单次同步加载仍可能超出预算。
+每个路径记录 loaded/failed 结果，批次结束后等待控制器采集，不自动加载下一批。
+
+`capture-type-batches.cjs <controller.json>` 的配置示例：
+
+```json
+{
+  "pid": 12345,
+  "python": "C:/path/to/python.exe",
+  "batches": "build/type-batches/batches.json",
+  "archive": "build/type-batches/checkpoints",
+  "reflectionRoot": "build/reflection",
+  "log": "D:/game/ProjectPBZ/PBZModLoader/evidence/<run>/loader.log",
+  "commandDir": "D:/game/ProjectPBZ/Content/JavaScript/PBZModLoader/generated-mods/load-types-dev/commands"
+}
+```
+
+按前述方式备份配置、隔离其他 MOD、安装探针，并使用项目窗口脚本启动。控制器在发布每批命令前
+检查客户区与进程身份；批次加载完成并稳定后执行只读反射导出，失败最多重试三次。它还检查加载结果
+完整性、每个成功加载路径是否存在于有效反射记录中、采集后的窗口尺寸，最后写入独立检查点。
+检查点中的失败路径不能计作成功覆盖；进程重启后须创建新的运行配置/命令序列，不能沿用旧进程身份。
+只应在同一进程且命令目录未重置的情况下恢复控制器。修改驱动脚本不会更新已运行的控制器进程。
+
+SDK 合并使用原有两次采集和检查点指向的有效 `reflection.json`。生成器逐份读取输入以限制内存占用，
+继续拒绝构建不符与签名冲突。已观察到、其余属性结构完全相同的 FName 大小写差异会单独记录，
+声明提供可选的大小写别名；这不意味着两种拼写在每次运行中都可用。
+
+结束后关闭测试游戏、恢复原 MOD 配置并校验哈希、移走临时 MOD。保留命令计划、加载日志、
+窗口检查、原始反射和最终 SDK 差异报告，供重建与核查使用。

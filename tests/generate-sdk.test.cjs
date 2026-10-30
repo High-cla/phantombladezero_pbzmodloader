@@ -84,15 +84,33 @@ test('unsafe enum integers are preserved losslessly and excluded from numeric de
     assert.match(decls(result),/"Small" = 1/); assert.doesNotMatch(decls(result),/Large/);
 });
 
+test('observed FName casing produces optional aliases without hiding type conflicts',()=>{
+    const a=capture([type('Owner',{properties:[prop('glow','IntProperty')]})],'a');
+    const b=capture([type('Owner',{properties:[prop('Glow','IntProperty')]})],'b');
+    const result=generate([a,b],supplemental);
+    assert.match(decls(result),/"Glow"\?: number/);
+    assert.match(decls(result),/"glow"\?: number/);
+    assert.equal(result.report.memberNameVariants.length,1);
+    assert.throws(()=>generate([a,capture([type('Owner',{properties:[prop('Glow','StrProperty')]})],'b')],supplemental),/Conflicting definitions/);
+});
+
+test('lazy captures are read once in deterministic filename order',()=>{
+    const seen=[];
+    const input=name=>({name,read(){seen.push(name);return capture([type('Owner')],name);}});
+    // A read result supplies data and sha256, not a retained parsed capture array.
+    const result=generate([input('b'),input('a')],supplemental);
+    assert.deepEqual(seen,['a','b']);assert.equal(result.report.counts.types,1);
+});
+
 test('available capture inputs reproduce every checked-in generated file and report',t=>{
     const root=path.resolve(__dirname,'..');
     const saved=JSON.parse(fs.readFileSync(path.join(root,'sdk/generation-report.json')));
     const inputs=saved.captures.map(c=>({c,file:path.join(root,'build/reflection',c.name)}));
     if(inputs.some(i=>!fs.existsSync(i.file))) {t.skip('Raw game captures are local build artifacts');return;}
-    const result=generate(inputs.map(({c,file})=>{
+    const result=generate(inputs.map(({c,file})=>({name:c.name,read(){
         const bytes=fs.readFileSync(file), sha256=crypto.createHash('sha256').update(bytes).digest('hex');
         assert.equal(sha256,c.sha256);return {name:c.name,sha256,data:parseReflection(bytes)};
-    }),require('../scripts/sdk-supplemental.json'));
+    }})),require('../scripts/sdk-supplemental.json'));
     assert.deepEqual(result.report,saved);
     assert.deepEqual(result.index,JSON.parse(fs.readFileSync(path.join(root,'sdk/type-index.json'))));
     assert.deepEqual([...result.files.keys()].sort(),fs.readdirSync(path.join(root,'sdk/types/generated')).sort());

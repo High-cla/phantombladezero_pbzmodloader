@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
-  "sdkVersion": "0.2.0",
+  "sdkVersion": "0.3.0",
   "kind": "reflection-generated-with-runtime-verified-supplements",
-  "testedAt": "2026-10-29",
+  "testedAt": "2026-10-30",
   "game": {
     "platform": "Steam Win64",
     "build": "CL-301524_JKS-17219",
@@ -125,20 +125,20 @@
     "embeddedDeclarations": "unknown"
   },
   "coverage": {
-    "types": 21253,
+    "types": 34597,
     "nativeTypes": 18453,
-    "assetTypes": 2800,
-    "classes": 10672,
-    "structs": 7470,
-    "enums": 3111,
-    "functions": 32959,
-    "properties": 75040,
-    "enumValues": 18856,
+    "assetTypes": 16144,
+    "classes": 22924,
+    "structs": 8420,
+    "enums": 3253,
+    "functions": 49539,
+    "properties": 119231,
+    "enumValues": 19511,
     "manualMembers": 34,
-    "uniqueRecords": 56740,
-    "excludedTypes": 244,
-    "omittedMembers": 1269,
-    "unresolvedProperties": 80
+    "uniqueRecords": 90946,
+    "excludedTypes": 352,
+    "omittedMembers": 5435,
+    "unresolvedProperties": 84
   },
   "generation": {
     "entry": "scripts/generate-sdk.cjs",
@@ -186,5 +186,36 @@
       "native and blueprint Cast"
     ],
     "note": "Representative samples only. Soft-class Get/ToString tested on an empty reference; LoadSynchronous and delegate mutation were not invoked. Cast absence is an expected exclusion."
+  },
+  "batchCapture": {
+    "date": "2026-10-30",
+    "archive": "build/type-batches-20261030",
+    "probe": "scripts/load-types-probe.js",
+    "controller": "scripts/capture-type-batches.cjs",
+    "batches": 27,
+    "requested": 12400,
+    "loaded": 12399,
+    "priorities": [
+      "PBZCombatAsset",
+      "Game",
+      "HuaShira"
+    ],
+    "maps": [
+      "PBZ_StartMenu_CE_WP"
+    ],
+    "display": {
+      "width": 1280,
+      "height": 720,
+      "mode": "windowed",
+      "clientAreaVerified": true
+    },
+    "bindingProbe": "tests/loaded-types-probe.js",
+    "bindingEvidence": "build/type-batches-20261030/binding-verification.json",
+    "note": "Signatures from validated reflection captures. Representative bindings inspected without executing gameplay methods; old runtime call evidence remains separate.",
+    "bindingVerification": {
+      "passed": true,
+      "checks": 3,
+      "kind": "binding-presence-only"
+    }
   }
 }

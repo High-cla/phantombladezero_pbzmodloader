@@ -31,9 +31,13 @@ function canonical(value) {
 
 function generate(inputs, supplemental) {
     const records = new Map(), origins = new Map();
-    const report = {schemaVersion:1, generatorVersion:1, captures:[], conflicts:[], implementationChanges:[], excludedTypes:[], omittedMembers:[], omittedEnumValues:[], unresolvedProperties:[], ignoredLocals:0, nameCollisions:[], inheritanceOverrides:[], counts:{}};
+    const memberNameVariants = new Map();
+    const report = {schemaVersion:1, generatorVersion:2, captures:[], conflicts:[], implementationChanges:[], excludedTypes:[], omittedMembers:[], omittedEnumValues:[], unresolvedProperties:[], ignoredLocals:0, nameCollisions:[], inheritanceOverrides:[], counts:{}};
     let build, exeSha256;
-    for (const {name, data, sha256} of inputs.slice().sort((a,b) => a.name.localeCompare(b.name, 'en'))) {
+    for (const input of inputs.slice().sort((a,b) => a.name.localeCompare(b.name, 'en'))) {
+        // Read one capture at a time: batch inventories repeat a large native graph.
+        const {name} = input;
+        const {data, sha256} = input.read ? input.read() : input;
         const m = data.manifest;
         if (m?.schemaVersion !== 1 || !Array.isArray(data.records) || !m.build || !m.exeSha256) throw Error('Invalid reflection input: ' + name);
         if (build && (build !== m.build || exeSha256 !== m.exeSha256)) throw Error('Cannot merge different game builds');
@@ -52,6 +56,20 @@ function generate(inputs, supplemental) {
             if (normalized.kind==='Function') {delete normalized.native; normalized.functionFlags='0x'+(BigInt(normalized.functionFlags || 0) & ~0x400n).toString(16);}
             if (r.kind === 'Function') report.ignoredLocals += (r.properties || []).filter(p => !p.parameter).length;
             const old = records.get(r.path);
+            // FName display casing can depend on package load order. Reconcile only
+            // observed casing differences whose entire property schema is identical.
+            if (old?.properties?.length === normalized.properties?.length) {
+                for (let i=0;i<(old?.properties?.length || 0);i++) {
+                    const a=old.properties[i], b=normalized.properties[i];
+                    if(a.name!==b.name && a.name.toLowerCase()===b.name.toLowerCase() &&
+                        quote({...a,name:''})===quote({...b,name:''})) {
+                        const key=r.path+':'+a.name.toLowerCase();
+                        const variant=memberNameVariants.get(key)||{owner:r.path,names:[],reason:'observed FName display casing; identical property schema'};
+                        variant.names=[...new Set([...variant.names,a.name,b.name])].sort();
+                        a.name=b.name=variant.names[0];memberNameVariants.set(key,variant);
+                    }
+                }
+            }
             if (old?.kind==='Class' && quote(old.functions)!==quote(normalized.functions) && quote({...old,functions:[]})===quote({...normalized,functions:[]})) {
                 report.implementationChanges.push({path:r.path,reason:'union of class functions across captures',sources:[origins.get(r.path),name],added:(normalized.functions||[]).filter(p=>!old.functions.includes(p))});
                 normalized.functions=[...new Set([...old.functions,...normalized.functions])].sort();
@@ -64,6 +82,7 @@ function generate(inputs, supplemental) {
     }
     if (report.conflicts.length) throw Error('Conflicting definitions: ' + quote(report.conflicts.slice(0,20)));
     report.build = build; report.exeSha256 = exeSha256;
+    report.memberNameVariants=[...memberNameVariants.values()].sort((a,b)=>a.owner.localeCompare(b.owner,'en'));
     const all = [...records.values()].sort((a,b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
     const types = all.filter(r => r.kind !== 'Function' && !ephemeral(r) && !r.unresolved);
     const excluded = new Set(all.filter(r => r.kind !== 'Function' && (ephemeral(r) || r.unresolved)).map(r => r.path));
@@ -172,8 +191,15 @@ function generate(inputs, supplemental) {
                 const props=[], methods=[], statics=[], own=[];
                 for (const p of r.properties || []) {
                     if (manualHas(r,p.name)) {stats.manualMembers++;continue;}
-                    own.push(p.name);
-                    try { props.push('        '+quote(p.name)+': '+mapped(p)+';'); stats.properties++; }
+                    const variants=memberNameVariants.get(r.path+':'+p.name.toLowerCase());
+                    const propertyNames=variants ? variants.names : [p.name];
+                    own.push(...propertyNames);
+                    try {
+                        const t=mapped(p);
+                        if(variants) props.push('        /** Observed runtime casing variants; check which spelling is present. */');
+                        for(const name of propertyNames) props.push('        '+quote(name)+(variants?'?':'')+': '+t+';');
+                        stats.properties++;
+                    }
                     catch(e) {
                         report.unresolvedProperties.push({owner:r.path,member:p.name,kind:p.kind,reflectionUnresolved:!!p.unresolved,reason:e.message});
                         props.push('        /** Unresolved; see generation-report.json. */');
@@ -229,6 +255,13 @@ function generate(inputs, supplemental) {
     return {files,index,report};
 }
 
+function fileInput(file) {
+    return {name:path.basename(path.dirname(file))+'/'+path.basename(file), read() {
+        const bytes=fs.readFileSync(file);
+        return {sha256:hash(bytes),data:parseReflection(bytes)};
+    }};
+}
+
 function main(args) {
     let out=path.join(root,'sdk'); const input=[];
     for(let i=0;i<args.length;i++) {
@@ -237,7 +270,7 @@ function main(args) {
     }
     if(!input.length) throw Error('Usage: npm run sdk:generate -- <reflection.json> [<reflection.json> ...] [--out <sdk directory>]');
     const supplemental=JSON.parse(fs.readFileSync(path.join(root,'scripts/sdk-supplemental.json'),'utf8'));
-    const result=generate(input.map(file=>{const bytes=fs.readFileSync(file);return {name:path.basename(path.dirname(file))+'/'+path.basename(file),sha256:hash(bytes),data:parseReflection(bytes)};}),supplemental);
+    const result=generate(input.map(fileInput),supplemental);
     const generated=path.join(out,'types/generated');
     fs.mkdirSync(generated,{recursive:true});
     // Only replace files owned by this generator; do not recursively delete arbitrary --out.
@@ -252,5 +285,5 @@ function main(args) {
     fs.writeFileSync(path.join(out,'generation-report.json'),JSON.stringify(result.report,null,2)+'\n');
     console.log(JSON.stringify(result.report.counts,null,2));
 }
-module.exports={generate,canonical,parseReflection};
+module.exports={generate,canonical,parseReflection,fileInput};
 if(require.main===module) {try{main(process.argv.slice(2));}catch(e){console.error(e.message);process.exitCode=1;}}

@@ -69,3 +69,25 @@ UE.PBZGameInstance.Cast(instance);
 process.cwd();
 // @ts-expect-error No DOM globals in the game environment.
 window.document;
+
+// Batch-collected game assets: signatures remain strongly typed by reflected path.
+type SummonAbility = UE.ReflectedTypes['/PBZCombatAsset/ActorData/Mobs/000_Hun/Ability/DoubleBlade/GA_Hun_Double_C_JueYing_Summon.GA_Hun_Double_C_JueYing_Summon_C'];
+declare const summon: SummonAbility;
+const chargeCostRef = $ref(0);
+summon.GetUltimateChargeCost(chargeCostRef);
+const chargeCost: number = $unref(chargeCostRef);
+// @ts-expect-error This Blueprint uses an out parameter, not a return value.
+const wrongChargeCost: number = summon.GetUltimateChargeCost(chargeCostRef);
+// @ts-expect-error The out parameter must wrap a number.
+summon.GetUltimateChargeCost($ref('invalid'));
+type AccessoryAbility = UE.ReflectedTypes['/Game/PBZContent/Blueprint/Ability/GameplayEffects/AbilityTree/GA_AddAccessorySlot_Base.GA_AddAccessorySlot_Base_C'];
+declare const accessory: AccessoryAbility;
+const accessoryTag: UE.GameplayTag = accessory.AccessoryTag;
+type LipsyncActor = UE.ReflectedTypes['/HuaShira/Animation/Lipsync/SongXiaowu/EmoTEST.EmoTEST_C'];
+declare const lipsync: LipsyncActor;
+lipsync.ReceiveTick(0.016);
+// @ts-expect-error Reflected Tick delta is numeric.
+lipsync.ReceiveTick('invalid');
+type Sacrifice = UE.ReflectedTypes['/PBZCombatAsset/ActorData/Mobs/058_MadDoctor/Ability/Abilities/Ceremony/ST_SacrificeVar.ST_SacrificeVar'];
+declare const sacrifice: Sacrifice;
+const sacrificeSide: boolean = sacrifice.LR_1_21DFE38F45FD872FC533C68C7A32B9CE;

@@ -1,4 +1,4 @@
-﻿param([switch]$CheckOnly, [switch]$RestoreOnly, [switch]$MaximizeOnly)
+﻿param([switch]$CheckOnly, [switch]$RestoreOnly, [switch]$Status, [switch]$MaximizeOnly)
 $ErrorActionPreference = 'Stop'
 Add-Type -TypeDefinition @"
 using System;
@@ -72,6 +72,26 @@ if (!(Test-Path -LiteralPath $steamExe) -or !(Test-Path -LiteralPath $gameExe)) 
     throw 'Steam or PBZ executable was not found.'
 }
 if ($CheckOnly) { Write-Output 'Script syntax, native helper and executable paths OK.'; exit 0 }
+if ($Status) {
+    $active = @(Get-Process PBZ -ErrorAction SilentlyContinue |
+        Where-Object { $_.Path -eq $gameExe -and $_.MainWindowHandle -ne 0 })
+    if ($active.Count -ne 1) { throw 'Expected one PBZ game window.' }
+    $handle = $active[0].MainWindowHandle
+    $client = New-Object PBZWindow+RECT
+    if (![PBZWindow]::GetClientRect($handle, [ref]$client)) { throw 'Cannot read PBZ client dimensions.' }
+    $style = [PBZWindow]::GetWindowLong($handle, -16)
+    $normal = ![PBZWindow]::IsZoomed($handle) -and ![PBZWindow]::IsIconic($handle)
+    $windowed = ($style -band 0x00C00000) -eq 0x00C00000
+    $result = [ordered]@{
+        checkedAt = (Get-Date).ToString('o'); processId = $active[0].Id
+        clientWidth = $client.Right - $client.Left; clientHeight = $client.Bottom - $client.Top
+        normalWindow = $normal; captionedWindow = $windowed
+        valid = $normal -and $windowed -and [PBZWindow]::CorrectSize($handle)
+    }
+    $result | ConvertTo-Json
+    if (!$result.valid) { exit 2 }
+    exit 0
+}
 try {
     $running = @(Get-Process PBZ -ErrorAction SilentlyContinue)
     if ($running.Count -gt 0) {
