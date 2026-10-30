@@ -1,4 +1,4 @@
-﻿param([switch]$CheckOnly, [switch]$RestoreOnly)
+﻿param([switch]$CheckOnly, [switch]$RestoreOnly, [switch]$MaximizeOnly)
 $ErrorActionPreference = 'Stop'
 Add-Type -TypeDefinition @"
 using System;
@@ -39,10 +39,7 @@ public static class PBZWindow {
         EnableMaximize(h);
         SetClientSize(h);
     }
-    public static void MaintainSize(IntPtr h) {
-        EnableMaximize(h);
-        if (!IsZoomed(h) && !IsIconic(h) && !CorrectSize(h)) SetClientSize(h);
-    }
+
     public static void SetClientSize(IntPtr h) {
         IntPtr previous = SetThreadDpiAwarenessContext(new IntPtr(-4));
         try {
@@ -80,6 +77,13 @@ try {
     if ($running.Count -gt 0) {
         $active = $running | Where-Object { $_.Path -eq $gameExe -and $_.MainWindowHandle -ne 0 } | Select-Object -First 1
         if (!$active) { throw 'PBZ is starting. Wait for its window, then run this script again.' }
+        if ($MaximizeOnly) {
+            [PBZWindow]::EnableMaximize($active.MainWindowHandle)
+            [void][PBZWindow]::ShowWindow($active.MainWindowHandle, 3)
+            Start-Sleep -Milliseconds 250
+            if (![PBZWindow]::IsZoomed($active.MainWindowHandle)) { throw 'Could not maximize the PBZ window.' }
+            exit 0
+        }
         for ($attempt = 0; $attempt -lt 6; $attempt++) {
             $active.Refresh()
             [PBZWindow]::RestoreSize($active.MainWindowHandle)
@@ -88,7 +92,7 @@ try {
         if (![PBZWindow]::CorrectSize($active.MainWindowHandle)) { throw 'Could not restore the client area to 1280x720.' }
         exit 0
     }
-    if ($RestoreOnly) { throw 'PBZ is not running.' }
+    if ($RestoreOnly -or $MaximizeOnly) { throw 'PBZ is not running.' }
 
     # Preserve other settings and keep a backup before changing display settings.
     $config = Join-Path $env:LOCALAPPDATA 'ProjectPBZ\Saved\Config\Windows\GameUserSettings.ini'
@@ -135,13 +139,7 @@ try {
     [PBZWindow]::EnableMaximize($handle)
     [PBZWindow]::RestoreSize($handle)
     if (![PBZWindow]::CorrectSize($handle)) { throw 'Could not set the game client area to 1280x720.' }
-    # Keep the maximize control available if the engine refreshes the window style.
-    # Enforce 1280x720 while restored; preserve intentional maximize and minimize.
-    while (!$game.HasExited) {
-        $game.Refresh()
-        if ($game.MainWindowHandle -ne 0) { [PBZWindow]::MaintainSize($game.MainWindowHandle) }
-        Start-Sleep -Seconds 2
-    }
+    # Initialization is complete; leave subsequent window sizing to the user.
 } catch {
     Add-Type -AssemblyName System.Windows.Forms
     [void][Windows.Forms.MessageBox]::Show($_.Exception.Message, 'PBZ Windowed Launcher')
