@@ -72,8 +72,7 @@ declare module 'ue' {
     const LevelVariantSetsFunctionDirector: UE.$Static.LevelVariantSetsFunctionDirector & UE.$ClassType<UE.LevelVariantSetsFunctionDirector>;
     /** /Script/VariantManagerContent.PropertyValue — reflection-generated, not individually call-tested. */
     interface PropertyValue extends UE.Object {
-        /** Unresolved; see generation-report.json. */
-        readonly "Properties": UE.$Unresolved<"/Script/VariantManagerContent.PropertyValue.Properties">;
+        "Properties": UE.TArray<string>;
         "PropertyIndices": UE.TArray<number>;
         "CapturedPropSegments": UE.TArray<UE.CapturedPropSegment>;
         "FullDisplayString": string;

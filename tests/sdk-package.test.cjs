@@ -20,7 +20,8 @@ test('npm tarball installs offline into a separate MOD and checks all declaratio
     assert.equal(packed.version,sdkPackage.version);
     const names=packed.files.map(f=>f.path);
     for(const file of ['index.d.ts','api-surface.json','generation-report.json','type-index.json','README.md','types/runtime.d.ts','types/generated/paths.d.ts']) assert.ok(names.includes(file),file);
-    assert.ok(names.every(f=>/^(package\.json|index\.d\.ts|api-surface\.json|generation-report\.json|type-index\.json|README\.md|types\/.*\.d\.ts)$/.test(f)));
+    assert.ok(names.includes('property-mapping-verification.json'));
+    assert.ok(names.every(f=>/^(package\.json|index\.d\.ts|api-surface\.json|generation-report\.json|type-index\.json|property-mapping-verification\.json|README\.md|types\/.*\.d\.ts)$/.test(f)));
     fs.writeFileSync(path.join(scratch,'package.json'),JSON.stringify({name:'isolated-mod',private:true,devDependencies:{'@pbz-mod-loader/game-api':'file:./'+packed.filename}}));
     run(npm,['install','--offline','--ignore-scripts','--no-audit','--no-fund'],scratch);
     fs.copyFileSync(path.join(__dirname,'fixtures/sdk-usage.ts'),path.join(scratch,'main.ts'));

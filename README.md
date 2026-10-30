@@ -49,8 +49,8 @@ WeGame 只需合并 ProjectPBZ，再将包内 platform/steam/version.dll 手动�
 游戏的 `ProjectPBZ/PBZModLoader/mods/`。模板独立维护开发依赖，不需要编译加载器 DLL。
 
 模板已通过本地开发依赖引用 [游戏 API SDK](sdk/README.md)，直接 `import ... from 'ue'` / `'puerts'`
-即可获得补全和类型检查。SDK 0.3.0 基于 Steam 构建 CL-301524_JKS-17219 的场景与分批资产反射采集，
-包含 34,597 个类型、49,539 个函数和 119,231 个已映射属性，并保留实测补充接口；
+即可获得补全和类型检查。SDK 0.3.1 基于 Steam 构建 CL-301524_JKS-17219 的场景与分批资产反射采集，
+包含 34,597 个类型、49,540 个函数和 119,260 个已映射属性，并保留实测补充接口；
 生成覆盖、未解析项与调用验证分别记录，详见 SDK 说明。
 已有 MOD 可运行 `npm run sdk:pack`，将 `build/sdk/` 中的 npm 包安装为开发依赖；迁移步骤见 SDK 说明。
 维护者修改 `sdk/` 后运行 `npm run sdk:sync` 更新模板副本，再执行 `npm test`。

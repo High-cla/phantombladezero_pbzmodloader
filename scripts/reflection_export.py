@@ -214,7 +214,14 @@ class Exporter:
         elif kind == 'EnumProperty':
             r['underlying'] = self.property(self.ptr(a+0x70), depth+1)
             r['enum'] = self.path(self.ptr(a+0x78))
-            require(r['enum'], 'Missing enum target')
+            require(r['underlying']['kind'] in {'ByteProperty','Int8Property','Int16Property',
+                    'IntProperty','Int64Property','UInt16Property','UInt32Property','UInt64Property'}
+                    and not r['underlying'].get('unresolved')
+                    and r['underlying']['elementSize'] == size, 'Invalid enum underlying storage')
+            # Cooked properties can retain numeric storage with no UEnum metadata.
+            # Preserve this distinction; never guess an enum from the member name.
+            if r['enum'] is None:
+                r['enumMetadataMissing'] = True
         elif kind == 'FieldPathProperty':
             r['fieldClass'] = self.fname(self.ptr(a+0x70)+0x30)
         elif kind == 'ArrayProperty':

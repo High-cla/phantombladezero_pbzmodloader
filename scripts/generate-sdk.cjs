@@ -24,7 +24,14 @@ function parseReflection(bytes) {
 function canonical(value) {
     if (Array.isArray(value)) return value.map(canonical);
     if (value && typeof value === 'object') {
-        return Object.fromEntries(Object.keys(value).sort().filter(k => !['objectIndex','objectFlags','address','rawHeaderHex','error'].includes(k) && !(value.unresolved && ['offset','elementSize','arrayDim'].includes(k))).map(k => [k, canonical(value[k])]));
+        // Early exporter versions stored failed enum layout only in the raw
+        // 0x80-byte header. Recover these known fields before comparing captures,
+        // so an upgrade cannot hide an array-dimension or storage-layout change.
+        if(value.kind==='EnumProperty' && value.unresolved && /^[0-9a-f]{256}$/i.test(value.rawHeaderHex||'')) {
+            const raw=Buffer.from(value.rawHeaderHex,'hex');
+            value={arrayDim:raw.readUInt32LE(0x30),elementSize:raw.readUInt32LE(0x34),offset:raw.readUInt32LE(0x44),...value};
+        }
+        return Object.fromEntries(Object.keys(value).sort().filter(k => !['objectIndex','objectFlags','address','rawHeaderHex','error'].includes(k) && !(value.unresolved && value.kind !== 'EnumProperty' && ['offset','elementSize','arrayDim'].includes(k))).map(k => [k, canonical(value[k])]));
     }
     return value;
 }
@@ -32,7 +39,7 @@ function canonical(value) {
 function generate(inputs, supplemental) {
     const records = new Map(), origins = new Map();
     const memberNameVariants = new Map();
-    const report = {schemaVersion:1, generatorVersion:2, captures:[], conflicts:[], implementationChanges:[], excludedTypes:[], omittedMembers:[], omittedEnumValues:[], unresolvedProperties:[], ignoredLocals:0, nameCollisions:[], inheritanceOverrides:[], counts:{}};
+    const report = {schemaVersion:1, generatorVersion:3, captures:[], conflicts:[], implementationChanges:[], propertyResolutions:[], metadataLimitedProperties:[], excludedTypes:[], omittedMembers:[], omittedEnumValues:[], unresolvedProperties:[], ignoredLocals:0, nameCollisions:[], inheritanceOverrides:[], counts:{}};
     let build, exeSha256;
     for (const input of inputs.slice().sort((a,b) => a.name.localeCompare(b.name, 'en'))) {
         // Read one capture at a time: batch inventories repeat a large native graph.
@@ -61,6 +68,16 @@ function generate(inputs, supplemental) {
             if (old?.properties?.length === normalized.properties?.length) {
                 for (let i=0;i<(old?.properties?.length || 0);i++) {
                     const a=old.properties[i], b=normalized.properties[i];
+                    // Upgrade only a failed enum parse, with every previously known
+                    // public field unchanged. Never overwrite a resolved signature.
+                    if (a.unresolved !== b.unresolved && a.kind==='EnumProperty' && b.kind==='EnumProperty') {
+                        const failed=a.unresolved?a:b, resolved=a.unresolved?b:a;
+                        if (resolved.underlying && (resolved.enum || resolved.enumMetadataMissing===true) &&
+                            Object.keys(failed).filter(k=>k!=='unresolved').every(k=>quote(failed[k])===quote(resolved[k]))) {
+                            report.propertyResolutions.push({owner:r.path,member:resolved.name,sources:[origins.get(r.path),name],reason:'previously unresolved enum storage parsed; known schema unchanged'});
+                            if(a.unresolved)old.properties[i]=canonical(resolved);else normalized.properties[i]=canonical(resolved);
+                        }
+                    }
                     if(a.name!==b.name && a.name.toLowerCase()===b.name.toLowerCase() &&
                         quote({...a,name:''})===quote({...b,name:''})) {
                         const key=r.path+':'+a.name.toLowerCase();
@@ -109,9 +126,13 @@ function generate(inputs, supplemental) {
         case 'BoolProperty': t='boolean'; break;
         case 'Int8Property': case 'Int16Property': case 'IntProperty': case 'UInt16Property': case 'UInt32Property': case 'FloatProperty': case 'DoubleProperty': t='number'; break;
         case 'Int64Property': case 'UInt64Property': t='bigint'; break;
-        case 'NameProperty': case 'StrProperty': case 'TextProperty': t='string'; break;
+        case 'NameProperty': case 'StrProperty': case 'TextProperty': case 'FieldPathProperty': t='string'; break;
         case 'ByteProperty': t=p.enum ? ref(p.enum,['Enum']) : 'number'; break;
-        case 'EnumProperty': t=ref(p.enum,['Enum']); break;
+        case 'EnumProperty':
+            if(p.enum)t=ref(p.enum,['Enum']);
+            else if(p.enumMetadataMissing===true && p.underlying && !p.underlying.unresolved && ['ByteProperty','Int8Property','Int16Property','IntProperty','UInt16Property','UInt32Property'].includes(p.underlying.kind))t='number';
+            else throw Error('unverified enum without metadata');
+            break;
         case 'StructProperty': t=['/Script/JsEnv.ArrayBuffer','/Script/JsEnv.ArrayBufferValue'].includes(p.target) ? 'ArrayBuffer' : p.target === '/Script/JsEnv.JsObject' ? 'object' : ref(p.target,['ScriptStruct']); break;
         case 'ClassProperty': t='UE.Class | null | undefined'; break;
         case 'ObjectProperty': case 'InterfaceProperty': case 'WeakObjectProperty': case 'LazyObjectProperty': t=ref(p.target,['Class'])+' | null | undefined'; break;
@@ -196,6 +217,10 @@ function generate(inputs, supplemental) {
                     own.push(...propertyNames);
                     try {
                         const t=mapped(p);
+                        if(p.enumMetadataMissing) {
+                            report.metadataLimitedProperties.push({owner:r.path,member:p.name,reason:'UEnum metadata absent; verified numeric storage, enumerator names unavailable'});
+                            props.push('        /** Numeric enum storage; UEnum metadata and enumerator names are absent. */');
+                        }
                         if(variants) props.push('        /** Observed runtime casing variants; check which spelling is present. */');
                         for(const name of propertyNames) props.push('        '+quote(name)+(variants?'?':'')+': '+t+';');
                         stats.properties++;

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatorVersion": 2,
+  "generatorVersion": 3,
   "captures": [
     {
       "name": "loaded-20261030-001-pilot/reflection.json",
@@ -204,6 +204,13 @@
       "label": "PBZ_Xigu_WP",
       "capturedAt": "2026-10-29T10:12:18.712730+00:00",
       "records": 56340
+    },
+    {
+      "name": "property-mapping-20261030/reflection.json",
+      "sha256": "9e21a594285724bb9cd31d025b25118aae8fe871ee558720378ece3fceecd133",
+      "label": "property-mapping-20261030",
+      "capturedAt": "2026-10-30T07:07:32.040436+00:00",
+      "records": 52551
     }
   ],
   "conflicts": [],
@@ -4647,6 +4654,377 @@
     {
       "path": "/Script/ProjectPBZ.PerformanceSystemSubsystem.TeleportToTargetPoint__puerts_mixin__",
       "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/Blueprint/BP_GameMode_Build.BP_GameMode_Build_C",
+      "reason": "union of class functions across captures",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "added": []
+    },
+    {
+      "path": "/Game/PBZContent/UI/Component/BP_UIGameplayLogicComponent.BP_UIGameplayLogicComponent_C",
+      "reason": "union of class functions across captures",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "added": []
+    },
+    {
+      "path": "/Game/PBZContent/UI/FrontEnd/WB_ItemTips.WB_ItemTips_C.Construct__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/FrontEnd/WB_ItemTips.WB_ItemTips_C.Destruct__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/FrontEnd/WB_ItemTips.WB_ItemTips_C.Tick__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Help/BP_CollectHelp.BP_CollectHelp_C.CollectMapCompletionDebug__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Help/BP_CollectHelp.BP_CollectHelp_C.CollectTeleportDebug__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Help/BP_CollectHelp.BP_CollectHelp_C.CollectTsDebug__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Help/BP_CollectHelp.BP_CollectHelp_C.HiddenUi_PV__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Hud/W_WeaponUI.W_WeaponUI_C",
+      "reason": "union of class functions across captures",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "added": []
+    },
+    {
+      "path": "/Game/PBZContent/UI/Menu/StartMenu/WB_StartMenu_V2.WB_StartMenu_V2_C.BP_OnActivated__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Menu/StartMenu/WB_StartMenu_V2.WB_StartMenu_V2_C.BP_OnDeactivated__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Menu/StartMenu/WB_StartMenu_V2.WB_StartMenu_V2_C.Construct__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Menu/StartMenu/WB_StartMenu_V2.WB_StartMenu_V2_C.Destruct__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Menu/StartMenu/WB_StartMenu_V2.WB_StartMenu_V2_C.InitWidgetStyle__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Menu/StartMenu/WB_StartMenu_V2.WB_StartMenu_V2_C.OnChangeInputMode__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Menu/StartMenu/WB_StartMenu_V2.WB_StartMenu_V2_C.PlayFadeInAnim__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Menu/StartMenu/WB_StartMenu_V2.WB_StartMenu_V2_C.Tick__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Menu/StartMenu/W_StartMenu_Video.W_StartMenu_Video_C.Construct__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/Menu/StartMenu/W_StartMenu_Video.W_StartMenu_Video_C.Destruct__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/UINew/HUD/WB_quickslot.WB_quickslot_C",
+      "reason": "union of class functions across captures",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "added": []
+    },
+    {
+      "path": "/Game/PBZContent/UI/UINew/HUD/W_ButtonBase_Accessory.W_ButtonBase_Accessory_C",
+      "reason": "union of class functions across captures",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "added": []
+    },
+    {
+      "path": "/Game/PBZContent/UI/UINew/HUD/W_ButtonBase_Medicine.W_ButtonBase_Medicine_C",
+      "reason": "union of class functions across captures",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "added": []
+    },
+    {
+      "path": "/Game/PBZContent/UI/UINew/HUD/W_ButtonBase_ShaChiWeapon.W_ButtonBase_ShaChiWeapon_C",
+      "reason": "union of class functions across captures",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "added": []
+    },
+    {
+      "path": "/Game/PBZContent/UI/UINew/HUD/W_ButtonBase_Weapon.W_ButtonBase_Weapon_C",
+      "reason": "union of class functions across captures",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "added": []
+    },
+    {
+      "path": "/Game/PBZContent/UI/UINew/HUD/W_questupdate.W_questupdate_C",
+      "reason": "union of class functions across captures",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "added": []
+    },
+    {
+      "path": "/Game/PBZContent/UI/UINew/System/Upgrade/W_Dust_Tips.W_Dust_Tips_C.Construct__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/UINew/System/Upgrade/W_Dust_Tips.W_Dust_Tips_C.Destruct__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/UINew/System/Upgrade/W_Dust_Tips.W_Dust_Tips_C.HideDustTips__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/UINew/System/Upgrade/W_Dust_Tips.W_Dust_Tips_C.ShowDustTips__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/PBZContent/UI/UINew/System/Upgrade/W_Dust_Tips.W_Dust_Tips_C.Tick__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/RenewalContent/Actors/Players/BP_Renewal_Hun.BP_Renewal_Hun_C",
+      "reason": "union of class functions across captures",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "added": []
+    },
+    {
+      "path": "/Game/Test/LyraUi/BP_UIBlueprintObject.BP_UIBlueprintObject_C.GetAccessoryButtonDisplayInfo__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/Test/LyraUi/BP_UIBlueprintObject.BP_UIBlueprintObject_C.GetMedicineButtonDisplayInfo__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Game/Test/LyraUi/BP_UIBlueprintObject.BP_UIBlueprintObject_C.GetWeaponButtonDisplayInfo__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/PBZCombatAsset/Config/WG_ExecutePoint_ShachiWeapon.WG_ExecutePoint_ShachiWeapon_C",
+      "reason": "union of class functions across captures",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "added": []
+    },
+    {
+      "path": "/Script/ProjectPBZ.PBZSettingsObj.BP_Initialize__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Script/ProjectPBZ.PBZSettingsObj.BP_OnRayTracingEnableChanged__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Script/ProjectPBZ.PBZSettingsObj.BP_PostLoadMapWithWorld__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Script/ProjectPBZ.PBZTeleportSubsystem.TeleportToBellFromJhsy__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Script/ProjectPBZ.PBZTeleportSubsystem.TeleportToJhsy__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Script/ProjectPBZ.PerformanceSystemSubsystem.BP_Initialize__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    },
+    {
+      "path": "/Script/ProjectPBZ.PerformanceSystemSubsystem.TeleportToTargetPoint__puerts_mixin__",
+      "reason": "PuerTS runtime mixin alias excluded from API"
+    }
+  ],
+  "propertyResolutions": [
+    {
+      "owner": "/PBZCombatAsset/Prototypes/AI/Condition_SelfSummonCount.Condition_SelfSummonCount_C",
+      "member": "Comparision Method To Required Count",
+      "sources": [
+        "loaded-20261030-027-remaining-retry2/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "reason": "previously unresolved enum storage parsed; known schema unchanged"
+    },
+    {
+      "owner": "/SGameAI/BehaviorTree/Decorator/BTDecorator_DistanceTo.BTDecorator_DistanceTo_C",
+      "member": "ComparisionMethod",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "reason": "previously unresolved enum storage parsed; known schema unchanged"
+    },
+    {
+      "owner": "/SGameAI/BehaviorTree/Decorator/BTDecorator_Level.BTDecorator_Level_C",
+      "member": "ComparisionMethod",
+      "sources": [
+        "loaded-20261030-027-remaining-retry2/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "reason": "previously unresolved enum storage parsed; known schema unchanged"
+    },
+    {
+      "owner": "/SGameAI/BehaviorTree/Decorator/BTDecorator_TargetDistance.BTDecorator_TargetDistance_C",
+      "member": "ComparisionMethod",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "reason": "previously unresolved enum storage parsed; known schema unchanged"
+    },
+    {
+      "owner": "/SGameAI/Core/AICondition/Condition_Attribute.Condition_Attribute_C",
+      "member": "ComparisionMethod",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "reason": "previously unresolved enum storage parsed; known schema unchanged"
+    },
+    {
+      "owner": "/SGameAI/Core/AICondition/Condition_Counter.Condition_Counter_C",
+      "member": "ComparisonMethod",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "reason": "previously unresolved enum storage parsed; known schema unchanged"
+    },
+    {
+      "owner": "/SGameAI/Core/AICondition/Condition_Distance.Condition_Distance_C",
+      "member": "ComparisionMethod",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "reason": "previously unresolved enum storage parsed; known schema unchanged"
+    },
+    {
+      "owner": "/SGameAI/Core/AICondition/Condition_MemberCount.Condition_MemberCount_C",
+      "member": "ComparisonMethod",
+      "sources": [
+        "PBZ_Xigu_WP/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "reason": "previously unresolved enum storage parsed; known schema unchanged"
+    },
+    {
+      "owner": "/SGameAI/Core/AICondition/Condition_Speed.Condition_Speed_C",
+      "member": "ComparisionMethod",
+      "sources": [
+        "loaded-20261030-027-remaining-retry2/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "reason": "previously unresolved enum storage parsed; known schema unchanged"
+    },
+    {
+      "owner": "/SGameAI/Core/AICondition/Condition_SummonCount.Condition_SummonCount_C",
+      "member": "ComparisonMethod",
+      "sources": [
+        "loaded-20261030-027-remaining-retry2/reflection.json",
+        "property-mapping-20261030/reflection.json"
+      ],
+      "reason": "previously unresolved enum storage parsed; known schema unchanged"
+    }
+  ],
+  "metadataLimitedProperties": [
+    {
+      "owner": "/PBZCombatAsset/Prototypes/AI/Condition_SelfSummonCount.Condition_SelfSummonCount_C",
+      "member": "Comparision Method To Required Count",
+      "reason": "UEnum metadata absent; verified numeric storage, enumerator names unavailable"
+    },
+    {
+      "owner": "/SGameAI/BehaviorTree/Decorator/BTDecorator_DistanceTo.BTDecorator_DistanceTo_C",
+      "member": "ComparisionMethod",
+      "reason": "UEnum metadata absent; verified numeric storage, enumerator names unavailable"
+    },
+    {
+      "owner": "/SGameAI/BehaviorTree/Decorator/BTDecorator_Level.BTDecorator_Level_C",
+      "member": "ComparisionMethod",
+      "reason": "UEnum metadata absent; verified numeric storage, enumerator names unavailable"
+    },
+    {
+      "owner": "/SGameAI/BehaviorTree/Decorator/BTDecorator_TargetDistance.BTDecorator_TargetDistance_C",
+      "member": "ComparisionMethod",
+      "reason": "UEnum metadata absent; verified numeric storage, enumerator names unavailable"
+    },
+    {
+      "owner": "/SGameAI/Core/AICondition/Condition_Attribute.Condition_Attribute_C",
+      "member": "ComparisionMethod",
+      "reason": "UEnum metadata absent; verified numeric storage, enumerator names unavailable"
+    },
+    {
+      "owner": "/SGameAI/Core/AICondition/Condition_Counter.Condition_Counter_C",
+      "member": "ComparisonMethod",
+      "reason": "UEnum metadata absent; verified numeric storage, enumerator names unavailable"
+    },
+    {
+      "owner": "/SGameAI/Core/AICondition/Condition_Distance.Condition_Distance_C",
+      "member": "ComparisionMethod",
+      "reason": "UEnum metadata absent; verified numeric storage, enumerator names unavailable"
+    },
+    {
+      "owner": "/SGameAI/Core/AICondition/Condition_MemberCount.Condition_MemberCount_C",
+      "member": "ComparisonMethod",
+      "reason": "UEnum metadata absent; verified numeric storage, enumerator names unavailable"
+    },
+    {
+      "owner": "/SGameAI/Core/AICondition/Condition_Speed.Condition_Speed_C",
+      "member": "ComparisionMethod",
+      "reason": "UEnum metadata absent; verified numeric storage, enumerator names unavailable"
+    },
+    {
+      "owner": "/SGameAI/Core/AICondition/Condition_SummonCount.Condition_SummonCount_C",
+      "member": "ComparisonMethod",
+      "reason": "UEnum metadata absent; verified numeric storage, enumerator names unavailable"
     }
   ],
   "excludedTypes": [
@@ -27373,10 +27751,6 @@
       "reason": "internal blueprint entry point or delegate signature"
     },
     {
-      "path": "/Script/Engine.KismetSystemLibrary.SetFieldPathPropertyByName",
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
-    },
-    {
       "path": "/Script/Engine.PlatformEventsComponent.PlatformEventDelegate__DelegateSignature",
       "reason": "internal blueprint entry point or delegate signature"
     },
@@ -27853,76 +28227,6 @@
   ],
   "unresolvedProperties": [
     {
-      "owner": "/PBZCombatAsset/Prototypes/AI/Condition_SelfSummonCount.Condition_SelfSummonCount_C",
-      "member": "Comparision Method To Required Count",
-      "kind": "EnumProperty",
-      "reflectionUnresolved": true,
-      "reason": "unresolved reflection property"
-    },
-    {
-      "owner": "/SGameAI/BehaviorTree/Decorator/BTDecorator_DistanceTo.BTDecorator_DistanceTo_C",
-      "member": "ComparisionMethod",
-      "kind": "EnumProperty",
-      "reflectionUnresolved": true,
-      "reason": "unresolved reflection property"
-    },
-    {
-      "owner": "/SGameAI/BehaviorTree/Decorator/BTDecorator_Level.BTDecorator_Level_C",
-      "member": "ComparisionMethod",
-      "kind": "EnumProperty",
-      "reflectionUnresolved": true,
-      "reason": "unresolved reflection property"
-    },
-    {
-      "owner": "/SGameAI/BehaviorTree/Decorator/BTDecorator_TargetDistance.BTDecorator_TargetDistance_C",
-      "member": "ComparisionMethod",
-      "kind": "EnumProperty",
-      "reflectionUnresolved": true,
-      "reason": "unresolved reflection property"
-    },
-    {
-      "owner": "/SGameAI/Core/AICondition/Condition_Attribute.Condition_Attribute_C",
-      "member": "ComparisionMethod",
-      "kind": "EnumProperty",
-      "reflectionUnresolved": true,
-      "reason": "unresolved reflection property"
-    },
-    {
-      "owner": "/SGameAI/Core/AICondition/Condition_Counter.Condition_Counter_C",
-      "member": "ComparisonMethod",
-      "kind": "EnumProperty",
-      "reflectionUnresolved": true,
-      "reason": "unresolved reflection property"
-    },
-    {
-      "owner": "/SGameAI/Core/AICondition/Condition_Distance.Condition_Distance_C",
-      "member": "ComparisionMethod",
-      "kind": "EnumProperty",
-      "reflectionUnresolved": true,
-      "reason": "unresolved reflection property"
-    },
-    {
-      "owner": "/SGameAI/Core/AICondition/Condition_MemberCount.Condition_MemberCount_C",
-      "member": "ComparisonMethod",
-      "kind": "EnumProperty",
-      "reflectionUnresolved": true,
-      "reason": "unresolved reflection property"
-    },
-    {
-      "owner": "/SGameAI/Core/AICondition/Condition_Speed.Condition_Speed_C",
-      "member": "ComparisionMethod",
-      "kind": "EnumProperty",
-      "reflectionUnresolved": true,
-      "reason": "unresolved reflection property"
-    },
-    {
-      "owner": "/SGameAI/Core/AICondition/Condition_SummonCount.Condition_SummonCount_C",
-      "member": "ComparisonMethod",
-      "kind": "EnumProperty",
-      "reflectionUnresolved": true,
-      "reason": "unresolved reflection property"
-    },
-    {
       "owner": "/Script/CoreUObject.SoftObjectPath",
       "member": "SubPathString",
       "kind": "Utf8StrProperty",
@@ -27931,31 +28235,10 @@
     },
     {
       "owner": "/Script/CoreUObject.VerseClass",
-      "member": "PropertiesWrittenByInitCDO",
-      "kind": "ArrayProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
-    },
-    {
-      "owner": "/Script/CoreUObject.VerseClass",
       "member": "PredictsVarNames",
       "kind": "MapProperty",
       "reflectionUnresolved": false,
       "reason": "unverified PuerTS mapping: AnsiStrProperty"
-    },
-    {
-      "owner": "/Script/CoreUObject.VerseClass",
-      "member": "IntPropertyConstraints",
-      "kind": "MapProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
-    },
-    {
-      "owner": "/Script/CoreUObject.VerseClass",
-      "member": "DoublePropertyConstraints",
-      "kind": "MapProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
     },
     {
       "owner": "/Script/CoreUObject.VerseEnum",
@@ -27979,39 +28262,11 @@
       "reason": "unverified PuerTS mapping: OptionalProperty"
     },
     {
-      "owner": "/Script/CoreUObject.VersePersistentVar",
-      "member": "Property",
-      "kind": "FieldPathProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
-    },
-    {
-      "owner": "/Script/CoreUObject.VerseSessionVar",
-      "member": "Property",
-      "kind": "FieldPathProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
-    },
-    {
       "owner": "/Script/CoreUObject.VerseStruct",
       "member": "QualifiedName",
       "kind": "Utf8StrProperty",
       "reflectionUnresolved": false,
       "reason": "unverified PuerTS mapping: Utf8StrProperty"
-    },
-    {
-      "owner": "/Script/CoreUObject.VerseStruct",
-      "member": "IntPropertyConstraints",
-      "kind": "MapProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
-    },
-    {
-      "owner": "/Script/CoreUObject.VerseStruct",
-      "member": "DoublePropertyConstraints",
-      "kind": "MapProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
     },
     {
       "owner": "/Script/Engine.FontFace",
@@ -28026,27 +28281,6 @@
       "kind": "OptionalProperty",
       "reflectionUnresolved": false,
       "reason": "unverified PuerTS mapping: OptionalProperty"
-    },
-    {
-      "owner": "/Script/Engine.PropertyAccessIndirection",
-      "member": "Property",
-      "kind": "FieldPathProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
-    },
-    {
-      "owner": "/Script/Engine.PropertyAccessIndirectionChain",
-      "member": "Property",
-      "kind": "FieldPathProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
-    },
-    {
-      "owner": "/Script/Engine.PropertyAccessSegment",
-      "member": "Property",
-      "kind": "FieldPathProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
     },
     {
       "owner": "/Script/Engine.SkeletalMeshSourceModel",
@@ -28070,20 +28304,6 @@
       "reason": "unverified PuerTS mapping: OptionalProperty"
     },
     {
-      "owner": "/Script/GameplayAbilities.GameplayAttribute",
-      "member": "Attribute",
-      "kind": "FieldPathProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
-    },
-    {
-      "owner": "/Script/GameplayAbilities.GameplayTagBlueprintPropertyMapping",
-      "member": "PropertyToEdit",
-      "kind": "FieldPathProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
-    },
-    {
       "owner": "/Script/InteractiveToolsFramework.GizmoPerStateValueDouble",
       "member": "Default",
       "kind": "OptionalProperty",
@@ -28152,27 +28372,6 @@
       "kind": "OptionalProperty",
       "reflectionUnresolved": false,
       "reason": "unverified PuerTS mapping: OptionalProperty"
-    },
-    {
-      "owner": "/Script/IrisCore.ArrayPropertyNetSerializerConfig",
-      "member": "Property",
-      "kind": "FieldPathProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
-    },
-    {
-      "owner": "/Script/IrisCore.FieldPathNetSerializerConfig",
-      "member": "Property",
-      "kind": "FieldPathProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
-    },
-    {
-      "owner": "/Script/IrisCore.LastResortPropertyNetSerializerConfig",
-      "member": "Property",
-      "kind": "FieldPathProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
     },
     {
       "owner": "/Script/LegoAbility.LegoCameraShakePreviewerAddParams",
@@ -28180,13 +28379,6 @@
       "kind": "OptionalProperty",
       "reflectionUnresolved": false,
       "reason": "unverified PuerTS mapping: OptionalProperty"
-    },
-    {
-      "owner": "/Script/MovieScene.MovieSceneDynamicBinding",
-      "member": "ResolveParamsProperty",
-      "kind": "FieldPathProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
     },
     {
       "owner": "/Script/MovieScene.MovieSceneShotMetaData",
@@ -28222,20 +28414,6 @@
       "kind": "OptionalProperty",
       "reflectionUnresolved": false,
       "reason": "unverified PuerTS mapping: OptionalProperty"
-    },
-    {
-      "owner": "/Script/MovieSceneTracks.MovieSceneDirectorBlueprintConditionData",
-      "member": "ConditionContextProperty",
-      "kind": "FieldPathProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
-    },
-    {
-      "owner": "/Script/MovieSceneTracks.MovieSceneEventPtrs",
-      "member": "BoundObjectProperty",
-      "kind": "FieldPathProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
     },
     {
       "owner": "/Script/Niagara.NiagaraEditorPreviewActor",
@@ -28432,16 +28610,9 @@
       "kind": "OptionalProperty",
       "reflectionUnresolved": false,
       "reason": "unverified PuerTS mapping: OptionalProperty"
-    },
-    {
-      "owner": "/Script/VariantManagerContent.PropertyValue",
-      "member": "Properties",
-      "kind": "ArrayProperty",
-      "reflectionUnresolved": false,
-      "reason": "unverified PuerTS mapping: FieldPathProperty"
     }
   ],
-  "ignoredLocals": 3170166,
+  "ignoredLocals": 3233471,
   "nameCollisions": [],
   "inheritanceOverrides": [
     {
@@ -64242,14 +64413,14 @@
     "classes": 22924,
     "structs": 8420,
     "enums": 3253,
-    "functions": 49539,
-    "properties": 119231,
+    "functions": 49540,
+    "properties": 119260,
     "enumValues": 19511,
     "manualMembers": 34,
     "uniqueRecords": 90946,
     "excludedTypes": 352,
-    "omittedMembers": 5435,
-    "unresolvedProperties": 84
+    "omittedMembers": 5434,
+    "unresolvedProperties": 55
   },
   "build": "CL-301524_JKS-17219",
   "exeSha256": "7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4",

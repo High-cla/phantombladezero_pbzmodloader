@@ -1,6 +1,6 @@
 # PBZ TypeScript 游戏 API
 
-`@pbz-mod-loader/game-api` 0.3.0 是 MOD 开发使用的类型声明包，为游戏提供的 `ue`、`puerts` 模块补全和检查类型。包内没有运行时代码，发布 MOD 时只携带编译后的 MOD 文件。
+`@pbz-mod-loader/game-api` 0.3.1 是 MOD 开发使用的类型声明包，为游戏提供的 `ue`、`puerts` 模块补全和检查类型。包内没有运行时代码，发布 MOD 时只携带编译后的 MOD 文件。
 
 适用构建：Steam Win64 `CL-301524_JKS-17219`，EXE SHA256 为 `7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4`。其他游戏构建和 WeGame 尚未验证。
 
@@ -13,8 +13,8 @@
 ```powershell
 # 在 PBZModLoader 仓库中生成压缩包
 npm run sdk:pack
-# 将 build/sdk/pbz-mod-loader-game-api-0.3.0.tgz 复制到 MOD 的 vendor/ 后
-npm install --save-dev ./vendor/pbz-mod-loader-game-api-0.3.0.tgz
+# 将 build/sdk/pbz-mod-loader-game-api-0.3.1.tgz 复制到 MOD 的 vendor/ 后
+npm install --save-dev ./vendor/pbz-mod-loader-game-api-0.3.1.tgz
 ```
 
 MOD 的 `tsconfig.json` 至少包含以下配置；保持完整声明检查，不需要 `skipLibCheck`：
@@ -76,7 +76,7 @@ if (cls) {
 
 ## 覆盖与验证程度
 
-本版合并原主菜单与 `PBZ_Xigu_WP` 两次采集，以及 27 批资产加载后的有效采集，生成 **34,597 个类型**（18,453 个原生类型、16,144 个资产类型）、**49,539 个声明函数**及 **119,231 个已映射属性**，并保留原 SDK 的手工实测补充层。计数不展开继承成员，也不重复计算手工补充成员。
+本版合并原主菜单与 `PBZ_Xigu_WP` 两次采集，以及 27 批资产加载、一次定向属性复核后的有效采集，生成 **34,597 个类型**（18,453 个原生类型、16,144 个资产类型）、**49,540 个声明函数**及 **119,260 个已映射属性**，并保留原 SDK 的手工实测补充层。计数不展开继承成员，也不重复计算手工补充成员。
 
 - `generation-report.json`：输入文件哈希、采集构建、合并变化、继承覆盖、排除项和未解析项。
 - `type-index.json`：每个类型的完整路径、声明位置及 `reflection-generated` 状态。
@@ -84,18 +84,22 @@ if (cls) {
 
 生成声明不代表每项 API 都经过调用测试，也不代表所有蓝图都已采集。未加载资产、未反射且未注册绑定的成员不在覆盖范围内。函数只使用参数与返回字段，局部变量不进入声明。
 
-84 个属性保留为只读 `$Unresolved<Path>`：其中 10 个反射解析失败，74 个尚无已验证的 PuerTS 映射。另有 5435 个函数成员被排除（含内部蓝图入口/委托签名及无法映射的函数），352 个类型被排除，8 个大整数枚举值被排除。具体原因与路径见报告，不使用 `any` 兜底。
+55 个属性保留为只读 `$Unresolved<Path>`：51 个 OptionalProperty、3 个 Utf8StrProperty、1 个 AnsiStrProperty。所有目标均确认有 getter/setter 绑定；Optional 与 UTF-8 的可实例化样本读值（含写入后读回）为 undefined，其余只检查了绑定，不能宣称可用映射。另有 5434 个内部蓝图入口/委托签名、352 个临时类型及 8 个大整数枚举值被排除。
 
 本次资产加载共处理 12,400 个登记表已确认的未覆盖路径，12,399 个成功。PBZCombatAsset、Game、HuaShira 三个优先目录全部完成；其余目录中 `Narrative/NarrativeUI/Widgets/Editor/WBP_DefaultQuestNode_C` 对应的类加载返回空值，未生成声明。具体完整路径和结果见仓库 `build/type-batches-20261030/final/report.md`；不代表全部游戏脚本或未反射 C++ API 已覆盖。
 
 部分 FName 属性在不同运行中出现大小写拼写差异；仅在其余反射结构一致时提供可选别名，并在 `memberNameVariants` 中记录。使用前应确认本次运行实际提供的拼写。
+
+0.3.1 修复了 10 个空 UEnum 指针字段的解析：底层整数描述完整，实测读值为 number，声明保留数字存储并标注枚举名称元数据缺失，不猜测枚举常量。新增 19 个 FieldPath 属性映射及 `KismetSystemLibrary.SetFieldPathPropertyByName` 签名。完整逐项证据见 `property-mapping-verification.json`。
+
+FieldPath 映射为字符串，形如 `/Script/Engine.Actor:bHidden`；读取未设置字段可能得到空字符串，但写入空字符串会抛 `invalid FieldPath`。实测临时 `GameplayAttribute` 的读写回环，以及该函数的空对象目标参数转换；未验证对现有游戏对象的写入效果。一次中途进程退出的探测未计入成功结果，保留于本地证据目录。
 
 ## 映射约定
 
 | 反射类型或行为 | 声明 |
 | --- | --- |
 | 普通数值 / 64 位整数 | `number` / `bigint` |
-| 字符串、Name、Text | `string` |
+| 字符串、Name、Text、FieldPath | `string`（FieldPath 输入需有效路径） |
 | 对象、接口、弱引用与延迟引用 | 目标类型加 `null \| undefined` |
 | 数组、集合、映射、定长数组 | `TArray`、`TSet`、`TMap`、`FixSizeArray` |
 | 非 const 的 out 参数 | `puerts.$Ref<T>`；使用 `$ref`/`$unref` |

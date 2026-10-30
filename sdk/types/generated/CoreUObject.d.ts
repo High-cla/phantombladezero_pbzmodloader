@@ -2798,17 +2798,14 @@ declare module 'ue' {
         "PackageRelativeVersePath": string;
         "DisplayNameToUENameFunctionMap": UE.TMap<string, string>;
         "DirectInterfaces": UE.TArray<UE.Class | null | undefined>;
-        /** Unresolved; see generation-report.json. */
-        readonly "PropertiesWrittenByInitCDO": UE.$Unresolved<"/Script/CoreUObject.VerseClass.PropertiesWrittenByInitCDO">;
+        "PropertiesWrittenByInitCDO": UE.TArray<string>;
         "FunctionMangledNames": UE.TMap<string, string>;
         "PredictsFunctionNames": UE.TArray<string>;
         /** Unresolved; see generation-report.json. */
         readonly "PredictsVarNames": UE.$Unresolved<"/Script/CoreUObject.VerseClass.PredictsVarNames">;
         "PredictsCoercedFunctions": UE.TMap<string, string>;
-        /** Unresolved; see generation-report.json. */
-        readonly "IntPropertyConstraints": UE.$Unresolved<"/Script/CoreUObject.VerseClass.IntPropertyConstraints">;
-        /** Unresolved; see generation-report.json. */
-        readonly "DoublePropertyConstraints": UE.$Unresolved<"/Script/CoreUObject.VerseClass.DoublePropertyConstraints">;
+        "IntPropertyConstraints": UE.TMap<string, UE.VerseIntConstraints>;
+        "DoublePropertyConstraints": UE.TMap<string, UE.VerseDoubleConstraints>;
     }
     namespace $Static {
     interface VerseClass {
@@ -2880,8 +2877,7 @@ declare module 'ue' {
     /** /Script/CoreUObject.VersePersistentVar — reflection-generated, not individually call-tested. */
     interface VersePersistentVar {
         "Path": string;
-        /** Unresolved; see generation-report.json. */
-        readonly "Property": UE.$Unresolved<"/Script/CoreUObject.VersePersistentVar.Property">;
+        "Property": string;
     }
     namespace $Static {
     interface VersePersistentVar {
@@ -2900,8 +2896,7 @@ declare module 'ue' {
     const VerseRational: UE.$Static.VerseRational & UE.$StructType<UE.VerseRational>;
     /** /Script/CoreUObject.VerseSessionVar — reflection-generated, not individually call-tested. */
     interface VerseSessionVar {
-        /** Unresolved; see generation-report.json. */
-        readonly "Property": UE.$Unresolved<"/Script/CoreUObject.VerseSessionVar.Property">;
+        "Property": string;
     }
     namespace $Static {
     interface VerseSessionVar {
@@ -2919,10 +2914,8 @@ declare module 'ue' {
         "FactoryFunction": UE.Function | null | undefined;
         "OverrideFactoryFunction": UE.Function | null | undefined;
         "ConstructorEffects": UE.EVerseEffectSet;
-        /** Unresolved; see generation-report.json. */
-        readonly "IntPropertyConstraints": UE.$Unresolved<"/Script/CoreUObject.VerseStruct.IntPropertyConstraints">;
-        /** Unresolved; see generation-report.json. */
-        readonly "DoublePropertyConstraints": UE.$Unresolved<"/Script/CoreUObject.VerseStruct.DoublePropertyConstraints">;
+        "IntPropertyConstraints": UE.TMap<string, UE.VerseIntConstraints>;
+        "DoublePropertyConstraints": UE.TMap<string, UE.VerseDoubleConstraints>;
     }
     namespace $Static {
     interface VerseStruct {

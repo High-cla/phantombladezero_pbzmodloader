@@ -58,6 +58,9 @@ python tests/reflection_test.py
 不等于全部都是持久蓝图资产。`objectIndex`、错误中的地址仅用于单次采集诊断。
 
 未解析字段保留在所属类型中并标记 `unresolved`，不补成 `any`，不默默丢弃。
+空 UEnum 指针不等于属性存储缺失：底层整数属性可解析且尺寸匹配时，保留 `enum=null`、
+`underlying` 和 `enumMetadataMissing=true`。SDK 对已验证的非 64 位整数存储声明为 `number`，
+不猜测枚举名称/取值集。非法非空引用、底层解析失败或尺寸不匹配仍按失败处理。
 `declaredProperties` 不含函数字段；`functionFields` 包含参数、返回及局部字段；
 `propertyKinds` 还包含容器的嵌套描述符，不能直接当作顶层成员总数。
 
@@ -146,3 +149,18 @@ SDK 合并使用原有两次采集和检查点指向的有效 `reflection.json`�
 
 结束后关闭测试游戏、恢复原 MOD 配置并校验哈希、移走临时 MOD。保留命令计划、加载日志、
 窗口检查、原始反射和最终 SDK 差异报告，供重建与核查使用。
+
+## 属性映射定向验证
+
+`tests/property-mapping-probe.js` 是命令门控的临时 MOD。启动并通过 `PBZ-Windowed.ps1 -Status`
+后，才向其 generated-mods 目录写入 `command.js`，导出 `{targets:[{owner,member,kind,typeKind}]}`。
+目标由旧版 `generation-report.json` 的 `unresolvedProperties` 与 `type-index.json` 的类型种类生成。
+探针检查全部目标的 getter/setter、读取可取得的类默认对象或临时结构体；不会写类默认对象。
+可选 `write` 只用于已核对存储类型的临时结构字段，不批量向不同 FieldPath 子类型写同一路径。
+`targets:[]` 可单独运行代表性字段路径回环、Optional 写入和空目标函数参数转换检查。
+
+日志按帧输出，使用 `tests/verify-property-mapping.cjs <bindings.log> <followup.log> <prior-generation-report.json> <report.json>`
+核验完整性与结果。中途退出、缺帧或缺少结束标志的运行不计入成功证据。
+字段路径读写已验证为字符串，空字符串可被读出但不能作为写入参数；Optional/UTF-8 样本
+虽有访问器，读写后仍返回 undefined，因此不能用“访问器存在”推断值映射已支持。
+ANSI 仅有绑定证据，仍保留未解析声明。原始采集目录为 `build/property-mapping-20261030/`。

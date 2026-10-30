@@ -22,8 +22,7 @@ declare module 'ue' {
     interface ArrayPropertyNetSerializerConfig extends UE.NetSerializerConfig {
         "MaxElementCount": number;
         "ElementCountBitCount": number;
-        /** Unresolved; see generation-report.json. */
-        readonly "Property": UE.$Unresolved<"/Script/IrisCore.ArrayPropertyNetSerializerConfig.Property">;
+        "Property": string;
     }
     namespace $Static {
     interface ArrayPropertyNetSerializerConfig {
@@ -249,8 +248,7 @@ declare module 'ue' {
     const FieldOfViewNetObjectPrioritizerConfig: UE.$Static.FieldOfViewNetObjectPrioritizerConfig & UE.$ClassType<UE.FieldOfViewNetObjectPrioritizerConfig>;
     /** /Script/IrisCore.FieldPathNetSerializerConfig — reflection-generated, not individually call-tested. */
     interface FieldPathNetSerializerConfig extends UE.NetSerializerConfig {
-        /** Unresolved; see generation-report.json. */
-        readonly "Property": UE.$Unresolved<"/Script/IrisCore.FieldPathNetSerializerConfig.Property">;
+        "Property": string;
     }
     namespace $Static {
     interface FieldPathNetSerializerConfig {
@@ -380,8 +378,7 @@ declare module 'ue' {
     const IrisObjectReferencePackageMap: UE.$Static.IrisObjectReferencePackageMap & UE.$ClassType<UE.IrisObjectReferencePackageMap>;
     /** /Script/IrisCore.LastResortPropertyNetSerializerConfig — reflection-generated, not individually call-tested. */
     interface LastResortPropertyNetSerializerConfig extends UE.NetSerializerConfig {
-        /** Unresolved; see generation-report.json. */
-        readonly "Property": UE.$Unresolved<"/Script/IrisCore.LastResortPropertyNetSerializerConfig.Property">;
+        "Property": string;
         "bExcludeFromDefaultStateHash": boolean;
         "MaxQuantizedSizeBits": number;
     }

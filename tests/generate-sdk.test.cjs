@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const {generate, parseReflection} = require('../scripts/generate-sdk.cjs');
+const {generate, parseReflection, canonical} = require('../scripts/generate-sdk.cjs');
 const supplemental = {modules:{ue:{}}};
 const checks = Object.fromEntries(['vector','actorInheritance','playerPawnSignature','axisEnum','objectArrayStable','reflectionIdentitiesStable'].map(k=>[k,true]));
 const type = (name, extra={}) => ({path:'/Script/Test.'+name,name,kind:'Class',source:'native',super:null,properties:[],functions:[],...extra});
@@ -100,6 +100,34 @@ test('lazy captures are read once in deterministic filename order',()=>{
     // A read result supplies data and sha256, not a retained parsed capture array.
     const result=generate([input('b'),input('a')],supplemental);
     assert.deepEqual(seen,['a','b']);assert.equal(result.report.counts.types,1);
+});
+
+test('resolved enum upgrades preserve known schema and report missing metadata',()=>{
+    const raw=Buffer.alloc(128);raw.writeUInt32LE(1,0x30);raw.writeUInt32LE(1,0x34);raw.writeUInt32LE(156,0x44);
+    assert.deepEqual(canonical({kind:'EnumProperty',unresolved:true,rawHeaderHex:raw.toString('hex')}),{arrayDim:1,elementSize:1,kind:'EnumProperty',offset:156,unresolved:true});
+    const p=prop('Comparison','EnumProperty',{unresolved:true});
+    const good={...p,unresolved:undefined,enum:null,enumMetadataMissing:true,underlying:prop('storage','ByteProperty')};
+    const a=capture([type('Owner',{properties:[p]})],'a');
+    const b=capture([type('Owner',{properties:[good]})],'b');
+    for(const inputs of [[a,b],[{...b,name:'a'},{...a,name:'b'}]]) {
+        const r=generate(inputs,supplemental);
+        assert.match(decls(r),/"Comparison": number/);
+        assert.equal(r.report.propertyResolutions.length,1);
+        assert.equal(r.report.metadataLimitedProperties.length,1);
+    }
+    assert.throws(()=>generate([a,capture([type('Owner',{properties:[{...good,out:true}]})],'b')],supplemental),/Conflicting/);
+    assert.throws(()=>generate([a,capture([type('Owner',{properties:[{...good,arrayDim:2}]})],'b')],supplemental),/Conflicting/);
+    const r=generate([capture([type('Owner',{properties:[{...good,enumMetadataMissing:undefined}]})])],supplemental);
+    assert.equal(r.report.unresolvedProperties.length,1);
+});
+
+test('field paths map through nested containers and function parameters',()=>{
+    const f=fn('SetPath',[prop('path','FieldPathProperty',{parameter:true})]);
+    const owner=type('Owner',{functions:[f.path],properties:[prop('Paths','ArrayProperty',{inner:prop('p','FieldPathProperty')})]});
+    const r=generate([capture([owner,f])],supplemental);
+    assert.match(decls(r),/"Paths": UE.TArray<string>/);
+    assert.match(decls(r),/"SetPath"\(path: string\): void/);
+    assert.equal(r.report.unresolvedProperties.length,0);
 });
 
 test('available capture inputs reproduce every checked-in generated file and report',t=>{

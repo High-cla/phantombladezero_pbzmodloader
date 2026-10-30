@@ -1,0 +1,1540 @@
+{
+  "schemaVersion": 1,
+  "gameBuild": "CL-301524_JKS-17219",
+  "date": "2026-10-30",
+  "probe": "tests/property-mapping-probe.js",
+  "sources": [
+    {
+      "path": "build/property-mapping-20261030/loader.log",
+      "sha256": "91c0266de75961e576b778e87fe687b690480ecf42e0543bc0b44d56b56c1258"
+    },
+    {
+      "path": "build/property-mapping-20261030/loader-third.log",
+      "sha256": "cc7c3634f066eea711f37841b458adc317ad624a7cbb581dc7425f9fc77d2ccc"
+    }
+  ],
+  "scope": "All 84 getter/setter bindings inspected; 10 numeric enum reads; field-path string roundtrip and null-target function marshaling. No gameplay mutation validation.",
+  "properties": [
+    {
+      "event": "property",
+      "owner": "/PBZCombatAsset/Prototypes/AI/Condition_SelfSummonCount.Condition_SelfSummonCount_C",
+      "member": "Comparision Method To Required Count",
+      "kind": "EnumProperty",
+      "reflectionUnresolved": true,
+      "reason": "unresolved reflection property",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "number",
+        "value": 5
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/SGameAI/BehaviorTree/Decorator/BTDecorator_DistanceTo.BTDecorator_DistanceTo_C",
+      "member": "ComparisionMethod",
+      "kind": "EnumProperty",
+      "reflectionUnresolved": true,
+      "reason": "unresolved reflection property",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "number",
+        "value": 5
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/SGameAI/BehaviorTree/Decorator/BTDecorator_Level.BTDecorator_Level_C",
+      "member": "ComparisionMethod",
+      "kind": "EnumProperty",
+      "reflectionUnresolved": true,
+      "reason": "unresolved reflection property",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "number",
+        "value": 5
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/SGameAI/BehaviorTree/Decorator/BTDecorator_TargetDistance.BTDecorator_TargetDistance_C",
+      "member": "ComparisionMethod",
+      "kind": "EnumProperty",
+      "reflectionUnresolved": true,
+      "reason": "unresolved reflection property",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "number",
+        "value": 5
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/SGameAI/Core/AICondition/Condition_Attribute.Condition_Attribute_C",
+      "member": "ComparisionMethod",
+      "kind": "EnumProperty",
+      "reflectionUnresolved": true,
+      "reason": "unresolved reflection property",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "number",
+        "value": 5
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/SGameAI/Core/AICondition/Condition_Counter.Condition_Counter_C",
+      "member": "ComparisonMethod",
+      "kind": "EnumProperty",
+      "reflectionUnresolved": true,
+      "reason": "unresolved reflection property",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/SGameAI/Core/AICondition/Condition_Distance.Condition_Distance_C",
+      "member": "ComparisionMethod",
+      "kind": "EnumProperty",
+      "reflectionUnresolved": true,
+      "reason": "unresolved reflection property",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/SGameAI/Core/AICondition/Condition_MemberCount.Condition_MemberCount_C",
+      "member": "ComparisonMethod",
+      "kind": "EnumProperty",
+      "reflectionUnresolved": true,
+      "reason": "unresolved reflection property",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "number",
+        "value": 2
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/SGameAI/Core/AICondition/Condition_Speed.Condition_Speed_C",
+      "member": "ComparisionMethod",
+      "kind": "EnumProperty",
+      "reflectionUnresolved": true,
+      "reason": "unresolved reflection property",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "number",
+        "value": 5
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/SGameAI/Core/AICondition/Condition_SummonCount.Condition_SummonCount_C",
+      "member": "ComparisonMethod",
+      "kind": "EnumProperty",
+      "reflectionUnresolved": true,
+      "reason": "unresolved reflection property",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "number",
+        "value": 2
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/CoreUObject.SoftObjectPath",
+      "member": "SubPathString",
+      "kind": "Utf8StrProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: Utf8StrProperty",
+      "typeKind": "ScriptStruct",
+      "write": "PBZ 映射 test",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      },
+      "afterWrite": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/CoreUObject.VerseClass",
+      "member": "PropertiesWrittenByInitCDO",
+      "kind": "ArrayProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/CoreUObject.VerseClass",
+      "member": "PredictsVarNames",
+      "kind": "MapProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: AnsiStrProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/CoreUObject.VerseClass",
+      "member": "IntPropertyConstraints",
+      "kind": "MapProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/CoreUObject.VerseClass",
+      "member": "DoublePropertyConstraints",
+      "kind": "MapProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/CoreUObject.VerseEnum",
+      "member": "QualifiedName",
+      "kind": "Utf8StrProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: Utf8StrProperty",
+      "typeKind": "Class",
+      "write": "PBZ 映射 test",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/CoreUObject.VerseIntConstraints",
+      "member": "ClampMin",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/CoreUObject.VerseIntConstraints",
+      "member": "ClampMax",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/CoreUObject.VersePersistentVar",
+      "member": "Property",
+      "kind": "FieldPathProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "ScriptStruct",
+      "write": "",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "string",
+        "value": ""
+      },
+      "error": "Error: invalid FieldPath: "
+    },
+    {
+      "event": "property",
+      "owner": "/Script/CoreUObject.VerseSessionVar",
+      "member": "Property",
+      "kind": "FieldPathProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "ScriptStruct",
+      "write": "",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "string",
+        "value": ""
+      },
+      "error": "Error: invalid FieldPath: "
+    },
+    {
+      "event": "property",
+      "owner": "/Script/CoreUObject.VerseStruct",
+      "member": "QualifiedName",
+      "kind": "Utf8StrProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: Utf8StrProperty",
+      "typeKind": "Class",
+      "write": "PBZ 映射 test",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/CoreUObject.VerseStruct",
+      "member": "IntPropertyConstraints",
+      "kind": "MapProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/CoreUObject.VerseStruct",
+      "member": "DoublePropertyConstraints",
+      "kind": "MapProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Engine.FontFace",
+      "member": "PlatformRasterizationModeOverrides",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Engine.MaterialInterface",
+      "member": "CachedTexturesSamplingInfo",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Engine.PropertyAccessIndirection",
+      "member": "Property",
+      "kind": "FieldPathProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "ScriptStruct",
+      "write": "",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "string",
+        "value": ""
+      },
+      "error": "Error: invalid FieldPath: "
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Engine.PropertyAccessIndirectionChain",
+      "member": "Property",
+      "kind": "FieldPathProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "ScriptStruct",
+      "write": "",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "string",
+        "value": ""
+      },
+      "error": "Error: invalid FieldPath: "
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Engine.PropertyAccessSegment",
+      "member": "Property",
+      "kind": "FieldPathProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "ScriptStruct",
+      "write": "",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "string",
+        "value": ""
+      },
+      "error": "Error: invalid FieldPath: "
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Engine.SkeletalMeshSourceModel",
+      "member": "CachedHasVertexColors",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Engine.TextureLODGroup",
+      "member": "MipBias",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Engine.WorldPartitionRuntimeCellData",
+      "member": "CellBounds",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/GameplayAbilities.GameplayAttribute",
+      "member": "Attribute",
+      "kind": "FieldPathProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "ScriptStruct",
+      "write": "",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "string",
+        "value": ""
+      },
+      "error": "Error: invalid FieldPath: "
+    },
+    {
+      "event": "property",
+      "owner": "/Script/GameplayAbilities.GameplayTagBlueprintPropertyMapping",
+      "member": "PropertyToEdit",
+      "kind": "FieldPathProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "ScriptStruct",
+      "write": "",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "string",
+        "value": ""
+      },
+      "error": "Error: invalid FieldPath: "
+    },
+    {
+      "event": "property",
+      "owner": "/Script/InteractiveToolsFramework.GizmoPerStateValueDouble",
+      "member": "Default",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/InteractiveToolsFramework.GizmoPerStateValueDouble",
+      "member": "Hover",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/InteractiveToolsFramework.GizmoPerStateValueDouble",
+      "member": "Interact",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/InteractiveToolsFramework.GizmoPerStateValueDouble",
+      "member": "Select",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/InteractiveToolsFramework.GizmoPerStateValueDouble",
+      "member": "Subdue",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/InteractiveToolsFramework.GizmoPerStateValueLinearColor",
+      "member": "Default",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/InteractiveToolsFramework.GizmoPerStateValueLinearColor",
+      "member": "Hover",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/InteractiveToolsFramework.GizmoPerStateValueLinearColor",
+      "member": "Interact",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/InteractiveToolsFramework.GizmoPerStateValueLinearColor",
+      "member": "Select",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/InteractiveToolsFramework.GizmoPerStateValueLinearColor",
+      "member": "Subdue",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/IrisCore.ArrayPropertyNetSerializerConfig",
+      "member": "Property",
+      "kind": "FieldPathProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "ScriptStruct",
+      "write": "",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "string",
+        "value": ""
+      },
+      "error": "Error: invalid FieldPath: "
+    },
+    {
+      "event": "property",
+      "owner": "/Script/IrisCore.FieldPathNetSerializerConfig",
+      "member": "Property",
+      "kind": "FieldPathProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "ScriptStruct",
+      "write": "",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "string",
+        "value": ""
+      },
+      "error": "Error: invalid FieldPath: "
+    },
+    {
+      "event": "property",
+      "owner": "/Script/IrisCore.LastResortPropertyNetSerializerConfig",
+      "member": "Property",
+      "kind": "FieldPathProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "ScriptStruct",
+      "write": "",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "string",
+        "value": ""
+      },
+      "error": "Error: invalid FieldPath: "
+    },
+    {
+      "event": "property",
+      "owner": "/Script/LegoAbility.LegoCameraShakePreviewerAddParams",
+      "member": "DurationOverride",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/MovieScene.MovieSceneDynamicBinding",
+      "member": "ResolveParamsProperty",
+      "kind": "FieldPathProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "ScriptStruct",
+      "write": "",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "string",
+        "value": ""
+      },
+      "error": "Error: invalid FieldPath: "
+    },
+    {
+      "event": "property",
+      "owner": "/Script/MovieScene.MovieSceneShotMetaData",
+      "member": "bIsNoGood",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/MovieScene.MovieSceneShotMetaData",
+      "member": "bIsFlagged",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/MovieScene.MovieSceneShotMetaData",
+      "member": "bIsRecorded",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/MovieScene.MovieSceneShotMetaData",
+      "member": "bIsSubSequence",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/MovieScene.MovieSceneShotMetaData",
+      "member": "FavoriteRating",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/MovieSceneTracks.MovieSceneDirectorBlueprintConditionData",
+      "member": "ConditionContextProperty",
+      "kind": "FieldPathProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "ScriptStruct",
+      "write": "",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "string",
+        "value": ""
+      },
+      "error": "Error: invalid FieldPath: "
+    },
+    {
+      "event": "property",
+      "owner": "/Script/MovieSceneTracks.MovieSceneEventPtrs",
+      "member": "BoundObjectProperty",
+      "kind": "FieldPathProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "ScriptStruct",
+      "write": "",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "string",
+        "value": ""
+      },
+      "error": "Error: invalid FieldPath: "
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Niagara.NiagaraEditorPreviewActor",
+      "member": "CircleEndRadius",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Niagara.NiagaraEditorPreviewActor",
+      "member": "CircleRotationRate",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Niagara.NiagaraRendererMaterialStaticBoolParameter",
+      "member": "StaticValue",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Niagara.NiagaraRendererReadbackParameters",
+      "member": "ViewIndexToCapture",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Niagara.NiagaraSystem",
+      "member": "LargeWorldCoordinateTileUpdateMode",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/PBZCombatAsset.GA_ReinforceNextAbilityBase",
+      "member": "PreCalculationModification",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/PBZCombatAsset.GA_ReinforceNextAbilityBase",
+      "member": "PreTakeModification",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/PBZCombatAsset.ReinforceNextAbilityGameplayEffectComponent",
+      "member": "PreCalculationModification",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/PBZCombatAsset.ReinforceNextAbilityGameplayEffectComponent",
+      "member": "PreTakeModification",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/PCG.PCGGraphTaskInput",
+      "member": "UpstreamPin",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/PCG.PCGGraphTaskInput",
+      "member": "DownstreamPin",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/SGameCombatSystem.BulletEvent_FilterEventActor",
+      "member": "PlayerControlled",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/SGameCombatSystem.BulletEvent_FilterEventActor",
+      "member": "IsBulletTarget",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    },
+    {
+      "event": "property",
+      "owner": "/Script/SGameCombatSystem.RuntimeSlomoDataItem",
+      "member": "ActiveItem",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Serialization.StructSerializerOptionalTestStruct",
+      "member": "StrOptional",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Serialization.StructSerializerOptionalTestStruct",
+      "member": "StrOptionalUnset",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Serialization.StructSerializerOptionalTestStruct",
+      "member": "IntOptional",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Serialization.StructSerializerOptionalTestStruct",
+      "member": "IntOptionalUnset",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Serialization.StructSerializerOptionalTestStruct",
+      "member": "NameOptional",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Serialization.StructSerializerOptionalTestStruct",
+      "member": "NameOptionalUnset",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Serialization.StructSerializerOptionalTestStruct",
+      "member": "StructOptional",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/Serialization.StructSerializerOptionalTestStruct",
+      "member": "StructOptionalUnset",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/SlateCore.SearchBoxStyle",
+      "member": "ImageSizeOverride",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/SlateCore.ToolBarStyle",
+      "member": "VerticalAlignmentOverride",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/SlateCore.WrapButtonStyle",
+      "member": "ComboButtonStyle",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/SlateCore.WrapButtonStyle",
+      "member": "SeparatorBrush",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/SlateCore.WrapButtonStyle",
+      "member": "SeparatorThickness",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/SlateCore.WrapButtonStyle",
+      "member": "SeparatorPadding",
+      "kind": "OptionalProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: OptionalProperty",
+      "typeKind": "ScriptStruct",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": true,
+      "read": {
+        "type": "undefined"
+      }
+    },
+    {
+      "event": "property",
+      "owner": "/Script/VariantManagerContent.PropertyValue",
+      "member": "Properties",
+      "kind": "ArrayProperty",
+      "reflectionUnresolved": false,
+      "reason": "unverified PuerTS mapping: FieldPathProperty",
+      "typeKind": "Class",
+      "descriptor": {
+        "get": "function",
+        "set": "function",
+        "value": "undefined"
+      },
+      "instance": false
+    }
+  ],
+  "roundtrip": {
+    "event": "field-path-roundtrip",
+    "before": {
+      "type": "string",
+      "value": ""
+    },
+    "populated": {
+      "type": "string",
+      "value": "/Script/Engine.Actor:bHidden"
+    },
+    "copied": {
+      "type": "string",
+      "value": "/Script/Engine.Actor:bHidden"
+    },
+    "invalid": "Error: invalid FieldPath: ",
+    "functionType": "function"
+  },
+  "call": {
+    "event": "field-path-function",
+    "validInputAccepted": true,
+    "invalid": "Error: invalid FieldPath: ",
+    "scope": "parameter conversion; null target, no mutation"
+  },
+  "optionalWrite": {
+    "event": "optional-write",
+    "int": {
+      "type": "undefined"
+    },
+    "str": {
+      "type": "undefined"
+    }
+  }
+}

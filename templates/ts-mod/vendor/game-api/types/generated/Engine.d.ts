@@ -19298,6 +19298,7 @@ declare module 'ue' {
         "SetCollisionProfileNameProperty"(Object: UE.Object | null | undefined, PropertyName: string, Value: UE.CollisionProfileName): void;
         "SetColorPropertyByName"(Object: UE.Object | null | undefined, PropertyName: string, Value: UE.Color): void;
         "SetDoublePropertyByName"(Object: UE.Object | null | undefined, PropertyName: string, Value: number): void;
+        "SetFieldPathPropertyByName"(Object: UE.Object | null | undefined, PropertyName: string, Value: string): void;
         "SetGamepadsBlockDeviceFeedback"(bBlock: boolean): void;
         "SetInt64PropertyByName"(Object: UE.Object | null | undefined, PropertyName: string, Value: bigint): void;
         "SetIntPropertyByName"(Object: UE.Object | null | undefined, PropertyName: string, Value: number): void;
@@ -31709,8 +31710,7 @@ declare module 'ue' {
     const PropertyAccessCopyBatch: UE.$Static.PropertyAccessCopyBatch & UE.$StructType<UE.PropertyAccessCopyBatch>;
     /** /Script/Engine.PropertyAccessIndirection — reflection-generated, not individually call-tested. */
     interface PropertyAccessIndirection {
-        /** Unresolved; see generation-report.json. */
-        readonly "Property": UE.$Unresolved<"/Script/Engine.PropertyAccessIndirection.Property">;
+        "Property": string;
         "Function": UE.Function | null | undefined;
         "ReturnBufferSize": number;
         "ReturnBufferAlignment": number;
@@ -31726,8 +31726,7 @@ declare module 'ue' {
     const PropertyAccessIndirection: UE.$Static.PropertyAccessIndirection & UE.$StructType<UE.PropertyAccessIndirection>;
     /** /Script/Engine.PropertyAccessIndirectionChain — reflection-generated, not individually call-tested. */
     interface PropertyAccessIndirectionChain {
-        /** Unresolved; see generation-report.json. */
-        readonly "Property": UE.$Unresolved<"/Script/Engine.PropertyAccessIndirectionChain.Property">;
+        "Property": string;
         "IndirectionStartIndex": number;
         "IndirectionEndIndex": number;
     }
@@ -31762,8 +31761,7 @@ declare module 'ue' {
     interface PropertyAccessSegment {
         "Name": string;
         "Struct": UE.Struct | null | undefined;
-        /** Unresolved; see generation-report.json. */
-        readonly "Property": UE.$Unresolved<"/Script/Engine.PropertyAccessSegment.Property">;
+        "Property": string;
         "Function": UE.Function | null | undefined;
         "ArrayIndex": number;
         "Flags": number;

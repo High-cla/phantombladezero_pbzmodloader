@@ -1095,8 +1095,7 @@ declare module 'ue' {
     /** /Script/MovieSceneTracks.MovieSceneDirectorBlueprintConditionData — reflection-generated, not individually call-tested. */
     interface MovieSceneDirectorBlueprintConditionData {
         "Function": UE.Function | null | undefined;
-        /** Unresolved; see generation-report.json. */
-        readonly "ConditionContextProperty": UE.$Unresolved<"/Script/MovieSceneTracks.MovieSceneDirectorBlueprintConditionData.ConditionContextProperty">;
+        "ConditionContextProperty": string;
     }
     namespace $Static {
     interface MovieSceneDirectorBlueprintConditionData {
@@ -1275,8 +1274,7 @@ declare module 'ue' {
     /** /Script/MovieSceneTracks.MovieSceneEventPtrs — reflection-generated, not individually call-tested. */
     interface MovieSceneEventPtrs {
         "Function": UE.Function | null | undefined;
-        /** Unresolved; see generation-report.json. */
-        readonly "BoundObjectProperty": UE.$Unresolved<"/Script/MovieSceneTracks.MovieSceneEventPtrs.BoundObjectProperty">;
+        "BoundObjectProperty": string;
     }
     namespace $Static {
     interface MovieSceneEventPtrs {

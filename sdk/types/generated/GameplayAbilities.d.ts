@@ -2117,8 +2117,7 @@ declare module 'ue' {
     /** /Script/GameplayAbilities.GameplayAttribute — reflection-generated, not individually call-tested. */
     interface GameplayAttribute {
         "AttributeName": string;
-        /** Unresolved; see generation-report.json. */
-        readonly "Attribute": UE.$Unresolved<"/Script/GameplayAbilities.GameplayAttribute.Attribute">;
+        "Attribute": string;
         "AttributeOwner": UE.Struct | null | undefined;
     }
     namespace $Static {
@@ -3051,8 +3050,7 @@ declare module 'ue' {
     /** /Script/GameplayAbilities.GameplayTagBlueprintPropertyMapping — reflection-generated, not individually call-tested. */
     interface GameplayTagBlueprintPropertyMapping {
         "TagToMap": UE.GameplayTag;
-        /** Unresolved; see generation-report.json. */
-        readonly "PropertyToEdit": UE.$Unresolved<"/Script/GameplayAbilities.GameplayTagBlueprintPropertyMapping.PropertyToEdit">;
+        "PropertyToEdit": string;
         "PropertyName": string;
         "PropertyGuid": UE.Guid;
     }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "sdkVersion": "0.3.0",
+  "sdkVersion": "0.3.1",
   "kind": "reflection-generated-with-runtime-verified-supplements",
   "testedAt": "2026-10-30",
   "game": {
@@ -131,14 +131,14 @@
     "classes": 22924,
     "structs": 8420,
     "enums": 3253,
-    "functions": 49539,
-    "properties": 119231,
+    "functions": 49540,
+    "properties": 119260,
     "enumValues": 19511,
     "manualMembers": 34,
     "uniqueRecords": 90946,
     "excludedTypes": 352,
-    "omittedMembers": 5435,
-    "unresolvedProperties": 84
+    "omittedMembers": 5434,
+    "unresolvedProperties": 55
   },
   "generation": {
     "entry": "scripts/generate-sdk.cjs",
@@ -217,5 +217,15 @@
       "checks": 3,
       "kind": "binding-presence-only"
     }
+  },
+  "propertyMappingVerification": {
+    "date": "2026-10-30",
+    "report": "property-mapping-verification.json",
+    "archive": "build/property-mapping-20261030",
+    "enumNumericProperties": 10,
+    "fieldPathProperties": 19,
+    "functions": 1,
+    "remainingUnresolved": 55,
+    "note": "Optional/UTF-8 samples return undefined; ANSI and remaining class-only fields have no verified value mapping. One incomplete process-exit run excluded; successful first and third runs retained. Field-path function tested with null target for parameter marshaling only."
   }
 }

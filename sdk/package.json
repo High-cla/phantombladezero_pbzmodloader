@@ -1,6 +1,6 @@
 {
   "name": "@pbz-mod-loader/game-api",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Reflection-generated TypeScript declarations with verified supplements for PBZ UE/PuerTS",
   "private": true,
   "types": "index.d.ts",
@@ -10,7 +10,8 @@
     "api-surface.json",
     "generation-report.json",
     "type-index.json",
-    "README.md"
+    "README.md",
+    "property-mapping-verification.json"
   ],
   "license": "UNLICENSED"
 }

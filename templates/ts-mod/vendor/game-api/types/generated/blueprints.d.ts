@@ -208461,8 +208461,8 @@ declare module 'ue' {
     namespace $Blueprint {
     /** /PBZCombatAsset/Prototypes/AI/Condition_SelfSummonCount.Condition_SelfSummonCount_C — reflection-generated, not individually call-tested. */
     interface Condition_SelfSummonCount_C_7cda1e3449d1 extends Omit<UE.SGameAICondition, "EvaluateCondition"> {
-        /** Unresolved; see generation-report.json. */
-        readonly "Comparision Method To Required Count": UE.$Unresolved<"/PBZCombatAsset/Prototypes/AI/Condition_SelfSummonCount.Condition_SelfSummonCount_C.Comparision Method To Required Count">;
+        /** Numeric enum storage; UEnum metadata and enumerator names are absent. */
+        "Comparision Method To Required Count": number;
         "UseMaxValue": boolean;
         "Value To Compare": number;
         "EvaluateCondition"(AIController: UE.AIController | null | undefined): boolean;
@@ -221303,8 +221303,8 @@ declare module 'ue' {
         "UseBlackboardDistance": boolean;
         "DistanceToCompare": number;
         "DistanceToCompareBlackboardKey": UE.GameplayTag;
-        /** Unresolved; see generation-report.json. */
-        readonly "ComparisionMethod": UE.$Unresolved<"/SGameAI/BehaviorTree/Decorator/BTDecorator_DistanceTo.BTDecorator_DistanceTo_C.ComparisionMethod">;
+        /** Numeric enum storage; UEnum metadata and enumerator names are absent. */
+        "ComparisionMethod": number;
         "Owner Controller": UE.AIController | null | undefined;
         "GetDistanceToCompare"(): number;
         "PerformConditionCheckAI"(OwnerController: UE.AIController | null | undefined, ControlledPawn: UE.Pawn | null | undefined): boolean;
@@ -221340,8 +221340,8 @@ declare module 'ue' {
     /** /SGameAI/BehaviorTree/Decorator/BTDecorator_Level.BTDecorator_Level_C — reflection-generated, not individually call-tested. */
     interface BTDecorator_Level_C_730a98100a88 extends Omit<UE.BTDecorator_BlueprintBase, "PerformConditionCheckAI"> {
         "ParameterSource": UE.$Blueprint.ESGameAIParameterSource_4826f1637692;
-        /** Unresolved; see generation-report.json. */
-        readonly "ComparisionMethod": UE.$Unresolved<"/SGameAI/BehaviorTree/Decorator/BTDecorator_Level.BTDecorator_Level_C.ComparisionMethod">;
+        /** Numeric enum storage; UEnum metadata and enumerator names are absent. */
+        "ComparisionMethod": number;
         "LevelToCompare": number;
         "DistanceToCompareBlackboardKey": UE.GameplayTag;
         "ParameterName": string;
@@ -221402,8 +221402,8 @@ declare module 'ue' {
         "ParameterSource": UE.$Blueprint.ESGameAIParameterSource_4826f1637692;
         "PreferNavDistance": boolean;
         "Distance2D": boolean;
-        /** Unresolved; see generation-report.json. */
-        readonly "ComparisionMethod": UE.$Unresolved<"/SGameAI/BehaviorTree/Decorator/BTDecorator_TargetDistance.BTDecorator_TargetDistance_C.ComparisionMethod">;
+        /** Numeric enum storage; UEnum metadata and enumerator names are absent. */
+        "ComparisionMethod": number;
         "DistanceToCompare": number;
         "DistanceToCompareBlackboardKey": UE.GameplayTag;
         "ParameterName": string;
@@ -222597,8 +222597,8 @@ declare module 'ue' {
         "TargetActorTag": UE.GameplayTag;
         "Attribute": UE.GameplayAttribute;
         "MaxAttribute": UE.GameplayAttribute;
-        /** Unresolved; see generation-report.json. */
-        readonly "ComparisionMethod": UE.$Unresolved<"/SGameAI/Core/AICondition/Condition_Attribute.Condition_Attribute_C.ComparisionMethod">;
+        /** Numeric enum storage; UEnum metadata and enumerator names are absent. */
+        "ComparisionMethod": number;
         "Percentage": number;
         "EvaluateCondition"(AIController: UE.AIController | null | undefined): boolean;
     }
@@ -222692,8 +222692,8 @@ declare module 'ue' {
     interface Condition_Counter_C_a04edf3b5884 extends Omit<UE.SGameAICondition, "EvaluateCondition"> {
         "UseGroupCounter": boolean;
         "CounterKeyTag": UE.GameplayTag;
-        /** Unresolved; see generation-report.json. */
-        readonly "ComparisonMethod": UE.$Unresolved<"/SGameAI/Core/AICondition/Condition_Counter.Condition_Counter_C.ComparisonMethod">;
+        /** Numeric enum storage; UEnum metadata and enumerator names are absent. */
+        "ComparisonMethod": number;
         "ParameterSource": UE.$Blueprint.ESGameAIParameterSource_4826f1637692;
         "Value": number;
         "CompareValueKeyTag": UE.GameplayTag;
@@ -222727,8 +222727,8 @@ declare module 'ue' {
         "DistanceZ": boolean;
         "PreferNavDistance": boolean;
         "Distance2D": boolean;
-        /** Unresolved; see generation-report.json. */
-        readonly "ComparisionMethod": UE.$Unresolved<"/SGameAI/Core/AICondition/Condition_Distance.Condition_Distance_C.ComparisionMethod">;
+        /** Numeric enum storage; UEnum metadata and enumerator names are absent. */
+        "ComparisionMethod": number;
         "DistanceToCompare": number;
         "DistanceToCompareBlackboardKey": UE.GameplayTag;
         "ParameterName": string;
@@ -222921,8 +222921,8 @@ declare module 'ue' {
     namespace $Blueprint {
     /** /SGameAI/Core/AICondition/Condition_MemberCount.Condition_MemberCount_C — reflection-generated, not individually call-tested. */
     interface Condition_MemberCount_C_37aba6c6cf58 extends Omit<UE.SGameAICondition, "EvaluateCondition"> {
-        /** Unresolved; see generation-report.json. */
-        readonly "ComparisonMethod": UE.$Unresolved<"/SGameAI/Core/AICondition/Condition_MemberCount.Condition_MemberCount_C.ComparisonMethod">;
+        /** Numeric enum storage; UEnum metadata and enumerator names are absent. */
+        "ComparisonMethod": number;
         "ValueToCompare": number;
         "IncludeSelf": boolean;
         "OnlyAlive": boolean;
@@ -222984,8 +222984,8 @@ declare module 'ue' {
         "Actor": UE.GameplayTag;
         "ParameterSource": UE.$Blueprint.ESGameAIParameterSource_4826f1637692;
         "Speed2D": boolean;
-        /** Unresolved; see generation-report.json. */
-        readonly "ComparisionMethod": UE.$Unresolved<"/SGameAI/Core/AICondition/Condition_Speed.Condition_Speed_C.ComparisionMethod">;
+        /** Numeric enum storage; UEnum metadata and enumerator names are absent. */
+        "ComparisionMethod": number;
         "SpeedToCompare": number;
         "SpeedToCompareBlackboardKey": UE.GameplayTag;
         "ParameterName": string;
@@ -223001,8 +223001,8 @@ declare module 'ue' {
     namespace $Blueprint {
     /** /SGameAI/Core/AICondition/Condition_SummonCount.Condition_SummonCount_C — reflection-generated, not individually call-tested. */
     interface Condition_SummonCount_C_5d090e3209b8 extends Omit<UE.SGameAICondition, "EvaluateCondition"> {
-        /** Unresolved; see generation-report.json. */
-        readonly "ComparisonMethod": UE.$Unresolved<"/SGameAI/Core/AICondition/Condition_SummonCount.Condition_SummonCount_C.ComparisonMethod">;
+        /** Numeric enum storage; UEnum metadata and enumerator names are absent. */
+        "ComparisonMethod": number;
         "ValueToCompare": number;
         "CompareToMaxAmount": boolean;
         "Query": UE.GameplayEffectQuery;

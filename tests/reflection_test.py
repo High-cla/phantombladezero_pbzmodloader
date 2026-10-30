@@ -45,7 +45,7 @@ class ParserTest(unittest.TestCase):
         self.assertEqual(item['kind'],'IntProperty')
         self.assertTrue(all(item[k] for k in ('parameter','out','return','reference','const')))
 
-    def test_missing_enum_retains_member_and_reports_failure(self):
+    def test_null_enum_metadata_preserves_valid_numeric_storage(self):
         owner=0x30000
         self.e.objects[owner]=dict(name='Test',outerAddress=0)
         self.m.put(owner+0x50,'Q',0x20000)
@@ -55,8 +55,19 @@ class ParserTest(unittest.TestCase):
         fields=self.e.properties(owner)
         self.assertEqual(fields[0]['name'],'Items')
         self.assertTrue(fields[0]['parameter'])
-        self.assertTrue(fields[0]['unresolved'])
-        self.assertEqual(len(self.e.failures),1)
+        self.assertTrue(fields[0]['enumMetadataMissing'])
+        self.assertIsNone(fields[0]['enum'])
+        self.assertEqual(fields[0]['underlying']['kind'], 'IntProperty')
+        self.assertEqual(len(self.e.failures),0)
+
+    def test_invalid_enum_reference_or_storage_is_not_silently_numeric(self):
+        self.prop(0x20000,4,data=0x21000)
+        self.prop(0x21000,2)
+        self.m.put(0x20078,'Q',0xdeadbeef)
+        with self.assertRaisesRegex(ParseError,'outside captured'): self.e.property(0x20000)
+        self.m.put(0x20078,'Q',0)
+        self.m.put(0x21034,'I',8)
+        with self.assertRaisesRegex(ParseError,'storage'): self.e.property(0x20000)
 
     def test_split_tagged_enum_preserves_signed_64_bit(self):
         a=0x30000

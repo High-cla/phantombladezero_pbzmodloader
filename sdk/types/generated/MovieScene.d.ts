@@ -787,8 +787,7 @@ declare module 'ue' {
     /** /Script/MovieScene.MovieSceneDynamicBinding — reflection-generated, not individually call-tested. */
     interface MovieSceneDynamicBinding {
         "Function": UE.Function | null | undefined;
-        /** Unresolved; see generation-report.json. */
-        readonly "ResolveParamsProperty": UE.$Unresolved<"/Script/MovieScene.MovieSceneDynamicBinding.ResolveParamsProperty">;
+        "ResolveParamsProperty": string;
     }
     namespace $Static {
     interface MovieSceneDynamicBinding {

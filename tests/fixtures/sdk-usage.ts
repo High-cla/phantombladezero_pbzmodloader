@@ -57,9 +57,19 @@ if (cls) {
 instance?.NonexistentProperty;
 // @ts-expect-error Path lookup contains only collected types.
 type MissingType = UE.ReflectedTypes['/Game/NotCollected.NotCollected_C'];
-type UnknownField = UE.ReflectedTypes['/SGameAI/Core/AICondition/Condition_Counter.Condition_Counter_C']['ComparisonMethod'];
+type ComparisonField = UE.ReflectedTypes['/SGameAI/Core/AICondition/Condition_Counter.Condition_Counter_C']['ComparisonMethod'];
+const comparisonField: ComparisonField = 1;
+// @ts-expect-error Missing enum names do not make storage untyped.
+const invalidComparison: ComparisonField = 'Greater';
+type UnknownField = UE.SoftObjectPath['SubPathString'];
 // @ts-expect-error Unresolved properties cannot be fabricated with arbitrary values.
 const unknownField: UnknownField = 1;
+declare const attribute: UE.GameplayAttribute;
+const fieldPath: string = attribute.Attribute;
+attribute.Attribute = '/Script/Engine.Actor:bHidden';
+UE.KismetSystemLibrary.SetFieldPathPropertyByName(null, 'Missing', fieldPath);
+// @ts-expect-error Field paths require strings.
+UE.KismetSystemLibrary.SetFieldPathPropertyByName(null, 'Missing', 123);
 // @ts-expect-error Opaque type markers must not advertise fake UE runtime values.
 UE.unresolvedBrand;
 
