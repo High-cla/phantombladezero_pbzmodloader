@@ -104,4 +104,4 @@ package.ps1 拒绝覆盖已有版本，并检查 ZIP 根目录、白名单及解
 
 新增、删除及 `[Mods] ID=0` 的变化按 Alt+F5 后同样生效；删除或禁用前也会调用 stop。TS 编译失败时保留旧实例并显示失败提示，修复后再次按 Alt+F5 重试。请保存完成后再触发重载，编译期间避免继续改写文件。JS 入口执行异常可能已经产生副作用且无法取得其导出，因此失败实例在本次游戏运行中不再自动重试，修复后需重启。MOD 应自行清理初始化失败前产生的资源。
 
-临时产物在 `Content/JavaScript/PBZModLoader/generated-reloads/`，版本目录保留至下一次启动清理，以支持旧实例和延迟 require；长时间大量重载会增加磁盘和模块缓存占用。仅 MOD 目录内的相对依赖随版本隔离，勿用加载器缓存绝对路径跨版本引用。日志查找 `hot reload published`、`stopped`、`reload complete` 和 `reload blocked`。2026-10-29 已通过 24 项 JS 测试、原生与代理宿主回归，并在 Steam 游戏主菜单以 1280×720 窗口模式验证当时的 Ctrl+F5 热键、依赖更新、stop 顺序、旧定时器停止、成功/失败屏幕提示和编译失败保留旧实例；本次未验证切图。实测证据保存在 build/hot-reload-evidence。
+临时产物在 `Content/JavaScript/PBZModLoader/generated-reloads/`，版本目录保留至下一次启动清理，以支持旧实例和延迟 require；长时间大量重载会增加磁盘和模块缓存占用。仅 MOD 目录内的相对依赖随版本隔离，勿用加载器缓存绝对路径跨版本引用。日志查找 `hot reload published`、`stopped`、`reload complete` 和 `reload blocked`。
