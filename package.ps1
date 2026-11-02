@@ -1,4 +1,4 @@
-param([string]$Version='0.3.0-preview')
+param([string]$Version='0.3.4-preview')
 $ErrorActionPreference='Stop'
 if ($Version -notmatch '^\d+\.\d+\.\d+(?:-[A-Za-z0-9-]+)?$') { throw 'Invalid release version' }
 $files=@(
@@ -16,7 +16,9 @@ if ((Test-Path -LiteralPath $release) -or (Test-Path -LiteralPath $zip)) { throw
 foreach ($relative in $files) {
     if (!(Test-Path -LiteralPath (Join-Path "$PSScriptRoot/runtime" $relative) -PathType Leaf)) { throw "Missing runtime file: $relative" }
 }
-if (!(Test-Path -LiteralPath "$PSScriptRoot/build/version.dll")) { throw 'Build DLL first.' }
+foreach($proxy in @('version','hid','winmm','dsound','dxgi')) {
+    if (!(Test-Path -LiteralPath "$PSScriptRoot/build/$proxy.dll")) { throw "Build $proxy.dll first." }
+}
 New-Item -ItemType Directory -Path $release | Out-Null
 foreach ($relative in $files) {
     $destination=Join-Path $release $relative
@@ -28,6 +30,13 @@ $dllDestination=Join-Path $release $dllRelative
 New-Item -ItemType Directory -Force (Split-Path $dllDestination) | Out-Null
 Copy-Item -LiteralPath "$PSScriptRoot/build/version.dll" -Destination $dllDestination
 $files += $dllRelative
+foreach($proxy in @('hid','winmm','dsound','dxgi')) {
+    $relative="备用入口/$proxy.dll"
+    $destination=Join-Path $release $relative
+    New-Item -ItemType Directory -Force (Split-Path $destination) | Out-Null
+    Copy-Item -LiteralPath "$PSScriptRoot/build/$proxy.dll" -Destination $destination
+    $files += $relative
+}
 $directories=@('ProjectPBZ/PBZModLoader/mods/')
 foreach ($relative in $directories) {
     New-Item -ItemType Directory -Force (Join-Path $release $relative) | Out-Null

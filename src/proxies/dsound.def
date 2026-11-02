@@ -1,0 +1,14 @@
+LIBRARY dsound
+EXPORTS
+    DirectSoundCaptureCreate=pbz_version_0 @6
+    DirectSoundCaptureCreate8=pbz_version_1 @12
+    DirectSoundCaptureEnumerateA=pbz_version_2 @7
+    DirectSoundCaptureEnumerateW=pbz_version_3 @8
+    DirectSoundCreate=pbz_version_4 @1
+    DirectSoundCreate8=pbz_version_5 @11
+    DirectSoundEnumerateA=pbz_version_6 @2
+    DirectSoundEnumerateW=pbz_version_7 @3
+    DirectSoundFullDuplexCreate=pbz_version_8 @10
+    DllCanUnloadNow=pbz_version_9 @4
+    DllGetClassObject=pbz_version_10 @5
+    GetDeviceID=pbz_version_11 @9

@@ -1,0 +1,22 @@
+LIBRARY dxgi
+EXPORTS
+    ApplyCompatResolutionQuirking=pbz_version_0 @1
+    CompatString=pbz_version_1 @2
+    CompatValue=pbz_version_2 @3
+    CreateDXGIFactory=pbz_version_3 @10
+    CreateDXGIFactory1=pbz_version_4 @11
+    CreateDXGIFactory2=pbz_version_5 @12
+    DXGID3D10CreateDevice=pbz_version_6 @13
+    DXGID3D10CreateLayeredDevice=pbz_version_7 @14
+    DXGID3D10GetLayeredDeviceSize=pbz_version_8 @15
+    DXGID3D10RegisterLayers=pbz_version_9 @16
+    DXGIDeclareAdapterRemovalSupport=pbz_version_10 @17
+    DXGIDisableVBlankVirtualization=pbz_version_11 @18
+    DXGIDumpJournal=pbz_version_12 @4
+    DXGIGetDebugInterface1=pbz_version_13 @19
+    DXGIReportAdapterConfiguration=pbz_version_14 @20
+    PIXBeginCapture=pbz_version_15 @5
+    PIXEndCapture=pbz_version_16 @6
+    PIXGetCaptureState=pbz_version_17 @7
+    SetAppCompatStringPointer=pbz_version_18 @8
+    UpdateHMDEmulationStatus=pbz_version_19 @9

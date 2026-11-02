@@ -2,6 +2,31 @@
 
 这是后续开发入口。玩家运行包位于 releases，游戏安装目录只保留运行文件。
 
+## 0.3.4-preview：备用 DLL 入口
+
+默认使用 `version.dll`，正式构建同时提供 `hid.dll`、`winmm.dll`、`dsound.dll`、`dxgi.dll`。
+安装包默认入口仍位于 `platform/steam/version.dll`；其余四个放在顶层 `备用入口/`，不会自动启用。
+**本加载器只选择一个入口安装到实际游戏 EXE 旁，保持原文件名，不要同时安装多个。**
+
+如果其他 MOD 已占用 `version.dll`，只合并包内 `ProjectPBZ`，再从 `备用入口/` 选择一个未被占用的
+DLL 复制到实际 EXE 旁；不要解压默认 `version.dll` 覆盖其他 MOD。更换入口时移走本加载器旧入口；
+升级时只替换已选择的入口并更新运行文件，保留配置和 MOD。卸载时也只移除本加载器选用的入口。
+无需在 `mods.ini` 配置入口，不能靠重命名 `version.dll` 代替对应的专用代理。
+
+四个入口已在当前 Steam 构建完成启动验证；其他平台、切图、长期运行及与其他 MOD 共存不在此保证范围内。
+备用入口解决文件名冲突，不解决多个 MOD 的游戏逻辑冲突。误装多个本版本入口时只有一个安装钩子，
+其余保留系统函数转发；这只是保护机制，仍应按单入口安装。
+
+构建使用 `src/version.def` 和 `src/proxies/*.def` 中固定的导出清单，`scripts/generate-proxies.cjs`
+生成五组配置与转发桩，不读取构建机的 System32。导出名优先按名称转发，NONAME 按序号转发；
+系统函数按需解析，未使用的可选接口缺失不会阻止启动。未知系统上实际调用不存在的接口时快速失败。
+这些清单源自本机实测系统的导出面；并不保证所有历史 Windows 的未公开序号 ABI。
+只有启动期静态加载的代理会安装 EXE 入口钩子，运行中 LoadLibrary 加载时仅提供函数转发。
+
+`build.ps1 -Test` 验证五种代理的静态加载、入口恢复、代表性 API 转发、并发调用、导出数量，
+以及重复入口与晚加载保护；原有 version 多布局、ABI 和游戏特征测试继续保留。
+`package.ps1` 默认生成 `0.3.4-preview`，检查全部五个 DLL、ZIP 白名单及解压哈希。
+
 ## 0.3.0-preview：平台无关引导
 
 DLL 不再检查 Steam 路径、进程文件名或固定 EXE 哈希。将 version.dll 放在实际游戏进程的 EXE 旁；
@@ -76,7 +101,8 @@ npm ci
 启动时 DLL 校验配置，将 mods/ 同步到 Content/JavaScript/PBZModLoader/generated-mods，
 供原有 PuerTS 搜索路径加载；该缓存每次启动重建，不应直接编辑。运行中按 Alt+F5 可触发热重载，详见下文。
 Content/JavaScript 下只需随包安装 bootstrap.js 和 manager.js，MOD 源文件无需放在那里。
-原生编译输出 build/version.dll。-VerifyOnly -Test 可检查已有 DLL 而不重新编译它。
+原生编译输出 build 下的 version.dll、hid.dll、winmm.dll、dsound.dll、dxgi.dll。
+-VerifyOnly -Test 可检查已有 DLL 而不重新编译它们。
 package.ps1 拒绝覆盖已有版本，并检查 ZIP 根目录、白名单及解压后全部文件哈希。
 发布前仍需对新代码进行实际 Steam 启动和切图验收；静态及宿主测试不能替代游戏实测。
 

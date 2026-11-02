@@ -1,5 +1,7 @@
 #define PBZ_DLL
 #include "core.hpp"
+#include "proxy_config.hpp"
+#include <atomic>
 
 extern "C" void pbz_entry_gate();
 extern "C" { void* pbz_original_entry=nullptr; }
@@ -8,34 +10,31 @@ static HMODULE selfModule=nullptr;
 static HANDLE logFile=INVALID_HANDLE_VALUE;
 static INIT_ONCE versionOnce=INIT_ONCE_STATIC_INIT;
 static HMODULE realVersion=nullptr;
-static FARPROC versionFunctions[17]{};
+static std::atomic<FARPROC> versionFunctions[proxyCount]{};
 static fs::path reloadRoot,reloadScripts;
-static const char* const versionNames[]={
-    "GetFileVersionInfoA","GetFileVersionInfoByHandle","GetFileVersionInfoExA","GetFileVersionInfoExW",
-    "GetFileVersionInfoSizeA","GetFileVersionInfoSizeExA","GetFileVersionInfoSizeExW","GetFileVersionInfoSizeW",
-    "GetFileVersionInfoW","VerFindFileA","VerFindFileW","VerInstallFileA","VerInstallFileW",
-    "VerLanguageNameA","VerLanguageNameW","VerQueryValueA","VerQueryValueW"
-};
 static BOOL CALLBACK loadVersion(PINIT_ONCE,void*,void**) {
     wchar_t system[MAX_PATH+32]; UINT n=GetSystemDirectoryW(system,MAX_PATH);
     if(!n || n>=MAX_PATH) return FALSE;
-    lstrcatW(system,L"\\version.dll");
+    lstrcatW(system,PBZ_PROXY_DLL);
     realVersion=LoadLibraryExW(system,nullptr,LOAD_LIBRARY_SEARCH_SYSTEM32);
     if(!realVersion || realVersion==selfModule) return FALSE;
-    for(int i=0;i<17;++i) {
-        versionFunctions[i]=GetProcAddress(realVersion,versionNames[i]);
-        if(!versionFunctions[i]) return FALSE;
-    }
     return TRUE;
 }
 extern "C" FARPROC pbz_resolve_version(unsigned index) noexcept {
     const DWORD error=GetLastError();
-    if(index>=17 || !InitOnceExecuteOnce(&versionOnce,loadVersion,nullptr,nullptr)) {
+    if(index>=proxyCount || !InitOnceExecuteOnce(&versionOnce,loadVersion,nullptr,nullptr)) {
         // A missing Windows API cannot be safely replaced with a fabricated return value.
         RaiseFailFastException(nullptr,nullptr,0);
         return nullptr;
     }
-    SetLastError(error); return versionFunctions[index];
+    auto function=versionFunctions[index].load(std::memory_order_relaxed);
+    if(!function) {
+        function=GetProcAddress(realVersion,versionNames[index]);
+        // Optional exports vary across Windows versions. Resolve only the API used.
+        if(!function) { RaiseFailFastException(nullptr,nullptr,0); return nullptr; }
+        versionFunctions[index].store(function,std::memory_order_relaxed);
+    }
+    SetLastError(error); return function;
 }
 void log(const std::string& s) {
     if(logFile==INVALID_HANDLE_VALUE) return;
@@ -121,7 +120,7 @@ extern "C" void pbz_initialize() noexcept {
         HMODULE pinned=nullptr;
         check(GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_PIN,
             reinterpret_cast<LPCWSTR>(&pbz_initialize),&pinned),"pin proxy");
-        pbz_resolve_version(0);
+        check(InitOnceExecuteOnce(&versionOnce,loadVersion,nullptr,nullptr)!=FALSE,"load system proxy");
         wchar_t system[32768]; check(GetModuleFileNameW(realVersion,system,32768)>0,"system version path");
         log("proxy-system="+utf8(system));
         log("project="+utf8(project.wstring()));
@@ -159,6 +158,13 @@ __attribute__((noinline)) static void armEntry(HMODULE module) noexcept {
     wchar_t* exeName=wcsrchr(exe,L'\\'); wchar_t* dllName=wcsrchr(dll,L'\\');
     if(!exeName || !dllName) return;
     if(exeName-exe!=dllName-dll || _wcsnicmp(exe,dll,exeName-exe)) return;
+    wchar_t guardName[80];
+    swprintf(guardName,80,L"Local\\PBZModLoader-entry-%lu",GetCurrentProcessId());
+    HANDLE guard=CreateMutexW(nullptr,FALSE,guardName);
+    DWORD guardError=GetLastError();
+    if(!guard) return;
+    if(guardError==ERROR_ALREADY_EXISTS) { CloseHandle(guard); return; }
+    // Keep the first handle until process exit; never wait under loader lock.
     // No platform path assumptions. Unsupported wrappers fail signature validation.
     auto base=(unsigned char*)GetModuleHandleW(nullptr);
     auto dos=(IMAGE_DOS_HEADER*)base;
@@ -179,7 +185,12 @@ __attribute__((noinline)) static void armEntry(HMODULE module) noexcept {
     VirtualProtect(entry,sizeof(entryBytes),old,&unused);
 }
 BOOL WINAPI DllMain(HINSTANCE module,DWORD reason,void* reserved) {
-    if(reason==DLL_PROCESS_ATTACH) { selfModule=module; armEntry(module); }
+    if(reason==DLL_PROCESS_ATTACH) {
+        selfModule=module;
+        // Only static imports are early enough to intercept the EXE entry point.
+        // Accidentally installing multiple entries must not chain entry gates.
+        if(reserved) armEntry(module);
+    }
     else if(reason==DLL_PROCESS_DETACH && reserved && logFile!=INVALID_HANDLE_VALUE) {
         static const char marker[]="process-detach shutdown=true (not an exit-code assertion)\r\n";
         DWORD written; WriteFile(logFile,marker,sizeof(marker)-1,&written,nullptr);
