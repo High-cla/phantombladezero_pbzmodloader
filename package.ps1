@@ -28,15 +28,25 @@ $dllDestination=Join-Path $release $dllRelative
 New-Item -ItemType Directory -Force (Split-Path $dllDestination) | Out-Null
 Copy-Item -LiteralPath "$PSScriptRoot/build/version.dll" -Destination $dllDestination
 $files += $dllRelative
+$directories=@('ProjectPBZ/PBZModLoader/mods/')
+foreach ($relative in $directories) {
+    New-Item -ItemType Directory -Force (Join-Path $release $relative) | Out-Null
+}
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::CreateFromDirectory($release,$zip,[IO.Compression.CompressionLevel]::Optimal,$false)
 $archive=[IO.Compression.ZipFile]::OpenRead($zip)
 try {
     $entries=@($archive.Entries | Where-Object { $_.Name } | ForEach-Object { $_.FullName.Replace('\','/') })
     if (Compare-Object ($files | Sort-Object) ($entries | Sort-Object)) { throw 'ZIP entry allowlist mismatch' }
+    foreach ($relative in $directories) {
+        if (!($archive.Entries | Where-Object { $_.FullName.Replace('\','/') -eq $relative })) { throw "Missing ZIP directory: $relative" }
+    }
 } finally { $archive.Dispose() }
 $verify=Join-Path $PSScriptRoot ('build/zip-check-'+[guid]::NewGuid().ToString('N'))
 [IO.Compression.ZipFile]::ExtractToDirectory($zip,$verify)
+foreach ($relative in $directories) {
+    if (!(Test-Path -LiteralPath (Join-Path $verify $relative) -PathType Container)) { throw "Missing extracted directory: $relative" }
+}
 $hashes=[ordered]@{}
 foreach ($relative in $files) {
     $expected=(Get-FileHash -LiteralPath (Join-Path $release $relative)).Hash
@@ -44,7 +54,7 @@ foreach ($relative in $files) {
     if ($actual -ne $expected) { throw "Extracted content mismatch: $relative" }
     $hashes[$relative]=$actual.ToLower()
 }
-[ordered]@{version=$Version;zipSha256=(Get-FileHash -LiteralPath $zip).Hash.ToLower();files=$hashes;verified=$true} |
+[ordered]@{version=$Version;zipSha256=(Get-FileHash -LiteralPath $zip).Hash.ToLower();directories=$directories;files=$hashes;verified=$true} |
     ConvertTo-Json -Depth 5 | Set-Content -LiteralPath "$zip.manifest.json" -Encoding utf8
 Write-Output "PASS ZIP root layout, exact allowlist ($($files.Count) files), extraction and SHA-256 checks"
 Write-Output $zip
