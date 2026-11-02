@@ -1,32 +1,18 @@
 param(
     [Parameter(Mandatory=$true)][string]$Log,
-    [int]$ExpectedLoaded=2,
-    [switch]$RequireRoundTrip,
+    [int]$ExpectedLoaded=0,
     [switch]$RequireExit
 )
 $ErrorActionPreference='Stop'
 $lines = @(Get-Content -LiteralPath $Log -Encoding utf8 | ForEach-Object { $_ -replace '^\[\d\d:\d\d:\d\d\.\d{3}\] ','' })
 $dll = @($lines -eq 'backend=dll; startup=exe-entry; debugger-api=none').Count -eq 1
-$maps = @()
-$instances = @()
-foreach ($line in $lines) {
-    if ($line -match 'world-watch map=([^;]+); GameInstance=(\S+)') {
-        if (!$maps.Count -or $maps[-1] -ne $Matches[1]) { $maps += $Matches[1] }
-        $instances += $Matches[2]
-    }
-}
-$wanted = @('PBZ_StartMenu_CE_WP','PBZ_Xigu_WP','PBZ_StartMenu_CE_WP','PBZ_Xigu_WP')
-$index=0
-foreach ($map in $maps) { if ($index -lt $wanted.Count -and $map -eq $wanted[$index]) { $index++ } }
 $checks = [ordered]@{
     bootstrap = if ($dll) { @($lines -match '^native hooks installed;').Count -eq 1 } else { @($lines -match '^detached debugger=false;').Count -eq 1 }
     singleMainStart = @($lines -match '^main-start count=').Count -eq 1 -and @($lines -eq 'main-start count=1').Count -eq 1
     originalReturned = @($lines -eq '[PBZMOD] original MainStart returned').Count -eq 1
     loaded = @($lines -eq "[PBZMOD] ready loaded=$ExpectedLoaded failed=0").Count -eq 1
-    gameInstance = $instances.Count -gt 0 -and @($instances | Select-Object -Unique).Count -eq 1
-    noReportedErrors = @($lines -match 'ERROR|MODs skipped:|\[PBZMOD\] failed |configuration failed:|world-watch error=|log-overflow').Count -eq 0
+    noReportedErrors = @($lines -match 'ERROR|MODs skipped:|\[PBZMOD\] failed |configuration failed:|log-overflow').Count -eq 0
 }
-if ($RequireRoundTrip) { $checks['roundTrip'] = $index -eq $wanted.Count }
 if ($RequireExit) {
     if ($dll) {
         $observed = Join-Path (Split-Path -Parent (Resolve-Path -LiteralPath $Log).Path) 'exit-observer.json'
@@ -42,8 +28,6 @@ $result = [ordered]@{
     passed = @($checks.Values | Where-Object { $_ -ne $true }).Count -eq 0
     log = (Resolve-Path -LiteralPath $Log).Path
     checks = $checks
-    maps = $maps
-    gameInstances = @($instances | Select-Object -Unique)
 }
 $json = $result | ConvertTo-Json -Depth 5
 $json | Set-Content -LiteralPath (Join-Path (Split-Path -Parent (Resolve-Path -LiteralPath $Log).Path) 'verification.json') -Encoding utf8

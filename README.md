@@ -35,7 +35,7 @@ WeGame 只需合并 ProjectPBZ，再将包内 platform/steam/version.dll 手动�
 
 - src：原生 DLL 源码，无旧启动器源码。
 - runtime：玩家文件模板，按游戏根目录布局；JS 管理器也在此维护。
-- typescript：示例 MOD 的 TS 源码。
+- templates/ts-mod：独立的 TypeScript MOD 开发模板。
 - sdk：反射生成的 UE/PuerTS 类型声明、实测补充及构建清单，仅供 MOD 开发引用。
 - tests：原生、代理 DLL、JS 和运行验收工具。
 - build：编译输出及测试产物，不直接给玩家。
@@ -61,12 +61,11 @@ WeGame 只需合并 ProjectPBZ，再将包内 platform/steam/version.dll 手动�
 
 ```powershell
 npm ci
-npm run build:mods
 .\build.ps1 -Compiler C:\path\to\llvm-mingw\bin\clang++.exe -Test
 .\package.ps1 -Version 0.3.0-preview
 ```
 
-TS 输出到 runtime/ProjectPBZ/PBZModLoader/mods。
+主工程和发布包均不预装 MOD；开发自己的 MOD 请使用上述独立模板。
 每次启动自动发现 `mods/<ID>/main.ts` 或 `main.js`，按 ID 排序加载；新增 MOD 无需修改配置。
 在 mods.ini 的 `[Mods]` 下设置 `ID=0` 可禁用，删除该行或设为 `1` 恢复。
 `[Loader]` 的 Enabled、Version 保留；Count 可省略。旧 Count / Mod.N 配置仍优先按编号加载，
@@ -80,6 +79,10 @@ Content/JavaScript 下只需随包安装 bootstrap.js 和 manager.js，MOD 源�
 原生编译输出 build/version.dll。-VerifyOnly -Test 可检查已有 DLL 而不重新编译它。
 package.ps1 拒绝覆盖已有版本，并检查 ZIP 根目录、白名单及解压后全部文件哈希。
 发布前仍需对新代码进行实际 Steam 启动和切图验收；静态及宿主测试不能替代游戏实测。
+
+运行日志可用 `tests/verify-run.ps1 -Log <loader.log>` 检查，默认预期加载 0 个 MOD；
+安装自定义 MOD 后使用 `-ExpectedLoaded <数量>` 指定预期数量，`-RequireExit` 可额外检查退出证据。
+该脚本检查启动、加载数量与错误日志，不再检查地图往返或 GameInstance 一致性；切图行为需单独实测验收。
 
 首个整理版 0.2.0 使用此前通过完整 Steam 实测的同一个 DLL，未重新编译或修改游戏内代码。
 其 SHA-256 为 0727d3c15b7453425df0538f30de9a6e6372e03ba9e41da4e77ee425ad0cb54b。
