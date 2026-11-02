@@ -6,9 +6,7 @@ $files=@(
     'ProjectPBZ/PBZModLoader/mods.ini',
     'ProjectPBZ/PBZModLoader/TOOLCHAIN-LICENSE.txt',
     'ProjectPBZ/Content/JavaScript/PBZModLoader/bootstrap.js',
-    'ProjectPBZ/Content/JavaScript/PBZModLoader/manager.js',
-    'ProjectPBZ/PBZModLoader/mods/hello/main.js',
-    'ProjectPBZ/PBZModLoader/mods/world-watch/main.js'
+    'ProjectPBZ/Content/JavaScript/PBZModLoader/manager.js'
 )
 $files += @(Get-ChildItem "$PSScriptRoot/runtime/ProjectPBZ/PBZModLoader/compiler" -File | ForEach-Object { 'ProjectPBZ/PBZModLoader/compiler/'+$_.Name })
 if (!($files -contains 'ProjectPBZ/PBZModLoader/compiler/tsc.exe')) { throw 'Build bundled compiler first.' }

@@ -60,9 +60,9 @@ static DWORD WINAPI monitor(void* context) noexcept {
             GetWindowThreadProcessId(GetForegroundWindow(),&foregroundProcess);
             bool focused=foregroundProcess==GetCurrentProcessId();
             if(focused && !hotkeyRegistered) {
-                hotkeyRegistered=RegisterHotKey(nullptr,hotkeyId,MOD_CONTROL|MOD_NOREPEAT,VK_F5)!=0;
+                hotkeyRegistered=RegisterHotKey(nullptr,hotkeyId,MOD_ALT|MOD_NOREPEAT,VK_F5)!=0;
                 if(!hotkeyRegistered && !hotkeyWarning) {
-                    log("Ctrl+F5 registration failed; shortcut may be in use"); hotkeyWarning=true;
+                    log("Alt+F5 registration failed; shortcut may be in use"); hotkeyWarning=true;
                 }
             } else if(!focused && hotkeyRegistered) {
                 UnregisterHotKey(nullptr,hotkeyId); hotkeyRegistered=false;
