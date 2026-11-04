@@ -1,5 +1,6 @@
 #define PBZ_DLL
 #include "core.hpp"
+#include "mod-validation.hpp"
 #include "proxy_config.hpp"
 #include <atomic>
 
@@ -12,6 +13,22 @@ static INIT_ONCE versionOnce=INIT_ONCE_STATIC_INIT;
 static HMODULE realVersion=nullptr;
 static std::atomic<FARPROC> versionFunctions[proxyCount]{};
 static fs::path reloadRoot,reloadScripts;
+static bool (*originalValidateBytes)(const GameString*,const GameBytes*)=nullptr;
+static bool (*originalValidateText)(const GameString*,const GameString*)=nullptr;
+static bool validateModBytes(const GameString* path,const GameBytes* source) noexcept {
+    if(originalValidateBytes(path,source)) return true;
+    try { if(trustedModBytes(reloadScripts,path,source)) return true; }
+    catch(const std::exception& e) { log(std::string("MOD byte validation failed: ")+e.what()); }
+    std::wstring name; if(gameString(path,name)) log("script bytes rejected: "+utf8(name));
+    return false;
+}
+static bool validateModText(const GameString* path,const GameString* source) noexcept {
+    if(originalValidateText(path,source)) return true;
+    try { if(trustedModText(reloadScripts,path,source)) return true; }
+    catch(const std::exception& e) { log(std::string("MOD text validation failed: ")+e.what()); }
+    std::wstring name; if(gameString(path,name)) log("script text rejected: "+utf8(name));
+    return false;
+}
 static BOOL CALLBACK loadVersion(PINIT_ONCE,void*,void**) {
     wchar_t system[MAX_PATH+32]; UINT n=GetSystemDirectoryW(system,MAX_PATH);
     if(!n || n>=MAX_PATH) return FALSE;
@@ -138,7 +155,13 @@ extern "C" void pbz_initialize() noexcept {
         auto temporary=scripts/(L"generated-config."+std::to_wstring(GetCurrentProcessId())+L".tmp");
         { std::ofstream f(temporary,std::ios::binary); f<<generated; f.close(); check(bool(f),"write config"); }
         check(MoveFileExW(temporary.c_str(),(scripts/L"generated-config.js").c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH),"publish config");
-        auto installed=install(GetCurrentProcess(),(U64)GetModuleHandleW(nullptr),image,sites);
+        const auto base=(U64)GetModuleHandleW(nullptr);
+        if(sites.validateBytes) {
+            originalValidateBytes=reinterpret_cast<decltype(originalValidateBytes)>(base+sites.validateBytes);
+            originalValidateText=reinterpret_cast<decltype(originalValidateText)>(base+sites.validateText);
+        }
+        auto installed=install(GetCurrentProcess(),base,image,sites,(U64)&validateModBytes,(U64)&validateModText);
+        if(sites.validateBytes) log("script validation adapters installed; scope=PBZModLoader; content=local-file-exact");
         log("native hooks installed; configuration published");
         HANDLE worker=CreateThread(nullptr,0,monitor,(void*)installed.slab,0,nullptr);
         if(worker) CloseHandle(worker); else log("ERROR monitor: CreateThread failed; MOD loading remains enabled");

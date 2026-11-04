@@ -41,21 +41,60 @@ struct ImageView {
         return hits;
     }
 };
-struct HookSites { size_t call,start; std::array<size_t,3> loggers; };
+struct HookSites {
+    size_t call,start; std::array<size_t,3> loggers;
+    size_t validateBytes=0,validateText=0;
+    std::array<size_t,5> validationCalls{};
+};
+void resolveValidationSites(const ImageView& image,HookSites& sites,bool required) {
+    const std::vector<int> bytes={0x40,0x53,0x48,0x83,0xec,0x20,0x48,0x8b,0xda,0xe8,-1,-1,-1,-1,0x48,0x85,0xc0,0x74,0x22,0x48,0x63,0x53,0x08,0x48,0x3b,0x50,0x08,0x75,0x18,0x48,0x8b,0x0b,0x4c,0x8d,0x40,0x18,0xe8,-1,-1,-1,-1,0x84,0xc0,0x74,0x08,0xb0,0x01,0x48,0x83,0xc4,0x20,0x5b,0xc3,0x32,0xc0,0x48,0x83,0xc4,0x20,0x5b,0xc3};
+    const std::vector<int> text={0x48,0x89,0x5c,0x24,0x18,0x55,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57,0x48,0x81,0xec,0xf0,0x01,0,0,0x48,0x8b,0x05,-1,-1,-1,-1,0x48,0x33,0xc4,0x48,0x89,0x84,0x24,0xe0,0x01,0,0,0x4c,0x8b,0xf2,0xe8,-1,-1,-1,-1,0x48,0x8b,0xf0,0x48,0x85,0xc0,0x0f,0x84,-1,-1,-1,-1,0x41,0x8b,0x4e,0x08,0x8d,0x59,0xff};
+    auto a=image.find(bytes),b=image.find(text);
+    if(!required && a.empty() && b.empty()) return; // Original pre-validation build.
+    if(a.size()!=1 || b.size()!=1) throw std::runtime_error("Script validation signatures missing or ambiguous");
+    auto lookup=image.relative(a[0]+9,1,5);
+    if(lookup!=image.relative(b[0]+44,1,5) || !image.contains(lookup,1,IMAGE_SCN_MEM_EXECUTE) ||
+       !image.contains(image.relative(a[0]+36,1,5),1,IMAGE_SCN_MEM_EXECUTE))
+        throw std::runtime_error("Script validation references disagree");
+    sites.validateBytes=a[0]; sites.validateText=b[0];
+    // Patch complete, observed call sites, leaving validator prologues/unwind intact.
+    const std::array<std::vector<int>,5> calls={{
+        {0x48,0x8d,0x55,0x08,0x48,0x8d,0x4d,0xf8,0xe8,-1,-1,-1,-1,0x84,0xc0,0x74,0x05,0x45,0x32,0xf6},
+        {0x48,0x8d,0x55,0x90,0x48,0x8b,0xce,0xe8,-1,-1,-1,-1,0x84,0xc0,0x0f,0x84,-1,-1,-1,-1,0x48,0x89,0x5c,0x24,0x68},
+        {0x48,0x8d,0x55,0xc8,0x48,0x8d,0x4c,0x24,0x50,0xe8,-1,-1,-1,-1,0x84,0xc0,0x0f,0x84,-1,-1,-1,-1,0x48,0x89,0x5d,0xe8},
+        {0x48,0x8d,0x54,0x24,0x60,0x48,0x8d,0x4d,0x80,0xe8,-1,-1,-1,-1,0x84,0xc0,0x74,0x30,0x49,0x8b,0x3e},
+        {0x48,0x8d,0x54,0x24,0x38,0x48,0x8b,0xc8,0xe8,-1,-1,-1,-1,0x0f,0xb6,0xd8,0x48,0x8b,0x4c,0x24,0x68}
+    }};
+    const size_t offsets[]={8,7,9,9,8};
+    for(size_t i=0;i<calls.size();++i) {
+        size_t count=0;
+        for(auto at:image.find(calls[i])) {
+            auto call=at+offsets[i];
+            if(image.relative(call,1,5)!=(i==4?sites.validateText:sites.validateBytes)) continue;
+            sites.validationCalls[i]=call; ++count;
+        }
+        if(count!=1) throw std::runtime_error("Script validation call missing or ambiguous; index="+std::to_string(i));
+    }
+}
 HookSites resolveSites(const ImageView& image) {
     HookSites sites{};
     // lea rdx,"MainStart"; construct FString; prepare context, name and argv;
     // call PuerTS Start. Displacements vary with builds and ASLR.
     const std::vector<int> mainPattern={0x48,0x8d,0x15,-1,-1,-1,-1,0x48,0x8d,0x4d,0x97,0xe8,-1,-1,-1,-1,0x4c,0x8d,0x45,0xd7,0x48,0x8b,0xcb,0x48,0x8d,0x55,0x97,0xe8,-1,-1,-1,-1,0x48,0x8b,0x4d,0x97,0x48,0x85,0xc9};
-    size_t count=0;
-    for(auto at:image.find(mainPattern)) {
+    // November 2026 update: FString moved from [rbp-69h] to [rsp+60h].
+    // Keep complete, build-observed instruction layouts rather than wildcarding
+    // stack operands: the constructor, Start and destructor must use one slot.
+    const std::vector<int> mainPatternRsp={0x48,0x8d,0x15,-1,-1,-1,-1,0x48,0x8d,0x4c,0x24,0x60,0xe8,-1,-1,-1,-1,0x4c,0x8d,0x45,0x90,0x48,0x8b,0xcb,0x48,0x8d,0x54,0x24,0x60,0xe8,-1,-1,-1,-1,0x48,0x8b,0x4c,0x24,0x60,0x48,0x85,0xc9};
+    size_t count=0; bool rspLayout=false;
+    for(const auto& variant:std::array<std::pair<std::vector<int>,size_t>,2>{{{mainPattern,27},{mainPatternRsp,29}}})
+    for(auto at:image.find(variant.first)) {
         try {
             if(image.ascii(image.relative(at,3,7))!="MainStart") continue;
-            auto call=at+27,start=image.relative(call,1,5);
+            auto call=at+variant.second,start=image.relative(call,1,5);
             const Bytes thunk={0x48,0x8b,0x09,0x48,0x8b,0x01,0x48,0xff,0x20};
             if(!image.contains(start,thunk.size(),IMAGE_SCN_MEM_EXECUTE) ||
                !std::equal(thunk.begin(),thunk.end(),image.bytes.begin()+start)) continue;
-            sites.call=call; sites.start=start; ++count;
+            sites.call=call; sites.start=start; rspLayout=variant.second==29; ++count;
         } catch(const std::exception&) { /* malformed candidate is not a match */ }
     }
     if(count!=1) throw std::runtime_error("MainStart signature requires one validated match; found="+std::to_string(count));
@@ -85,6 +124,7 @@ HookSites resolveSites(const ImageView& image) {
         if(i && (category!=matchedCategory || source!=matchedSource)) throw std::runtime_error("PuerTS logger references disagree");
         category=matchedCategory; source=matchedSource;
     }
+    resolveValidationSites(image,sites,rspLayout);
     return sites;
 }
 

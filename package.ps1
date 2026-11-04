@@ -1,4 +1,4 @@
-param([string]$Version='0.3.4-preview')
+param([string]$Version='0.3.6-preview')
 $ErrorActionPreference='Stop'
 if ($Version -notmatch '^\d+\.\d+\.\d+(?:-[A-Za-z0-9-]+)?$') { throw 'Invalid release version' }
 $files=@(

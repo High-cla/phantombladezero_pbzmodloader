@@ -11,7 +11,7 @@ $checks = [ordered]@{
     singleMainStart = @($lines -match '^main-start count=').Count -eq 1 -and @($lines -eq 'main-start count=1').Count -eq 1
     originalReturned = @($lines -eq '[PBZMOD] original MainStart returned').Count -eq 1
     loaded = @($lines -eq "[PBZMOD] ready loaded=$ExpectedLoaded failed=0").Count -eq 1
-    noReportedErrors = @($lines -match 'ERROR|MODs skipped:|\[PBZMOD\] failed |configuration failed:|log-overflow').Count -eq 0
+    noReportedErrors = @($lines -match 'ERROR|MODs skipped:|\[PBZMOD\] failed |configuration failed:|log-overflow|script (bytes|text) rejected:|MOD (byte|text) validation failed:|original MainStart failed:').Count -eq 0
 }
 if ($RequireExit) {
     if ($dll) {

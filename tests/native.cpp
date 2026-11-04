@@ -1,5 +1,6 @@
 // Exercise the actual machine-code generators in an isolated native process.
 #include "../src/core.hpp"
+#include "../src/mod-validation.hpp"
 #include <thread>
 #include <cassert>
 struct FString { const wchar_t* data; int count; int capacity; };
@@ -21,6 +22,7 @@ int main() {
     Bytes fake=stolen; fake.insert(fake.end(),{0x0f,0x93,0xc0,0xc3}); write(process,original,fake.data(),fake.size());
     *(unsigned char*)operand=5;
     auto logger=loggerStub(slab+256,slab+4096,original,stolen); write(process,slab+256,logger.data(),logger.size());
+    auto diagnostics=loggerStub(slab+768,slab+4096,original,stolen,true); write(process,slab+768,diagnostics.data(),diagnostics.size());
     DWORD old; assert(VirtualProtect((void*)slab,4096,PAGE_EXECUTE_READ,&old)); FlushInstructionCache(process,(void*)slab,4096);
     expectedContext=(void*)0x1234; expectedArgv=(void*)0x5678;
     ((void(*)(void*,FString*,void*))slab)(expectedContext,nullptr,expectedArgv);
@@ -38,9 +40,40 @@ int main() {
     for(int i=0;i<300;++i) emit(nullptr,&msg);
     assert(*(U64*)(slab+4096)==430);
     for(U64 i=174;i<430;++i) assert(*(U64*)(slab+8192+(i%256)*2048)==i+1);
+    auto emitDiagnostic=(unsigned char(*)(void*,const FString*))(slab+768);
+    emitDiagnostic(nullptr,&skip);
+    const wchar_t shortText[]=L"!"; FString shortMsg={shortText,2,2}; emitDiagnostic(nullptr,&shortMsg);
+    emitDiagnostic(nullptr,nullptr);
+    assert(*(U64*)(slab+4096)==432);
+    assert(std::wstring((wchar_t*)(slab+8192+(430%256)*2048+16),9)==L"unrelated");
+    assert(*(unsigned*)(slab+8192+(431%256)*2048+8)==1);
     VirtualFree((void*)slab,0,MEM_RELEASE);
     auto temp=fs::temp_directory_path()/(L"pbz-loader-test-"+std::to_wstring(GetCurrentProcessId()));
     assert(fs::create_directory(temp)); fs::create_directories(temp/L"mods/a");
+    {
+        auto root=temp/L"validation";
+        fs::create_directories(root/L"generated-mods/test");
+        const std::string code="module.exports = '\xe4\xb8\xad\xe6\x96\x87';";
+        { std::ofstream f(root/L"generated-mods/test/main.js",std::ios::binary); f<<code; }
+        auto string=[](const std::wstring& value) { return GameString{value.c_str(),(int)value.size()+1,(int)value.size()+1}; };
+        std::wstring path=L"../../../ProjectPBZ/Content/JavaScript/PBZModLoader/generated-mods/test/main.js";
+        auto name=string(path);
+        GameBytes bytes{(const unsigned char*)code.data(),(int)code.size(),(int)code.size()};
+        assert(trustedModBytes(root,&name,&bytes));
+        std::wstring raw=L"module.exports = '\u4e2d\u6587';";
+        auto source=string(raw); assert(trustedModText(root,&name,&source));
+        std::wstring wrapped=L"(function (exports, require, module, __filename, __dirname) { "+raw+L"\n});";
+        source=string(wrapped); assert(trustedModText(root,&name,&source));
+        wrapped+=L"evil()"; source=string(wrapped); assert(!trustedModText(root,&name,&source));
+        bytes.count--; assert(!trustedModBytes(root,&name,&bytes)); bytes.count++;
+        for(const auto& denied:{L"project/mainstart.js",L"PBZModLoader/../MainStart.js",L"PBZModLoader/generated-mods/../manager.js",L"OtherPBZModLoader/generated-mods/test/main.js",L"PBZModLoader/generated-mods/test/main.js:stream"}) {
+            std::wstring value=denied; auto rejected=string(value);
+            assert(!trustedModBytes(root,&rejected,&bytes));
+        }
+        assert(!trustedModBytes(root,nullptr,&bytes));
+        source.count=0; assert(!trustedModText(root,&name,&source));
+        std::cout<<"PASS MOD validation: exact bytes, UTF-8, CommonJS wrapper, game paths, traversal and content mismatch\n";
+    }
     { std::ofstream f(temp/L"mods/a/main.js"); f<<"module.exports={};"; }
     auto iniTest=[&](const std::string& content,bool expected) {
         { std::ofstream f(temp/L"mods.ini"); f<<content; }

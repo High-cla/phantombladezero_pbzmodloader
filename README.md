@@ -2,6 +2,26 @@
 
 这是后续开发入口。玩家运行包位于 releases，游戏安装目录只保留运行文件。
 
+## 0.3.6-preview：11 月 4 日游戏更新兼容
+
+新增此次 Steam 更新的 MainStart 指令布局，修复启动日志出现
+`MainStart signature requires one validated match; found=0` 后跳过全部 MOD 的问题。
+新版 FString 参数使用 `[rsp+60h]`，旧版使用 `[rbp-69h]`；两种完整指令布局分别匹配，
+仍共同要求唯一候选、MainStart 字符串及 Start 跳板验证，三个 PuerTS 日志挂钩校验保持不变。
+新版游戏还增加了模块字节与执行源码校验。加载器识别两个校验函数及五处调用，
+仅为 `PBZModLoader` 下的引导、管理器、配置及生成的 MOD 目录提供适配：
+传入内容须与对应本地文件一致，执行源码只允许原文或 PuerTS 的 CommonJS 包装。
+原游戏脚本仍由原校验函数处理；路径越界、内容不一致或特征缺失时拒绝。
+PuerTS 警告和错误现在也写入 loader.log，便于定位引导脚本执行前的失败。
+不使用固定地址回退。升级时退出游戏，替换当前选用的代理 DLL，并更新 bootstrap.js；配置与 MOD 无需改动。
+
+先前的 0.3.5-preview 只补充 MainStart 指令匹配，遗漏了脚本校验适配，会导致原游戏菜单初始化异常，
+已撤回到 releases/archive，不应继续使用。
+
+`build.ps1 -Test -GameExe <游戏EXE>` 支持旧版基准和本次更新，覆盖两种栈布局、跨布局歧义、
+栈参数不一致拒绝、两个脚本校验函数和五处调用的完整性，以及原有重定位、ASLR 和日志挂钩检查。
+原生测试另覆盖本地脚本内容、UTF-8、CommonJS 包装、官方脚本路径及越界拒绝。
+
 ## 0.3.4-preview：备用 DLL 入口
 
 默认使用 `version.dll`，正式构建同时提供 `hid.dll`、`winmm.dll`、`dsound.dll`、`dxgi.dll`。
@@ -25,7 +45,7 @@ DLL 复制到实际 EXE 旁；不要解压默认 `version.dll` 覆盖其他 MOD�
 
 `build.ps1 -Test` 验证五种代理的静态加载、入口恢复、代表性 API 转发、并发调用、导出数量，
 以及重复入口与晚加载保护；原有 version 多布局、ABI 和游戏特征测试继续保留。
-`package.ps1` 默认生成 `0.3.4-preview`，检查全部五个 DLL、ZIP 白名单及解压哈希。
+`package.ps1` 默认生成 `0.3.6-preview`，检查全部五个 DLL、ZIP 白名单及解压哈希。
 
 ## 0.3.0-preview：平台无关引导
 
@@ -39,7 +59,7 @@ Start 跳板指令、JSLogger.cpp 源文件引用、日志等级和共享日志�
 跳板及调用原始字节从实际匹配位置取得，不再依赖固定 RVA 或固定相对位移。
 特征不匹配或歧义时跳过 MOD，继续原游戏；不会回退到旧固定地址。
 
-这组特征来自 CL-301524_JKS-17219，允许地址和相对位移变化，但不是任意版本的通用 ABI。
+这组特征来自 CL-301524_JKS-17219，并补充了 2026-11-04 Steam 更新的 MainStart 布局，允许地址和相对位移变化，但不是任意版本的通用 ABI。
 编译器、运行时结构或保护机制变化仍可能需要新特征。WeGame 尚无实机验证；测试中的
 platform/wegame 只是目录布局夹具，并非对 WeGame 实际目录、DLL 加载行为的断言。
 

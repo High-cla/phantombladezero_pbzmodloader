@@ -24,9 +24,56 @@ int main(int argc,char** argv) {
     auto image=loadFile(fs::u8path(argv[1]));
     auto original=resolveSites(image);
     // Regression expectations belong only in tests, never in the resolver.
-    assert(original.call==0x6686768 && original.start==0x6284a20);
-    assert((original.loggers==std::array<size_t,3>{0x62ab700,0x62b2e00,0x62a56b0}));
+    const bool november=original.call==0x66c3e1b;
+    assert(original.call==(november?0x66c3e1b:0x6686768) && original.start==(november?0x62cc850:0x6284a20));
+    assert((original.loggers==(november?std::array<size_t,3>{0x62eee00,0x62f6830,0x62e9c40}:std::array<size_t,3>{0x62ab700,0x62b2e00,0x62a56b0})));
+    const size_t callOffset=november?29:27;
+    if(november) {
+        assert(original.validateBytes==0x62f65a0 && original.validateText==0x62f65e0);
+        assert((original.validationCalls==std::array<size_t,5>{0x61ec4da,0x61eee5f,0x61ef162,0x61fe5bb,0x61ebce0}));
+        auto rejectValidation=[&] { bool rejected=false; try {resolveSites(image);} catch(const std::exception&) {rejected=true;} assert(rejected); };
+        auto at=original.validateBytes; auto saved=image.bytes[at]; image.bytes[at]=0xcc; rejectValidation(); image.bytes[at]=saved;
+        at=original.validationCalls[3]+1; saved=image.bytes[at]; image.bytes[at]^=1; rejectValidation(); image.bytes[at]=saved;
+        image.sections.push_back({original.validateText,80,IMAGE_SCN_MEM_EXECUTE|IMAGE_SCN_MEM_READ});
+        rejectValidation(); image.sections.pop_back();
+        std::cout<<"PASS script validation pair, all five call sites, damaged/missing/ambiguous rejection\n";
+    }
     std::cout<<"PASS real PE: unique MainStart and three PuerTS loggers\n";
+    // Exercise the other observed stack layout against the same validated PE.
+    // Two valid layouts together must be rejected, not silently pick one.
+    {
+        const Bytes rbp={0x48,0x8d,0x15,0,0,0,0,0x48,0x8d,0x4d,0x97,0xe8,0,0,0,0,0x4c,0x8d,0x45,0xd7,0x48,0x8b,0xcb,0x48,0x8d,0x55,0x97,0xe8,0,0,0,0,0x48,0x8b,0x4d,0x97,0x48,0x85,0xc9};
+        const Bytes rsp={0x48,0x8d,0x15,0,0,0,0,0x48,0x8d,0x4c,0x24,0x60,0xe8,0,0,0,0,0x4c,0x8d,0x45,0x90,0x48,0x8b,0xcb,0x48,0x8d,0x54,0x24,0x60,0xe8,0,0,0,0,0x48,0x8b,0x4c,0x24,0x60,0x48,0x85,0xc9};
+        auto name=image.relative(original.call-callOffset,3,7);
+        size_t at=image.bytes.size(),otherOffset=november?27:29;
+        auto code=november?rbp:rsp;
+        image.bytes.insert(image.bytes.end(),code.begin(),code.end());
+        image.sections.push_back({at,code.size(),IMAGE_SCN_MEM_READ|IMAGE_SCN_MEM_EXECUTE});
+        int32_t delta=(int32_t)((int64_t)name-(int64_t)at-7);
+        std::memcpy(image.bytes.data()+at+3,&delta,4);
+        delta=(int32_t)((int64_t)original.start-(int64_t)(at+otherOffset)-5);
+        std::memcpy(image.bytes.data()+at+otherOffset+1,&delta,4);
+        bool rejected=false;
+        try { resolveSites(image); } catch(const std::exception&) { rejected=true; }
+        assert(rejected);
+        auto first=original.call-callOffset;
+        image.bytes[first]=0xcc;
+        if(november) {
+            auto other=resolveSites(image);
+            assert(other.call==at+otherOffset && other.start==original.start && other.loggers==original.loggers);
+        } else {
+            // The new layout without the new validation pair is unsupported.
+            rejected=false; try {resolveSites(image);} catch(const std::exception&) {rejected=true;} assert(rejected);
+        }
+        // Disagreeing FString slots must fail the complete instruction pattern.
+        image.bytes[at+(november?26:28)]^=8;
+        rejected=false;
+        try { resolveSites(image); } catch(const std::exception&) { rejected=true; }
+        assert(rejected);
+        image.bytes[first]=0x48;
+        image.sections.pop_back(); image.bytes.resize(at);
+        std::cout<<"PASS both stack layouts, cross-layout ambiguity and mismatched stack rejection\n";
+    }
     // Move all sections; also rebase absolute pointers used by logger descriptors.
     const size_t shift=0x2000; const U64 rebase=0x310000000ULL;
     image.bytes.insert(image.bytes.begin(),shift,0);
@@ -51,7 +98,7 @@ int main(int argc,char** argv) {
     std::cout<<"PASS changed call displacement and dynamic Start target\n";
     auto reject=[&] { bool rejected=false; try { resolveSites(image); } catch(const std::exception& e) { rejected=true; std::cout<<"PASS rejection: "<<e.what()<<'\n'; } assert(rejected); };
     auto saved=image.bytes[moved.start]; image.bytes[moved.start]=0xcc; reject(); image.bytes[moved.start]=saved;
-    auto name=image.relative(moved.call-27,3,7); image.bytes[name]='X'; reject(); image.bytes[name]='M';
+    auto name=image.relative(moved.call-callOffset,3,7); image.bytes[name]='X'; reject(); image.bytes[name]='M';
     // Duplicate executable section ranges deliberately expose the same candidates twice.
     auto sections=image.sections; for(auto s:sections) if(s.flags&IMAGE_SCN_MEM_EXECUTE) image.sections.push_back(s);
     reject(); image.sections=sections;

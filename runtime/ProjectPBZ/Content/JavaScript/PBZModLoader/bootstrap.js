@@ -1,6 +1,12 @@
 'use strict';
 // Original startup exceptions must retain their original propagation behavior.
-require('MainStart');
+console.log('[PBZMOD] bootstrap entered');
+try {
+    require('MainStart');
+} catch (error) {
+    console.error('[PBZMOD] original MainStart failed: ' + String(error.stack || error));
+    throw error;
+}
 console.log('[PBZMOD] original MainStart returned');
 if (!globalThis.__PBZModLoader) {
     const state = globalThis.__PBZModLoader = { version: 1, mods: [], status: 'loading' };

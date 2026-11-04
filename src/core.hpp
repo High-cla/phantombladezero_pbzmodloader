@@ -274,17 +274,19 @@ Bytes startStub(U64 slab,U64 target) {
     b.push_back(0x9d); b.insert(b.end(),{0x48,0xba}); imm64(b,slab+4128); // popfq; mov rdx,FString*
     absoluteJump(b,target); return b;
 }
-Bytes loggerStub(U64 at,U64 ring,U64 original,const Bytes& stolen) {
+Bytes loggerStub(U64 at,U64 ring,U64 original,const Bytes& stolen,bool captureAll=false) {
     // Preserve flags and every register touched. No calls, so no unwind/stack-alignment change.
     Bytes b={0x9c,0x50,0x51,0x52,0x56,0x57,0x41,0x51,0x41,0x52,0x41,0x53};
     std::vector<size_t> exits;
     auto jcc=[&](unsigned char op){ b.insert(b.end(),{0x0f,op}); exits.push_back(b.size()); imm32(b,0); };
     auto add=[&](std::initializer_list<unsigned char> v){b.insert(b.end(),v);};
     add({0x48,0x85,0xd2}); jcc(0x84); // test rdx
-    add({0x8b,0x4a,0x08,0x83,0xf9,0x05}); jcc(0x8c); // FString count >=5
+    add({0x8b,0x4a,0x08,0x83,0xf9,(unsigned char)(captureAll?1:5)}); jcc(0x8c);
     add({0x48,0x8b,0x32,0x48,0x85,0xf6}); jcc(0x84); // rsi=data
-    add({0x48,0xb8}); imm64(b,0x005a00420050005bULL); // UTF-16 "[PBZ"
-    add({0x48,0x39,0x06}); jcc(0x85);
+    if(!captureAll) {
+        add({0x48,0xb8}); imm64(b,0x005a00420050005bULL); // UTF-16 "[PBZ"
+        add({0x48,0x39,0x06}); jcc(0x85);
+    }
     add({0xff,0xc9,0xb8,0xe8,0x03,0,0,0x39,0xc1,0x0f,0x47,0xc8}); // min(count-1,1000)
     add({0x49,0xbb}); imm64(b,ring);
     add({0xb8,1,0,0,0,0xf0,0x49,0x0f,0xc1,0x03}); // lock xadd [r11],rax
@@ -302,7 +304,7 @@ Bytes loggerStub(U64 at,U64 ring,U64 original,const Bytes& stolen) {
 }
 struct Patch { U64 address; Bytes old; };
 struct Installed { U64 slab=0; std::vector<Patch> patches; };
-Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& sites) {
+Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& sites,U64 validateBytesHook=0,U64 validateTextHook=0) {
     Installed state;
     const auto& loggers=sites.loggers;
     std::array<Bytes,3> signatures;
@@ -311,12 +313,19 @@ Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& site
     auto verify=[&](U64 addr,const Bytes& expected) { Bytes got(expected.size()); read(p,addr,got.data(),got.size()); if(got!=expected) throw std::runtime_error("Instruction signature mismatch"); };
     verify(base+sites.call,originalCall);
     verify(base+sites.start,{0x48,0x8b,0x09,0x48,0x8b,0x01,0x48,0xff,0x20});
+    if(sites.validateBytes && (!validateBytesHook || !validateTextHook)) throw std::runtime_error("Missing script validation adapters");
+    for(auto at:sites.validationCalls) if(at) verify(base+at,Bytes(image.bytes.begin()+at,image.bytes.begin()+at+5));
     for(int i=0;i<3;++i) verify(base+loggers[i],signatures[i]);
     state.slab=allocateNear(p,base+sites.call);
     try {
         Bytes blob(3072); auto stub=startStub(state.slab,base+sites.start); std::copy(stub.begin(),stub.end(),blob.begin());
+        if(sites.validateBytes) {
+            Bytes gate; absoluteJump(gate,validateBytesHook); std::copy(gate.begin(),gate.end(),blob.begin()+2048);
+            gate.clear(); absoluteJump(gate,validateTextHook); std::copy(gate.begin(),gate.end(),blob.begin()+2080);
+        }
         for(int i=0;i<3;++i) {
-            auto logger=loggerStub(state.slab+256+i*512,state.slab+4096,base+loggers[i],signatures[i]);
+            // PuerTS startup errors occur before bootstrap can add our prefix.
+            auto logger=loggerStub(state.slab+256+i*512,state.slab+4096,base+loggers[i],signatures[i],i!=0);
             if(logger.size()>512) throw std::runtime_error("Logger stub overflow");
             std::copy(logger.begin(),logger.end(),blob.begin()+256+i*512);
         }
@@ -331,6 +340,15 @@ Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& site
         Bytes call={0xe8}; rel32(call,base+sites.call+5,state.slab);
         std::array<Bytes,3> hooks;
         for(int i=0;i<3;++i) { hooks[i]={0xe9}; rel32(hooks[i],base+loggers[i]+5,state.slab+256+i*512); hooks[i].insert(hooks[i].end(),{0x90,0x90}); }
+        std::array<Bytes,5> validators;
+        for(size_t i=0;i<validators.size();++i) if(sites.validationCalls[i]) {
+            validators[i]={0xe8}; rel32(validators[i],base+sites.validationCalls[i]+5,state.slab+(i==4?2080:2048));
+        }
+        for(size_t i=0;i<validators.size();++i) if(sites.validationCalls[i]) {
+            auto at=sites.validationCalls[i];
+            state.patches.push_back({base+at,Bytes(image.bytes.begin()+at,image.bytes.begin()+at+5)});
+            patch(p,base+at,validators[i]);
+        }
         for(int i=0;i<3;++i) {
             state.patches.push_back({base+loggers[i],signatures[i]});
             patch(p,base+loggers[i],hooks[i]);
