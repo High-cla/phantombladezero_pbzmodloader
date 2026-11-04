@@ -1,6 +1,6 @@
 # PBZ TypeScript MOD 最小模板
 
-适用于支持 `mods/<ID>/main.js` 自动发现的 PBZModLoader（当前 0.3.1-preview）。
+适用于支持 `mods/<ID>/main.js` 自动发现的 PBZModLoader（当前 0.3.4-preview）。
 复制整个模板文件夹即可独立开发，不需要加载器的 C++ 工程或游戏源码。
 
 ## 开始开发
