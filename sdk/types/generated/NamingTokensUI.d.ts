@@ -19,8 +19,8 @@ declare module 'ue' {
         "GetDisplayBorderImage"(): boolean;
         "GetDisplayErrorMessage"(): boolean;
         "GetDisplayTokenIcon"(): boolean;
-        "GetResolvedText"(): string;
-        "GetTokenizedText"(): string;
+        "GetResolvedText"(): UE.$FText;
+        "GetTokenizedText"(): UE.$FText;
         "SetBackgroundColor"(InColor: UE.SlateColor): void;
         "SetCanDisplayResolvedText"(bValue: boolean): void;
         "SetContexts"(InContexts: UE.TArray<UE.Object | null | undefined>): void;

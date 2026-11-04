@@ -119,10 +119,10 @@ declare module 'ue' {
     const MetaSoundClassInterfaceInfo: UE.$Static.MetaSoundClassInterfaceInfo & UE.$StructType<UE.MetaSoundClassInterfaceInfo>;
     /** /Script/MetasoundFrontend.MetaSoundClassSearchInfo — reflection-generated, not individually call-tested. */
     interface MetaSoundClassSearchInfo {
-        "ClassDisplayName": string;
-        "ClassDescription": string;
-        "Hierarchy": UE.TArray<string>;
-        "Keywords": UE.TArray<string>;
+        "ClassDisplayName": UE.$FText;
+        "ClassDescription": UE.$FText;
+        "Hierarchy": UE.TArray<UE.$FText>;
+        "Keywords": UE.TArray<UE.$FText>;
     }
     namespace $Static {
     interface MetaSoundClassSearchInfo {

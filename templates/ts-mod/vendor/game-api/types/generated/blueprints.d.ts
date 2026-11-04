@@ -369,7 +369,7 @@ declare module 'ue' {
         "Break"(): void;
         "CheckNeedShaChiWeapons"(SuccessFind: $Ref<boolean>): void;
         "ConstructPayloadObjectOnInteract"(Payload: $Ref<UE.Object | null | undefined>): void;
-        "Get Text"(Text: $Ref<string>): void;
+        "Get Text"(Text: $Ref<UE.$FText>): void;
         "GetBlockerCheckWidget"(): UE.TArray<UE.WidgetComponent | null | undefined>;
         "GetBlockerReallyWidget"(): UE.TArray<UE.WidgetComponent | null | undefined>;
         "GetCollisionComponent"(InteractWith: UE.Character | null | undefined): UE.ShapeComponent | null | undefined;
@@ -378,7 +378,7 @@ declare module 'ue' {
         "GetNeedShaChiWeaponBrokenTags"(NeedTags: $Ref<UE.GameplayTagContainer>): void;
         "GetNeedShaChiWeaponID"(): string;
         "GetSocketComponent"(): UE.SceneComponent | null | undefined;
-        "GetWeaponNameText"(NameText: $Ref<string>): void;
+        "GetWeaponNameText"(NameText: $Ref<UE.$FText>): void;
         "HasSubtitle"(Result: $Ref<boolean>): void;
         "Init Widget"(): void;
         "InitByTable"(): void;
@@ -602,7 +602,7 @@ declare module 'ue' {
         "TextBlock_0": UE.TextBlock | null | undefined;
         "InteractIcon": UE.Image | null | undefined;
         "UseInteract": boolean;
-        "GetText"(): string;
+        "GetText"(): UE.$FText;
         "Get_InteractIcon_Brush"(): UE.SlateBrush;
         "SetAnticipationUI"(): void;
         "SetCanInteractUI"(): void;
@@ -2824,7 +2824,7 @@ declare module 'ue' {
         "NewVar": UE.TArray<UE.PBZWeapon | null | undefined>;
         "CollisionRadiusScale": number;
         "LeavesSize_Min": number;
-        "LeavesSize_Max": number;
+        "leavesSize_Max": number;
         "MaxParticleCount": number;
         "Check Leaves Interactive"(): void;
         "ReceiveBeginPlay"(): void;
@@ -4605,9 +4605,9 @@ declare module 'ue' {
         "ShowWireFrame": boolean;
         "FieldVolume": UE.StaticMeshComponent | null | undefined;
         "DeactivatedText": UE.LinearColor;
-        "SleepText": string;
-        "DisableText": string;
-        "KillText": string;
+        "SleepText": UE.$FText;
+        "DisableText": UE.$FText;
+        "KillText": UE.$FText;
         "ShowSolidShapes": boolean;
         "Sleep Colour Def": UE.LinearColor;
         "DisableColour": UE.LinearColor;
@@ -7111,7 +7111,7 @@ declare module 'ue' {
         "FinishLoading_事件"(): void;
         "GetInitialDataLayers"(LoadDataLayers: $Ref<UE.TArray<UE.DataLayerAsset | null | undefined>>, UnloadDataLayers: $Ref<UE.TArray<UE.DataLayerAsset | null | undefined>>): void;
         "GetMixinKeyName"(): string;
-        "GetRequiredShaChiWeaponName"(TagContainer: UE.GameplayTagContainer, Text: $Ref<string>): void;
+        "GetRequiredShaChiWeaponName"(TagContainer: UE.GameplayTagContainer, Text: $Ref<UE.$FText>): void;
         "GetScriptPath"(): string;
         "Init Tutorial Monster"(): void;
         "InitMapCacheManager"(): void;
@@ -7798,7 +7798,7 @@ declare module 'ue' {
         "TextRender2": UE.TextRenderComponent | null | undefined;
         "TextRender1": UE.TextRenderComponent | null | undefined;
         "ContinueDialogue": UE.$MulticastDelegate<() => void>;
-        "NPCDesc": string;
+        "NPCDesc": UE.$FText;
         "All": number;
         "Jaw Scaling": number;
         "Corner Stretch Scaling": number;
@@ -10445,7 +10445,7 @@ declare module 'ue' {
         "Hair02": UE.GroomComponent | null | undefined;
         "CA_SM_Yuer_hair": UE.ChaosClothComponent | null | undefined;
         "CA_SM_Yuer_cloth": UE.ChaosClothComponent | null | undefined;
-        "Lash": UE.GroomComponent | null | undefined;
+        "lash": UE.GroomComponent | null | undefined;
         "Brow": UE.GroomComponent | null | undefined;
         "meshcloth_00": UE.SkeletalMeshComponentBudgeted | null | undefined;
         "ReceiveBeginPlay"(): void;
@@ -11410,6 +11410,7 @@ declare module 'ue' {
         "WithSource": boolean;
         "IsClosingAnimStage": boolean;
         "VideoActive": boolean;
+        "Abandoned_CFFC4258416AB15779969B81D59D04DC"(): void;
         "ActivateVideo"(): void;
         "Active__FinishedFunc"(): void;
         "Active__UpdateFunc"(): void;
@@ -11423,6 +11424,7 @@ declare module 'ue' {
         "LightDownTimer"(): void;
         "LightUpTimer"(): void;
         "OnInteract"(InteractWith: UE.Character | null | undefined): boolean;
+        "Played_CFFC4258416AB15779969B81D59D04DC"(): void;
         "PushVideoUI"(): void;
         "ReceiveBeginPlay"(): void;
         "ReceiveTick"(DeltaSeconds: number): void;
@@ -11729,6 +11731,17 @@ declare module 'ue' {
     }
     }
     namespace $Blueprint {
+    /** /Game/PBZContent/Blueprint/FlowGraph/DataAsset/FlowPresetData/BP_FlowPresetData_DelayInteract.BP_FlowPresetData_DelayInteract_C — reflection-generated, not individually call-tested. */
+    interface BP_FlowPresetData_DelayInteract_C_62428dbe3447 extends UE.$Blueprint.BP_FlowPresetDataBase_C_eae996550458 {
+        "DelayTags": UE.GameplayTagContainer;
+        "DelayTime": number;
+    }
+    }
+    namespace $Static {
+    interface BP_FlowPresetData_DelayInteract_C_62428dbe3447 {
+    }
+    }
+    namespace $Blueprint {
     /** /Game/PBZContent/Blueprint/FlowGraph/DataAsset/FlowPresetData/BP_FlowPresetData_Door.BP_FlowPresetData_Door_C — reflection-generated, not individually call-tested. */
     interface BP_FlowPresetData_Door_C_6f25c725ea04 extends UE.$Blueprint.BP_FlowPresetDataBase_C_eae996550458 {
         "InteractableTags": UE.GameplayTagContainer;
@@ -11975,92 +11988,6 @@ declare module 'ue' {
     }
     }
     namespace $Blueprint {
-    /** /Game/PBZContent/Blueprint/FlowGraph/DebugUI/FlowLogic/PlaySeqCollectHelpStruct.PlaySeqCollectHelpStruct — reflection-generated, not individually call-tested. */
-    interface PlaySeqCollectHelpStruct_1afb00919e01 {
-        "LevelName_2_71E2A04D48E65C03C680BB9677F1180F": string;
-        "SeqName_6_6CE9AD524341E5B2F8DE68AA9E57574E": UE.TArray<string>;
-        "PlayKey_9_383E0BC241D0DF56E7B44FA70F7DF03D": UE.TArray<string>;
-    }
-    }
-    namespace $Static {
-    interface PlaySeqCollectHelpStruct_1afb00919e01 {
-    }
-    }
-    namespace $Blueprint {
-    /** /Game/PBZContent/Blueprint/FlowGraph/DebugUI/FlowQuest/UI/WBP_FlowEventEditor.WBP_FlowEventEditor_C — reflection-generated, not individually call-tested. */
-    interface WBP_FlowEventEditor_C_59cc13b15c5c extends UE.PBZFlowEventEditorWidget {
-        "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "Background": UE.Image | null | undefined;
-    }
-    }
-    namespace $Static {
-    interface WBP_FlowEventEditor_C_59cc13b15c5c {
-    }
-    }
-    namespace $Blueprint {
-    /** /Game/PBZContent/Blueprint/FlowGraph/DebugUI/FlowQuest/UI/WBP_FlowEventGroup.WBP_FlowEventGroup_C — reflection-generated, not individually call-tested. */
-    interface WBP_FlowEventGroup_C_c2b17c8017af extends UE.PBZFlowEventGroupWidget {
-    }
-    }
-    namespace $Static {
-    interface WBP_FlowEventGroup_C_c2b17c8017af {
-    }
-    }
-    namespace $Blueprint {
-    /** /Game/PBZContent/Blueprint/FlowGraph/DebugUI/FlowQuest/UI/WBP_FlowEventGroupNav.WBP_FlowEventGroupNav_C — reflection-generated, not individually call-tested. */
-    interface WBP_FlowEventGroupNav_C_2c1acff49c1f extends UE.PBZFlowEventGroupNavWidget {
-    }
-    }
-    namespace $Static {
-    interface WBP_FlowEventGroupNav_C_2c1acff49c1f {
-    }
-    }
-    namespace $Blueprint {
-    /** /Game/PBZContent/Blueprint/FlowGraph/DebugUI/FlowQuest/UI/WBP_FlowEventItem.WBP_FlowEventItem_C — reflection-generated, not individually call-tested. */
-    interface WBP_FlowEventItem_C_326ab409ec5b extends UE.PBZFlowEventItemWidget {
-    }
-    }
-    namespace $Static {
-    interface WBP_FlowEventItem_C_326ab409ec5b {
-    }
-    }
-    namespace $Blueprint {
-    /** /Game/PBZContent/Blueprint/FlowGraph/DebugUI/MapCollect/UI/WBP_MapCollectEditor.WBP_MapCollectEditor_C — reflection-generated, not individually call-tested. */
-    interface WBP_MapCollectEditor_C_4264f8ea78f5 extends UE.PBZMapCollectEditorWidget {
-        "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "Image_128": UE.Image | null | undefined;
-    }
-    }
-    namespace $Static {
-    interface WBP_MapCollectEditor_C_4264f8ea78f5 {
-    }
-    }
-    namespace $Blueprint {
-    /** /Game/PBZContent/Blueprint/FlowGraph/DebugUI/MapCollect/UI/WBP_MapCollectGroup.WBP_MapCollectGroup_C — reflection-generated, not individually call-tested. */
-    interface WBP_MapCollectGroup_C_94b568e5401b extends UE.PBZMapCollectGroupWidget {
-    }
-    }
-    namespace $Static {
-    interface WBP_MapCollectGroup_C_94b568e5401b {
-    }
-    }
-    namespace $Blueprint {
-    /** /Game/PBZContent/Blueprint/FlowGraph/DebugUI/MapCollect/UI/WBP_MapCollectItem.WBP_MapCollectItem_C — reflection-generated, not individually call-tested. */
-    interface WBP_MapCollectItem_C_607d437a0765 extends Omit<UE.PBZMapCollectItemWidget, "Construct" | "OnFocusLost" | "OnFocusReceived"> {
-        "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "NavigationUIComponent_0_OptionCheckBox": UE.NavigationUIComponent | null | undefined;
-        "Construct"(): void;
-        "DoCustomNavigation"(Type: UE.EUINavigation, OldFocusedWidget: UE.Widget | null | undefined, NewFocusedWidget: UE.Widget | null | undefined): void;
-        "DoCustomNavigation_0"(Type: UE.EUINavigation, OldFocusedWidget: UE.Widget | null | undefined, NewFocusedWidget: UE.Widget | null | undefined): void;
-        "OnFocusLost"(InFocusEvent: UE.FocusEvent): void;
-        "OnFocusReceived"(MyGeometry: UE.Geometry, InFocusEvent: UE.FocusEvent): UE.EventReply;
-    }
-    }
-    namespace $Static {
-    interface WBP_MapCollectItem_C_607d437a0765 {
-    }
-    }
-    namespace $Blueprint {
     /** /Game/PBZContent/Blueprint/FlowGraph/DebugUI/NpcLocAnimInfo.NpcLocAnimInfo — reflection-generated, not individually call-tested. */
     interface NpcLocAnimInfo_cc98a38353fa {
         "NpcOnceAnim_5_214F1A344AAD7CCD167BE08F4D44ABA3": UE.TArray<UE.TSoftObjectPtr<UE.AnimSequenceBase>>;
@@ -12165,7 +12092,7 @@ declare module 'ue' {
         "LocKeyArrayCopy"(Src: $Ref<UE.TArray<UE.FlowLocText>>, Dest: $Ref<UE.TArray<UE.FlowLocText>>, __WorldContext: UE.Object | null | undefined): void;
         "LocKeyArrayRandomRemove"(Src: $Ref<UE.TArray<UE.FlowLocText>>, __WorldContext: UE.Object | null | undefined, ToRemove: $Ref<UE.FlowLocText>): void;
         "Play Subtitles"(Text: $Ref<UE.TArray<UE.FlowLocText>>, AudioActor: UE.Character | null | undefined, Priority: number, OnClosed: UE.$Delegate<(Interrupt: boolean) => void>, CD: number, DestroyCallBackDelay: number, __WorldContext: UE.Object | null | undefined, PlaySuccess: $Ref<boolean>): void;
-        "PlaySubtitles_CustomText"(Text: $Ref<UE.TArray<string>>, Priority: number, OnClosed: UE.$Delegate<(Interrupt: boolean) => void>, CD: number, DestroyCallBackDelay: number, __WorldContext: UE.Object | null | undefined, PlaySuccess: $Ref<boolean>): void;
+        "PlaySubtitles_CustomText"(Text: $Ref<UE.TArray<UE.$FText>>, Priority: number, OnClosed: UE.$Delegate<(Interrupt: boolean) => void>, CD: number, DestroyCallBackDelay: number, __WorldContext: UE.Object | null | undefined, PlaySuccess: $Ref<boolean>): void;
     }
     }
     namespace $Blueprint {
@@ -12206,7 +12133,7 @@ declare module 'ue' {
         "TextRender": UE.TextRenderComponent | null | undefined;
         "BP_PBZFlowComponent": UE.$Blueprint.BP_PBZFlowComponent_C_748b1e56bb13 | null | undefined;
         "DefaultSceneRoot": UE.SceneComponent | null | undefined;
-        "ActorDesc": string;
+        "ActorDesc": UE.$FText;
         "NPCName": string;
         "LocNpcOnceAnimTable": UE.TSoftObjectPtr<UE.DataTable>;
         "GetTargetPriority"(TargetType: UE.GameplayTag, LockSocket: string): number;
@@ -12372,7 +12299,7 @@ declare module 'ue' {
         "PhysicsBlendCurve": UE.TimelineComponent | null | undefined;
         "InteractText": UE.FlowLocText;
         "SimpleInteract": boolean;
-        "ActorDesc": string;
+        "ActorDesc": UE.$FText;
         "InteractDialogue": UE.TSoftObjectPtr<UE.DialogueFlowAsset>;
         "FlowActorName": UE.TArray<string>;
         "Change Arm Async Action": UE.AbilityAsync_WaitGameplayEvent | null | undefined;
@@ -12792,7 +12719,7 @@ declare module 'ue' {
         "CheckTagWithType"(ShowHide: boolean, Tags: UE.GameplayTagContainer, FilterType: UE.$Blueprint.E_TagFilterType_edf038c1d342, CheckResult: $Ref<boolean>): void;
         "ChoiceSelect_事件"(ChoiceContentData: UE.FlowChoiceData): void;
         "CloseDialogue"(): void;
-        "FindIndex"(Content: string, Index: $Ref<number>): void;
+        "FindIndex"(Content: UE.$FText, Index: $Ref<number>): void;
         "GetDisableInputType"(InputType: $Ref<UE.GameplayTag>): void;
         "K2_Cleanup"(): void;
         "K2_ExecuteInput"(PinName: string): void;
@@ -12962,7 +12889,7 @@ declare module 'ue' {
         "OpenMode": UE.$Blueprint.E_ShowTutorialMode_a9a22989d531;
         "Input Name 2": string;
         "Input Name 1": string;
-        "Display Text": string;
+        "Display Text": UE.$FText;
         "K2_ExecuteInput"(PinName: string): void;
         "K2_GetNodeDescription"(): string;
     }
@@ -13305,7 +13232,7 @@ declare module 'ue' {
         "StringKey": string;
         "Nohas": boolean;
         "BP_OnWidgetDeactivated_Event_0"(): void;
-        "Get Text"(Text: $Ref<string>): void;
+        "Get Text"(Text: $Ref<UE.$FText>): void;
         "K2_Cleanup"(): void;
         "K2_ExecuteInput"(PinName: string): void;
         "K2_GetNodeDescription"(): string;
@@ -13768,11 +13695,10 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/Blueprint/FlowGraph/FlowGraphNode/EnsurePlayerLifePercent.EnsurePlayerLifePercent_C — reflection-generated, not individually call-tested. */
-    interface EnsurePlayerLifePercent_C_b4e1bdfce8c0 extends Omit<UE.PBZFlowOnceNodeBase, "Finish" | "K2_Cleanup" | "K2_ExecuteInput" | "K2_GetNodeDescription"> {
+    interface EnsurePlayerLifePercent_C_b4e1bdfce8c0 extends Omit<UE.PBZFlowOnceNodeBase, "K2_Cleanup" | "K2_ExecuteInput" | "K2_GetNodeDescription"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "Percent": number;
         "MaxWaitSeconds": number;
-        "Finish"(OnlyFinish: boolean): void;
         "GetMixinKeyName"(): string;
         "GetScriptPath"(): string;
         "K2_Cleanup"(): void;
@@ -13989,6 +13915,19 @@ declare module 'ue' {
     }
     namespace $Static {
     interface ForceTrackQuest_C_59740fbf7cf9 {
+    }
+    }
+    namespace $Blueprint {
+    /** /Game/PBZContent/Blueprint/FlowGraph/FlowGraphNode/FromActor/FromActor_AddInteractBlockTime.FromActor_AddInteractBlockTime_C — reflection-generated, not individually call-tested. */
+    interface FromActor_AddInteractBlockTime_C_f050e3e1d8c8 extends Omit<UE.$Blueprint.AddInteractBlockTime_C_11ca53d84f12, "UberGraphFrame" | "K2_ExecuteInput" | "K2_GetNodeDescription"> {
+        "UberGraphFrame": UE.PointerToUberGraphFrame;
+        "FieldName": string;
+        "K2_ExecuteInput"(PinName: string): void;
+        "K2_GetNodeDescription"(): string;
+    }
+    }
+    namespace $Static {
+    interface FromActor_AddInteractBlockTime_C_f050e3e1d8c8 {
     }
     }
     namespace $Blueprint {
@@ -14615,9 +14554,7 @@ declare module 'ue' {
         "TimeoutTarget": UE.Actor | null | undefined;
         "TimeoutPriorityComponent": UE.PBZCameraTargetPriorityComponent | null | undefined;
         "TimeoutPriority": number;
-        /** Observed runtime casing variants; check which spelling is present. */
-        "TimeOutHandle"?: UE.TimerHandle;
-        "TimeoutHandle"?: UE.TimerHandle;
+        "TimeOutHandle": UE.TimerHandle;
         "StandingEntryAction": UE.AbilityAsync_WaitGameplayTagAdded | null | undefined;
         "LoadedDialogueAsset": UE.DialogueFlowAsset | null | undefined;
         "DialogueLoadPending": boolean;
@@ -15396,6 +15333,7 @@ declare module 'ue' {
         "NavFallbackSeconds": number;
         "NavFallbackTimer": UE.TimerHandle;
         "DelayPlayAfterForcedPrewarm": boolean;
+        "Abandoned_791CAB7E42DD88078E1D30B9AE30BB43"(): void;
         "AddDesc"(Condition: boolean, OriginDesc: $Ref<string>, MatchDesc: string, Unmatch: string, Result: $Ref<string>): void;
         "BeginCameraCutCheck"(): void;
         "BeginTick"(): void;
@@ -15444,6 +15382,7 @@ declare module 'ue' {
         "OnStop"(): void;
         "OnSuccess_2C53D96B43C917794C5955B8F5CE36F4"(): void;
         "OperateCloth"(self2: UE.ChaosClothComponent | null | undefined): void;
+        "Played_791CAB7E42DD88078E1D30B9AE30BB43"(): void;
         "PreloadAfterDialogue"(): void;
         "PreloadDialogue"(LastSeq: UE.LevelSequence | null | undefined): void;
         "ProcessNewVersionLevelseq"(): void;
@@ -15797,7 +15736,7 @@ declare module 'ue' {
         "OpenMode": UE.$Blueprint.E_ShowTutorialMode_a9a22989d531;
         "Input Name 2": string;
         "Input Name 1": string;
-        "Display Text": string;
+        "Display Text": UE.$FText;
         "Loc Display Text": UE.LocText;
         "UseBlackBG": boolean;
         "Play Loop Anim": boolean;
@@ -16719,9 +16658,7 @@ declare module 'ue' {
         "ActorStateComponent": UE.ActorStateComponent | null | undefined;
         "Char Movement Limitation": UE.$Blueprint.Enum_CharacterMoveLimitation_b8a27f95dcc4;
         "Triggered": boolean;
-        /** Observed runtime casing variants; check which spelling is present. */
-        "TimeOutHandle"?: UE.TimerHandle;
-        "TimeoutHandle"?: UE.TimerHandle;
+        "TimeOutHandle": UE.TimerHandle;
         "ManualStop": boolean;
         "UseOwnerLocation": boolean;
         "Location": UE.Vector;
@@ -17358,14 +17295,13 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/Blueprint/FlowGraph/FlowGraphNode/SpawnStreamingSource.SpawnStreamingSource_C — reflection-generated, not individually call-tested. */
-    interface SpawnStreamingSource_C_b115032a3c54 extends Omit<UE.PBZFlowOnceNodeBase, "K2_DeinitializeInstance" | "K2_ExecuteInput"> {
+    interface SpawnStreamingSource_C_b115032a3c54 extends Omit<UE.PBZFlowOnceNodeBase, "K2_ExecuteInput"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "ActorMap": UE.TMap<string, UE.Actor | null | undefined>;
         "ActorID": string;
         "UsePlayerTransfrom": boolean;
         "GetMixinKeyName"(): string;
         "GetScriptPath"(): string;
-        "K2_DeinitializeInstance"(): void;
         "K2_ExecuteInput"(PinName: string): void;
     }
     }
@@ -18340,7 +18276,7 @@ declare module 'ue' {
     namespace $Blueprint {
     /** /Game/PBZContent/Blueprint/FlowGraph/Struct/BT_FlowContentData.BT_FlowContentData — reflection-generated, not individually call-tested. */
     interface BT_FlowContentData_783dfaa7d7a7 {
-        "Content_2_1630DA5F45C1C2D434F08FB20638DFE8": string;
+        "Content_2_1630DA5F45C1C2D434F08FB20638DFE8": UE.$FText;
         "Audio_7_DCB7F4544030B1F2EB7209BC3EA9BE3F": UE.AkAudioEvent | null | undefined;
         "OwnerOnceAnim_36_704D8D934C9BB18E3504D5B88A6A9C81": UE.AnimMontage | null | undefined;
         "OwnerIdleAnim_50_0A5916EF41350FAF47ECF9B52DAF051E": UE.AnimMontage | null | undefined;
@@ -18355,7 +18291,7 @@ declare module 'ue' {
         "CustomAudioRange_65_35C9F0AC4681E5781CF479A07136B942": number;
         "Priority_68_1699233D4615880C9689019CEA3DA273": number;
         "PlayAudioOnActor_70_5C2EBDC34F58C78792FB488F1A368F59": boolean;
-        "PBZResolvedAssets_72_51D61FF74A38514962AD66AFB9079397": UE.PBZResolvedSubtitleAssets;
+        "PBZResolvedAssets_72_FC95D5A545792CE9851CA798B7C80CAA": UE.PBZResolvedSubtitleAssets;
     }
     }
     namespace $Static {
@@ -18539,7 +18475,7 @@ declare module 'ue' {
         "CanSkip": boolean;
         "NPCFaceLipMontage": UE.AnimMontage | null | undefined;
         "AllNPCActors": UE.TArray<UE.Actor | null | undefined>;
-        "PreviewEditorText": string;
+        "PreviewEditorText": UE.$FText;
         "ButtonGroup": UE.PBZButtonGroup | null | undefined;
         "LastNPCActor": UE.Actor | null | undefined;
         "ExisitNPCActorsURO": UE.TMap<UE.Character | null | undefined, boolean>;
@@ -18598,7 +18534,7 @@ declare module 'ue' {
         "GetScriptPath"(): string;
         "GetSharedSetting"(): UE.PBZSettingsShared | null | undefined;
         "Get_DebugPanel_Visibility"(): UE.ESlateVisibility;
-        "Get_IdleType_Text"(): string;
+        "Get_IdleType_Text"(): UE.$FText;
         "HasContent"(ContentData: UE.$Blueprint.BT_FlowContentData_783dfaa7d7a7, Has: $Ref<boolean>): void;
         "IsAudioPre"(SearchIn: string, Result: $Ref<boolean>): void;
         "IsPlayerDialogue"(LocDataTableRow: UE.LocDataTableRow, IsPlayer: $Ref<boolean>): void;
@@ -18741,10 +18677,10 @@ declare module 'ue' {
         "GetWBPAnimationLength"(___: UE.WidgetAnimation | null | undefined): number;
         "Get_DebugWidget_Visibility"(): UE.ESlateVisibility;
         "Get_Frame_Visibility"(): UE.ESlateVisibility;
-        "Get_LazySpawn_Text"(): string;
-        "Get_NLPProfile_Text"(): string;
-        "Get_VTPrestream_Text"(): string;
-        "Get_VTSolution_Text"(): string;
+        "Get_LazySpawn_Text"(): UE.$FText;
+        "Get_NLPProfile_Text"(): UE.$FText;
+        "Get_VTPrestream_Text"(): UE.$FText;
+        "Get_VTSolution_Text"(): UE.$FText;
         "HideSkipPrompt"(): void;
         "InitWidget"(InLevelSeq: UE.LevelSequence | null | undefined, InLevelSeqPlayer: UE.LevelSequencePlayer | null | undefined, ExtraInstanceNum: number, InLevelSequenceNode: UE.$Blueprint.PlayLevelSequence_C_e3593b808892 | null | undefined): void;
         "Invalid_6BC84824435B069DAE62428C0F42B6AC"(): void;
@@ -18825,7 +18761,7 @@ declare module 'ue' {
         "CustomTick"(): void;
         "DebugTextVisible"(): UE.ESlateVisibility;
         "Finish Movie"(): void;
-        "GetDebugText"(): string;
+        "GetDebugText"(): UE.$FText;
         "NoOperationTick"(): void;
         "OnEndReached_事件"(): void;
         "Play"(): void;
@@ -18865,7 +18801,7 @@ declare module 'ue' {
         "TalkFaceAnimTimerHandle": UE.TimerHandle;
         "Flow Content Datas": UE.TArray<UE.$Blueprint.BT_FlowContentData_783dfaa7d7a7>;
         "DialogueLineAudioSilence": number;
-        "PlayingIDToText": UE.TMap<number, string>;
+        "PlayingIDToText": UE.TMap<number, UE.$FText>;
         "Duration_IDToTimer": UE.TMap<number, UE.TimerHandle>;
         "SutTitleAnimTimerHandle": UE.TimerHandle;
         "AudioEnd": boolean;
@@ -18884,17 +18820,17 @@ declare module 'ue' {
         "BP_GetDesiredFocusTarget"(): UE.Widget | null | undefined;
         "BP_OnActivated"(): void;
         "BP_OnDeactivated"(): void;
-        "BeginDestoryWithOutAudio"(Content: string): void;
+        "BeginDestoryWithOutAudio"(Content: UE.$FText): void;
         "CREATEDELEGATE_PROXYFUNCTION_0"(Data: UE.DisplaySubtitleData): void;
         "CustomEvent_1"(): void;
         "DestoryByContentData"(InputPin: UE.$Blueprint.BT_FlowContentData_783dfaa7d7a7): void;
         "DestoryByPlayingID"(NeedDestoryPlayingID: number): void;
-        "DestoryByText"(NeedDestoryText: string): void;
+        "DestoryByText"(NeedDestoryText: UE.$FText): void;
         "Destroy"(Interrupt: boolean): void;
         "GetAudioAttenuationMultiplier"(AudioEvent: UE.AkAudioEvent | null | undefined, Override: boolean, TargetRange: number, Scale: $Ref<number>): void;
         "GetMixinKeyName"(): string;
         "GetScriptPath"(): string;
-        "HasContent"(ContentData: string, Has: $Ref<boolean>): void;
+        "HasContent"(ContentData: UE.$FText, Has: $Ref<boolean>): void;
         "IsPlaying"(Result: $Ref<boolean>): void;
         "NeedInterrupt"(NewPriority: number, CanInterrupt: $Ref<boolean>): void;
         "OnAudioEnd"(CallbackType: UE.EAkCallbackType, CallbackInfo: UE.AkCallbackInfo | null | undefined): void;
@@ -18964,6 +18900,7 @@ declare module 'ue' {
         "LoadedLevelSequence": UE.LevelSequence | null | undefined;
         "LevelSequenceActor": UE.LevelSequenceActor | null | undefined;
         "LevelSequencePlayer": UE.LevelSequencePlayer | null | undefined;
+        "Abandoned_C79A570E4DB9C586D28148AFCDEE9A94"(): void;
         "Action Progress_Event"(Percentage: number): void;
         "BP_GetDesiredFocusTarget"(): UE.Widget | null | undefined;
         "BP_OnActivated"(): void;
@@ -18976,6 +18913,7 @@ declare module 'ue' {
         "OnLoaded_3E941D0D48ED03E474F920B874B68C21"(Loaded: UE.Object | null | undefined): void;
         "OnOpen"(): void;
         "Play"(): void;
+        "Played_C79A570E4DB9C586D28148AFCDEE9A94"(): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "Press Skip"(): void;
         "Set Image Brush"(): void;
@@ -19029,7 +18967,7 @@ declare module 'ue' {
         "GetScriptPath"(): string;
         "PreConstruct"(IsDesignTime: boolean): void;
         "SetWidgetText"(InText: UE.FlowChoiceData): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -20870,7 +20808,7 @@ declare module 'ue' {
         "Loot Item ID": string;
         "LootLevel": number;
         "Get Dust": number;
-        "EditorDesc": string;
+        "EditorDesc": UE.$FText;
         "RubbishType": UE.$Blueprint.E_RubbishConfig_009f096bf42d;
         "ReallyMedicines": UE.TSet<string>;
         "ReallyGetWeapons": UE.TMap<string, boolean>;
@@ -21458,7 +21396,7 @@ declare module 'ue' {
         "Not Interact": boolean;
         "Item Level": UE.EItemLevel;
         "DisappearSound": UE.AkAudioEvent | null | undefined;
-        "EditorDesc": string;
+        "EditorDesc": UE.$FText;
         "Medicines": UE.TSet<string>;
         "Accessories": UE.TSet<string>;
         "UseLegacyType": boolean;
@@ -42655,6 +42593,79 @@ declare module 'ue' {
     }
     }
     namespace $Blueprint {
+    /** /Game/PBZContent/Environments/Props/Wooden_frames/BP_XG_Wooden_Frames_005_E.BP_XG_Wooden_Frames_005_E_C — reflection-generated, not individually call-tested. */
+    interface BP_XG_Wooden_Frames_005_E_C_fd7d2060399f extends UE.Actor {
+        "SM_Wooden_Beam_2458_StaticMeshComponent1": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2507_StaticMeshComponent1": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_1044_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_1043_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2489_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2488_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2487_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2481_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2479_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2478_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2475_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2474_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2471_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2469_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_1040_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2468_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2465_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2459_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2458_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2457_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2455_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2454_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2453_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2452_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2448_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_989_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2443_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2441_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_988_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2437_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2436_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2434_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2427_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2424_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_1037_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2420_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_1020_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_992_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_1034_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2402_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_1015_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2395_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_1033_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_984_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2390_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2389_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2388_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2386_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2510_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2505_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2508_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_998_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_1047_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_996_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_1049_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_1051_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2507_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2504_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_1052_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_997_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2502_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2509_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SM_Wooden_Beam_2518_StaticMeshComponent0": UE.StaticMeshComponent | null | undefined;
+        "SharedRoot": UE.SceneComponent | null | undefined;
+    }
+    }
+    namespace $Static {
+    interface BP_XG_Wooden_Frames_005_E_C_fd7d2060399f {
+    }
+    }
+    namespace $Blueprint {
     /** /Game/PBZContent/Environments/Props/Wooden_frames/BP_XG_Wooden_Frames_007.BP_XG_Wooden_Frames_007_C — reflection-generated, not individually call-tested. */
     interface BP_XG_Wooden_Frames_007_C_e3dd0ca07557 extends UE.Actor {
         "Cube": UE.StaticMeshComponent | null | undefined;
@@ -50169,6 +50180,30 @@ declare module 'ue' {
     }
     }
     namespace $Blueprint {
+    /** /Game/PBZContent/Sequencer/GenerateSequencer/Seq152/cam05/Seq152_cam05_Main_Control.Seq152_cam05_Main_Control_DirectorBP_C — reflection-generated, not individually call-tested. */
+    interface Seq152_cam05_Main_Control_DirectorBP_C_e45722e94b4d extends UE.LevelSequenceDirector {
+        "UberGraphFrame": UE.PointerToUberGraphFrame;
+        "HiddenWeapon"(): void;
+        "SequenceEvent__ENTRYPOINTSeq152_cam05_Main_Control_DirectorBP"(): void;
+    }
+    }
+    namespace $Static {
+    interface Seq152_cam05_Main_Control_DirectorBP_C_e45722e94b4d {
+    }
+    }
+    namespace $Blueprint {
+    /** /Game/PBZContent/Sequencer/GenerateSequencer/Seq152/cam06/Seq152_cam06_Main_Control.Seq152_cam06_Main_Control_DirectorBP_C — reflection-generated, not individually call-tested. */
+    interface Seq152_cam06_Main_Control_DirectorBP_C_74e7455abae2 extends UE.LevelSequenceDirector {
+        "UberGraphFrame": UE.PointerToUberGraphFrame;
+        "SequenceEvent"(): void;
+        "SequenceEvent__ENTRYPOINTSeq152_cam06_Main_Control_DirectorBP"(): void;
+    }
+    }
+    namespace $Static {
+    interface Seq152_cam06_Main_Control_DirectorBP_C_74e7455abae2 {
+    }
+    }
+    namespace $Blueprint {
     /** /Game/PBZContent/Sequencer/GenerateSequencer/Seq152/cam08/S_FX_Seq152_cam08.S_FX_Seq152_cam08_DirectorBP_C — reflection-generated, not individually call-tested. */
     interface S_FX_Seq152_cam08_DirectorBP_C_696b9f43cbe0 extends UE.LevelSequenceDirector {
     }
@@ -52998,18 +53033,18 @@ declare module 'ue' {
         "Node ID": string;
         "Postition": UE.Vector2D;
         "BoundBox": UE.Box2D;
-        "Node Desc": string;
-        "Node Bottom Desc": string;
-        "Node TIp": string;
-        "Node Name": string;
+        "Node Desc": UE.$FText;
+        "Node Bottom Desc": UE.$FText;
+        "Node TIp": UE.$FText;
+        "Node Name": UE.$FText;
         "Texture 2D": UE.TSoftObjectPtr<UE.Texture2D>;
         "IsMaxAmount": boolean;
-        "Node Item Flavor": string;
+        "Node Item Flavor": UE.$FText;
         "BP_OnDeselected"(): void;
         "BP_OnHovered"(): void;
         "BP_OnSelected"(): void;
         "InitAbilityNode"(NodeID: string, Texture2D: UE.TSoftObjectPtr<UE.Texture2D>, CurrentNum: number): void;
-        "InitTexts"(NodeDesc: string, NodeBottomDesc: string, NodeTIp: string, NodeName: string): void;
+        "InitTexts"(NodeDesc: UE.$FText, NodeBottomDesc: UE.$FText, NodeTIp: UE.$FText, NodeName: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -53318,7 +53353,7 @@ declare module 'ue' {
         "IconImage": UE.Image | null | undefined;
         "FALSE": UE.SlateColor;
         "TRUE": UE.SlateColor;
-        "Init Entry"(IsCompleteEntry: boolean, Text: string, Brush: UE.TSoftObjectPtr<UE.Texture2D>): void;
+        "Init Entry"(IsCompleteEntry: boolean, Text: UE.$FText, Brush: UE.TSoftObjectPtr<UE.Texture2D>): void;
     }
     }
     namespace $Static {
@@ -53469,7 +53504,7 @@ declare module 'ue' {
         "QuestName": UE.CommonTextBlock | null | undefined;
         "CurrentStateName": UE.CommonTextBlock | null | undefined;
         "Init"(Quest: UE.Quest | null | undefined, Object: UE.Object | null | undefined, IsDisplayBranch: boolean): void;
-        "Init Completed Quest"(QuestName: string): void;
+        "Init Completed Quest"(QuestName: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -53527,7 +53562,7 @@ declare module 'ue' {
         "BP_OnHovered"(): void;
         "BP_OnSelected"(): void;
         "BP_OnUnhovered"(): void;
-        "CustomEvent"(InText: string): void;
+        "CustomEvent"(InText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -53964,7 +53999,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/Foundation/TabbedView/W_HorizontalTabList.W_HorizontalTabList_C — reflection-generated, not individually call-tested. */
-    interface W_HorizontalTabList_C_c3b49370dd33 extends Omit<UE.PBZTabListWidgetBase, "Construct" | "HandleTabCreation" | "HandleTabRemoval" | "OnBeforeSetupTabs" | "PreConstruct"> {
+    interface W_HorizontalTabList_C_c3b49370dd33 extends Omit<UE.PBZTabListWidgetBase, "Construct" | "Destruct" | "HandleTabCreation" | "HandleTabRemoval" | "OnBeforeSetupTabs" | "OnInitialized" | "PreConstruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "TabButtonBox": UE.HorizontalBox | null | undefined;
         "PreviousTabActionWrapper": UE.SizeBox | null | undefined;
@@ -53998,6 +54033,7 @@ declare module 'ue' {
         "CustomEvent_0"(TabId: string): void;
         "CustomEvent_1"(InVisibility: UE.ESlateVisibility): void;
         "DebugCreateTabsForDesigner"(): void;
+        "Destruct"(): void;
         "GetAbilityBreakEndureData"(Data: $Ref<UE.TArray<UE.AbilityBreakEndureLevel>>): void;
         "GetMixinKeyName"(): string;
         "GetScriptPath"(): string;
@@ -54007,6 +54043,7 @@ declare module 'ue' {
         "InitLayout"(): void;
         "InitTabListConfig"(Config: UE.$Blueprint.S_TabListConfig_217d8a5b2c93): void;
         "OnBeforeSetupTabs"(): void;
+        "OnInitialized"(): void;
         "PlayFadeInAnimation_Upgrade"(): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "Refresh Input Action Size"(): void;
@@ -54023,7 +54060,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/Foundation/TabbedView/W_OverlayTabList.W_OverlayTabList_C — reflection-generated, not individually call-tested. */
-    interface W_OverlayTabList_C_40a93e6e8964 extends Omit<UE.PBZTabListWidgetBase, "Construct" | "HandleTabCreation" | "HandleTabRemoval" | "OnBeforeSetupTabs" | "PreConstruct"> {
+    interface W_OverlayTabList_C_40a93e6e8964 extends Omit<UE.PBZTabListWidgetBase, "Construct" | "Destruct" | "HandleTabCreation" | "HandleTabRemoval" | "IsAnimationPlaying" | "OnBeforeSetupTabs" | "OnInitialized" | "PreConstruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "TabButtonBox": UE.HorizontalBox | null | undefined;
         "SizeBox_1": UE.SizeBox | null | undefined;
@@ -54058,6 +54095,7 @@ declare module 'ue' {
         "CustomEvent_0"(TabId: string): void;
         "CustomEvent_1"(InVisibility: UE.ESlateVisibility): void;
         "DebugCreateTabsForDesigner"(): void;
+        "Destruct"(): void;
         "GetMixinKeyName"(): string;
         "GetScriptPath"(): string;
         "GetTypes"(Result: $Ref<UE.TArray<string>>): void;
@@ -54065,7 +54103,9 @@ declare module 'ue' {
         "HandleTabRemoval"(TabNameID: string, TabButton: UE.CommonButtonBase | null | undefined): void;
         "InitLayout"(): void;
         "InitTabListConfig"(Config: UE.$Blueprint.S_TabListConfig_217d8a5b2c93): void;
+        "IsAnimationPlaying"(InAnimation: UE.WidgetAnimation | null | undefined): boolean;
         "OnBeforeSetupTabs"(): void;
+        "OnInitialized"(): void;
         "PlayFadeInAnimation_Upgrade"(): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "Refresh Input Action Size"(): void;
@@ -55987,7 +56027,7 @@ declare module 'ue' {
         "AI_QuestTaskSelectedPromptExit": UE.WidgetAnimation | null | undefined;
         "AI_QuestTaskSelectedPromptEnter": UE.WidgetAnimation | null | undefined;
         "InputActions": UE.DataTableRowHandle;
-        "DisplayText": string;
+        "DisplayText": UE.$FText;
         "FontSize": number;
         "FlowText": UE.FlowLocText;
         "Construct"(): void;
@@ -56043,7 +56083,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/Foundation/Widgets/BottomBar/WB_TriggerBoundButton.WB_TriggerBoundButton_C — reflection-generated, not individually call-tested. */
-    interface WB_TriggerBoundButton_C_5f283ca35bd8 extends Omit<UE.PBZActionTriggerButton, "BP_OnClicked" | "Construct" | "OnActionProgress" | "PreConstruct"> {
+    interface WB_TriggerBoundButton_C_5f283ca35bd8 extends Omit<UE.PBZActionTriggerButton, "BP_OnClicked" | "BP_OnHovered" | "BP_OnPressed" | "BP_OnUnhovered" | "Construct" | "Destruct" | "OnActionProgress" | "OnMouseEnter" | "OnUpdateInputAction" | "PreConstruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "Spacer_79": UE.Spacer | null | undefined;
         "RichText": UE.PBZCommonLocRichText | null | undefined;
@@ -56058,18 +56098,24 @@ declare module 'ue' {
         "AI_CharacterWeaponConfirmHover": UE.WidgetAnimation | null | undefined;
         "AI_ActionBarPressed": UE.WidgetAnimation | null | undefined;
         "InputActions": UE.DataTableRowHandle;
-        "DisplayText": string;
+        "DisplayText": UE.$FText;
         "FontSize": number;
         "FlowText": UE.FlowLocText;
         "InputActionRowName": string;
         "BP_OnClicked"(): void;
+        "BP_OnHovered"(): void;
+        "BP_OnPressed"(): void;
+        "BP_OnUnhovered"(): void;
         "Construct"(): void;
         "CustomEvent"(): void;
+        "Destruct"(): void;
         "GetMixinKeyName"(): string;
         "GetScriptPath"(): string;
         "IsDisplayInInputType"(ActionName: string, InputType: UE.ECommonInputType): boolean;
         "NewFunction"(): void;
         "OnActionProgress"(HeldPercent: number): void;
+        "OnMouseEnter"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): void;
+        "OnUpdateInputAction"(): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "Set Input Action and Text"(RowName: string): void;
         "SetInputActionAndText"(RowName: string): void;
@@ -56184,7 +56230,7 @@ declare module 'ue' {
         "Image_146": UE.Image | null | undefined;
         "Image_72": UE.Image | null | undefined;
         "Icon": UE.Image | null | undefined;
-        "glow": UE.Image | null | undefined;
+        "Glow": UE.Image | null | undefined;
         "DistanceText": UE.PBZCommonLocText | null | undefined;
         "DIstanceBox": UE.HorizontalBox | null | undefined;
         "Arrow": UE.Image | null | undefined;
@@ -56217,8 +56263,8 @@ declare module 'ue' {
         "FinishTextout"(): void;
         "GetMixinKeyName"(): string;
         "GetScriptPath"(): string;
-        "GetText"(TipStruct: UE.$Blueprint.S_TextTipStruct_59912a5850d8, Result: $Ref<string>, SoftTexture: $Ref<UE.TSoftObjectPtr<UE.Texture2D>>): void;
-        "GetTextByItem"(UsablePropID: string, IsAdd: boolean, ItemNum: number, Result: $Ref<string>, Texture: $Ref<UE.TSoftObjectPtr<UE.Texture2D>>): void;
+        "GetText"(TipStruct: UE.$Blueprint.S_TextTipStruct_59912a5850d8, Result: $Ref<UE.$FText>, SoftTexture: $Ref<UE.TSoftObjectPtr<UE.Texture2D>>): void;
+        "GetTextByItem"(UsablePropID: string, IsAdd: boolean, ItemNum: number, Result: $Ref<UE.$FText>, Texture: $Ref<UE.TSoftObjectPtr<UE.Texture2D>>): void;
         "PlayFadeIn"(ItemText: UE.$Blueprint.WB_ItemText_C_9941de5cb9a7 | null | undefined): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
@@ -56399,7 +56445,7 @@ declare module 'ue' {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "RichText_Description": UE.CommonRichTextBlock | null | undefined;
         "BP_GetDesiredFocusTarget"(): UE.Widget | null | undefined;
-        "Tips"(TipsDesc: string, bIsRegualr: boolean): void;
+        "Tips"(TipsDesc: UE.$FText, bIsRegualr: boolean): void;
     }
     }
     namespace $Static {
@@ -56410,7 +56456,7 @@ declare module 'ue' {
     /** /Game/PBZContent/UI/FrontEnd/WB_TextTipsObj.WB_TextTipsObj_C — reflection-generated, not individually call-tested. */
     interface WB_TextTipsObj_C_2f91082314f4 extends UE.Object {
         "TextKey": string;
-        "ShowText": string;
+        "ShowText": UE.$FText;
     }
     }
     namespace $Static {
@@ -56769,7 +56815,7 @@ declare module 'ue' {
         "AspectRatioScaleBox_0": UE.AspectRatioScaleBox | null | undefined;
         "DataToWidget": UE.TMap<UE.Class | null | undefined, UE.Class | null | undefined>;
         "PackageClass": UE.TArray<UE.TSoftClassPtr<UE.UserWidget>>;
-        "Show Text": string;
+        "Show Text": UE.$FText;
         "BP_GetDesiredFocusTarget"(): UE.Widget | null | undefined;
         "BP_OnActivated"(): void;
         "DestroyTextTips"(): void;
@@ -56868,10 +56914,10 @@ declare module 'ue' {
         "BP_GetDesiredFocusTarget"(): UE.Widget | null | undefined;
         "Construct"(): void;
         "Destruct"(): void;
-        "Get Attack Power"(): string;
-        "Get Break Meter"(): string;
-        "Get Current HP"(): string;
-        "Get Defence"(): string;
+        "Get Attack Power"(): UE.$FText;
+        "Get Break Meter"(): UE.$FText;
+        "Get Current HP"(): UE.$FText;
+        "Get Defence"(): UE.$FText;
         "Get_Weapon1_ToolTipWidget"(): UE.Widget | null | undefined;
         "InitMap"(): void;
         "InitSetFocus"(): void;
@@ -56981,7 +57027,7 @@ declare module 'ue' {
         "BP_OnClicked"(): void;
         "Construct"(): void;
         "GetPressProgress"(Progress: $Ref<number>): void;
-        "Get_PropsNum_Text"(NewParam: $Ref<string>): void;
+        "Get_PropsNum_Text"(NewParam: $Ref<UE.$FText>): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "ResetMaterials"(): void;
         "Set Num"(Num: number): void;
@@ -57005,7 +57051,7 @@ declare module 'ue' {
         "BP_OnActivated"(): void;
         "Construct"(): void;
         "Destruct"(): void;
-        "GetText"(): string;
+        "GetText"(): UE.$FText;
     }
     }
     namespace $Static {
@@ -57191,14 +57237,14 @@ declare module 'ue' {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "DynamicEntryBox_129": UE.DynamicEntryBox | null | undefined;
         "Setting Value": UE.GameSettingValueDiscreteDynamic2 | null | undefined;
-        "Texts": UE.TArray<string>;
+        "Texts": UE.TArray<UE.$FText>;
         "Button Group": UE.PBZButtonGroup | null | undefined;
         "BP_GetDesiredFocusTarget"(): UE.Widget | null | undefined;
         "Construct"(): void;
         "Down Navigate"(Navigation: UE.EUINavigation): UE.Widget | null | undefined;
         "GetMixinKeyName"(): string;
         "GetScriptPath"(): string;
-        "Init"(_Setting_Value: UE.GameSettingValueDiscreteDynamic2 | null | undefined, Texts: $Ref<UE.TArray<string>>): void;
+        "Init"(_Setting_Value: UE.GameSettingValueDiscreteDynamic2 | null | undefined, Texts: $Ref<UE.TArray<UE.$FText>>): void;
         "Up Navgiate"(Navigation: UE.EUINavigation): UE.Widget | null | undefined;
         "W_Settings_Confirmation_AutoGenFunc"(Button: UE.CommonButtonBase | null | undefined): void;
     }
@@ -57365,289 +57411,6 @@ declare module 'ue' {
     }
     }
     namespace $Blueprint {
-    /** /Game/PBZContent/UI/Help/BP_CollectHelp.BP_CollectHelp_C — reflection-generated, not individually call-tested. */
-    interface BP_CollectHelp_C_f2c223f17412 extends Omit<UE.PBZGameplayHelpCollect, "Initialize"> {
-        "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "拉杆": UE.TMap<string, number>;
-        "宗祠钥匙": UE.TMap<string, number>;
-        "Not Limited ShaChi Action": UE.AbilityAsync_WaitAttributeChanged | null | undefined;
-        "Perfect Defelect Below ShaChi Action": UE.AbilityAsync_WaitAttributeChanged | null | undefined;
-        "Start Perfect Deflect Percent ": number;
-        "Default Move Speed": number;
-        "Stance Walk Parameters": UE.CharacterMovementParameters;
-        "Speed Handle": UE.ActiveGameplayEffectHandle;
-        "Spirit Shadow Action": UE.AbilityAsync_WaitAttributeChanged | null | undefined;
-        "PerfectHandle": UE.ActiveGameplayEffectHandle;
-        "CurrentHealth": number;
-        "CurrentShaChi": number;
-        "Command": string;
-        "6400": number;
-        "12800": number;
-        "25600": number;
-        "51200": number;
-        "102400": number;
-        "153600": number;
-        "204800": number;
-        "Prop Map_0": UE.TMap<string, number>;
-        "Need Materials": UE.TMap<string, number>;
-        "NewVar": boolean;
-        "TeleportObjClass": UE.Class | null | undefined;
-        "GlobalTeleportPointAsset": UE.DebugTeleportPointDataAsset | null | undefined;
-        "WeaponDowngradeArray": UE.TMap<string, UE.Object | null | undefined>;
-        "MapItemData": UE.TSoftObjectPtr<UE.MapItemDataAsset>;
-        "MapCompletionCLass": UE.Class | null | undefined;
-        "FlowPlaySeqArray": UE.TArray<UE.$Blueprint.PlaySeqCollectHelpStruct_1afb00919e01>;
-        "FlowPlaySeqTable": UE.TSoftObjectPtr<UE.DataTable>;
-        "FlowPlaySeqID": string;
-        "FlowPosEntryTable": UE.TSoftObjectPtr<UE.DataTable>;
-        "TGAUIHidden": boolean;
-        "Acativate AbilityNodes NeedMaterials"(): void;
-        "Activate All Bell Func"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "Activate All Bells"(): void;
-        "Activate Map Advanced Display"(): void;
-        "ActivateAllAbilityNodes"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "ActivateJhsy"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "Add Move Speed"(): void;
-        "Add PS5 Graphics Debug"(): void;
-        "Add invulnerbale Tag"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "AfterPush_62AABC2C45054D1514BEC3A79227CA6A"(UserWidget: UE.CommonActivatableWidget | null | undefined): void;
-        "AfterPush_6D530B37482321EBA61B78A8B2032B25"(UserWidget: UE.CommonActivatableWidget | null | undefined): void;
-        "AfterPush_8C06E66F4E0FAA2A0F8EBC8FF636F5B6"(UserWidget: UE.CommonActivatableWidget | null | undefined): void;
-        "AfterPush_A6E5F72F4D2B4CAC9AF88E9FCA7356D8"(UserWidget: UE.CommonActivatableWidget | null | undefined): void;
-        "AfterPush_AB516F5D491A30BA9D30E9A51E90F93F"(UserWidget: UE.CommonActivatableWidget | null | undefined): void;
-        "BeforePush_62AABC2C45054D1514BEC3A79227CA6A"(UserWidget: UE.CommonActivatableWidget | null | undefined): void;
-        "BeforePush_6D530B37482321EBA61B78A8B2032B25"(UserWidget: UE.CommonActivatableWidget | null | undefined): void;
-        "BeforePush_8C06E66F4E0FAA2A0F8EBC8FF636F5B6"(UserWidget: UE.CommonActivatableWidget | null | undefined): void;
-        "BeforePush_A6E5F72F4D2B4CAC9AF88E9FCA7356D8"(UserWidget: UE.CommonActivatableWidget | null | undefined): void;
-        "BeforePush_AB516F5D491A30BA9D30E9A51E90F93F"(UserWidget: UE.CommonActivatableWidget | null | undefined): void;
-        "Cancel Perfect Deflect"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "ChangeLoadingRnage"(GridData: UE.TMap<string, number>): void;
-        "Changed_15F681BA4326CA2030909F841B7B11A4"(Attribute: UE.GameplayAttribute, NewValue: number, OldValue: number): void;
-        "Changed_C682090D4057B4C8F3B41592BF29BD89"(Attribute: UE.GameplayAttribute, NewValue: number, OldValue: number): void;
-        "Changed_E7777F12404DF17774FD5DA04088D08F"(Attribute: UE.GameplayAttribute, NewValue: number, OldValue: number): void;
-        "Clear invulnerbale Tag"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "Collect Combat Debug Help"(): void;
-        "Collect Event NPC"(): void;
-        "Collect Print Something"(): void;
-        "Collect Sequence"(): void;
-        "Collect System"(): void;
-        "Collect TGA Debug"(): void;
-        "Collect Trace"(): void;
-        "Collect UI Help"(): void;
-        "Collect World Partition"(): void;
-        "CollectMapCompletion"(): void;
-        "CollectMapCompletionDebug"(): void;
-        "CollectPlaySeqHelp"(): void;
-        "CollectSettingsDebug"(): void;
-        "CollectTeleportDebug"(): void;
-        "CollectTsDebug"(): void;
-        "CustomEvent"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_0"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_1"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_10"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_100"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_101"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_102"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_103"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_104"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_105"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_106"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_107"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_108"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_109"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_11"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_110"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_111"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_112"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_113"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_114"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_115"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_116"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_117"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_118"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_119"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_12"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_120"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_121"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_122"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_123"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_124"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_125"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_13"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_14"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_15"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_16"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_17"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_18"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_19"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_2"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_20"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_21"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_22"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_23"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_24"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_25"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_26"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_27"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_28"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_29"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_3"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_30"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_31"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_32"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_33"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_34"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_35"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_36"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_37"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_38"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_39"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_4"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_40"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_41"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_42"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_43"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_44"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_45"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_46"(SlotName: string, SaveJsonObjectWrapper: UE.JsonObjectWrapper, Index: number, Success: boolean): void;
-        "CustomEvent_47"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_48"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_49"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_5"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_50"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_51"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_52"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_53"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_54"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_55"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_56"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_57"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_58"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_59"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_6"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_60"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_61"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_62"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_63"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_64"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_65"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_66"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_67"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_68"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_69"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_7"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_70"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_71"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_72"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_73"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_74"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_75"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_76"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_77"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_78"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_79"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_8"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_80"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_81"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_82"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_83"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_84"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_85"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_86"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_87"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_88"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_89"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_9"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_90"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_91"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_92"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_93"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_94"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_95"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_96"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_97"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_98"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "CustomEvent_99"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "DebugSetAllPosEntryFlowDone"(): void;
-        "Enable Perfect Deflect"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "FinishLoading_事件"(): void;
-        "GM_Fly"(bFly: boolean): void;
-        "Get Default Move Speed"(): void;
-        "Get String From Tag Container"(_Tag_Container: UE.GameplayTagContainer, String: $Ref<string>): void;
-        "GetMixinKeyName"(): string;
-        "GetPlaySeqTramsform"(ActorTransform: UE.Transform, ArrowTransform: UE.Transform, NodeParam: UE.PlaySeqNodeStruct, NewTransform: $Ref<UE.Transform>): void;
-        "GetScriptPath"(): string;
-        "HiddenUi_PV"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "Hide UI TGA"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "Initialize"(): void;
-        "Liuyi2"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "LoadingRnage 3000m"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "LvSanqian3 He yao"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "OnStop_事件"(): void;
-        "PerfectDelefectBelowShaChiPercentage"(Percent: number): void;
-        "Play Sequence"(StreamingSource: UE.Transform, _Level_Sequence: UE.LevelSequence | null | undefined, _Teleport_Hun: UE.Vector): void;
-        "Push Print Data UI "(Str: string): void;
-        "RegisterReLoadClearWorld"(KeepLocation: boolean): void;
-        "StartFlowPlaySeq"(): void;
-        "TGA临时Debug选项"(): void;
-        "TryGetSeqByID"(DataTable: UE.DataTable | null | undefined, SeqID: string, Found: $Ref<boolean>, Row: $Ref<UE.FlowPlaySeqDataTableRow>): void;
-        "TryPlaySeqById"(SeqID: string): void;
-        "自定义事件"(): void;
-        "自定义事件_0"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_1"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_10"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_11"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_12"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_13"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_14"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_15"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_16"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_17"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_18"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_19"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_2"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_20"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_21"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_22"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_23"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_24"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_25"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_26"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_27"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_28"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_29"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_3"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_30"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_31"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_32"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_33"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_34"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_35"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_4"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_5"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_6"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_7"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_8"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-        "自定义事件_9"(HelpObj: UE.PBZGameplayHelpObj | null | undefined): void;
-    }
-    }
-    namespace $Static {
-    interface BP_CollectHelp_C_f2c223f17412 {
-    }
-    }
-    namespace $Blueprint {
-    /** /Game/PBZContent/UI/Help/BP_DebugTeleport.BP_DebugTeleport_C — reflection-generated, not individually call-tested. */
-    interface BP_DebugTeleport_C_b173c9dfe6e4 extends UE.PBZGameplayHelpObj {
-        "OwnLevelName": string;
-        "TargetDesc": string;
-        "TeleportTransform": UE.Transform;
-    }
-    }
-    namespace $Static {
-    interface BP_DebugTeleport_C_b173c9dfe6e4 {
-    }
-    }
-    namespace $Blueprint {
     /** /Game/PBZContent/UI/Help/BP_MapCompletionObj.BP_MapCompletionObj_C — reflection-generated, not individually call-tested. */
     interface BP_MapCompletionObj_C_a414050c7e98 extends UE.PBZGameplayHelpObj {
         "OwnMapID": string;
@@ -57666,15 +57429,6 @@ declare module 'ue' {
     }
     namespace $Static {
     interface BP_StreamingActor_C_3497da23b077 {
-    }
-    }
-    namespace $Blueprint {
-    /** /Game/PBZContent/UI/Help/GE_Debug_OverrideSpeed.GE_Debug_OverrideSpeed_C — reflection-generated, not individually call-tested. */
-    interface GE_Debug_OverrideSpeed_C_b6ed77312e87 extends UE.GameplayEffect {
-    }
-    }
-    namespace $Static {
-    interface GE_Debug_OverrideSpeed_C_b6ed77312e87 {
     }
     }
     namespace $Blueprint {
@@ -57749,27 +57503,6 @@ declare module 'ue' {
     }
     }
     namespace $Blueprint {
-    /** /Game/PBZContent/UI/Help/WB_GameplayHelpButton.WB_GameplayHelpButton_C — reflection-generated, not individually call-tested. */
-    interface WB_GameplayHelpButton_C_77251c127e75 extends Omit<UE.$Blueprint.WB_PBZMenuButton_V2_C_5fb01e7ab8f6, "UberGraphFrame" | "BP_OnClicked"> {
-        "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "As PBZGameplay Help Obj": UE.PBZGameplayHelpObj | null | undefined;
-        "BP_OnClicked"(): void;
-        "BP_OnEndEntryDropOperation"(bSuccess: boolean): void;
-        "BP_OnEntryDragOverChanged"(bIsDraggingOver: boolean): void;
-        "BP_OnEntryDragged"(Operation: UE.DragDropOperation | null | undefined): void;
-        "BP_OnEntryDropped"(Operation: UE.DragDropOperation | null | undefined): void;
-        "BP_OnEntryReleased"(): void;
-        "BP_OnItemExpansionChanged"(bIsExpanded: boolean): void;
-        "BP_OnItemSelectionChanged"(bIsSelected: boolean): void;
-        "BP_OnUpdateEntryDropIndicator"(DropZone: UE.EUMGItemDropZone): void;
-        "OnListItemObjectSet"(ListItemObject: UE.Object | null | undefined): void;
-    }
-    }
-    namespace $Static {
-    interface WB_GameplayHelpButton_C_77251c127e75 {
-    }
-    }
-    namespace $Blueprint {
     /** /Game/PBZContent/UI/Help/WB_SecondCategoryButton.WB_SecondCategoryButton_C — reflection-generated, not individually call-tested. */
     interface WB_SecondCategoryButton_C_354478c2dc27 extends Omit<UE.$Blueprint.WB_PBZMenuButton_V2_C_5fb01e7ab8f6, "UberGraphFrame" | "Destruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
@@ -57788,50 +57521,6 @@ declare module 'ue' {
     }
     namespace $Static {
     interface WB_SecondCategoryButton_C_354478c2dc27 {
-    }
-    }
-    namespace $Blueprint {
-    /** /Game/PBZContent/UI/Help/W_Debug_loadGameButton.W_Debug_loadGameButton_C — reflection-generated, not individually call-tested. */
-    interface W_Debug_loadGameButton_C_dd5ada6dd611 extends Omit<UE.$Blueprint.WB_PBZMenuButton_V2_C_5fb01e7ab8f6, "UberGraphFrame" | "Construct" | "PreConstruct" | "Tick"> {
-        "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "ID": string;
-        "Construct"(): void;
-        "PreConstruct"(IsDesignTime: boolean): void;
-        "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
-    }
-    }
-    namespace $Static {
-    interface W_Debug_loadGameButton_C_dd5ada6dd611 {
-    }
-    }
-    namespace $Blueprint {
-    /** /Game/PBZContent/UI/Help/W_LoadServerGame.W_LoadServerGame_C — reflection-generated, not individually call-tested. */
-    interface W_LoadServerGame_C_69fb7036bff3 extends Omit<UE.PBZActivatableWidget, "BP_OnActivated"> {
-        "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "WidgetSwitcher_44": UE.WidgetSwitcher | null | undefined;
-        "WB_PBZTriggerBoundAction_C_0": UE.$Blueprint.WB_PBZTriggerBoundAction_C_7df6365e9573 | null | undefined;
-        "TipsText": UE.CommonTextBlock | null | undefined;
-        "SaveGameBox_1": UE.DynamicEntryBox | null | undefined;
-        "SaveGameBox": UE.DynamicEntryBox | null | undefined;
-        "PanelScroll_2": UE.$Blueprint.BP_PBZScrollBox_C_f611e94c2fba | null | undefined;
-        "PanelScroll_1": UE.$Blueprint.BP_PBZScrollBox_C_f611e94c2fba | null | undefined;
-        "PanelScroll": UE.$Blueprint.BP_PBZScrollBox_C_f611e94c2fba | null | undefined;
-        "Image_56": UE.Image | null | undefined;
-        "CategoryBox": UE.DynamicEntryBox | null | undefined;
-        "URL": string;
-        "EnterSecond": boolean;
-        "CurrentSelectedCategory": string;
-        "BP_OnActivated"(): void;
-        "GetMixinKeyName"(): string;
-        "LoadGame"(String: string): void;
-        "MakeHttpBody"(Body: $Ref<UE.HTTPBody>): void;
-        "OnFailed_1FE4A45B4BAB72AC6CCA21A52DEB07CA"(OutJson: UE.JsonObjectWrapper, ResponseCode: number, ContentType: string, ResponseHeaders: UE.TArray<string>): void;
-        "OnSuccess_1FE4A45B4BAB72AC6CCA21A52DEB07CA"(OutJson: UE.JsonObjectWrapper, ResponseCode: number, ContentType: string, ResponseHeaders: UE.TArray<string>): void;
-        "自定义事件"(SlotName: string, SaveJsonObjectWrapper: UE.JsonObjectWrapper, Index: number, Success: boolean): void;
-    }
-    }
-    namespace $Static {
-    interface W_LoadServerGame_C_69fb7036bff3 {
     }
     }
     namespace $Blueprint {
@@ -58084,7 +57773,7 @@ declare module 'ue' {
         "BP_GetDesiredFocusTarget"(): UE.Widget | null | undefined;
         "BP_OnActivated"(): void;
         "PlayBlendOut"(): void;
-        "SetDesc"(InText: string): void;
+        "SetDesc"(InText: UE.$FText): void;
         "自定义事件"(): void;
     }
     }
@@ -58218,10 +57907,10 @@ declare module 'ue' {
         "EventReceived_09EF06374A97F567777411BF47847D0C"(Payload: UE.GameplayEventData): void;
         "EventReceived_47DA67D34BC6623554D53392A740C010"(Payload: UE.GameplayEventData): void;
         "EventReceived_C9D9D29A4C3BD903B5C9DD8B773047D8"(Payload: UE.GameplayEventData): void;
-        "ForSeq_SetNameText"(InText: string): void;
+        "ForSeq_SetNameText"(InText: UE.$FText): void;
         "ForSeq_UpdateHealth"(CurHPPercent: number): void;
         "ForSeq_UpdateShachi"(CurShachiPercent: number): void;
-        "GetConfigCharacterName"(Character: UE.Character | null | undefined, CharacterName: $Ref<string>): void;
+        "GetConfigCharacterName"(Character: UE.Character | null | undefined, CharacterName: $Ref<UE.$FText>): void;
         "Init"(Character: UE.Character | null | undefined): void;
         "InitBossMusic"(): void;
         "OnHideUIForPVChanged_Event"(bHidden: boolean): void;
@@ -58666,7 +58355,6 @@ declare module 'ue' {
         "SequenceEvent__ENTRYPOINTW_WeaponUI_9"(): UE.MovieSceneDynamicBindingResolveResult;
         "StopWeaponCd-AnimEvent"(): void;
         "SwitchWeapon"(): void;
-        "TSDestruct"(): void;
         "To BInd Shachi Up BG "(): UE.MovieSceneDynamicBindingResolveResult;
         "To Bind Shachi Down Icon"(): UE.MovieSceneDynamicBindingResolveResult;
         "To Bind Shaqi  Down BG"(): UE.MovieSceneDynamicBindingResolveResult;
@@ -58855,7 +58543,7 @@ declare module 'ue' {
     /** /Game/PBZContent/UI/InGame/Bell/TeleportSlot.TeleportSlot_C — reflection-generated, not individually call-tested. */
     interface TeleportSlot_C_3120b07ee881 extends Omit<UE.$Blueprint.WB_PBZMenuButton_V1_C_0b997081760c, "UberGraphFrame" | "Construct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "BellName": string;
+        "BellName": UE.$FText;
         "TargetBell": UE.MelodiousBell | null | undefined;
         "NewVar_0": UE.Object | null | undefined;
         "Construct"(): void;
@@ -58897,8 +58585,8 @@ declare module 'ue' {
         "Finish": UE.WidgetAnimation | null | undefined;
         "FadeIn": UE.WidgetAnimation | null | undefined;
         "ActiveBells": UE.TArray<UE.MelodiousBell | null | undefined>;
-        "DescHeader": string;
-        "DescBody": string;
+        "DescHeader": UE.$FText;
+        "DescBody": UE.$FText;
         "HasFocus": boolean;
         "Is DeerBell": boolean;
         "DeerBellID": string;
@@ -59274,7 +58962,7 @@ declare module 'ue' {
         "InputActionScreenToVirtual": UE.WidgetAnimation | null | undefined;
         "InputActionScreenToNone": UE.WidgetAnimation | null | undefined;
         "InputActionScreenToVirtualScreen": UE.WidgetAnimation | null | undefined;
-        "InteractionText": string;
+        "InteractionText": UE.$FText;
         "AnimType": UE.EInteractAnimType;
         "Widget Component": UE.WidgetComponent | null | undefined;
         "NewVar": boolean;
@@ -59441,7 +59129,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/InGame/Inventory/WB_Inventory.WB_Inventory_C — reflection-generated, not individually call-tested. */
-    interface WB_Inventory_C_0c2cdd7225f6 extends Omit<UE.PBZSystemWidgetBase, "BP_FirstInitWidget" | "BP_InitWidget" | "BackInput" | "CanNavigateToOtherWidget" | "ChangeInputMethod" | "FinishCurrentWidget" | "PreConstruct" | "Tick"> {
+    interface WB_Inventory_C_0c2cdd7225f6 extends Omit<UE.PBZSystemWidgetBase, "BP_FirstInitWidget" | "BP_InitWidget" | "BackInput" | "CanNavigateToOtherWidget" | "ChangeInputMethod" | "FinishCurrentWidget" | "OnFocusReceived" | "PreConstruct" | "Tick"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "WidgetSwitcher_64": UE.WidgetSwitcher | null | undefined;
         "W_UnifiedTextDescription": UE.$Blueprint.W_UnifiedTextDescription_C_8c98bd670f72 | null | undefined;
@@ -59475,6 +59163,7 @@ declare module 'ue' {
         "ChangeInputMethod"(InputType: UE.ECommonInputType): void;
         "FinishCurrentWidget"(IsDeactivateWidget: boolean): void;
         "GetMixinKeyName"(): string;
+        "OnFocusReceived"(MyGeometry: UE.Geometry, InFocusEvent: UE.FocusEvent): UE.EventReply;
         "PreConstruct"(IsDesignTime: boolean): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
     }
@@ -59605,7 +59294,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/InGame/Literature/WB_Literature.WB_Literature_C — reflection-generated, not individually call-tested. */
-    interface WB_Literature_C_514a03256eae extends Omit<UE.PBZSystemWidgetBase, "BP_FirstInitWidget" | "BP_InitWidget" | "BackInput" | "CanNavigateToOtherWidget" | "ChangeInputMethod" | "Construct" | "Destruct" | "FinishCurrentWidget" | "OnFocusReceived" | "PreConstruct" | "Tick"> {
+    interface WB_Literature_C_514a03256eae extends Omit<UE.PBZSystemWidgetBase, "BP_FirstInitWidget" | "BP_InitWidget" | "BackInput" | "CanNavigateToOtherWidget" | "ChangeInputMethod" | "Construct" | "Destruct" | "FinishCurrentWidget" | "OnFocusReceived" | "OnMouseButtonDown" | "OnPreviewKeyDown" | "PreConstruct" | "Tick"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "WidgetSwitcher_76": UE.WidgetSwitcher | null | undefined;
         "W_UnifiedTextDescription": UE.$Blueprint.W_UnifiedTextDescription_C_8c98bd670f72 | null | undefined;
@@ -59662,6 +59351,8 @@ declare module 'ue' {
         "GetMixinKeyName"(): string;
         "GetVisibility_0"(): UE.ESlateVisibility;
         "OnFocusReceived"(MyGeometry: UE.Geometry, InFocusEvent: UE.FocusEvent): UE.EventReply;
+        "OnMouseButtonDown"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): UE.EventReply;
+        "OnPreviewKeyDown"(MyGeometry: UE.Geometry, InKeyEvent: UE.KeyEvent): UE.EventReply;
         "PreConstruct"(IsDesignTime: boolean): void;
         "ShiftLetterPage"(IsShiftRight: boolean): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
@@ -60161,11 +59852,11 @@ declare module 'ue' {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "Image_29": UE.Image | null | undefined;
         "QuestType": UE.EPBZQuestType;
-        "Slot Text": string;
+        "Slot Text": UE.$FText;
         "DefaultSoftTexture": UE.TSoftObjectPtr<UE.Texture2D>;
         "OwnMapID": string;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
-        "GetSlotText"(): string;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
+        "GetSlotText"(): UE.$FText;
         "PreConstruct"(IsDesignTime: boolean): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
     }
@@ -60179,7 +59870,7 @@ declare module 'ue' {
     interface W_Map_AdvancedSlot_Challenge_C_6e80da42cb74 extends Omit<UE.$Blueprint.W_Map_AdvancedSlotBase_C_a0de2178eee0, "UberGraphFrame" | "BP_InitWidget" | "PreConstruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "ChallengeType": UE.$Blueprint.E_ChallengeType_720671b44c41;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
         "PreConstruct"(IsDesignTime: boolean): void;
     }
     }
@@ -60191,7 +59882,7 @@ declare module 'ue' {
     /** /Game/PBZContent/UI/InGame/Map/AdvancedSlot/W_Map_AdvancedSlot_Flower.W_Map_AdvancedSlot_Flower_C — reflection-generated, not individually call-tested. */
     interface W_Map_AdvancedSlot_Flower_C_208a2320a100 extends Omit<UE.$Blueprint.W_Map_AdvancedSlotBase_C_a0de2178eee0, "UberGraphFrame" | "BP_InitWidget" | "PreConstruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
         "PreConstruct"(IsDesignTime: boolean): void;
     }
     }
@@ -60203,7 +59894,7 @@ declare module 'ue' {
     /** /Game/PBZContent/UI/InGame/Map/AdvancedSlot/W_Map_AdvancedSlot_HeiShiSuipian.W_Map_AdvancedSlot_HeiShiSuipian_C — reflection-generated, not individually call-tested. */
     interface W_Map_AdvancedSlot_HeiShiSuipian_C_300abd1749e7 extends Omit<UE.$Blueprint.W_Map_AdvancedSlotBase_C_a0de2178eee0, "UberGraphFrame" | "BP_InitWidget" | "PreConstruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
         "PreConstruct"(IsDesignTime: boolean): void;
     }
     }
@@ -60215,7 +59906,7 @@ declare module 'ue' {
     /** /Game/PBZContent/UI/InGame/Map/AdvancedSlot/W_Map_AdvancedSlot_HuPoSuipian.W_Map_AdvancedSlot_HuPoSuipian_C — reflection-generated, not individually call-tested. */
     interface W_Map_AdvancedSlot_HuPoSuipian_C_efe52deac69b extends Omit<UE.$Blueprint.W_Map_AdvancedSlotBase_C_a0de2178eee0, "UberGraphFrame" | "BP_InitWidget" | "PreConstruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
         "PreConstruct"(IsDesignTime: boolean): void;
     }
     }
@@ -60227,7 +59918,7 @@ declare module 'ue' {
     /** /Game/PBZContent/UI/InGame/Map/AdvancedSlot/W_Map_AdvancedSlot_PrimaryItem.W_Map_AdvancedSlot_PrimaryItem_C — reflection-generated, not individually call-tested. */
     interface W_Map_AdvancedSlot_PrimaryItem_C_0fbc59c42fd4 extends Omit<UE.$Blueprint.W_Map_AdvancedSlotBase_C_a0de2178eee0, "UberGraphFrame" | "BP_InitWidget" | "PreConstruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
         "PreConstruct"(IsDesignTime: boolean): void;
     }
     }
@@ -60239,7 +59930,7 @@ declare module 'ue' {
     /** /Game/PBZContent/UI/InGame/Map/AdvancedSlot/W_Map_AdvancedSlot_YaoShi.W_Map_AdvancedSlot_YaoShi_C — reflection-generated, not individually call-tested. */
     interface W_Map_AdvancedSlot_YaoShi_C_2186cf904cdc extends Omit<UE.$Blueprint.W_Map_AdvancedSlotBase_C_a0de2178eee0, "UberGraphFrame" | "BP_InitWidget" | "PreConstruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
         "PreConstruct"(IsDesignTime: boolean): void;
     }
     }
@@ -60330,13 +60021,13 @@ declare module 'ue' {
         "LockType": UE.$Blueprint.E_LockType_587766eef539;
         "ShaChiWeaponID": string;
         "MapID": string;
-        "Slot Text": string;
+        "Slot Text": UE.$FText;
         "ShaBlockerTag": UE.GameplayTag;
         "ShaChiWeaponTexture": UE.TSoftObjectPtr<UE.Texture2D>;
         "IsTracked": boolean;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
         "Destruct"(): void;
-        "GetSlotText"(): string;
+        "GetSlotText"(): UE.$FText;
         "TrackSloedSlot"(IsTracked: boolean): void;
     }
     }
@@ -60366,7 +60057,7 @@ declare module 'ue' {
         "MapOverlay": UE.Overlay | null | undefined;
         "LuJiaCun": UE.Image | null | undefined;
         "FuJiZhiLin": UE.Image | null | undefined;
-        "DuanHunShan": UE.Image | null | undefined;
+        "duanhunshan": UE.Image | null | undefined;
         "DengDingShanDao": UE.Image | null | undefined;
         "CloudCanvas": UE.CanvasPanel | null | undefined;
         "CanvasPanel": UE.CanvasPanel | null | undefined;
@@ -60720,14 +60411,14 @@ declare module 'ue' {
         "AI_QuestSecondaryTabDeselect": UE.WidgetAnimation | null | undefined;
         "AI_QuestTaskSwitchIntro": UE.WidgetAnimation | null | undefined;
         "QuestType": UE.EPBZQuestType;
-        "Slot Text": string;
+        "Slot Text": UE.$FText;
         "MapID": string;
         "QuestTypeIndex": number;
         "IsTracked": boolean;
         "ActivateJumpHighlight"(): void;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
         "DeactivateJumpHighlight"(): void;
-        "GetSlotText"(): string;
+        "GetSlotText"(): UE.$FText;
         "InitDefaultNiagara"(Index: number): void;
         "InitImage"(): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
@@ -60752,13 +60443,13 @@ declare module 'ue' {
         "NewAnimation": UE.WidgetAnimation | null | undefined;
         "AI_MapFogClearIntro": UE.WidgetAnimation | null | undefined;
         "QuestType": UE.EPBZQuestType;
-        "Slot Text": string;
+        "Slot Text": UE.$FText;
         "MapID": string;
         "QuestTypeIndex": number;
         "ActivateJumpHighlight"(): void;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
         "DeactivateJumpHighlight"(): void;
-        "GetSlotText"(): string;
+        "GetSlotText"(): UE.$FText;
         "InitDefaultNiagara"(Index: number): void;
     }
     }
@@ -60921,7 +60612,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/InGame/Map/WB_MapNew.WB_MapNew_C — reflection-generated, not individually call-tested. */
-    interface WB_MapNew_C_c9e4f097514a extends Omit<UE.MapWidgetBase, "BP_InitWidget" | "BackInput" | "CanNavigateToOtherWidget" | "ChangeInputMethod" | "CheckFocusBox" | "Construct" | "Destruct" | "FinishCurrentWidget" | "OnMoveCurosr" | "PreConstruct" | "Tick"> {
+    interface WB_MapNew_C_c9e4f097514a extends Omit<UE.MapWidgetBase, "BP_InitWidget" | "BackInput" | "CanNavigateToOtherWidget" | "ChangeInputMethod" | "CheckFocusBox" | "CheckMouseBox" | "ClickButtonDown" | "Construct" | "Destruct" | "FinishCurrentWidget" | "OnMoveCurosr" | "PreConstruct" | "ReleaseScriptReferences" | "Tick"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "ZoomCursor": UE.Image | null | undefined;
         "ZoomAction": UE.$Blueprint.InputActionWidget_C_7f523ab65d65 | null | undefined;
@@ -61053,7 +60744,9 @@ declare module 'ue' {
         "CanNavigateToOtherWidget"(TabId: string): boolean;
         "ChangeInputMethod"(InputType: UE.ECommonInputType): void;
         "CheckFocusBox"(MousePos: UE.Vector2D): void;
+        "CheckMouseBox"(): void;
         "ClearGroupSelection"(SlotWidget: UE.MapWidgetSlotBase | null | undefined, SlotID: string): void;
+        "ClickButtonDown"(): void;
         "Construct"(): void;
         "Destruct"(): void;
         "EndDialogue"(): void;
@@ -61066,6 +60759,7 @@ declare module 'ue' {
         "OnMoveCurosr"(LastMousePos: UE.Vector2D, CurrentMosPos: UE.Vector2D): void;
         "OpenCompletion"(): void;
         "PreConstruct"(IsDesignTime: boolean): void;
+        "ReleaseScriptReferences"(): void;
         "SlotWidgetSelectedStateChange"(SlotWidget: UE.MapWidgetSlotBase | null | undefined, IsSelected: boolean, SlotID: string): void;
         "StartFadeInMask"(): void;
         "StartMapDialogue"(): void;
@@ -61136,14 +60830,14 @@ declare module 'ue' {
         "BellID": string;
         "IsCurrentBell": boolean;
         "OwnMapID": string;
-        "Slot Text": string;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
+        "Slot Text": UE.$FText;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
         "BP_OnClicked"(): void;
         "BP_OnDeselected"(): void;
         "BP_OnSelected"(): void;
         "BP_PlayHoverAnim"(): void;
         "BP_PlaySelectedAnim"(): void;
-        "GetSlotText"(): string;
+        "GetSlotText"(): UE.$FText;
         "NiagaraSystemWidget_35_Event"(NiagaraSystemWidget_35: UE.NiagaraSystemWidget | null | undefined): void;
         "NiagaraSystemWidget_35_Event_0"(NiagaraSystemWidget_35: UE.NiagaraSystemWidget | null | undefined): void;
         "SequenceEvent__ENTRYPOINTW_BellSlot"(NiagaraSystemWidget_35: UE.NiagaraSystemWidget | null | undefined): void;
@@ -61246,7 +60940,7 @@ declare module 'ue' {
         "InitStateByBell"(IsSelected: boolean): void;
         "InitStateByNormal"(): void;
         "InitStateByPortal"(): void;
-        "InitTextByFormatText"(Text: string): void;
+        "InitTextByFormatText"(Text: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -61329,12 +61023,12 @@ declare module 'ue' {
         "DeSelectedAnim": UE.WidgetAnimation | null | undefined;
         "AI_MapFogClearIntro": UE.WidgetAnimation | null | undefined;
         "OwnMapID": string;
-        "Slot Text": string;
+        "Slot Text": UE.$FText;
         "TargetBigMapID": string;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
         "BP_OnDeselected"(): void;
         "BP_OnSelected"(): void;
-        "GetSlotText"(): string;
+        "GetSlotText"(): UE.$FText;
         "NiagaraSystemWidget_35_Event"(NiagaraSystemWidget_35: UE.NiagaraSystemWidget | null | undefined): void;
         "NiagaraSystemWidget_35_Event_0"(NiagaraSystemWidget_35: UE.NiagaraSystemWidget | null | undefined): void;
         "SequenceEvent__ENTRYPOINTW_PortalSlot"(NiagaraSystemWidget_35: UE.NiagaraSystemWidget | null | undefined): void;
@@ -61659,7 +61353,7 @@ declare module 'ue' {
         "AI_CycleEndingEntryDataExit": UE.WidgetAnimation | null | undefined;
         "EndingImgMap": UE.TMap<UE.EPBZGameEnding, UE.Texture2D | null | undefined>;
         "GetMixinKeyName"(): string;
-        "InitData"(CycleCount: number, DifficultyText: string, GameEnding: UE.EPBZGameEnding): void;
+        "InitData"(CycleCount: number, DifficultyText: UE.$FText, GameEnding: UE.EPBZGameEnding): void;
     }
     }
     namespace $Static {
@@ -61808,7 +61502,7 @@ declare module 'ue' {
     namespace $Blueprint {
     /** /Game/PBZContent/UI/InGame/Quest/BPI_CreateBranchEntry.BPI_CreateBranchEntry_C — reflection-generated, not individually call-tested. */
     interface BPI_CreateBranchEntry_C_e415b0e28871 extends UE.Interface {
-        "InitBranchEntry"(TargetText: string, TextureSoft: UE.TSoftObjectPtr<UE.Texture2D>): void;
+        "InitBranchEntry"(TargetText: UE.$FText, TextureSoft: UE.TSoftObjectPtr<UE.Texture2D>): void;
     }
     }
     namespace $Static {
@@ -61864,7 +61558,7 @@ declare module 'ue' {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "PBZCommonLocRichText_0": UE.PBZCommonLocRichText | null | undefined;
         "Image_31": UE.Image | null | undefined;
-        "InitBranchEntry"(TargetText: string, TextureSoft: UE.TSoftObjectPtr<UE.Texture2D>): void;
+        "InitBranchEntry"(TargetText: UE.$FText, TextureSoft: UE.TSoftObjectPtr<UE.Texture2D>): void;
     }
     }
     namespace $Static {
@@ -61878,7 +61572,7 @@ declare module 'ue' {
         "PBZCommonLocText_61": UE.PBZCommonLocText | null | undefined;
         "Image_87": UE.Image | null | undefined;
         "Image_31": UE.Image | null | undefined;
-        "InitBranchEntry"(TargetText: string, TextureSoft: UE.TSoftObjectPtr<UE.Texture2D>): void;
+        "InitBranchEntry"(TargetText: UE.$FText, TextureSoft: UE.TSoftObjectPtr<UE.Texture2D>): void;
         "PreConstruct"(IsDesignTime: boolean): void;
     }
     }
@@ -61888,7 +61582,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/InGame/Quest/W_DIsplayQuest.W_DIsplayQuest_C — reflection-generated, not individually call-tested. */
-    interface W_DIsplayQuest_C_a15ae58f5037 extends Omit<UE.PBZSystemWidgetBase, "BP_FirstInitWidget" | "BP_InitWidget" | "BackInput" | "CanNavigateToOtherWidget" | "ChangeInputMethod" | "FinishCurrentWidget" | "PreConstruct" | "Tick"> {
+    interface W_DIsplayQuest_C_a15ae58f5037 extends Omit<UE.PBZSystemWidgetBase, "BP_FirstInitWidget" | "BP_InitWidget" | "BackInput" | "CanNavigateToOtherWidget" | "ChangeInputMethod" | "Destruct" | "FinishCurrentWidget" | "OnKeyUp" | "OnMouseButtonDown" | "OnMouseMove" | "OnPreviewKeyDown" | "OnPreviewMouseButtonDown" | "PreConstruct" | "ReleaseScriptReferences" | "Tick"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "Zhengdaodaying_Quest": UE.SizeBox | null | undefined;
         "Zhengdaodaying_Player": UE.SizeBox | null | undefined;
@@ -61985,9 +61679,16 @@ declare module 'ue' {
         "BackInput"(): void;
         "CanNavigateToOtherWidget"(TabId: string): boolean;
         "ChangeInputMethod"(InputType: UE.ECommonInputType): void;
+        "Destruct"(): void;
         "FinishCurrentWidget"(IsDeactivateWidget: boolean): void;
         "GetMixinKeyName"(): string;
+        "OnKeyUp"(MyGeometry: UE.Geometry, InKeyEvent: UE.KeyEvent): UE.EventReply;
+        "OnMouseButtonDown"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): UE.EventReply;
+        "OnMouseMove"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): UE.EventReply;
+        "OnPreviewKeyDown"(MyGeometry: UE.Geometry, InKeyEvent: UE.KeyEvent): UE.EventReply;
+        "OnPreviewMouseButtonDown"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): UE.EventReply;
         "PreConstruct"(IsDesignTime: boolean): void;
+        "ReleaseScriptReferences"(): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
     }
     }
@@ -62002,7 +61703,7 @@ declare module 'ue' {
         "PBZCommonLocText_61": UE.PBZCommonLocText | null | undefined;
         "Image_51": UE.Image | null | undefined;
         "Image_31": UE.Image | null | undefined;
-        "InitBranchEntry"(TargetText: string, TextureSoft: UE.TSoftObjectPtr<UE.Texture2D>): void;
+        "InitBranchEntry"(TargetText: UE.$FText, TextureSoft: UE.TSoftObjectPtr<UE.Texture2D>): void;
         "PreConstruct"(IsDesignTime: boolean): void;
     }
     }
@@ -62276,13 +61977,13 @@ declare module 'ue' {
         "WB_TipsText_76": UE.$Blueprint.WB_TipsText_C_0507742bc313 | null | undefined;
         "popup": UE.WidgetAnimation | null | undefined;
         "Audio Event": UE.AkAudioEvent | null | undefined;
-        "ItemsText": string;
+        "ItemsText": UE.$FText;
         "IsTempUse On Weapon": boolean;
-        "WeaponText": string;
+        "WeaponText": UE.$FText;
         "BP_GetDesiredFocusTarget"(): UE.Widget | null | undefined;
         "BP_OnActivated"(): void;
         "BP_OnDeactivated"(): void;
-        "Success Open Door"(_Item_Name: UE.TArray<string>, Doorname: string): void;
+        "Success Open Door"(_Item_Name: UE.TArray<string>, Doorname: UE.$FText): void;
         "Temp Weapon"(): void;
         "自定义事件"(): void;
     }
@@ -62302,12 +62003,12 @@ declare module 'ue' {
         "Textout": UE.WidgetAnimation | null | undefined;
         "AI_SideObtainItem": UE.WidgetAnimation | null | undefined;
         "Layout": UE.$Blueprint.W_FrontEndHUDLayout_C_d0077e709c61 | null | undefined;
-        "InCompletedBookName": string;
-        "PreviesPages": UE.TArray<string>;
+        "InCompletedBookName": UE.$FText;
+        "PreviesPages": UE.TArray<UE.$FText>;
         "MID_InkBar": UE.MaterialInstanceDynamic | null | undefined;
         "Destruct"(): void;
         "Play Fade in Animation"(): void;
-        "Set TextAndBrush"(Text: string, Texture: UE.TSoftObjectPtr<UE.Texture2D>): void;
+        "Set TextAndBrush"(Text: UE.$FText, Texture: UE.TSoftObjectPtr<UE.Texture2D>): void;
     }
     }
     namespace $Static {
@@ -62352,13 +62053,13 @@ declare module 'ue' {
         "IconImage": UE.Image | null | undefined;
         "Textin": UE.WidgetAnimation | null | undefined;
         "Textout": UE.WidgetAnimation | null | undefined;
-        "InCompletedBookName": string;
-        "PreviesPages": UE.TArray<string>;
+        "InCompletedBookName": UE.$FText;
+        "PreviesPages": UE.TArray<UE.$FText>;
         "MID_InkBar": UE.MaterialInstanceDynamic | null | undefined;
         "Destruct"(): void;
         "Init"(ItemId: string, RequiredAmount: number): void;
         "Play Fade in Animation"(): void;
-        "Set TextAndBrush"(Text: string, Texture: UE.TSoftObjectPtr<UE.Texture2D>): void;
+        "Set TextAndBrush"(Text: UE.$FText, Texture: UE.TSoftObjectPtr<UE.Texture2D>): void;
     }
     }
     namespace $Static {
@@ -62379,7 +62080,7 @@ declare module 'ue' {
         "PreConstruct"(IsDesignTime: boolean): void;
         "SequenceEvent"(): void;
         "SequenceEvent__ENTRYPOINTWB_TipsText"(): void;
-        "SetText"(Text: string): void;
+        "SetText"(Text: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -62400,7 +62101,7 @@ declare module 'ue' {
     /** /Game/PBZContent/UI/Interface/Tutorial/BPI_Tutorial.BPI_Tutorial_C — reflection-generated, not individually call-tested. */
     interface BPI_Tutorial_C_13cc9a48c7f5 extends UE.Interface {
         "RestoreState"(): void;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
     }
@@ -62432,10 +62133,10 @@ declare module 'ue' {
         "FcousButton": UE.$Blueprint.WB_PropsButton_C_83d285d90cf7 | null | undefined;
         "Props": UE.TArray<UE.$Blueprint.WB_PropsButton_C_83d285d90cf7 | null | undefined>;
         "FirstOpen": boolean;
-        "Get Current Attack Power"(): string;
-        "Get Current Break Meter"(): string;
-        "Get Current Health"(): string;
-        "GetText"(): string;
+        "Get Current Attack Power"(): UE.$FText;
+        "Get Current Break Meter"(): UE.$FText;
+        "Get Current Health"(): UE.$FText;
+        "GetText"(): UE.$FText;
         "RegisterDynamicTab"(): void;
         "Update Desc"(ItemName: string): void;
     }
@@ -62456,7 +62157,7 @@ declare module 'ue' {
         "Panel_Value": UE.Overlay | null | undefined;
         "ButtonVertical": UE.VerticalBox | null | undefined;
         "BP_GetDesiredFocusTarget"(): UE.Widget | null | undefined;
-        "Get_Text_SettingValue_Text"(): string;
+        "Get_Text_SettingValue_Text"(): UE.$FText;
     }
     }
     namespace $Static {
@@ -62854,7 +62555,7 @@ declare module 'ue' {
         "PreConstruct"(IsDesignTime: boolean): void;
         "ResetMaterials"(ClearAnim: boolean): void;
         "SetGreyState"(): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -62972,7 +62673,7 @@ declare module 'ue' {
         "OnSelectedButtonBaseChanged_事件"(AssociatedButton: UE.CommonButtonBase | null | undefined, ButtonIndex: number): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "SelectedButton"(ButtonIndex: number): void;
-        "Show Confimration"(DifficultyText: string, Difficulty: UE.EDifficultMode): void;
+        "Show Confimration"(DifficultyText: UE.$FText, Difficulty: UE.EDifficultMode): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
         "WidgetAnimationEvt_Fadeout_K2Node_WidgetAnimationEvent_0"(): void;
     }
@@ -63020,7 +62721,7 @@ declare module 'ue' {
         "PreConstruct"(IsDesignTime: boolean): void;
         "SelectDifficultyDelegate_事件"(CurrentDifficulty: UE.EDifficultMode, ButtonBase: UE.CommonButtonBase | null | undefined): void;
         "SelectedButton"(DifficlutyModeIndex: number): void;
-        "Show Confimration"(DifficultyText: string, Difficulty: UE.EDifficultMode): void;
+        "Show Confimration"(DifficultyText: UE.$FText, Difficulty: UE.EDifficultMode): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
         "WidgetAnimationEvt_Fadeout_K2Node_WidgetAnimationEvent_0"(): void;
         "自定义事件"(ItemId: string, SelectedWidget: UE.UserWidget | null | undefined, DifficultMode: UE.EDifficultMode): void;
@@ -63082,7 +62783,7 @@ declare module 'ue' {
         "OnSelectedButtonBaseChanged_事件"(AssociatedButton: UE.CommonButtonBase | null | undefined, ButtonIndex: number): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "SelectedButton"(DifficlutyModeIndex: number): void;
-        "Show Confimration"(DifficultyText: string, Difficulty: UE.EDifficultMode): void;
+        "Show Confimration"(DifficultyText: UE.$FText, Difficulty: UE.EDifficultMode): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
         "WidgetAnimationEvt_Fadeout_K2Node_WidgetAnimationEvent_0"(): void;
     }
@@ -63122,7 +62823,7 @@ declare module 'ue' {
         "BP_OnUnhovered"(): void;
         "GetPressProgress"(Progress: $Ref<number>): void;
         "Set Text Opactity"(Opacity: number): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -63161,12 +62862,12 @@ declare module 'ue' {
         "BP_OnHovered"(): void;
         "BP_OnUnhovered"(): void;
         "GetPressProgress"(Progress: $Ref<number>): void;
-        "Init Difficut"(ButtonText: string, DiffcultMode: UE.EDifficultMode): void;
+        "Init Difficut"(ButtonText: UE.$FText, DiffcultMode: UE.EDifficultMode): void;
         "Init DisableMusic"(IsDisabled: boolean): void;
-        "Init Language Or Wwise Audio"(CultureKey: string, Text: string, _Is_Hide_Nike: boolean): void;
-        "Init Streamer"(InStreamer: boolean, IsHidden: boolean, Text: string): void;
+        "Init Language Or Wwise Audio"(CultureKey: string, Text: UE.$FText, _Is_Hide_Nike: boolean): void;
+        "Init Streamer"(InStreamer: boolean, IsHidden: boolean, Text: UE.$FText): void;
         "Refresh"(IsHidden: boolean): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -63241,7 +62942,7 @@ declare module 'ue' {
         "FadeOut"(): void;
         "GetMixinKeyName"(): string;
         "GetScriptPath"(): string;
-        "GetText"(): string;
+        "GetText"(): UE.$FText;
         "Get_Ps5ProSpec_Visibility"(): UE.ESlateVisibility;
         "Handle Any Key"(): void;
         "Init Package Version"(): void;
@@ -63265,7 +62966,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/Menu/StartMenu/WB_StartMenu_V2.WB_StartMenu_V2_C — reflection-generated, not individually call-tested. */
-    interface WB_StartMenu_V2_C_b3af65463f70 extends Omit<UE.PBZActivatableWidget, "BP_OnActivated" | "BP_OnDeactivated" | "Construct" | "Destruct" | "OnChangeInputMode" | "PreConstruct" | "Tick"> {
+    interface WB_StartMenu_V2_C_b3af65463f70 extends Omit<UE.PBZActivatableWidget, "Construct" | "PreConstruct" | "Tick"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "Version": UE.TextBlock | null | undefined;
         "TextBlock_ButtonTextGlow": UE.PBZCommonLocText | null | undefined;
@@ -63314,14 +63015,10 @@ declare module 'ue' {
         "SettingWidgetSoftClass": UE.TSoftClassPtr<UE.CommonActivatableWidget>;
         "BonusWidgetClass": UE.TSoftClassPtr<UE.CommonActivatableWidget>;
         "BonusCollectionGlowMaterial": UE.MaterialInterface | null | undefined;
-        "BP_OnActivated"(): void;
-        "BP_OnDeactivated"(): void;
         "Construct"(): void;
-        "Destruct"(): void;
         "GetMixinKeyName"(): string;
         "GetScriptPath"(): string;
         "InitWidgetStyle"(): void;
-        "OnChangeInputMode"(InputType: UE.ECommonInputType): void;
         "PlayFadeInAnim"(): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "SequenceEvent"(): void;
@@ -63753,7 +63450,7 @@ declare module 'ue' {
         "SetButtonColor"(Color: UE.SlateColor): void;
         "SetButtonDecorator"(Class: UE.Class | null | undefined): void;
         "SetButtonTextStyle"(Textstyle: UE.Class | null | undefined): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -63771,7 +63468,7 @@ declare module 'ue' {
         "BP_OnHovered"(): void;
         "BP_OnSelected"(): void;
         "BP_OnUnhovered"(): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -64051,8 +63748,8 @@ declare module 'ue' {
     namespace $Blueprint {
     /** /Game/PBZContent/UI/S_QuestData.S_QuestData — reflection-generated, not individually call-tested. */
     interface S_QuestData_dd890a07115a {
-        "QuestName_3_28036912423AA9E652CE4C985D975D6B": string;
-        "Desc_5_D5DAFD57454ADE7926AF5CBC46A9E11B": string;
+        "QuestName_3_28036912423AA9E652CE4C985D975D6B": UE.$FText;
+        "Desc_5_D5DAFD57454ADE7926AF5CBC46A9E11B": UE.$FText;
         "IsCompleted_7_1715BF864D9327F0123B50BC9048C155": boolean;
         "QuestBranch_10_B8A31D6240DC21A97D7F45B191CD3610": UE.PBZQuestBranch | null | undefined;
         "GroupCompleted_13_5D29784146CD8C07F907298144C62E11": boolean;
@@ -64251,7 +63948,7 @@ declare module 'ue' {
         "GetPrimaryGamepadFocusWidget"(): UE.Widget | null | undefined;
         "OnMouseEnter"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): void;
         "OnMouseLeave"(MouseEvent: UE.PointerEvent): void;
-        "OnSettingAssigned"(ActionText: string): void;
+        "OnSettingAssigned"(ActionText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -64481,7 +64178,7 @@ declare module 'ue' {
         "BP_OnDeselected"(): void;
         "BP_OnSelected"(): void;
         "GetPrimaryGamepadFocusWidget"(): UE.Widget | null | undefined;
-        "OnSettingAssigned"(ActionText: string): void;
+        "OnSettingAssigned"(ActionText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -64524,7 +64221,7 @@ declare module 'ue' {
         "EntryBorder": UE.Border | null | undefined;
         "ApplyLanguageDecorator"(): void;
         "SetTextStyle"(CommonTextStyle: UE.Class | null | undefined): void;
-        "SetupEntry"(Text: string, Selected: boolean): void;
+        "SetupEntry"(Text: UE.$FText, Selected: boolean): void;
     }
     }
     namespace $Static {
@@ -64780,7 +64477,7 @@ declare module 'ue' {
         "OnActionProgress"(HeldPercent: number): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -65011,8 +64708,8 @@ declare module 'ue' {
     namespace $Blueprint {
     /** /Game/PBZContent/UI/Struct/tutorial/S_TextAndKeyStruct.S_TextAndKeyStruct — reflection-generated, not individually call-tested. */
     interface S_TextAndKeyStruct_3d034ff09a17 {
-        "GamepadText_3_088F0436481A74BDA5213492202074C4": string;
-        "MousePadText_5_3741A57F41E99B0800874D86117FB848": string;
+        "GamepadText_3_088F0436481A74BDA5213492202074C4": UE.$FText;
+        "MousePadText_5_3741A57F41E99B0800874D86117FB848": UE.$FText;
     }
     }
     namespace $Static {
@@ -65037,7 +64734,7 @@ declare module 'ue' {
     interface S_TutorialUIData_fb8347d40cc0 {
         "TutorialUIData_4_0688E50D415228836C9E4B8532E4BBD9": UE.TArray<UE.NarrativeTask | null | undefined>;
         "NeedCount_8_346959694F2FB9D3A7D2DF9C72589288": boolean;
-        "DisplayText_11_381364FF45A02FB54880E0B8A84EF1B9": string;
+        "DisplayText_11_381364FF45A02FB54880E0B8A84EF1B9": UE.$FText;
         "TutorailTipData_26_2C4E0C304347097FFE82AA98D3B1C68C": UE.TArray<UE.PBZTutorialTip>;
         "NeedTick_20_C1604B924D2E581A409C7B88E5A5157B": boolean;
         "TutorialTaskDesc_25_CB5EB7764B26DDC5FBF00B9C8BF48093": UE.TArray<UE.PBZTutorialTaskDesc>;
@@ -65191,7 +64888,7 @@ declare module 'ue' {
         "CustomEvent_2"(): void;
         "CustomEvent_3"(): void;
         "Fill Button Group"(): void;
-        "GetPostTexts"(PostTexts: $Ref<UE.TArray<string>>): void;
+        "GetPostTexts"(PostTexts: $Ref<UE.TArray<UE.$FText>>): void;
         "Init Action"(): void;
         "Init DOF"(): void;
         "Init FOV"(): void;
@@ -65306,7 +65003,7 @@ declare module 'ue' {
         "InitByConfirmationOk"(): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -65359,7 +65056,7 @@ declare module 'ue' {
         "Init Brush"(): void;
         "SetGreyState"(): void;
         "UpdateButtonStyles"(): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -65404,7 +65101,7 @@ declare module 'ue' {
         "ResetMaterials"(): void;
         "SetGreyState"(): void;
         "UpdateButtonStyles"(): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
         "UpdateTextStyle"(): void;
     }
     }
@@ -65463,7 +65160,7 @@ declare module 'ue' {
         "OnApperanceSelected"(): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "SetTextDecoratorClass"(NewDecoratorClass: UE.Class | null | undefined): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -65548,7 +65245,7 @@ declare module 'ue' {
         "InputPadding": UE.Margin;
         "IsGrey": boolean;
         "FontColor": UE.SlateColor;
-        "PreviesPages": UE.TArray<string>;
+        "PreviesPages": UE.TArray<UE.$FText>;
         "BP_OnEndEntryDropOperation"(bSuccess: boolean): void;
         "BP_OnEntryDragOverChanged"(bIsDraggingOver: boolean): void;
         "BP_OnEntryDragged"(Operation: UE.DragDropOperation | null | undefined): void;
@@ -65560,7 +65257,7 @@ declare module 'ue' {
         "BP_OnUnhovered"(): void;
         "BP_OnUpdateEntryDropIndicator"(DropZone: UE.EUMGItemDropZone): void;
         "Destruct"(): void;
-        "Get Text by Int"(int: number, Text: $Ref<string>): void;
+        "Get Text by Int"(int: number, Text: $Ref<UE.$FText>): void;
         "GetPressProgress"(Progress: $Ref<number>): void;
         "Get_ButtonTextBlock_ColorAndOpacity"(): UE.SlateColor;
         "OnFocusReceived"(MyGeometry: UE.Geometry, InFocusEvent: UE.FocusEvent): UE.EventReply;
@@ -65654,7 +65351,7 @@ declare module 'ue' {
     namespace $Blueprint {
     /** /Game/PBZContent/UI/UINew/HUD/BPI_ItemDescTextInterface.BPI_ItemDescTextInterface_C — reflection-generated, not individually call-tested. */
     interface BPI_ItemDescTextInterface_C_4d0070de467e extends UE.Interface {
-        "InitText"(Text: string): void;
+        "InitText"(Text: UE.$FText): void;
         "SetWrapAtText"(WrapAtText: number): void;
     }
     }
@@ -65883,7 +65580,7 @@ declare module 'ue' {
         "qp_cx_2": UE.WidgetAnimation | null | undefined;
         "qp_xs_2": UE.WidgetAnimation | null | undefined;
         "RestoreState"(): void;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
     }
@@ -65989,7 +65686,7 @@ declare module 'ue' {
         "qp_xs_2": UE.WidgetAnimation | null | undefined;
         "SoundConfig": UE.PBZTutorialSoundConfig | null | undefined;
         "RestoreState"(): void;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
     }
@@ -66011,7 +65708,7 @@ declare module 'ue' {
         "qp_xs_2": UE.WidgetAnimation | null | undefined;
         "SoundConfig": UE.PBZTutorialSoundConfig | null | undefined;
         "RestoreState"(): void;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
     }
@@ -66042,7 +65739,7 @@ declare module 'ue' {
         "Construct"(): void;
         "InitTutorialDataByDataTable"(TutorialID: string): void;
         "RestoreState"(): void;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
         "新函数"(): void;
@@ -66066,7 +65763,7 @@ declare module 'ue' {
         "qp_cx_2": UE.WidgetAnimation | null | undefined;
         "qp_xs_2": UE.WidgetAnimation | null | undefined;
         "RestoreState"(): void;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
     }
@@ -66104,7 +65801,7 @@ declare module 'ue' {
         "qp_cx_5": UE.WidgetAnimation | null | undefined;
         "qp_xs_5": UE.WidgetAnimation | null | undefined;
         "RestoreState"(): void;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
     }
@@ -66125,7 +65822,7 @@ declare module 'ue' {
         "qp_cx_4": UE.WidgetAnimation | null | undefined;
         "qp_xs_4": UE.WidgetAnimation | null | undefined;
         "RestoreState"(): void;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
     }
@@ -66146,7 +65843,7 @@ declare module 'ue' {
         "qp_cx_3": UE.WidgetAnimation | null | undefined;
         "qp_xs_3": UE.WidgetAnimation | null | undefined;
         "RestoreState"(): void;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
     }
@@ -66167,7 +65864,7 @@ declare module 'ue' {
         "qp_cx_2": UE.WidgetAnimation | null | undefined;
         "qp_xs_2": UE.WidgetAnimation | null | undefined;
         "RestoreState"(): void;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
     }
@@ -66190,7 +65887,7 @@ declare module 'ue' {
         "qp_xs_3": UE.WidgetAnimation | null | undefined;
         "Construct"(): void;
         "RestoreState"(): void;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
     }
@@ -66369,7 +66066,7 @@ declare module 'ue' {
         "CheckTextPadding"(IsSubtitle: boolean): void;
         "FinishAnim"(): void;
         "GetMixinKeyName"(): string;
-        "InitData"(ChapterTexture: UE.TSoftObjectPtr<UE.Texture2D>, ChapterMovieID: string, Text: string): void;
+        "InitData"(ChapterTexture: UE.TSoftObjectPtr<UE.Texture2D>, ChapterMovieID: string, Text: UE.$FText): void;
         "PrepareChapterVideo"(RGBMediaSource: UE.TSoftObjectPtr<UE.MediaSource>, AlphaMediaSource: UE.TSoftObjectPtr<UE.MediaSource>): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
     }
@@ -66408,7 +66105,7 @@ declare module 'ue' {
         "BP_GetDesiredFocusTarget"(): UE.Widget | null | undefined;
         "BP_OnActivated"(): void;
         "FinishAnim"(): void;
-        "InitData"(Text: string): void;
+        "InitData"(Text: UE.$FText): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
     }
@@ -66450,7 +66147,7 @@ declare module 'ue' {
         "Dialog_FadeOut": UE.WidgetAnimation | null | undefined;
         "Backgound_FadeIn": UE.WidgetAnimation | null | undefined;
         "Background_FadeOut": UE.WidgetAnimation | null | undefined;
-        "PlayerName": string;
+        "PlayerName": UE.$FText;
         "Is LockDialogueUI": boolean;
         "Current Player Reply": UE.Object | null | undefined;
         "Player Replies": UE.TArray<UE.Object | null | undefined>;
@@ -66541,7 +66238,7 @@ declare module 'ue' {
         "Breath": UE.WidgetAnimation | null | undefined;
         "PositionRatio": number;
         "Parameter Name": string;
-        "DisplayText": string;
+        "DisplayText": UE.$FText;
         "ScaleX": number;
         "ScaleY": number;
         "IsRight": boolean;
@@ -66554,7 +66251,7 @@ declare module 'ue' {
         "PreConstruct"(IsDesignTime: boolean): void;
         "RestoreState"(): void;
         "SequenceEvent__ENTRYPOINTWB_TutorialTips"(): UE.MovieSceneDynamicBindingResolveResult;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
     }
@@ -66573,7 +66270,7 @@ declare module 'ue' {
         "Breath": UE.WidgetAnimation | null | undefined;
         "PositionRatio": number;
         "Parameter Name": string;
-        "DisplayText": string;
+        "DisplayText": UE.$FText;
         "ScaleX": number;
         "ScaleY": number;
         "Widget": UE.Widget | null | undefined;
@@ -66583,7 +66280,7 @@ declare module 'ue' {
         "PreConstruct"(IsDesignTime: boolean): void;
         "RestoreState"(): void;
         "SequenceEvent__ENTRYPOINTWB_TutorialTips1"(): UE.MovieSceneDynamicBindingResolveResult;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
     }
@@ -66617,12 +66314,12 @@ declare module 'ue' {
         "CustomEvent_0"(): void;
         "Hidden UI "(): void;
         "InitByParam"(): void;
-        "InitText"(Text: string): void;
-        "OpenByChordKey"(InputRow1: string, InputRow2: string, DisplayText: string): void;
-        "OpenByMode"(OpenMode: UE.$Blueprint.E_ShowTutorialMode_a9a22989d531, InputName1: string, inputName2: string, DisplayText: string, UseBlackBG: boolean, PlayLoopAnim: boolean): void;
-        "OpenBySingleKey"(InputRow1: string, DisplayText: string): void;
+        "InitText"(Text: UE.$FText): void;
+        "OpenByChordKey"(InputRow1: string, InputRow2: string, DisplayText: UE.$FText): void;
+        "OpenByMode"(OpenMode: UE.$Blueprint.E_ShowTutorialMode_a9a22989d531, InputName1: string, inputName2: string, DisplayText: UE.$FText, UseBlackBG: boolean, PlayLoopAnim: boolean): void;
+        "OpenBySingleKey"(InputRow1: string, DisplayText: UE.$FText): void;
         "Pause Scroll"(): void;
-        "PushSingleKey"(RowName: string, Text: string): void;
+        "PushSingleKey"(RowName: string, Text: UE.$FText): void;
         "SequenceEvent"(): void;
         "SequenceEvent_0"(): void;
         "SequenceEvent__ENTRYPOINTWB_hud_tutorial"(): void;
@@ -66660,10 +66357,10 @@ declare module 'ue' {
         "CustomEvent_0"(): void;
         "Hidden UI "(): void;
         "InitByParam"(): void;
-        "InitText"(Text: string): void;
-        "OpenByMode"(DisplayText: string, UseBlackBG: boolean, PlayLoopAnim: boolean): void;
+        "InitText"(Text: UE.$FText): void;
+        "OpenByMode"(DisplayText: UE.$FText, UseBlackBG: boolean, PlayLoopAnim: boolean): void;
         "Pause Scroll"(): void;
-        "PushSingleKey"(RowName: string, Text: string): void;
+        "PushSingleKey"(RowName: string, Text: UE.$FText): void;
         "SequenceEvent"(): void;
         "SequenceEvent_0"(): void;
         "SequenceEvent__ENTRYPOINTWB_hud_tutorial_ForceGuide"(): void;
@@ -66688,9 +66385,9 @@ declare module 'ue' {
         "QuestTipOut": UE.WidgetAnimation | null | undefined;
         "QuestFinishThenOut": UE.WidgetAnimation | null | undefined;
         "Construct"(): void;
-        "FinishQuest"(QuestName: string): void;
-        "RefreshQuest"(QuestName: string, QuiestState: string): void;
-        "StartQuest"(QuestName: string, StateName: string): void;
+        "FinishQuest"(QuestName: UE.$FText): void;
+        "RefreshQuest"(QuestName: UE.$FText, QuiestState: UE.$FText): void;
+        "StartQuest"(QuestName: UE.$FText, StateName: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -66771,7 +66468,6 @@ declare module 'ue' {
         "RestoreMedicineDelegate_事件"(MedicineID: string, CurrentNum: number, Type: UE.EUseMedicineType, MedicineIndex: number): void;
         "SequenceEvent__ENTRYPOINTWB_quickslot"(): UE.MovieSceneDynamicBindingResolveResult;
         "SequenceEvent__ENTRYPOINTWB_quickslot_0"(): UE.MovieSceneDynamicBindingResolveResult;
-        "TSDestruct"(): void;
         "TakeOffMedicineDelegate_事件"(MedicineIndex: number): void;
         "TsDestruct"(): void;
         "Update Top Medicine"(): void;
@@ -66788,7 +66484,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/UINew/HUD/W_ButtonBase_Accessory.W_ButtonBase_Accessory_C — reflection-generated, not individually call-tested. */
-    interface W_ButtonBase_Accessory_C_9b3e019ff9fd extends Omit<UE.PBZButtonBase, "BP_OnDeselected" | "BP_OnSelected" | "Construct" | "Destruct" | "OnActionProgress"> {
+    interface W_ButtonBase_Accessory_C_9b3e019ff9fd extends Omit<UE.PBZButtonBase, "BP_OnDeselected" | "BP_OnHovered" | "BP_OnInputMethodChanged" | "BP_OnSelected" | "BP_OnUnhovered" | "Construct" | "Destruct" | "OnActionProgress" | "OnMouseEnter" | "PreConstruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "ZhuHun": UE.Image | null | undefined;
         "Yellow": UE.Image | null | undefined;
@@ -66814,9 +66510,7 @@ declare module 'ue' {
         "Image_23": UE.Image | null | undefined;
         "IconLightSwipe": UE.Image | null | undefined;
         "IconImage": UE.Image | null | undefined;
-        /** Observed runtime casing variants; check which spelling is present. */
-        "Glow"?: UE.WidgetSwitcher | null | undefined;
-        "glow"?: UE.WidgetSwitcher | null | undefined;
+        "Glow": UE.WidgetSwitcher | null | undefined;
         "EquipImage": UE.Image | null | undefined;
         "DefaultBG": UE.Image | null | undefined;
         "BloomImage": UE.Image | null | undefined;
@@ -66850,7 +66544,10 @@ declare module 'ue' {
         "ImageRetainerProgress": number;
         "DesatAmount": number;
         "BP_OnDeselected"(): void;
+        "BP_OnHovered"(): void;
+        "BP_OnInputMethodChanged"(CurrentInputType: UE.ECommonInputType): void;
         "BP_OnSelected"(): void;
+        "BP_OnUnhovered"(): void;
         "CanExecuteClickLogic"(Result: $Ref<boolean>): void;
         "ChangeItem"(): void;
         "Construct"(): void;
@@ -66873,10 +66570,11 @@ declare module 'ue' {
         "IsEquipItem"(LogicComponent: UE.$Blueprint.BP_UIGameplayLogicComponent_C_3069c57dc251 | null | undefined, IsEquip: $Ref<boolean>): void;
         "IsLocked"(IsLocked: $Ref<boolean>): void;
         "OnActionProgress"(HeldPercent: number): void;
+        "OnMouseEnter"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): void;
+        "PreConstruct"(IsDesignTime: boolean): void;
         "RefreshItem"(): void;
         "SequenceEvent__ENTRYPOINTW_ButtonBase_Accessory"(): void;
         "SetHoldData"(): void;
-        "TSDestruct"(): void;
         "TsDestruct"(): void;
         "UpdateAccessory"(AccessoryID: string): void;
         "UpdateUpgradeState"(ItemId: string, CurrentState: UE.$Blueprint.E_ItemUpgradeType_24776f8fb667): void;
@@ -66889,7 +66587,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/UINew/HUD/W_ButtonBase_Medicine.W_ButtonBase_Medicine_C — reflection-generated, not individually call-tested. */
-    interface W_ButtonBase_Medicine_C_26eceb825af1 extends Omit<UE.PBZButtonBase, "BP_OnDeselected" | "BP_OnSelected" | "Construct" | "Destruct" | "OnActionProgress"> {
+    interface W_ButtonBase_Medicine_C_26eceb825af1 extends Omit<UE.PBZButtonBase, "BP_OnDeselected" | "BP_OnHovered" | "BP_OnInputMethodChanged" | "BP_OnSelected" | "BP_OnUnhovered" | "Construct" | "Destruct" | "OnActionProgress" | "OnMouseEnter" | "PreConstruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "ZhuHun": UE.Image | null | undefined;
         "Yellow": UE.Image | null | undefined;
@@ -66913,9 +66611,7 @@ declare module 'ue' {
         "Image_23": UE.Image | null | undefined;
         "IconLightSwipe": UE.Image | null | undefined;
         "IconImage": UE.Image | null | undefined;
-        /** Observed runtime casing variants; check which spelling is present. */
-        "Glow"?: UE.WidgetSwitcher | null | undefined;
-        "glow"?: UE.WidgetSwitcher | null | undefined;
+        "Glow": UE.WidgetSwitcher | null | undefined;
         "EquipImage": UE.Image | null | undefined;
         "DefaultBG": UE.Image | null | undefined;
         "BloomImage": UE.Image | null | undefined;
@@ -66947,7 +66643,10 @@ declare module 'ue' {
         "ImageRetainerProgress": number;
         "DesatAmount": number;
         "BP_OnDeselected"(): void;
+        "BP_OnHovered"(): void;
+        "BP_OnInputMethodChanged"(CurrentInputType: UE.ECommonInputType): void;
         "BP_OnSelected"(): void;
+        "BP_OnUnhovered"(): void;
         "CanExecuteClickLogic"(Result: $Ref<boolean>): void;
         "ChangeItem"(): void;
         "Construct"(): void;
@@ -66970,10 +66669,11 @@ declare module 'ue' {
         "InitWidgetState"(): void;
         "IsEquipItem"(LogicComponent: UE.$Blueprint.BP_UIGameplayLogicComponent_C_3069c57dc251 | null | undefined, IsEquip: $Ref<boolean>): void;
         "OnActionProgress"(HeldPercent: number): void;
+        "OnMouseEnter"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): void;
+        "PreConstruct"(IsDesignTime: boolean): void;
         "RefreshItem"(): void;
         "SequenceEvent__ENTRYPOINTW_ButtonBase_Medicine"(): void;
         "SetHoldData"(): void;
-        "TSDestruct"(): void;
         "TsDestruct"(): void;
         "UpdateMedicine"(MedicineID: string): void;
         "UpdateUpgradeState"(ItemId: string, CurrentState: UE.$Blueprint.E_ItemUpgradeType_24776f8fb667): void;
@@ -66986,7 +66686,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/UINew/HUD/W_ButtonBase_ShaChiWeapon.W_ButtonBase_ShaChiWeapon_C — reflection-generated, not individually call-tested. */
-    interface W_ButtonBase_ShaChiWeapon_C_276ccc74f003 extends Omit<UE.PBZButtonBase, "BP_OnDeselected" | "BP_OnSelected" | "Construct" | "Destruct" | "OnActionProgress" | "Tick"> {
+    interface W_ButtonBase_ShaChiWeapon_C_276ccc74f003 extends Omit<UE.PBZButtonBase, "BP_OnDeselected" | "BP_OnHovered" | "BP_OnInputMethodChanged" | "BP_OnSelected" | "BP_OnUnhovered" | "Construct" | "Destruct" | "OnActionProgress" | "OnMouseEnter" | "PreConstruct" | "Tick"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "ZhuHun": UE.Image | null | undefined;
         "Yellow": UE.Image | null | undefined;
@@ -67010,9 +66710,7 @@ declare module 'ue' {
         "Image_23": UE.Image | null | undefined;
         "IconLightSwipe": UE.Image | null | undefined;
         "IconImage": UE.Image | null | undefined;
-        /** Observed runtime casing variants; check which spelling is present. */
-        "Glow"?: UE.WidgetSwitcher | null | undefined;
-        "glow"?: UE.WidgetSwitcher | null | undefined;
+        "Glow": UE.WidgetSwitcher | null | undefined;
         "EquipImage": UE.Image | null | undefined;
         "DefaultBG": UE.Image | null | undefined;
         "BloomImage": UE.Image | null | undefined;
@@ -67051,7 +66749,10 @@ declare module 'ue' {
         "DesatAmount": number;
         "IconBursh": UE.TSoftObjectPtr<UE.Texture2D>;
         "BP_OnDeselected"(): void;
+        "BP_OnHovered"(): void;
+        "BP_OnInputMethodChanged"(CurrentInputType: UE.ECommonInputType): void;
         "BP_OnSelected"(): void;
+        "BP_OnUnhovered"(): void;
         "CanExecuteClickLogic"(Result: $Ref<boolean>): void;
         "ChangeItem"(): void;
         "Construct"(): void;
@@ -67074,12 +66775,13 @@ declare module 'ue' {
         "InitWidgetState"(): void;
         "IsEquipItem"(LogicComponent: UE.$Blueprint.BP_UIGameplayLogicComponent_C_3069c57dc251 | null | undefined, IsEquip: $Ref<boolean>): void;
         "OnActionProgress"(HeldPercent: number): void;
+        "OnMouseEnter"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): void;
         "OnWeaponSnapSoul"(IsMainWeapon: boolean, WeaponID: string): void;
         "OnWeaponUpgrade"(IsMainWeapon: boolean, WeaponID: string, CurrentLevel: number): void;
+        "PreConstruct"(IsDesignTime: boolean): void;
         "RefreshItem"(): void;
         "SequenceEvent__ENTRYPOINTW_ButtonBase_ShaChiWeapon"(): void;
         "SetHoldData"(): void;
-        "TSDestruct"(): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
         "TsDestruct"(): void;
         "UpdateUpgradeState"(ItemId: string, CurrentState: UE.$Blueprint.E_ItemUpgradeType_24776f8fb667): void;
@@ -67092,7 +66794,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/UINew/HUD/W_ButtonBase_Weapon.W_ButtonBase_Weapon_C — reflection-generated, not individually call-tested. */
-    interface W_ButtonBase_Weapon_C_026c7059839c extends Omit<UE.PBZButtonBase, "BP_OnClicked" | "BP_OnDeselected" | "BP_OnSelected" | "Construct" | "Destruct" | "OnActionProgress"> {
+    interface W_ButtonBase_Weapon_C_026c7059839c extends Omit<UE.PBZButtonBase, "BP_OnClicked" | "BP_OnDeselected" | "BP_OnHovered" | "BP_OnInputMethodChanged" | "BP_OnSelected" | "BP_OnUnhovered" | "Construct" | "Destruct" | "OnActionProgress" | "OnMouseEnter" | "PreConstruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "ZhuHun": UE.Image | null | undefined;
         "WidgetSwitcher_54": UE.WidgetSwitcher | null | undefined;
@@ -67152,7 +66854,10 @@ declare module 'ue' {
         "DesatAmount": number;
         "BP_OnClicked"(): void;
         "BP_OnDeselected"(): void;
+        "BP_OnHovered"(): void;
+        "BP_OnInputMethodChanged"(CurrentInputType: UE.ECommonInputType): void;
         "BP_OnSelected"(): void;
+        "BP_OnUnhovered"(): void;
         "CanExecuteClickLogic"(Result: $Ref<boolean>): void;
         "ChangeItem"(): void;
         "Construct"(): void;
@@ -67175,12 +66880,13 @@ declare module 'ue' {
         "InitWidgetState"(): void;
         "IsEquipItem"(LogicComponent: UE.$Blueprint.BP_UIGameplayLogicComponent_C_3069c57dc251 | null | undefined, IsEquip: $Ref<boolean>): void;
         "OnActionProgress"(HeldPercent: number): void;
+        "OnMouseEnter"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): void;
         "OnWeaponSnapSoul"(IsMainWeapon: boolean, WeaponID: string): void;
         "OnWeaponUpgrade"(IsMainWeapon: boolean, WeaponID: string, CurrentLevel: number): void;
+        "PreConstruct"(IsDesignTime: boolean): void;
         "RefreshItem"(): void;
         "SequenceEvent__ENTRYPOINTW_ButtonBase_Weapon"(): void;
         "SetHoldData"(): void;
-        "TSDestruct"(): void;
         "TsDestruct"(): void;
         "UpdateUpgradeState"(ItemId: string, CurrentState: UE.$Blueprint.E_ItemUpgradeType_24776f8fb667): void;
         "WidgetAnimationEvt_ccdh_wq_wxz_K2Node_WidgetAnimationEvent_0"(): void;
@@ -67208,7 +66914,7 @@ declare module 'ue' {
         "LockImg": UE.Image | null | undefined;
         "IconImage": UE.Image | null | undefined;
         "GridSelectionRetainer": UE.RetainerBox | null | undefined;
-        "glow": UE.WidgetSwitcher | null | undefined;
+        "Glow": UE.WidgetSwitcher | null | undefined;
         "EquipImage": UE.Image | null | undefined;
         "DefaultBG": UE.Image | null | undefined;
         "ccdh_wq_xz": UE.WidgetAnimation | null | undefined;
@@ -67258,7 +66964,7 @@ declare module 'ue' {
         "RefreshItem"(): void;
         "SequenceEvent__ENTRYPOINTW_ButtonBase_Weapon_Appearance"(): void;
         "SetHoldData"(): void;
-        "TSDestruct"(): void;
+        "TsDestruct"(): void;
         "新函数"(): void;
         "自定义事件"(ItemId: string, CurrentState: UE.$Blueprint.E_ItemUpgradeType_24776f8fb667): void;
     }
@@ -67480,7 +67186,7 @@ declare module 'ue' {
         "OnKeyDown"(MyGeometry: UE.Geometry, InKeyEvent: UE.KeyEvent): UE.EventReply;
         "OnMouseWheel"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): UE.EventReply;
         "PreConstruct"(IsDesignTime: boolean): void;
-        "SetDisPlayText"(Text: string): void;
+        "SetDisPlayText"(Text: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -67529,7 +67235,7 @@ declare module 'ue' {
         "CompleteNiagaraSystem": UE.NiagaraSystem | null | undefined;
         "MaxTextWidth": number;
         "ClearHoldInternal"(): void;
-        "Init"(CanUpgrade: boolean, Text: string, InputActionOpacity: number): void;
+        "Init"(CanUpgrade: boolean, Text: UE.$FText, InputActionOpacity: number): void;
         "InitTextColor"(SlateColor: UE.SlateColor): void;
         "OnActionProgress"(HeldPercent: number): void;
         "PreConstruct"(IsDesignTime: boolean): void;
@@ -67641,7 +67347,7 @@ declare module 'ue' {
         "WidgetConfig": UE.$Blueprint.BP_UpgradeWidgetConfig_C_d14f01364adb | null | undefined;
         "GetMixinKeyName"(): string;
         "InitMedicine"(MedicineID: string): void;
-        "InitText"(Text: string): void;
+        "InitText"(Text: UE.$FText): void;
         "InitWeapon"(IsNormalWeapon: boolean, WeaponID: string): void;
         "SetWrapAtText"(WrapAtText: number): void;
     }
@@ -67659,7 +67365,7 @@ declare module 'ue' {
         "UI Config": UE.$Blueprint.BP_UpgradeWidgetConfig_C_d14f01364adb | null | undefined;
         "GetMixinKeyName"(): string;
         "InitMedicine"(MedicineID: string): void;
-        "InitText"(Text: string): void;
+        "InitText"(Text: UE.$FText): void;
         "InitWeapon"(IsNormalWeapon: boolean, WeaponID: string): void;
         "SetWrapAtText"(WrapAtText: number): void;
     }
@@ -67678,11 +67384,11 @@ declare module 'ue' {
         "NextChapter": UE.WidgetAnimation | null | undefined;
         "ScrollOffset": number;
         "ScrollSpeed": number;
-        "PreviesPages": UE.TArray<string>;
+        "PreviesPages": UE.TArray<UE.$FText>;
         "TempString": string;
         "Point": string;
         "PageIcon": UE.TSoftObjectPtr<UE.Texture2D>;
-        "NextPage": string;
+        "NextPage": UE.$FText;
         "PageArray": UE.TArray<number>;
         "CurrentBookId": string;
         "Return Value Item Sound Type": UE.EItemSoundType;
@@ -67694,7 +67400,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/UINew/HUD/W_PickupSwitcher.W_PickupSwitcher_C — reflection-generated, not individually call-tested. */
-    interface W_PickupSwitcher_C_3bd47ff52f75 extends Omit<UE.CharacterUISwitcher, "Construct" | "Destruct" | "GetSlotByIndex" | "InitButton" | "OnFocusLost" | "OnFocusReceived" | "PreConstruct" | "Tick"> {
+    interface W_PickupSwitcher_C_3bd47ff52f75 extends Omit<UE.CharacterUISwitcher, "Construct" | "Destruct" | "GetSlotByIndex" | "InitButton" | "OnFocusLost" | "OnFocusReceived" | "OnPreviewKeyDown" | "OnPreviewMouseButtonDown" | "PreConstruct" | "Tick"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "WidgetSwitcher": UE.WidgetSwitcher | null | undefined;
         "Slot4": UE.SizeBox | null | undefined;
@@ -67730,6 +67436,8 @@ declare module 'ue' {
         "InitButton"(CommonButtonBase: UE.CommonButtonBase | null | undefined, ItemId: string): void;
         "OnFocusLost"(InFocusEvent: UE.FocusEvent): void;
         "OnFocusReceived"(MyGeometry: UE.Geometry, InFocusEvent: UE.FocusEvent): UE.EventReply;
+        "OnPreviewKeyDown"(MyGeometry: UE.Geometry, InKeyEvent: UE.KeyEvent): UE.EventReply;
+        "OnPreviewMouseButtonDown"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): UE.EventReply;
         "PreConstruct"(IsDesignTime: boolean): void;
         "ReadyToRefreshSelected"(): void;
         "Refresh Slots"(): void;
@@ -67775,9 +67483,9 @@ declare module 'ue' {
         "SnapSoulText": UE.FlowLocText;
         "UpgradeConfig": UE.$Blueprint.BP_UpgradeWidgetConfig_C_d14f01364adb | null | undefined;
         "GetMixinKeyName"(): string;
-        "InitText"(BuffText: string): void;
-        "InitText_Medicine"(BuffText: string): void;
-        "InitZhuHunText"(BuffText: string): void;
+        "InitText"(BuffText: UE.$FText): void;
+        "InitText_Medicine"(BuffText: UE.$FText): void;
+        "InitZhuHunText"(BuffText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -67803,7 +67511,7 @@ declare module 'ue' {
         "Image_54": UE.Image | null | undefined;
         "DynamicEntryBox_127": UE.DynamicEntryBox | null | undefined;
         "RowName": UE.TArray<string>;
-        "DisplayText2": string;
+        "DisplayText2": UE.$FText;
         "IsTick": boolean;
         "Display Data": UE.TArray<UE.PBZTutorialDisplayData>;
         "MaxRowWidth": number;
@@ -67815,7 +67523,7 @@ declare module 'ue' {
         "Init Task By Desc"(): void;
         "Init Task Desc"(NewParam: $Ref<UE.TArray<UE.PBZTutorialDisplayData>>): void;
         "RestoreState"(): void;
-        "Set Tips Text"(DisplayText: string): void;
+        "Set Tips Text"(DisplayText: UE.$FText): void;
         "SetArrowWidget"(Arrow: UE.Widget | null | undefined): void;
         "SetScaleX"(IsRight: boolean): void;
     }
@@ -68086,7 +67794,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/UINew/HUD/W_Upgrade_NeedItemPanel.W_Upgrade_NeedItemPanel_C — reflection-generated, not individually call-tested. */
-    interface W_Upgrade_NeedItemPanel_C_d9801b02c817 extends Omit<UE.PBZCommonUserWidget, "PreConstruct"> {
+    interface W_Upgrade_NeedItemPanel_C_d9801b02c817 extends Omit<UE.PBZCommonUserWidget, "Destruct" | "PreConstruct"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "UniformGridPanel_71": UE.UniformGridPanel | null | undefined;
         "SizeBox_HeaderLeft": UE.SizeBox | null | undefined;
@@ -68109,6 +67817,7 @@ declare module 'ue' {
         "UpgradeEntryAnimDelay": number;
         "bUseFixedColumns": boolean;
         "ApplyFixedLayout"(): void;
+        "Destruct"(): void;
         "GetMixinKeyName"(): string;
         "InitNeedItems"(NeedDust: number, CurrentDust: number, BackPackSubsystem: UE.PBZBackPackSubsystem | null | undefined, NeedMaterials: UE.TMap<string, number>): void;
         "InitNeedItems_DownUpgrade"(NeedDust: number, CurrentDust: number, BackPackSubsystem: UE.PBZBackPackSubsystem | null | undefined, NeedMaterials: UE.TMap<string, number>): void;
@@ -68170,7 +67879,7 @@ declare module 'ue' {
         "Yellow": UE.SlateColor;
         "ZhuHunColor": UE.SlateColor;
         "GetMixinKeyName"(): string;
-        "InitText"(TitleText: string, DescText: string, IsUnlocked: boolean, IsZhuHun: boolean, ItemLevel: number): void;
+        "InitText"(TitleText: UE.$FText, DescText: UE.$FText, IsUnlocked: boolean, IsZhuHun: boolean, ItemLevel: number): void;
         "NiagaraSystemWidget_291_Event"(NiagaraSystemWidget_291: UE.NiagaraSystemWidget | null | undefined): void;
         "OnSettingCvarChanged_事件"(CVarName: string): void;
         "PlayNiagara"(): void;
@@ -68216,7 +67925,7 @@ declare module 'ue' {
         "ZhuHunColor": UE.SlateColor;
         "WrapAtText": number;
         "GetMixinKeyName"(): string;
-        "InitText"(TitleText: string, DescText: string, IsUnlocked: boolean, IsZhuHun: boolean, ItemLevel: number): void;
+        "InitText"(TitleText: UE.$FText, DescText: UE.$FText, IsUnlocked: boolean, IsZhuHun: boolean, ItemLevel: number): void;
         "NiagaraSystemWidget_291_Event"(NiagaraSystemWidget_291: UE.NiagaraSystemWidget | null | undefined): void;
         "PlayNiagara"(): void;
         "PreConstruct"(IsDesignTime: boolean): void;
@@ -68282,7 +67991,7 @@ declare module 'ue' {
         "AI_UpgradeMilestoneSecondarySwitch": UE.WidgetAnimation | null | undefined;
         "WrapAtText": number;
         "GetMixinKeyName"(): string;
-        "InitText"(TitleText: string, DescText: string): void;
+        "InitText"(TitleText: UE.$FText, DescText: UE.$FText): void;
         "PreConstruct"(IsDesignTime: boolean): void;
     }
     }
@@ -68554,8 +68263,8 @@ declare module 'ue' {
         "SkipQuestData": UE.TArray<UE.$Blueprint.S_TutorialData_59addb68ce0c>;
         "Parameter Name": string;
         "TipsWidget": UE.TMap<string, UE.UserWidget | null | undefined>;
-        "Quest Name": string;
-        "DisplayTextOnNeedCount": UE.TMap<UE.Quest | null | undefined, string>;
+        "Quest Name": UE.$FText;
+        "DisplayTextOnNeedCount": UE.TMap<UE.Quest | null | undefined, UE.$FText>;
         "故事": UE.Texture2D | null | undefined;
         "迷局": UE.Texture2D | null | undefined;
         "异闻": UE.Texture2D | null | undefined;
@@ -68623,13 +68332,13 @@ declare module 'ue' {
         "OnAnimationStarted"(Animation: UE.WidgetAnimation | null | undefined): void;
         "OnInputMethodChanged_事件"(bNewInputType: UE.ECommonInputType): void;
         "OnQuestBranchStateChanged_Event"(Quest: UE.Quest | null | undefined, Branch: UE.QuestBranch | null | undefined, NewState: UE.EPBZQuestBranchState): void;
-        "OnQuestFailed_Event"(Quest: UE.Quest | null | undefined, QuestFailedMessage: string): void;
+        "OnQuestFailed_Event"(Quest: UE.Quest | null | undefined, QuestFailedMessage: UE.$FText): void;
         "OnQuestStarted_Event"(Quest: UE.Quest | null | undefined): void;
-        "OnQuestSucceeded_Event"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: string): void;
+        "OnQuestSucceeded_Event"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: UE.$FText): void;
         "OnStartPlayVideo"(): void;
         "Play Quest Anim"(): void;
         "Play Tutorial Anim "(): void;
-        "PlayAnim"(QuestName: string, QuestDesc: string, IsCompleted: boolean, Quest: UE.Quest | null | undefined, IsGroupCompleted: boolean): void;
+        "PlayAnim"(QuestName: UE.$FText, QuestDesc: UE.$FText, IsCompleted: boolean, Quest: UE.Quest | null | undefined, IsGroupCompleted: boolean): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "Push Skip Widget"(): void;
         "RQuestShowWithLineUISound"(CrossOutLine_Tittle_1: UE.Image | null | undefined): void;
@@ -68888,7 +68597,7 @@ declare module 'ue' {
         "InitByConfirmationOk"(): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -68927,7 +68636,7 @@ declare module 'ue' {
         "CommonTextBlock_193": UE.CommonTextBlock | null | undefined;
         "CommonTextBlock_73": UE.CommonTextBlock | null | undefined;
         "CommonTextBlock": UE.CommonTextBlock | null | undefined;
-        "InitWidget"(Text: string, Num: number, CurrentNum: number): void;
+        "InitWidget"(Text: UE.$FText, Num: number, CurrentNum: number): void;
         "PreConstruct"(IsDesignTime: boolean): void;
     }
     }
@@ -69017,7 +68726,7 @@ declare module 'ue' {
         "BP_OnDeactivated"(): void;
         "Change Current Num By Mouse Wheel"(AxisValue: number): void;
         "Construct"(): void;
-        "Get_PriceText_Text"(): string;
+        "Get_PriceText_Text"(): UE.$FText;
         "Init Advanced Materials"(): void;
         "Init Shop Confirmation"(ItemId: string, SellType: UE.ESellType, ItemNum: number, SellPrice: number): void;
         "Left Stick"(AxisValue: number): void;
@@ -69193,14 +68902,14 @@ declare module 'ue' {
     interface BP_ReplaceButtonItem_C_c6f1efa09ea1 extends UE.Object {
         "SoftTexture": UE.TSoftObjectPtr<UE.Texture2D>;
         "ItemId": string;
-        "ItemName": string;
+        "ItemName": UE.$FText;
         "IsCurrentEquipment": boolean;
         "Level": number;
         "DateTime": UE.DateTime;
         "SnapSoulTime": number;
         "EquipmentIndex": number;
         "MedicineType": UE.EUseMedicineType;
-        "RarityText": string;
+        "RarityText": UE.$FText;
         "SelectedChange": UE.$MulticastDelegate<(Button: UE.CommonButtonBase | null | undefined, IsSelected: boolean) => void>;
         "IsLockWeapon": boolean;
         "RarityColor": UE.SlateColor;
@@ -70194,9 +69903,9 @@ declare module 'ue' {
         "Current Weapon Type": UE.EWeaponType;
         "BP_InitWidget"(): void;
         "BackInput"(): void;
-        "Bind Attack"(): string;
-        "Bind Defence"(): string;
-        "Bind Health"(): string;
+        "Bind Attack"(): UE.$FText;
+        "Bind Defence"(): UE.$FText;
+        "Bind Health"(): UE.$FText;
         "Construct"(): void;
         "Destruct"(): void;
         "Enter Change Normal Weapon "(_InReplace_Index: number): void;
@@ -70274,7 +69983,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/UINew/System/Character/WB_CharacterV5.WB_CharacterV5_C — reflection-generated, not individually call-tested. */
-    interface WB_CharacterV5_C_481b8714023b extends Omit<UE.PBZSystemWidgetBase, "BP_FirstInitWidget" | "BP_InitWidget" | "BackInput" | "ChangeInputMethod" | "Construct" | "Destruct" | "FinishCurrentWidget" | "OnFocusReceived" | "OnKeyDown" | "OnKeyUp" | "PreConstruct" | "Tick"> {
+    interface WB_CharacterV5_C_481b8714023b extends Omit<UE.PBZSystemWidgetBase, "BP_FirstInitWidget" | "BP_InitWidget" | "BackInput" | "CanNavigateToOtherWidget" | "ChangeInputMethod" | "Construct" | "Destruct" | "FinishCurrentWidget" | "OnFocusReceived" | "OnKeyDown" | "OnKeyUp" | "PreConstruct" | "Tick"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "WidgetSwitcher_31": UE.WidgetSwitcher | null | undefined;
         "WB_Character_V4": UE.$Blueprint.WB_Character_V4_C_a8b73f378d26 | null | undefined;
@@ -70299,6 +70008,7 @@ declare module 'ue' {
         "BP_FirstInitWidget"(): void;
         "BP_InitWidget"(): void;
         "BackInput"(): void;
+        "CanNavigateToOtherWidget"(TabId: string): boolean;
         "ChangeInputMethod"(InputType: UE.ECommonInputType): void;
         "Construct"(): void;
         "Destruct"(): void;
@@ -70901,7 +70611,7 @@ declare module 'ue' {
         "InputPadding": UE.Margin;
         "NewVar": boolean;
         "Get_IsWearing_Text"(): void;
-        "Get_PropsNum_Text"(): string;
+        "Get_PropsNum_Text"(): UE.$FText;
         "Restore"(): void;
     }
     }
@@ -70950,7 +70660,7 @@ declare module 'ue' {
         "Disable Icon"(): void;
         "Get Weapon Name"(WeaponID: $Ref<string>): void;
         "Get_IsWearing_Text"(): void;
-        "Get_PropsNum_Text"(): string;
+        "Get_PropsNum_Text"(): UE.$FText;
         "Init  Weapon Icon"(WeaponID: string, IsNormalWeapon: boolean): void;
         "Init Brush"(): void;
         "Init Icon"(InWeaponID: string, InIsNormalWeapon: boolean): void;
@@ -70991,7 +70701,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/UINew/System/Character/W_Appearance_V2.W_Appearance_V2_C — reflection-generated, not individually call-tested. */
-    interface W_Appearance_V2_C_3791834382d2 extends Omit<UE.PBZSystemWidgetBase, "BP_FirstInitWidget" | "BP_InitWidget" | "BackInput" | "CanNavigateToOtherWidget" | "ChangeInputMethod" | "FinishCurrentWidget" | "PreConstruct" | "Tick"> {
+    interface W_Appearance_V2_C_3791834382d2 extends Omit<UE.PBZSystemWidgetBase, "BP_FirstInitWidget" | "BP_InitWidget" | "BackInput" | "CanNavigateToOtherWidget" | "ChangeInputMethod" | "Destruct" | "FinishCurrentWidget" | "OnMouseButtonDown" | "OnMouseButtonUp" | "OnMouseCaptureLost" | "OnMouseMove" | "PreConstruct" | "Tick"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "W_UnifiedTextDescription": UE.$Blueprint.W_UnifiedTextDescription_C_8c98bd670f72 | null | undefined;
         "W_SystemPanel": UE.$Blueprint.W_SystemPanel_V1_C_3f4860aa77de | null | undefined;
@@ -71017,8 +70727,13 @@ declare module 'ue' {
         "BackInput"(): void;
         "CanNavigateToOtherWidget"(TabId: string): boolean;
         "ChangeInputMethod"(InputType: UE.ECommonInputType): void;
+        "Destruct"(): void;
         "FinishCurrentWidget"(IsDeactivateWidget: boolean): void;
         "GetMixinKeyName"(): string;
+        "OnMouseButtonDown"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): UE.EventReply;
+        "OnMouseButtonUp"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): UE.EventReply;
+        "OnMouseCaptureLost"(): void;
+        "OnMouseMove"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): UE.EventReply;
         "PreConstruct"(IsDesignTime: boolean): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
     }
@@ -71345,7 +71060,7 @@ declare module 'ue' {
         "InputActionWidget_Enter": UE.$Blueprint.InputActionWidget_C_7f523ab65d65 | null | undefined;
         "IconImage": UE.Image | null | undefined;
         "GridSelectionRetainer": UE.RetainerBox | null | undefined;
-        "glow": UE.WidgetSwitcher | null | undefined;
+        "Glow": UE.WidgetSwitcher | null | undefined;
         "DefaultBG": UE.Image | null | undefined;
         "blue": UE.Image | null | undefined;
         "BloomImage": UE.Image | null | undefined;
@@ -71370,7 +71085,7 @@ declare module 'ue' {
         "GetMixinKeyName"(): string;
         "GetScriptPath"(): string;
         "Init Item"(ItemId: string): void;
-        "TSDestruct"(): void;
+        "TsDestruct"(): void;
     }
     }
     namespace $Static {
@@ -71394,7 +71109,7 @@ declare module 'ue' {
         "IconImage": UE.Image | null | undefined;
         "HasNumText": UE.PBZCommonLocText | null | undefined;
         "GridSelectionRetainer": UE.RetainerBox | null | undefined;
-        "glow": UE.WidgetSwitcher | null | undefined;
+        "Glow": UE.WidgetSwitcher | null | undefined;
         "DefaultBG": UE.Image | null | undefined;
         "blue": UE.Image | null | undefined;
         "BloomImage": UE.Image | null | undefined;
@@ -71420,7 +71135,7 @@ declare module 'ue' {
         "GetScriptPath"(): string;
         "Init Item"(ItemId: string): void;
         "OpenDoorEntryAppearance"(): void;
-        "TSDestruct"(): void;
+        "TsDestruct"(): void;
     }
     }
     namespace $Static {
@@ -71446,7 +71161,7 @@ declare module 'ue' {
         "IconImage": UE.Image | null | undefined;
         "HasNumText": UE.PBZCommonLocText | null | undefined;
         "GridSelectionRetainer": UE.RetainerBox | null | undefined;
-        "glow": UE.WidgetSwitcher | null | undefined;
+        "Glow": UE.WidgetSwitcher | null | undefined;
         "DefaultBG": UE.Image | null | undefined;
         "blue": UE.Image | null | undefined;
         "BloomImage": UE.Image | null | undefined;
@@ -71481,7 +71196,7 @@ declare module 'ue' {
         "InitItemWithLevel"(ItemId: string, ItemLevel: number): void;
         "OnBuyShopItemSold"(ShopGroupTag: UE.GameplayTag, ShopItemID: string, SellNumber: number): void;
         "RefreshItem"(): void;
-        "TSDestruct"(): void;
+        "TsDestruct"(): void;
         "UpdateItemBySellShop"(PropID: string, Num: number): void;
     }
     }
@@ -71628,9 +71343,9 @@ declare module 'ue' {
         "Exit Book List View"(Navigation: UE.EUINavigation): UE.Widget | null | undefined;
         "Exit Book View"(Navigation: UE.EUINavigation): UE.Widget | null | undefined;
         "FinishCurrentWidget"(IsDeactivateWidget: boolean): void;
-        "GetNotHasAnyItemText"(LiteratureType: UE.ELiteratureType): string;
+        "GetNotHasAnyItemText"(LiteratureType: UE.ELiteratureType): UE.$FText;
         "GetReadModeIconRowName"(): string;
-        "GetReadModeText"(): string;
+        "GetReadModeText"(): UE.$FText;
         "Letter Down"(Navigation: UE.EUINavigation): UE.Widget | null | undefined;
         "List View Right"(Navigation: UE.EUINavigation): UE.Widget | null | undefined;
         "On Book Button Right"(Navigation: UE.EUINavigation): UE.Widget | null | undefined;
@@ -71649,7 +71364,7 @@ declare module 'ue' {
     /** /Game/PBZContent/UI/UINew/System/Map/BPI_CompleteQuest.BPI_CompleteQuest_C — reflection-generated, not individually call-tested. */
     interface BPI_CompleteQuest_C_f185dd711243 extends UE.Interface {
         "ChangeHovered"(IsEnable: boolean): void;
-        "Init"(QuestName: string, QuestTargets: UE.TArray<string>, QuestDescs: UE.TArray<string>): void;
+        "Init"(QuestName: UE.$FText, QuestTargets: UE.TArray<UE.$FText>, QuestDescs: UE.TArray<UE.$FText>): void;
         "Is Animation Playing"(IsPlaying: $Ref<boolean>): void;
         "Set Focus"(): void;
     }
@@ -71757,7 +71472,7 @@ declare module 'ue' {
         "CommonVisibilitySwitcher_120": UE.CommonVisibilitySwitcher | null | undefined;
         "CommonRichTextBlock_73": UE.CommonRichTextBlock | null | undefined;
         "IsCurrentTarget": boolean;
-        "TargetText": string;
+        "TargetText": UE.$FText;
         "OnDestruct": UE.$MulticastDelegate<() => void>;
         "Construct"(): void;
         "Destruct"(): void;
@@ -71814,9 +71529,9 @@ declare module 'ue' {
         "ItemQuest": UE.Quest | null | undefined;
         "OpenQuestDetail": UE.$MulticastDelegate<(CompleteQuest: UE.UserWidget | null | undefined) => void>;
         "As BP Task List View Object": UE.$Blueprint.BP_TaskListViewObject_C_a5195075c84c | null | undefined;
-        "Quest Name": string;
-        "CompleteQuestTargets": UE.TArray<string>;
-        "Complete Quest Descs": UE.TArray<string>;
+        "Quest Name": UE.$FText;
+        "CompleteQuestTargets": UE.TArray<UE.$FText>;
+        "Complete Quest Descs": UE.TArray<UE.$FText>;
         "IsCompletedQuest": boolean;
         "BP_OnEndEntryDropOperation"(bSuccess: boolean): void;
         "BP_OnEntryDragOverChanged"(bIsDraggingOver: boolean): void;
@@ -71830,7 +71545,7 @@ declare module 'ue' {
         "CloseQuestDetail_Event"(ListViewItem: UE.$Blueprint.BP_TaskListViewObject_C_a5195075c84c | null | undefined): void;
         "Construct"(): void;
         "CustomEvent"(ListViewItem: UE.$Blueprint.BP_TaskListViewObject_C_a5195075c84c | null | undefined): void;
-        "Init"(QuestName: string, QuestTargets: UE.TArray<string>, QuestDescs: UE.TArray<string>): void;
+        "Init"(QuestName: UE.$FText, QuestTargets: UE.TArray<UE.$FText>, QuestDescs: UE.TArray<UE.$FText>): void;
         "Is Animation Playing"(IsPlaying: $Ref<boolean>): void;
         "OnFocusReceived"(MyGeometry: UE.Geometry, InFocusEvent: UE.FocusEvent): UE.EventReply;
         "OnListItemObjectSet"(ListItemObject: UE.Object | null | undefined): void;
@@ -71879,7 +71594,7 @@ declare module 'ue' {
         "ResetMaterials"(): void;
         "SetGreyState"(): void;
         "UpdateButtonStyles"(): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
         "UpdateTextStyle"(): void;
     }
     }
@@ -71924,7 +71639,7 @@ declare module 'ue' {
         "ResetMaterials"(ClearAnim: boolean): void;
         "SetGreyState"(): void;
         "UpdateButtonStyles"(): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
         "UpdateTextStyle"(): void;
     }
     }
@@ -71985,7 +71700,7 @@ declare module 'ue' {
         "ResetMaterials"(ClearAnim: boolean): void;
         "SetGreyState"(): void;
         "UpdateButtonStyles"(): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
         "UpdateTextStyle"(): void;
     }
     }
@@ -72576,7 +72291,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/UINew/System/Setting/W_DemoSettingPanel.W_DemoSettingPanel_C — reflection-generated, not individually call-tested. */
-    interface W_DemoSettingPanel_C_ab52cad5522b extends Omit<UE.DemoSettingPanel, "BP_InitWidget" | "BackInput" | "ChangeInputMethod" | "FinishCurrentWidget" | "SelectWidgetToFocus" | "Tick"> {
+    interface W_DemoSettingPanel_C_ab52cad5522b extends Omit<UE.DemoSettingPanel, "BP_InitWidget" | "BackInput" | "ChangeInputMethod" | "Construct" | "FinishCurrentWidget" | "SelectWidgetToFocus" | "Tick"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "PBZCommonLocText_229": UE.PBZCommonLocText | null | undefined;
         "PBZCommonLocText_93": UE.PBZCommonLocText | null | undefined;
@@ -72590,6 +72305,7 @@ declare module 'ue' {
         "BP_InitWidget"(): void;
         "BackInput"(): void;
         "ChangeInputMethod"(InputType: UE.ECommonInputType): void;
+        "Construct"(): void;
         "FinishCurrentWidget"(): void;
         "Get Setting ListView"(ListView: $Ref<UE.GameSettingListView | null | undefined>): void;
         "GetMixinKeyName"(): string;
@@ -73419,7 +73135,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/UINew/System/W_SystemPanel_V1.W_SystemPanel_V1_C — reflection-generated, not individually call-tested. */
-    interface W_SystemPanel_V1_C_3f4860aa77de extends Omit<UE.PBZCommonUserWidget_Pool, "Construct" | "Destruct" | "Tick"> {
+    interface W_SystemPanel_V1_C_3f4860aa77de extends Omit<UE.PBZCommonUserWidget_Pool, "Construct" | "Destruct" | "OnAnalogValueChanged" | "OnPreviewKeyDown" | "Tick"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "WidgetSwitcher_0": UE.WidgetSwitcher | null | undefined;
         "SizeBox_94": UE.SizeBox | null | undefined;
@@ -73438,7 +73154,9 @@ declare module 'ue' {
         "Destruct"(): void;
         "GetMixinKeyName"(): string;
         "InitLayout"(): void;
+        "OnAnalogValueChanged"(MyGeometry: UE.Geometry, InAnalogInputEvent: UE.AnalogInputEvent): UE.EventReply;
         "OnHoveredButtonBaseChanged_事件"(AssociatedButton: UE.CommonButtonBase | null | undefined, ButtonIndex: number): void;
+        "OnPreviewKeyDown"(MyGeometry: UE.Geometry, InKeyEvent: UE.KeyEvent): UE.EventReply;
         "ResetSlotsOpacity"(): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
         "playSlotFadeInAnimations"(ActivatableWidget: UE.PBZActivatableWidget | null | undefined): void;
@@ -73450,7 +73168,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/UINew/System/W_System_NavButton.W_System_NavButton_C — reflection-generated, not individually call-tested. */
-    interface W_System_NavButton_C_4d17a8cb23d0 extends Omit<UE.PBZTabButtonBase, "BP_OnDeselected" | "BP_OnSelected" | "Construct" | "OnMouseEnter" | "OnMouseLeave"> {
+    interface W_System_NavButton_C_4d17a8cb23d0 extends Omit<UE.PBZTabButtonBase, "BP_OnDeselected" | "BP_OnSelected" | "Construct" | "OnInitialized" | "OnMouseEnter" | "OnMouseLeave"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "Text": UE.PBZCommonLocText | null | undefined;
         "TabRootSizeBox": UE.PBZLanguageSizeBox | null | undefined;
@@ -73475,6 +73193,7 @@ declare module 'ue' {
         "GetMixinKeyName"(): string;
         "GetRedPointWidget"(Widget: $Ref<UE.Widget | null | undefined>): void;
         "GetScriptPath"(): string;
+        "OnInitialized"(): void;
         "OnMouseEnter"(MyGeometry: UE.Geometry, MouseEvent: UE.PointerEvent): void;
         "OnMouseLeave"(MouseEvent: UE.PointerEvent): void;
         "SetTabLabelInfo"(TabDescriptor: UE.PBZTabDescriptor, IsLocked: boolean): void;
@@ -73486,7 +73205,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /Game/PBZContent/UI/UINew/System/W_Systembase.W_Systembase_C — reflection-generated, not individually call-tested. */
-    interface W_Systembase_C_383d9c4a3bfd extends Omit<UE.PBZSystemScreenWidget, "BP_ChangeInputIcon" | "BP_GetDesiredInputConfig" | "BP_OnActivated" | "BP_OnDeactivated" | "ChangeInputBar" | "Construct" | "Destruct" | "PreConstruct" | "Tick"> {
+    interface W_Systembase_C_383d9c4a3bfd extends Omit<UE.PBZSystemScreenWidget, "BP_ChangeInputIcon" | "BP_GetDesiredInputConfig" | "BP_OnActivated" | "BP_OnDeactivated" | "ChangeInputBar" | "Construct" | "Destruct" | "PopWidget" | "PreConstruct" | "Tick"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "WB_PBZTriggerBoundAction": UE.$Blueprint.WB_PBZTriggerBoundAction_C_7df6365e9573 | null | undefined;
         "WB_MapNew": UE.$Blueprint.WB_MapNew_C_c9e4f097514a | null | undefined;
@@ -73530,8 +73249,8 @@ declare module 'ue' {
         "HasTutorialMap": boolean;
         "HasTutorialOption": boolean;
         "NonMapCloseSound": UE.AkAudioEvent | null | undefined;
-        "Apply Input Widget"(IsVisibility: boolean, InputIndex: number, RowName: string, DisplayText: string): void;
-        "BP_ChangeInputIcon"(bVisibility: boolean, InputIndex: number, IconName: string, DisplayText: string): void;
+        "Apply Input Widget"(IsVisibility: boolean, InputIndex: number, RowName: string, DisplayText: UE.$FText): void;
+        "BP_ChangeInputIcon"(bVisibility: boolean, InputIndex: number, IconName: string, DisplayText: UE.$FText): void;
         "BP_GetDesiredInputConfig"(): UE.UIInputConfig;
         "BP_OnActivated"(): void;
         "BP_OnDeactivated"(): void;
@@ -73549,15 +73268,16 @@ declare module 'ue' {
         "GetMixinKeyName"(): string;
         "GetScriptPath"(): string;
         "InitDaysLeft"(): void;
+        "PopWidget"(): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "PressTutorialKeyDelegate_事件"(PressKey: UE.Key, UIKeyType: UE.ETutorialUIKeyType): void;
         "RefreshTabText"(TabId: string): void;
-        "TSDestruct"(): void;
         "Tick"(MyGeometry: UE.Geometry, InDeltaTime: number): void;
         "TryStartOptionTutorial"(): void;
         "TryToMapFlow"(): void;
         "TryToStartTutorial"(): void;
         "TsConstruct"(): void;
+        "TsDestruct"(): void;
         "WidgetAnimationEvt_Fadein_K2Node_WidgetAnimationEvent_0"(): void;
         "自定义事件"(): void;
         "自定义事件_0"(): void;
@@ -73692,8 +73412,8 @@ declare module 'ue' {
         "Config": UE.$Blueprint.BP_CharacterUI_Sound_C_de204bd46751 | null | undefined;
         "TabTextMapping": UE.TMap<string, string>;
         "HasTutorialOption": boolean;
-        "Apply Input Widget"(IsVisibility: boolean, InputIndex: number, RowName: string, DisplayText: string): void;
-        "BP_ChangeInputIcon"(bVisibility: boolean, InputIndex: number, IconName: string, DisplayText: string): void;
+        "Apply Input Widget"(IsVisibility: boolean, InputIndex: number, RowName: string, DisplayText: UE.$FText): void;
+        "BP_ChangeInputIcon"(bVisibility: boolean, InputIndex: number, IconName: string, DisplayText: UE.$FText): void;
         "BP_OnActivated"(): void;
         "BP_OnDeactivated"(): void;
         "ChangeInputBar"(bIsAdd: boolean, InputBarName: string): void;
@@ -73788,8 +73508,8 @@ declare module 'ue' {
         "InputVertAlignment": UE.EVerticalAlignment;
         "InputPadding": UE.Margin;
         "ValidItem": boolean;
-        "ItemName": string;
-        "ItemDesc": string;
+        "ItemName": UE.$FText;
+        "ItemDesc": UE.$FText;
         "ItemIcon": UE.TSoftObjectPtr<UE.Texture2D>;
         "IsNormalWeapon": boolean;
         "IsCollected": boolean;
@@ -73798,7 +73518,7 @@ declare module 'ue' {
         "BP_OnHovered"(): void;
         "BP_OnSelected"(): void;
         "GetItemID"(ItemId: $Ref<string>): void;
-        "Get_PropsNum_Text"(): string;
+        "Get_PropsNum_Text"(): UE.$FText;
         "HasValidItem"(HasValidItem: $Ref<boolean>): void;
         "Init"(InfoObject: UE.Object | null | undefined, ItemId: string): void;
         "InitWeapon"(WeaponInfo: UE.Object | null | undefined, ItemId: string, IsNormalWeapon: boolean): void;
@@ -73838,8 +73558,8 @@ declare module 'ue' {
         "InputVertAlignment": UE.EVerticalAlignment;
         "InputPadding": UE.Margin;
         "ValidItem": boolean;
-        "ItemName": string;
-        "ItemDesc": string;
+        "ItemName": UE.$FText;
+        "ItemDesc": UE.$FText;
         "ItemIcon": UE.TSoftObjectPtr<UE.Texture2D>;
         "IsNormalWeapon": boolean;
         "IsCollected": boolean;
@@ -73849,7 +73569,7 @@ declare module 'ue' {
         "BP_OnHovered"(): void;
         "BP_OnSelected"(): void;
         "GetItemID"(ItemId: $Ref<string>): void;
-        "Get_PropsNum_Text"(): string;
+        "Get_PropsNum_Text"(): UE.$FText;
         "HasValidItem"(HasValidItem: $Ref<boolean>): void;
         "Init"(InfoObject: UE.Object | null | undefined, ItemId: string): void;
         "InitWeapon"(WeaponInfo: UE.Object | null | undefined, ItemId: string, IsNormalWeapon: boolean): void;
@@ -74050,8 +73770,8 @@ declare module 'ue' {
         "InputVertAlignment": UE.EVerticalAlignment;
         "InputPadding": UE.Margin;
         "ValidItem": boolean;
-        "ItemName": string;
-        "ItemDesc": string;
+        "ItemName": UE.$FText;
+        "ItemDesc": UE.$FText;
         "ItemIcon": UE.TSoftObjectPtr<UE.Texture2D>;
         "IsNormalWeapon": boolean;
         "IsCollected": boolean;
@@ -74061,7 +73781,7 @@ declare module 'ue' {
         "BP_OnHovered"(): void;
         "BP_OnSelected"(): void;
         "GetItemID"(ItemId: $Ref<string>): void;
-        "Get_PropsNum_Text"(): string;
+        "Get_PropsNum_Text"(): UE.$FText;
         "HasValidItem"(HasValidItem: $Ref<boolean>): void;
         "Init"(InfoObject: UE.Object | null | undefined, ItemId: string): void;
         "Init Snap Soul"(SnapSoulTime: number): void;
@@ -74105,7 +73825,7 @@ declare module 'ue' {
         "BP_OnHovered"(): void;
         "BP_OnSelected"(): void;
         "GetItemID"(ItemId: $Ref<string>): void;
-        "Get_PropsNum_Text"(): string;
+        "Get_PropsNum_Text"(): UE.$FText;
         "HasValidItem"(HasValidItem: $Ref<boolean>): void;
         "Init"(InfoObject: UE.Object | null | undefined, ItemId: string): void;
         "InitWeapon"(WeaponInfo: UE.Object | null | undefined, ItemId: string, IsNormalWeapon: boolean): void;
@@ -74404,7 +74124,7 @@ declare module 'ue' {
         "CompleteHold": UE.$MulticastDelegate<() => void>;
         "NewVar": boolean;
         "MID_Bar": UE.MaterialInstanceDynamic | null | undefined;
-        "Init"(CanUpgrade: boolean, Text: string, InputActionOpacity: number): void;
+        "Init"(CanUpgrade: boolean, Text: UE.$FText, InputActionOpacity: number): void;
         "OnActionProgress"(HeldPercent: number): void;
         "PreConstruct"(IsDesignTime: boolean): void;
     }
@@ -74466,9 +74186,9 @@ declare module 'ue' {
         "Image_52": UE.Image | null | undefined;
         "CurrentAttributeValue": UE.$Blueprint.BP_PBZCommonText_C_0cb89487473a | null | undefined;
         "AttributeText": UE.CommonTextBlock | null | undefined;
-        "InitByAddAttribute"(AttributeText: string, ValueString: string): void;
-        "InitByChange"(AttributeText: string, LeftValue: string, RightValue: string): void;
-        "InitByNoChange"(AttributeText: string, ValueText: string): void;
+        "InitByAddAttribute"(AttributeText: UE.$FText, ValueString: string): void;
+        "InitByChange"(AttributeText: UE.$FText, LeftValue: string, RightValue: string): void;
+        "InitByNoChange"(AttributeText: UE.$FText, ValueText: string): void;
     }
     }
     namespace $Static {
@@ -75190,7 +74910,7 @@ declare module 'ue' {
         "Color": UE.Color;
         "Dissolve Overall": number;
         "Dissolve FromBottom": number;
-        "depth fade": number;
+        "Depth Fade": number;
         "Tiling Speed Scale": UE.Vector4;
         "Fresnel": number;
         "Fork Tiling Offset": UE.Vector4;
@@ -76311,7 +76031,7 @@ declare module 'ue' {
         "ChaosDestrctionClass": UE.Class | null | undefined;
         "Break"(): void;
         "GetNeedShaChiWeaponID"(): string;
-        "GetWeaponNameText"(NameText: $Ref<string>): void;
+        "GetWeaponNameText"(NameText: $Ref<UE.$FText>): void;
         "OpenSoundPortal"(): void;
         "PlayBreakSound"(): void;
         "RefreshVisual"(Broken: boolean): void;
@@ -79275,9 +78995,9 @@ declare module 'ue' {
         "QuestHun": UE.Image | null | undefined;
         "Image_26": UE.Image | null | undefined;
         "AI_MapFogClearPlayerIntro": UE.WidgetAnimation | null | undefined;
-        "Slot Text": string;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
-        "GetSlotText"(): string;
+        "Slot Text": UE.$FText;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
+        "GetSlotText"(): UE.$FText;
     }
     }
     namespace $Static {
@@ -79291,9 +79011,9 @@ declare module 'ue' {
         "Image_26": UE.Image | null | undefined;
         "AI_MapFogClearPlayerIntro": UE.WidgetAnimation | null | undefined;
         "AI_QuestPageIntro": UE.WidgetAnimation | null | undefined;
-        "Slot Text": string;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
-        "GetSlotText"(): string;
+        "Slot Text": UE.$FText;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
+        "GetSlotText"(): UE.$FText;
     }
     }
     namespace $Static {
@@ -80340,7 +80060,7 @@ declare module 'ue' {
         "PitchIsLessThenSetUp": boolean;
         "RotPitch": number;
         "InterpSpeed": number;
-        "Init"(cam: UE.ATPCCameraComponent | null | undefined, RotPitch: number, InterpSpeed: number): void;
+        "Init"(Cam: UE.ATPCCameraComponent | null | undefined, RotPitch: number, InterpSpeed: number): void;
         "K2_OnEnterCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_OnExitCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_Tick"(Camera: UE.ATPCCameraComponent | null | undefined, DeltaSeconds: number): void;
@@ -80396,7 +80116,7 @@ declare module 'ue' {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "CachedCameraDistance": number;
         "TargetRot": UE.Rotator;
-        "Init"(cam: UE.ATPCCameraComponent | null | undefined): void;
+        "Init"(Cam: UE.ATPCCameraComponent | null | undefined): void;
         "K2_OnEnterCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_OnExitCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_Tick"(Camera: UE.ATPCCameraComponent | null | undefined, DeltaSeconds: number): void;
@@ -80429,7 +80149,7 @@ declare module 'ue' {
         "PitchIsLessThenSetUp": boolean;
         "RotPitch": number;
         "InterpSpeed": number;
-        "Init"(cam: UE.ATPCCameraComponent | null | undefined, RotPitch: number, InterpSpeed: number): void;
+        "Init"(Cam: UE.ATPCCameraComponent | null | undefined, RotPitch: number, InterpSpeed: number): void;
         "K2_OnEnterCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_OnExitCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_Tick"(Camera: UE.ATPCCameraComponent | null | undefined, DeltaSeconds: number): void;
@@ -80458,7 +80178,7 @@ declare module 'ue' {
         "MinWarpDistance": number;
         "MaxWarpDistance": number;
         "ShouldFocus": boolean;
-        "Init"(cam: UE.ATPCCameraComponent | null | undefined, RotPitch: number, InterpSpeed: number): void;
+        "Init"(Cam: UE.ATPCCameraComponent | null | undefined, RotPitch: number, InterpSpeed: number): void;
         "K2_OnEnterCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_OnExitCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_Tick"(Camera: UE.ATPCCameraComponent | null | undefined, DeltaSeconds: number): void;
@@ -80703,15 +80423,15 @@ declare module 'ue' {
         "spotlight_grp": UE.SceneComponent | null | undefined;
         "godray_card_SM": UE.StaticMeshComponent | null | undefined;
         "lazygodray_FX_BP": UE.SceneComponent | null | undefined;
-        "diameter multiplier": number;
-        "length multiplier": number;
+        "Diameter Multiplier": number;
+        "Length multiplier": number;
         "Tint Color": UE.LinearColor;
         "light shaft texture": UE.Texture | null | undefined;
         "Overall Intensity": number;
         "overall contrast": number;
         "light shaft strength": number;
         "light shaft amount": number;
-        "light shaft length": number;
+        "Light Shaft Length": number;
         "Depth Fade Distance": number;
         "fesnel exponent": number;
         "camera fading starting distance": number;
@@ -114725,7 +114445,7 @@ declare module 'ue' {
     interface BP_Roadblocker_I_C_afeddb6dafa8 extends Omit<UE.Actor, "ReceiveBeginPlay" | "UserConstructionScript"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "Smoke": UE.NiagaraComponent | null | undefined;
-        "Spark": UE.NiagaraComponent | null | undefined;
+        "spark": UE.NiagaraComponent | null | undefined;
         "Smoke1": UE.NiagaraComponent | null | undefined;
         "VFX": UE.SceneComponent | null | undefined;
         "SM_RoadBlockerI_Chain_Cloth": UE.SkeletalMeshComponent | null | undefined;
@@ -117387,12 +117107,12 @@ declare module 'ue' {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "RightTextBlock": UE.TextBlock | null | undefined;
         "LeftTextBlock": UE.TextBlock | null | undefined;
-        "LeftColumnText": string;
-        "RightColumnText": string;
+        "LeftColumnText": UE.$FText;
+        "RightColumnText": UE.$FText;
         "Construct"(): void;
         "PreConstruct"(IsDesignTime: boolean): void;
         "SetValueColor"(Color: UE.SlateColor): void;
-        "SetValueText"(Text: string): void;
+        "SetValueText"(Text: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -120379,7 +120099,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/008_GreatBladeMan/Ability/Abilities/GA_GreatBladeMan_CA_01_Gex.GA_GreatBladeMan_CA_01_Gex_C — reflection-generated, not individually call-tested. */
-    interface GA_GreatBladeMan_CA_01_Gex_C_24400996e816 extends Omit<UE.$Blueprint.GA_ExecutionAbilityBase_Grab_C_5fd0a876ce76, "UberGraphFrame" | "K2_ActivateAbility"> {
+    interface GA_GreatBladeMan_CA_01_Gex_C_24400996e816 extends Omit<UE.$Blueprint.GA_ExecutionAbilityBase_Grab_C_5fd0a876ce76, "UberGraphFrame" | "K2_ActivateAbility" | "RequestLockTarget"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "EventReceived_8A9F014544D395C115CD42B4241E4BE4"(Payload: UE.GameplayEventData): void;
         "K2_ActivateAbility"(): void;
@@ -120389,6 +120109,7 @@ declare module 'ue' {
         "OnStart_74C8CFAC4A59FE3CAE461AAB8B65F55E"(): void;
         "OnSuccess_74C8CFAC4A59FE3CAE461AAB8B65F55E"(): void;
         "OnTick_7E5A1E344065E15ADAE3BEB56AAD8275"(DeltaTime: number): void;
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -136451,7 +136172,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/042_AHua/Ability/GuiTouDao/Bullets/BP_Bullet_AHua_WhtieFlower.BP_Bullet_AHua_WhtieFlower_C — reflection-generated, not individually call-tested. */
-    interface BP_Bullet_AHua_WhtieFlower_C_006be7d87698 extends Omit<UE.$Blueprint.BP_PBZ_ProjectileBullet_C_43f419736c1b, "UberGraphFrame" | "ReceiveTick" | "Received_PostStart"> {
+    interface BP_Bullet_AHua_WhtieFlower_C_006be7d87698 extends Omit<UE.$Blueprint.BP_PBZ_ProjectileBullet_C_43f419736c1b, "UberGraphFrame" | "ReceiveTick" | "Received_Deactivate" | "Received_PostStart"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "AttackCollider": UE.SphereComponent | null | undefined;
         "Handle": UE.TimerHandle;
@@ -136459,8 +136180,10 @@ declare module 'ue' {
         "TimeSinceStart": number;
         "MinStartTime": number;
         "MinStartMagnitude": number;
+        "Changed_AB15BE3F4070CA652B1AAB81DA026819"(OldCount: number, NewCount: number): void;
         "CheckTargetDistanceAndStop"(): void;
         "ReceiveTick"(DeltaSeconds: number): void;
+        "Received_Deactivate"(TimeToDestroy: number): void;
         "Received_PostStart"(): void;
     }
     }
@@ -136925,10 +136648,11 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/043_Scavenger/Ability/Abilities/P2/GA_Scavenger_P2_CA_01.GA_Scavenger_P2_CA_01_C — reflection-generated, not individually call-tested. */
-    interface GA_Scavenger_P2_CA_01_C_7dfa025aed27 extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility"> {
+    interface GA_Scavenger_P2_CA_01_C_7dfa025aed27 extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility" | "RequestLockTarget"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "PostRef": UE.PostProcessVolume | null | undefined;
         "K2_ActivateAbility"(): void;
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -137565,7 +137289,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/044_PengMeng/Ability/Axe/Abilities/CA/GA_PengMeng_Skill_BEd_Fail.GA_PengMeng_Skill_BEd_Fail_C — reflection-generated, not individually call-tested. */
-    interface GA_PengMeng_Skill_BEd_Fail_C_f2a9bdba105e extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility"> {
+    interface GA_PengMeng_Skill_BEd_Fail_C_f2a9bdba105e extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility" | "RequestLockTarget"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "EventReceived_6CA6B2B946EBD08CAE41D6979F40640B"(Payload: UE.GameplayEventData): void;
         "K2_ActivateAbility"(): void;
@@ -137575,6 +137299,7 @@ declare module 'ue' {
         "OnStart_8519FBB34CC173CBEE340FB548A9EBA8"(): void;
         "OnSuccess_8519FBB34CC173CBEE340FB548A9EBA8"(): void;
         "OnTick_3AE28052470A7BC74D412DA0E2099AFE"(DeltaTime: number): void;
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -139493,11 +139218,12 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/047_LeiDang/Ability/Abilities/GA_LeiDang_CA.GA_LeiDang_CA_C — reflection-generated, not individually call-tested. */
-    interface GA_LeiDang_CA_C_ed847f42f3e1 extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility" | "K2_OnEndAbility"> {
+    interface GA_LeiDang_CA_C_ed847f42f3e1 extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility" | "K2_OnEndAbility" | "RequestLockTarget"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "Added_CC586AF9455AC2B7E2364DB3FB9328BF"(): void;
         "K2_ActivateAbility"(): void;
         "K2_OnEndAbility"(bWasCancelled: boolean): void;
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -141635,10 +141361,11 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/050_LeiDang_P2/Ability/Abilities/GA_LeiDang_P2_CA.GA_LeiDang_P2_CA_C — reflection-generated, not individually call-tested. */
-    interface GA_LeiDang_P2_CA_C_ce0fdb07a208 extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility"> {
+    interface GA_LeiDang_P2_CA_C_ce0fdb07a208 extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility" | "RequestLockTarget"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "Added_B560F5C144BC868A5EA8DF9FDB6787B9"(): void;
         "K2_ActivateAbility"(): void;
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -149335,15 +149062,6 @@ declare module 'ue' {
     }
     }
     namespace $Blueprint {
-    /** /PBZCombatAsset/ActorData/Mobs/060_GuiChai_Yellow/Ability/ShuangGou/Abilities/ShuangGou/GA_GuiChai_Yellow_ShuangGou_Skill_01_Short.GA_GuiChai_Yellow_ShuangGou_Skill_01_Short_C — reflection-generated, not individually call-tested. */
-    interface GA_GuiChai_Yellow_ShuangGou_Skill_01_Short_C_dee5948e049c extends UE.$Blueprint.GA_GuiChai_Yellow_ShuangGou_Skill_01_C_f36c5477d031 {
-    }
-    }
-    namespace $Static {
-    interface GA_GuiChai_Yellow_ShuangGou_Skill_01_Short_C_dee5948e049c {
-    }
-    }
-    namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/060_GuiChai_Yellow/Ability/ShuangGou/Abilities/ShuangGou/GA_GuiChai_Yellow_ShuangGou_Skill_02.GA_GuiChai_Yellow_ShuangGou_Skill_02_C — reflection-generated, not individually call-tested. */
     interface GA_GuiChai_Yellow_ShuangGou_Skill_02_C_f51e26131925 extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
@@ -149352,15 +149070,6 @@ declare module 'ue' {
     }
     namespace $Static {
     interface GA_GuiChai_Yellow_ShuangGou_Skill_02_C_f51e26131925 {
-    }
-    }
-    namespace $Blueprint {
-    /** /PBZCombatAsset/ActorData/Mobs/060_GuiChai_Yellow/Ability/ShuangGou/Abilities/ShuangGou/GA_GuiChai_Yellow_ShuangGou_Skill_02_Short.GA_GuiChai_Yellow_ShuangGou_Skill_02_Short_C — reflection-generated, not individually call-tested. */
-    interface GA_GuiChai_Yellow_ShuangGou_Skill_02_Short_C_891c32062a0a extends UE.$Blueprint.GA_GuiChai_Yellow_ShuangGou_Skill_02_C_f51e26131925 {
-    }
-    }
-    namespace $Static {
-    interface GA_GuiChai_Yellow_ShuangGou_Skill_02_Short_C_891c32062a0a {
     }
     }
     namespace $Blueprint {
@@ -149575,15 +149284,6 @@ declare module 'ue' {
     }
     namespace $Static {
     interface GA_GuiChai_Yellow_ShuangGou_SpecialAttack_10_B_C_5a2388827d87 {
-    }
-    }
-    namespace $Blueprint {
-    /** /PBZCombatAsset/ActorData/Mobs/060_GuiChai_Yellow/Ability/ShuangGou/Abilities/ShuangGou/GA_GuiChai_Yellow_ShuangGou_SpecialAttack_10_B_NoRot.GA_GuiChai_Yellow_ShuangGou_SpecialAttack_10_B_NoRot_C — reflection-generated, not individually call-tested. */
-    interface GA_GuiChai_Yellow_ShuangGou_SpecialAttack_10_B_NoRot_C_6b221a1765c6 extends UE.$Blueprint.GA_GuiChai_Yellow_ShuangGou_SpecialAttack_10_B_C_5a2388827d87 {
-    }
-    }
-    namespace $Static {
-    interface GA_GuiChai_Yellow_ShuangGou_SpecialAttack_10_B_NoRot_C_6b221a1765c6 {
     }
     }
     namespace $Blueprint {
@@ -151888,10 +151588,11 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/065_ChiLian_P2/Ability/GA_ChiLian_P2_CA_01.GA_ChiLian_P2_CA_01_C — reflection-generated, not individually call-tested. */
-    interface GA_ChiLian_P2_CA_01_C_f612e34c183e extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility" | "K2_OnEndAbility"> {
+    interface GA_ChiLian_P2_CA_01_C_f612e34c183e extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility" | "K2_OnEndAbility" | "RequestLockTarget"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "K2_ActivateAbility"(): void;
         "K2_OnEndAbility"(bWasCancelled: boolean): void;
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -151900,9 +151601,10 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/065_ChiLian_P2/Ability/GA_ChiLian_P2_CA_02.GA_ChiLian_P2_CA_02_C — reflection-generated, not individually call-tested. */
-    interface GA_ChiLian_P2_CA_02_C_e7ca3140bace extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility"> {
+    interface GA_ChiLian_P2_CA_02_C_e7ca3140bace extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility" | "RequestLockTarget"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "K2_ActivateAbility"(): void;
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -151920,7 +151622,7 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/065_ChiLian_P2/Ability/GA_ChiLian_P2_CA_03.GA_ChiLian_P2_CA_03_C — reflection-generated, not individually call-tested. */
-    interface GA_ChiLian_P2_CA_03_C_da6b049ea738 extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility" | "K2_OnEndAbility"> {
+    interface GA_ChiLian_P2_CA_03_C_da6b049ea738 extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility" | "K2_OnEndAbility" | "RequestLockTarget"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "ShouldDespawn": boolean;
         "XianZhe": UE.$Blueprint.BP_Monster_XianZhe_C_a15a5c48fe85 | null | undefined;
@@ -151933,6 +151635,7 @@ declare module 'ue' {
         "K2_OnEndAbility"(bWasCancelled: boolean): void;
         "PlayerDead"(Actor: UE.Actor | null | undefined): void;
         "Removed_A3370D4745EC86D82D193BBF716533AF"(): void;
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -154082,7 +153785,6 @@ declare module 'ue' {
         "Bullet Data": UE.TArray<UE.$Blueprint.BP_PBZ_ProjectileBulletData_C_96f5b56cb397 | null | undefined>;
         "Invulnerable": boolean;
         "ApplyBuff"(BuffType: UE.$Blueprint.Enum_YanQianSui_BuffType_58671adfb34f): void;
-        "ClearBuff"(TagToRemove: UE.TArray<UE.GameplayTag>): void;
         "CreateCounterBullet"(TargetArray: UE.TArray<UE.$Blueprint.BP_PBZ_ProjectileBulletData_C_96f5b56cb397 | null | undefined>): void;
         "EventReceived_27C4117F48C1D5BF49453C976AA54AC3"(Payload: UE.GameplayEventData): void;
         "EventReceived_4186EC1042A790605F7D7F9391BF7ED9"(Payload: UE.GameplayEventData): void;
@@ -154091,6 +153793,7 @@ declare module 'ue' {
         "ModifyHitDamage"(GameplayEventData: UE.GameplayEventData): void;
         "ModifyHitEndure"(GameplayEventData: UE.GameplayEventData): void;
         "ModifyHitResult"(GameplayEventData: UE.GameplayEventData): void;
+        "clearBuff"(TagToRemove: UE.TArray<UE.GameplayTag>): void;
     }
     }
     namespace $Static {
@@ -155533,7 +155236,7 @@ declare module 'ue' {
         "Weapon_Mid": UE.SphereComponent | null | undefined;
         "WeaponMidPoint_L": UE.SphereComponent | null | undefined;
         "weapon_l": UE.SphereComponent | null | undefined;
-        "WEAPON_R": UE.SphereComponent | null | undefined;
+        "weapon_r": UE.SphereComponent | null | undefined;
         "WeaponMidPoint_R": UE.SphereComponent | null | undefined;
         "Spline_R": UE.SplineComponent | null | undefined;
         "Spline_L": UE.SplineComponent | null | undefined;
@@ -156981,9 +156684,10 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/073_YanQianSui/Ability/GA_YanQianSui_Skill_01.GA_YanQianSui_Skill_01_C — reflection-generated, not individually call-tested. */
-    interface GA_YanQianSui_Skill_01_C_c229d4917180 extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility"> {
+    interface GA_YanQianSui_Skill_01_C_c229d4917180 extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "UberGraphFrame" | "K2_ActivateAbility" | "RequestLockTarget"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "K2_ActivateAbility"(): void;
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -157259,7 +156963,6 @@ declare module 'ue' {
         "ChaosDuration": number;
         "Added_AAD9EF624F67EA9BEDE8AB85B5011974"(): void;
         "ApplyBuff"(BuffType: UE.$Blueprint.Enum_YanQianSui_BuffType_58671adfb34f): void;
-        "ClearBuff"(TagToRemove: UE.TArray<UE.GameplayTag>): void;
         "CreateCounterBullet"(): void;
         "EventReceived_2DFE4EBD428CC9DD3842F79913AF01F2"(Payload: UE.GameplayEventData): void;
         "EventReceived_318A281F4E44D5C57F3902A026080E49"(Payload: UE.GameplayEventData): void;
@@ -157277,6 +156980,7 @@ declare module 'ue' {
         "ModifyHitEndure"(GameplayEventData: UE.GameplayEventData): void;
         "ModifyHitResult"(GameplayEventData: UE.GameplayEventData): void;
         "OnApplied_D75B4F0B438ED5CB0C7754B6222DB69D"(Source: UE.Actor | null | undefined, SpecHandle: UE.GameplayEffectSpecHandle, ActiveHandle: UE.ActiveGameplayEffectHandle): void;
+        "clearBuff"(TagToRemove: UE.TArray<UE.GameplayTag>): void;
     }
     }
     namespace $Static {
@@ -168338,6 +168042,15 @@ declare module 'ue' {
     }
     }
     namespace $Blueprint {
+    /** /PBZCombatAsset/ActorData/Mobs/FemaleDoll/BP_Monster_FemaleDoll_TieChiSan_Summon.BP_Monster_FemaleDoll_TieChiSan_Summon_C — reflection-generated, not individually call-tested. */
+    interface BP_Monster_FemaleDoll_TieChiSan_Summon_C_aaa71889ff8f extends UE.$Blueprint.BP_Monster_FemaleDoll_TieChiSan_C_9b1e8106b54c {
+    }
+    }
+    namespace $Static {
+    interface BP_Monster_FemaleDoll_TieChiSan_Summon_C_aaa71889ff8f {
+    }
+    }
+    namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/FemaleDoll/BP_Monster_FemaleDoll_Weaponless.BP_Monster_FemaleDoll_Weaponless_C — reflection-generated, not individually call-tested. */
     interface BP_Monster_FemaleDoll_Weaponless_C_a6294ecc436f extends UE.$Blueprint.BP_Monster_FemaleDoll_Base_C_80ee96e91763 {
         "WPL_Hand": UE.CapsuleComponent | null | undefined;
@@ -168907,7 +168620,8 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/FengXueDaoKe/Ability/Abilities/GA_FengXueDaoKe_Skill_07_Show.GA_FengXueDaoKe_Skill_07_Show_C — reflection-generated, not individually call-tested. */
-    interface GA_FengXueDaoKe_Skill_07_Show_C_a1512fe2073d extends UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c {
+    interface GA_FengXueDaoKe_Skill_07_Show_C_a1512fe2073d extends Omit<UE.$Blueprint.BP_ActionAbilityBase_Simple_C_20b8731aec3c, "RequestLockTarget"> {
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -175128,6 +174842,15 @@ declare module 'ue' {
     }
     }
     namespace $Blueprint {
+    /** /PBZCombatAsset/ActorData/Mobs/MaleDoll/BP_Monster_MaleDoll_Cannon_Summon.BP_Monster_MaleDoll_Cannon_Summon_C — reflection-generated, not individually call-tested. */
+    interface BP_Monster_MaleDoll_Cannon_Summon_C_882ec421ec8e extends UE.$Blueprint.BP_Monster_MaleDoll_Cannon_C_60bd7bc79445 {
+    }
+    }
+    namespace $Static {
+    interface BP_Monster_MaleDoll_Cannon_Summon_C_882ec421ec8e {
+    }
+    }
+    namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/MaleDoll/BP_Monster_MaleDoll_GuiQiangDun.BP_Monster_MaleDoll_GuiQiangDun_C — reflection-generated, not individually call-tested. */
     interface BP_Monster_MaleDoll_GuiQiangDun_C_ae78b28832fa extends Omit<UE.$Blueprint.BP_Monster_MaleDoll_Base_C_290b0b864866, "UberGraphFrame" | "GetActorHead" | "ReceiveBeginPlay"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
@@ -176245,7 +175968,8 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/QiShu/Ability/Abilities/Huo/ca/GA_Qishu_Huo_RoundSkill_ForAirCA.GA_Qishu_Huo_RoundSkill_ForAirCA_C — reflection-generated, not individually call-tested. */
-    interface GA_Qishu_Huo_RoundSkill_ForAirCA_C_697b389c0152 extends UE.$Blueprint.GA_Qishu_ShachiReinforced_Base_C_f4c009849342 {
+    interface GA_Qishu_Huo_RoundSkill_ForAirCA_C_697b389c0152 extends Omit<UE.$Blueprint.GA_Qishu_ShachiReinforced_Base_C_f4c009849342, "RequestLockTarget"> {
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -176254,7 +175978,8 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/QiShu/Ability/Abilities/Huo/ca/GA_Qishu_Huo_SkillAttack_F_AssaultEnd.GA_Qishu_Huo_SkillAttack_F_AssaultEnd_C — reflection-generated, not individually call-tested. */
-    interface GA_Qishu_Huo_SkillAttack_F_AssaultEnd_C_0a769b1b74dd extends UE.$Blueprint.GA_Qishu_ShachiReinforced_Base_C_f4c009849342 {
+    interface GA_Qishu_Huo_SkillAttack_F_AssaultEnd_C_0a769b1b74dd extends Omit<UE.$Blueprint.GA_Qishu_ShachiReinforced_Base_C_f4c009849342, "RequestLockTarget"> {
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -176263,7 +175988,8 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/QiShu/Ability/Abilities/Huo/ca/GA_Qishu_Skill05_Air_Cahrging_SuperBall.GA_Qishu_Skill05_Air_Cahrging_SuperBall_C — reflection-generated, not individually call-tested. */
-    interface GA_Qishu_Skill05_Air_Cahrging_SuperBall_C_5b7ee839481d extends UE.$Blueprint.GA_Qishu_ShachiReinforced_Base_C_f4c009849342 {
+    interface GA_Qishu_Skill05_Air_Cahrging_SuperBall_C_5b7ee839481d extends Omit<UE.$Blueprint.GA_Qishu_ShachiReinforced_Base_C_f4c009849342, "RequestLockTarget"> {
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -176272,7 +175998,8 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/QiShu/Ability/Abilities/Huo/ca/GA_Qishu_Skill05_Air_Start.GA_Qishu_Skill05_Air_Start_C — reflection-generated, not individually call-tested. */
-    interface GA_Qishu_Skill05_Air_Start_C_109742c716b0 extends UE.$Blueprint.GA_Qishu_ShachiReinforced_Base_C_f4c009849342 {
+    interface GA_Qishu_Skill05_Air_Start_C_109742c716b0 extends Omit<UE.$Blueprint.GA_Qishu_ShachiReinforced_Base_C_f4c009849342, "RequestLockTarget"> {
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -176281,7 +176008,8 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/QiShu/Ability/Abilities/Huo/ca/SubGA_Qishu_Huo_Skill05_AirMoving_L.SubGA_Qishu_Huo_Skill05_AirMoving_L_C — reflection-generated, not individually call-tested. */
-    interface SubGA_Qishu_Huo_Skill05_AirMoving_L_C_76d31adf105b extends UE.$Blueprint.GA_Qishu_ShachiReinforced_Base_C_f4c009849342 {
+    interface SubGA_Qishu_Huo_Skill05_AirMoving_L_C_76d31adf105b extends Omit<UE.$Blueprint.GA_Qishu_ShachiReinforced_Base_C_f4c009849342, "RequestLockTarget"> {
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -176290,7 +176018,8 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/QiShu/Ability/Abilities/Huo/ca/SubGA_Qishu_Huo_Skill05_AirMoving_R.SubGA_Qishu_Huo_Skill05_AirMoving_R_C — reflection-generated, not individually call-tested. */
-    interface SubGA_Qishu_Huo_Skill05_AirMoving_R_C_f9837885daed extends UE.$Blueprint.GA_Qishu_ShachiReinforced_Base_C_f4c009849342 {
+    interface SubGA_Qishu_Huo_Skill05_AirMoving_R_C_f9837885daed extends Omit<UE.$Blueprint.GA_Qishu_ShachiReinforced_Base_C_f4c009849342, "RequestLockTarget"> {
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -180228,8 +179957,9 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Mobs/YuDing_00/Ability/Abilities/Grab/GA_YuDing_GEx_01_Execution.GA_YuDing_GEx_01_Execution_C — reflection-generated, not individually call-tested. */
-    interface GA_YuDing_GEx_01_Execution_C_c00cf011f15f extends Omit<UE.$Blueprint.GA_YuDing_GEx_01_C_48e56a3f1e7a, "IsKill"> {
+    interface GA_YuDing_GEx_01_Execution_C_c00cf011f15f extends Omit<UE.$Blueprint.GA_YuDing_GEx_01_C_48e56a3f1e7a, "IsKill" | "RequestLockTarget"> {
         "IsKill"(ForceKill: $Ref<boolean>): void;
+        "RequestLockTarget"(ReselectWhileEmpty: boolean, ReselectAlways: boolean, OutTarget: $Ref<UE.ComponentSocket>): boolean;
     }
     }
     namespace $Static {
@@ -181415,6 +181145,7 @@ declare module 'ue' {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
         "EventReceived_81E1F35144AB8E028472BFA25A87FD72"(Payload: UE.GameplayEventData): void;
         "K2_ActivateAbility"(): void;
+        "OnApplied_E7E9F5604DD76EF849ED4EB967AB38CE"(Target: UE.Actor | null | undefined, SpecHandle: UE.GameplayEffectSpecHandle, ActiveHandle: UE.ActiveGameplayEffectHandle): void;
     }
     }
     namespace $Static {
@@ -189511,8 +189242,10 @@ declare module 'ue' {
     }
     namespace $Blueprint {
     /** /PBZCombatAsset/ActorData/Players/Hun/Abilities/ShachiAbility/CaoOuSiXian/GA_CaoOuSiXian_Evolution_Summon_Passive.GA_CaoOuSiXian_Evolution_Summon_Passive_C — reflection-generated, not individually call-tested. */
-    interface GA_CaoOuSiXian_Evolution_Summon_Passive_C_fe704483c585 extends Omit<UE.$Blueprint.GA_SummonPassive_Hun_C_078a07ec42bd, "ApplyEffectOnSummon"> {
+    interface GA_CaoOuSiXian_Evolution_Summon_Passive_C_fe704483c585 extends Omit<UE.$Blueprint.GA_SummonPassive_Hun_C_078a07ec42bd, "ApplyEffectOnSummon" | "GetSummonClass"> {
+        "AdditiveRandomSummonClass": UE.TArray<UE.Class | null | undefined>;
         "ApplyEffectOnSummon"(Actor: UE.Actor | null | undefined): void;
+        "GetSummonClass"(InClass: UE.Class | null | undefined, SummonInfoIndex: number, AISummonInfo: UE.AISummonInfo, OutClass: $Ref<UE.Class | null | undefined>): void;
     }
     }
     namespace $Static {
@@ -200610,7 +200343,7 @@ declare module 'ue' {
         "CachedCameraDistance": number;
         "TargetRot": UE.Rotator;
         "LerpSpeed": number;
-        "Init"(cam: UE.ATPCCameraComponent | null | undefined): void;
+        "Init"(Cam: UE.ATPCCameraComponent | null | undefined): void;
         "K2_OnEnterCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_OnExitCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_Tick"(Camera: UE.ATPCCameraComponent | null | undefined, DeltaSeconds: number): void;
@@ -200629,7 +200362,7 @@ declare module 'ue' {
         "CachedCameraDistance": number;
         "TargetRot": UE.Rotator;
         "LerpSpeed": number;
-        "Init"(cam: UE.ATPCCameraComponent | null | undefined): void;
+        "Init"(Cam: UE.ATPCCameraComponent | null | undefined): void;
         "K2_OnEnterCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_OnExitCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_Tick"(Camera: UE.ATPCCameraComponent | null | undefined, DeltaSeconds: number): void;
@@ -200648,7 +200381,7 @@ declare module 'ue' {
         "CachedCameraDistance": number;
         "TargetRot": UE.Rotator;
         "LerpSpeed": number;
-        "Init"(cam: UE.ATPCCameraComponent | null | undefined): void;
+        "Init"(Cam: UE.ATPCCameraComponent | null | undefined): void;
         "K2_OnEnterCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_OnExitCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_Tick"(Camera: UE.ATPCCameraComponent | null | undefined, DeltaSeconds: number): void;
@@ -200667,7 +200400,7 @@ declare module 'ue' {
         "CachedCameraDistance": number;
         "TargetRot": UE.Rotator;
         "LerpSpeed": number;
-        "Init"(cam: UE.ATPCCameraComponent | null | undefined): void;
+        "Init"(Cam: UE.ATPCCameraComponent | null | undefined): void;
         "K2_OnEnterCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_OnExitCameraMode"(Camera: UE.ATPCCameraComponent | null | undefined): void;
         "K2_Tick"(Camera: UE.ATPCCameraComponent | null | undefined, DeltaSeconds: number): void;
@@ -204528,6 +204261,7 @@ declare module 'ue' {
         "EventReceived_1A12C55B4F7DE8ED2259029E73CB236F"(Payload: UE.GameplayEventData): void;
         "EventReceived_2E4DF3454B5E6EC4DE2EF99DE1EA36B7"(Payload: UE.GameplayEventData): void;
         "K2_ActivateAbility"(): void;
+        "OnApplied_89FBF46040939945E3879696CF4F9D21"(Target: UE.Actor | null | undefined, SpecHandle: UE.GameplayEffectSpecHandle, ActiveHandle: UE.ActiveGameplayEffectHandle): void;
     }
     }
     namespace $Static {
@@ -212715,7 +212449,7 @@ declare module 'ue' {
         "GetBodyParts"(BodyParts: $Ref<UE.TArray<UE.HitReactBodyData>>): void;
         "GetBulletSkillTypeData"(Tag: UE.GameplayTag, OutData: $Ref<UE.BulletSkillTypeData>, OutVsMobData: $Ref<UE.BulletSkillTypeData>): boolean;
         "GetChangeWeaponCooldown"(SlotTag: UE.GameplayTag): number;
-        "GetCharacterName"(): string;
+        "GetCharacterName"(): UE.$FText;
         "GetCrouchParameters"(): UE.CharacterMovementParameters;
         "GetDefaultAntiPushLevel"(): number;
         "GetDefaultAttributes"(Actor: UE.Actor | null | undefined, OutDefaultAttributes: $Ref<UE.TMap<UE.GameplayAttribute, number>>): void;
@@ -216217,6 +215951,33 @@ declare module 'ue' {
     }
     namespace $Static {
     interface GE_Accessory_ShachiAttackReinforcement_Lv1_Endure_Legacy_C_166144f75699 {
+    }
+    }
+    namespace $Blueprint {
+    /** /PBZCombatAsset/Prototypes/GameplayEffects/Achievements/GE_Achievement_BaiYingFrostHit.GE_Achievement_BaiYingFrostHit_C — reflection-generated, not individually call-tested. */
+    interface GE_Achievement_BaiYingFrostHit_C_4071e4278df9 extends UE.GameplayEffect {
+    }
+    }
+    namespace $Static {
+    interface GE_Achievement_BaiYingFrostHit_C_4071e4278df9 {
+    }
+    }
+    namespace $Blueprint {
+    /** /PBZCombatAsset/Prototypes/GameplayEffects/Achievements/GE_Achievement_IronBloodBurstHit.GE_Achievement_IronBloodBurstHit_C — reflection-generated, not individually call-tested. */
+    interface GE_Achievement_IronBloodBurstHit_C_07f98fee98ff extends UE.GameplayEffect {
+    }
+    }
+    namespace $Static {
+    interface GE_Achievement_IronBloodBurstHit_C_07f98fee98ff {
+    }
+    }
+    namespace $Blueprint {
+    /** /PBZCombatAsset/Prototypes/GameplayEffects/Achievements/GE_Achievement_ThunderSpearParalyzeHit.GE_Achievement_ThunderSpearParalyzeHit_C — reflection-generated, not individually call-tested. */
+    interface GE_Achievement_ThunderSpearParalyzeHit_C_1ced1687fc8c extends UE.GameplayEffect {
+    }
+    }
+    namespace $Static {
+    interface GE_Achievement_ThunderSpearParalyzeHit_C_1ced1687fc8c {
     }
     }
     namespace $Blueprint {
@@ -222241,7 +222002,7 @@ declare module 'ue' {
     /** /SGameAI/BehaviorTree/Task/BTTask_SelectLeaderAI.BTTask_SelectLeaderAI_C — reflection-generated, not individually call-tested. */
     interface BTTask_SelectLeaderAI_C_4f424e12d2b4 extends Omit<UE.BTTask_BlueprintBase, "ReceiveExecuteAI"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "Reason": string;
+        "Reason": UE.$FText;
         "Include Self": boolean;
         "Ignore Cooldown": boolean;
         "In Screen Only": boolean;
@@ -223354,20 +223115,6 @@ declare module 'ue' {
     }
     }
     namespace $Blueprint {
-    /** /SGameAI/Core/AIScript/AIScript_HighPriorityLeaderAI.AIScript_HighPriorityLeaderAI_C — reflection-generated, not individually call-tested. */
-    interface AIScript_HighPriorityLeaderAI_C_ab1a872e8c38 extends Omit<UE.$Blueprint.BP_BaseAIScript_C_6b13f2d00946, "UberGraphFrame" | "OnDead" | "OnStateChanged"> {
-        "UberGraphFrame": UE.PointerToUberGraphFrame;
-        "TagFilter": UE.GameplayTagQuery;
-        "Filter"(Actor: UE.Actor | null | undefined): boolean;
-        "OnDead"(Tag: UE.GameplayTag): void;
-        "OnStateChanged"(NewState: UE.GameplayTag, PreviousState: UE.GameplayTag): void;
-    }
-    }
-    namespace $Static {
-    interface AIScript_HighPriorityLeaderAI_C_ab1a872e8c38 {
-    }
-    }
-    namespace $Blueprint {
     /** /SGameAI/Core/AIScript/AIScript_HitCounter.AIScript_HitCounter_C — reflection-generated, not individually call-tested. */
     interface AIScript_HitCounter_C_c656ae97fd3c extends Omit<UE.$Blueprint.BP_BaseAIScript_C_6b13f2d00946, "UberGraphFrame" | "OnDeinitialize" | "OnGameplayTagAdded" | "OnReceiveHit" | "PreGameplayEventReceived"> {
         "UberGraphFrame": UE.PointerToUberGraphFrame;
@@ -223452,7 +223199,7 @@ declare module 'ue' {
         "Added_43AF2EA94F0D1D5787468B94801C981D"(AsyncAction: UE.AbilityAsync_WaitGameplayTags | null | undefined, Tag: UE.GameplayTag): void;
         "Added_DAF2F52C478A702F8429F2BF0D3095E6"(AsyncAction: UE.AbilityAsync_WaitGameplayTags | null | undefined, Tag: UE.GameplayTag): void;
         "CheckVisibility"(): void;
-        "ForceSelectNewLeaderAI"(Reason: string): void;
+        "ForceSelectNewLeaderAI"(Reason: UE.$FText): void;
         "OnAIStarted"(): void;
         "OnAIStopped"(): void;
         "OnDead"(Tag: UE.GameplayTag): void;
@@ -223463,7 +223210,7 @@ declare module 'ue' {
         "Removed_FE0BC46B4759B841FC38F1A8CED2F10E"(): void;
         "Reset"(): void;
         "SelfIsLeaderAI"(): boolean;
-        "TrySelectNewLeaderIfNull"(Reason: string): void;
+        "TrySelectNewLeaderIfNull"(Reason: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -223683,6 +223430,7 @@ declare module 'ue' {
         "GetSpawnedSummonByInstanceId"(InstanceId: UE.AISummonInstanceId, SpawnedPawn: $Ref<UE.Pawn | null | undefined>): void;
         "GetSpawnedSummons"(SpawnedSummons: $Ref<UE.TMap<UE.Pawn | null | undefined, number>>): void;
         "GetSummonBaseLocation"(SummonInfoIndex: number, Result: $Ref<UE.Vector>): void;
+        "GetSummonClass"(InClass: UE.Class | null | undefined, SummonInfoIndex: number, AISummonInfo: UE.AISummonInfo, OutClass: $Ref<UE.Class | null | undefined>): void;
         "GetSummonRotation"(SummonInfoIndex: number, Result: $Ref<UE.Rotator>): void;
         "GetTraceIgnoreActors"(Array: $Ref<UE.TArray<UE.Actor | null | undefined>>): void;
         "InitializeSharedSummonTarget"(): void;
@@ -224305,7 +224053,7 @@ declare module 'ue' {
         "ReleaseToken"(TokenOwner: UE.$Blueprint.BPI_MetaAIMember_C_0fe1f4118b19 | null | undefined, ReleaseCount: number): void;
         "RemoveInvalidMembers"(InControlelrs: $Ref<UE.TArray<UE.AIController | null | undefined>>, OutControllers: $Ref<UE.TArray<UE.AIController | null | undefined>>, OutPawns: $Ref<UE.TArray<UE.Pawn | null | undefined>>): void;
         "RequestToken"(TokenOwner: UE.$Blueprint.BPI_MetaAIMember_C_0fe1f4118b19 | null | undefined, RequestCount: number, bSucceed: $Ref<boolean>): void;
-        "Select New Leader"(IncludeSelf: boolean, IgnoreCooldown: boolean, InScreenOnly: boolean, Reason: string): UE.AIController | null | undefined;
+        "Select New Leader"(IncludeSelf: boolean, IgnoreCooldown: boolean, InScreenOnly: boolean, Reason: UE.$FText): UE.AIController | null | undefined;
         "SendCommandEventToActor"(Actor: UE.Actor | null | undefined, EventTag: UE.GameplayTag): void;
         "SetNewLeaderAI"(NewLeaderAIController: UE.AIController | null | undefined): void;
         "TickDrawDebug"(): void;
@@ -224535,7 +224283,7 @@ declare module 'ue' {
     interface STCondition_ActivityIsValid_C_c385563b2ef9 extends Omit<UE.SGameStateTreeConditionBlueprintBase, "ReceiveGetDescription" | "ReceiveTestCondition"> {
         "ActivityActionTag": UE.GameplayTag;
         "ActivityActionSet": UE.SGameAIActivityActionSet;
-        "ReceiveGetDescription"(Formatting: UE.EStateTreeNodeFormatting): string;
+        "ReceiveGetDescription"(Formatting: UE.EStateTreeNodeFormatting): UE.$FText;
         "ReceiveTestCondition"(): boolean;
     }
     }
@@ -224547,7 +224295,7 @@ declare module 'ue' {
     /** /SGameAI/StateTree/Condition/STCondition_GameplayTagIsValid.STCondition_GameplayTagIsValid_C — reflection-generated, not individually call-tested. */
     interface STCondition_GameplayTagIsValid_C_8da03abb1652 extends Omit<UE.SGameStateTreeConditionBlueprintBase, "ReceiveGetDescription" | "ReceiveTestCondition"> {
         "Tag": UE.GameplayTag;
-        "ReceiveGetDescription"(Formatting: UE.EStateTreeNodeFormatting): string;
+        "ReceiveGetDescription"(Formatting: UE.EStateTreeNodeFormatting): UE.$FText;
         "ReceiveTestCondition"(): boolean;
     }
     }
@@ -224954,7 +224702,7 @@ declare module 'ue' {
         "OnNotifyBegin_CDC5463C4797DE7FE10A7C8432712221"(NotifyName: string): void;
         "OnNotifyEnd_CDC5463C4797DE7FE10A7C8432712221"(NotifyName: string): void;
         "ReceiveExitState"(Transition: UE.StateTreeTransitionResult): void;
-        "ReceiveGetDescription"(Formatting: UE.EStateTreeNodeFormatting): string;
+        "ReceiveGetDescription"(Formatting: UE.EStateTreeNodeFormatting): UE.$FText;
         "ReceiveLatentEnterState"(Transition: UE.StateTreeTransitionResult): void;
     }
     }
@@ -227948,7 +227696,7 @@ declare module 'ue' {
     }
     namespace $Static {
     interface BPFL_UltraVolumetrics_C_1827b7bdb91c {
-        "Ultra Volumetric Overlap Event"(_Overlapped_: boolean, Tags: $Ref<UE.TArray<string>>, _Tag_Name: string, __WorldContext: UE.Object | null | undefined, _Is_Overlapping: $Ref<boolean>): void;
+        "Ultra Volumetric Overlap Event"(_Overlapped_: boolean, Tags: $Ref<UE.TArray<UE.$FText>>, _Tag_Name: string, __WorldContext: UE.Object | null | undefined, _Is_Overlapping: $Ref<boolean>): void;
         "Ultra Volumetrics Scattering"(Target: UE.PostProcessComponent | null | undefined, Strength: number, _IsMat_: boolean, NearFadeDistance: number, __WorldContext: UE.Object | null | undefined): void;
         "Ultra Volumetrics Set Volumetric Fog"(_Enable_Volumetric_Fog_: boolean, __WorldContext: UE.Object | null | undefined): void;
         "UltraVolumetricsFogQuality"(Quality: UE.$Blueprint._Enum_Fog_Quality_978d9bf682db, __WorldContext: UE.Object | null | undefined): void;
@@ -228345,7 +228093,7 @@ declare module 'ue' {
         "HintMsg": UE.TextBlock | null | undefined;
         "Hint": UE.WidgetAnimation | null | undefined;
         "Construct"(): void;
-        "PlayHintMsg"(Text: string): void;
+        "PlayHintMsg"(Text: UE.$FText): void;
     }
     }
     namespace $Static {
@@ -232506,7 +232254,7 @@ declare module 'ue' {
         "Summer Snowfall (mm)": number;
         "Autumn Snowfall (mm)": number;
         "Dust/Sand Present": number;
-        "Data Source": string;
+        "Data Source": UE.$FText;
         "Return Temperature Range in Scale"(Scale: UE.$Blueprint.UDS_TemperatureType_f8f5407e7035, Season: number, Low: $Ref<number>, High: $Ref<number>): void;
     }
     }

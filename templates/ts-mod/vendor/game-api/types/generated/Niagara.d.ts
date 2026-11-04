@@ -1721,9 +1721,9 @@ declare module 'ue' {
     const NiagaraActor: UE.$Static.NiagaraActor & UE.$ClassType<UE.NiagaraActor>;
     /** /Script/Niagara.NiagaraAssetTagDefinition — reflection-generated, not individually call-tested. */
     interface NiagaraAssetTagDefinition {
-        "AssetTag": string;
+        "AssetTag": UE.$FText;
         "AssetFlags": number;
-        "Description": string;
+        "Description": UE.$FText;
         "DisplayType": UE.ENiagaraAssetTagDefinitionImportance;
         "Color": UE.LinearColor;
         "TagGuid": UE.Guid;
@@ -1744,8 +1744,8 @@ declare module 'ue' {
     const NiagaraAssetTagDefinitionReference: UE.$Static.NiagaraAssetTagDefinitionReference & UE.$StructType<UE.NiagaraAssetTagDefinitionReference>;
     /** /Script/Niagara.NiagaraAssetTagDefinitions — reflection-generated, not individually call-tested. */
     interface NiagaraAssetTagDefinitions extends UE.Object {
-        "DisplayName": string;
-        "Description": string;
+        "DisplayName": UE.$FText;
+        "Description": UE.$FText;
         "TagDefinitions": UE.TArray<UE.NiagaraAssetTagDefinition>;
         "bDisplayTagsAsFlatList": boolean;
         "SortOrder": number;
@@ -4625,7 +4625,7 @@ declare module 'ue' {
         "ScriptConstraint": UE.ENiagaraModuleDependencyScriptConstraint;
         "RequiredVersion": string;
         "OnlyEvaluateInScriptUsage": number;
-        "Description": string;
+        "Description": UE.$FText;
     }
     namespace $Static {
     interface NiagaraModuleDependency {
@@ -5071,7 +5071,7 @@ declare module 'ue' {
     const NiagaraPreviewAxis_InterpParamVector4: UE.$Static.NiagaraPreviewAxis_InterpParamVector4 & UE.$ClassType<UE.NiagaraPreviewAxis_InterpParamVector4>;
     /** /Script/Niagara.NiagaraPreviewBase — reflection-generated, not individually call-tested. */
     interface NiagaraPreviewBase extends UE.Actor {
-        "SetLabelText"(InXAxisText: string, InYAxisText: string): void;
+        "SetLabelText"(InXAxisText: UE.$FText, InYAxisText: UE.$FText): void;
         "SetSystem"(InSystem: UE.NiagaraSystem | null | undefined): void;
     }
     namespace $Static {
@@ -5468,7 +5468,7 @@ declare module 'ue' {
     /** /Script/Niagara.NiagaraScriptHighlight — reflection-generated, not individually call-tested. */
     interface NiagaraScriptHighlight {
         "Color": UE.LinearColor;
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
     }
     namespace $Static {
     interface NiagaraScriptHighlight {
@@ -5543,8 +5543,8 @@ declare module 'ue' {
         "bAllowCreateActorFromSystemWithNoEffectType": boolean;
         "PositionPinTypeColor": UE.LinearColor;
         "ByteCodeStripOption": UE.ENiagaraStripScriptByteCodeOption;
-        "QualityLevels": UE.TArray<string>;
-        "ComponentRendererWarningsPerClass": UE.TMap<string, string>;
+        "QualityLevels": UE.TArray<UE.$FText>;
+        "ComponentRendererWarningsPerClass": UE.TMap<string, UE.$FText>;
         "DefaultRenderTargetFormat": UE.ETextureRenderTargetFormat;
         "DefaultGridFormat": UE.ENiagaraGpuBufferFormat;
         "DefaultRendererMotionVectorSetting": UE.ENiagaraDefaultRendererMotionVectorSetting;
@@ -5946,9 +5946,9 @@ declare module 'ue' {
     /** /Script/Niagara.NiagaraStackSection — reflection-generated, not individually call-tested. */
     interface NiagaraStackSection {
         "SectionIdentifier": string;
-        "SectionDisplayName": string;
-        "Categories": UE.TArray<string>;
-        "ToolTip": string;
+        "SectionDisplayName": UE.$FText;
+        "Categories": UE.TArray<UE.$FText>;
+        "ToolTip": UE.$FText;
         "bEnabled": boolean;
     }
     namespace $Static {
@@ -7139,7 +7139,7 @@ declare module 'ue' {
     /** /Script/Niagara.NiagaraVariableInfo — reflection-generated, not individually call-tested. */
     interface NiagaraVariableInfo {
         "Variable": UE.NiagaraVariable;
-        "Definition": string;
+        "Definition": UE.$FText;
         "DataInterface": UE.NiagaraDataInterface | null | undefined;
     }
     namespace $Static {
@@ -7161,7 +7161,7 @@ declare module 'ue' {
     const NiagaraVariableLayoutInfo: UE.$Static.NiagaraVariableLayoutInfo & UE.$StructType<UE.NiagaraVariableLayoutInfo>;
     /** /Script/Niagara.NiagaraVariableMetaData — reflection-generated, not individually call-tested. */
     interface NiagaraVariableMetaData {
-        "Description": string;
+        "Description": UE.$FText;
         "DisplayUnit": UE.EUnit;
         "bAdvancedDisplay": boolean;
         "bDisplayInOverviewStack": boolean;
@@ -7180,7 +7180,7 @@ declare module 'ue' {
         "VariableGUID": UE.Guid;
         "bIsStaticSwitch": boolean;
         "StaticSwitchDefaultValue": number;
-        "CategoryName": string;
+        "CategoryName": UE.$FText;
         "ParentAttribute": string;
         "EditorSortPriority": number;
     }
@@ -7232,8 +7232,8 @@ declare module 'ue' {
     const NiagaraVolumeRendererProperties: UE.$Static.NiagaraVolumeRendererProperties & UE.$ClassType<UE.NiagaraVolumeRendererProperties>;
     /** /Script/Niagara.NiagaraWidgetNamedIntegerInputValue — reflection-generated, not individually call-tested. */
     interface NiagaraWidgetNamedIntegerInputValue {
-        "DisplayName": string;
-        "ToolTip": string;
+        "DisplayName": UE.$FText;
+        "ToolTip": UE.$FText;
     }
     namespace $Static {
     interface NiagaraWidgetNamedIntegerInputValue {
@@ -7303,7 +7303,7 @@ declare module 'ue' {
     interface VersionedNiagaraEmitterData {
         "Version": UE.NiagaraAssetVersion;
         "bDeprecated": boolean;
-        "DeprecationMessage": string;
+        "DeprecationMessage": UE.$FText;
         "bLocalSpace": boolean;
         "bDeterminism": boolean;
         "RandomSeed": number;
@@ -7360,8 +7360,8 @@ declare module 'ue' {
     /** /Script/Niagara.WidgetNamedInputValue — reflection-generated, not individually call-tested. */
     interface WidgetNamedInputValue {
         "Value": number;
-        "DisplayName": string;
-        "ToolTip": string;
+        "DisplayName": UE.$FText;
+        "ToolTip": UE.$FText;
     }
     namespace $Static {
     interface WidgetNamedInputValue {
@@ -7372,7 +7372,7 @@ declare module 'ue' {
     interface WidgetSegmentValueOverride {
         "EnumIndexToOverride": number;
         "bOverrideDisplayName": boolean;
-        "DisplayNameOverride": string;
+        "DisplayNameOverride": UE.$FText;
         "DisplayIcon": UE.Texture2D | null | undefined;
     }
     namespace $Static {

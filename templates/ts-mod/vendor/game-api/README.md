@@ -1,6 +1,6 @@
 # PBZ TypeScript 游戏 API
 
-`@pbz-mod-loader/game-api` 0.3.2 是 MOD 开发使用的类型声明包，为游戏提供的 `ue`、`puerts` 模块补全和检查类型。包内没有运行时代码，发布 MOD 时只携带编译后的 MOD 文件。
+`@pbz-mod-loader/game-api` 0.3.3 是 MOD 开发使用的类型声明包，为游戏提供的 `ue`、`puerts` 模块补全和检查类型。包内没有运行时代码，发布 MOD 时只携带编译后的 MOD 文件。
 
 适用构建：Steam Win64 `CL-301524_JKS-17219`，EXE SHA256 为 `7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4`。其他游戏构建和 WeGame 尚未验证。
 
@@ -13,8 +13,8 @@
 ```powershell
 # 在 PBZModLoader 仓库中生成压缩包
 npm run sdk:pack
-# 将 build/sdk/pbz-mod-loader-game-api-0.3.2.tgz 复制到 MOD 的 vendor/ 后
-npm install --save-dev ./vendor/pbz-mod-loader-game-api-0.3.2.tgz
+# 将 build/sdk/pbz-mod-loader-game-api-0.3.3.tgz 复制到 MOD 的 vendor/ 后
+npm install --save-dev ./vendor/pbz-mod-loader-game-api-0.3.3.tgz
 ```
 
 MOD 的 `tsconfig.json` 至少包含以下配置；保持完整声明检查，不需要 `skipLibCheck`：
@@ -76,7 +76,7 @@ if (cls) {
 
 ## 覆盖与验证程度
 
-本版合并原主菜单与 `PBZ_Xigu_WP` 两次采集，以及 27 批资产加载、一次定向属性复核后的有效采集，生成 **34,597 个类型**（18,453 个原生类型、16,144 个资产类型）、**49,540 个声明函数**及 **119,260 个已映射属性**，并保留原 SDK 的手工实测补充层。计数不展开继承成员，也不重复计算手工补充成员。
+本版使用 Steam **CL-302256_JKS-17280**（2026-11-04 更新）的 30 份有效反射采集，生成 **34,593 个类型**（18,457 个原生类型、16,136 个资产类型）、**49,386 个声明函数**及 **119,282 个已映射属性**。计数不展开继承成员，也不重复计算手工补充成员。旧构建采集不参与本版生成。
 
 - `generation-report.json`：输入文件哈希、采集构建、合并变化、继承覆盖、排除项和未解析项。
 - `type-index.json`：每个类型的完整路径、声明位置及 `reflection-generated` 状态。
@@ -84,9 +84,9 @@ if (cls) {
 
 生成声明不代表每项 API 都经过调用测试，也不代表所有蓝图都已采集。未加载资产、未反射且未注册绑定的成员不在覆盖范围内。函数只使用参数与返回字段，局部变量不进入声明。
 
-55 个属性保留为只读 `$Unresolved<Path>`：51 个 OptionalProperty、3 个 Utf8StrProperty、1 个 AnsiStrProperty。所有目标均确认有 getter/setter 绑定；Optional 与 UTF-8 的可实例化样本读值（含写入后读回）为 undefined，其余只检查了绑定，不能宣称可用映射。另有 5434 个内部蓝图入口/委托签名、352 个临时类型及 1 个丢失精度的大整数枚举值被排除。
+55 个属性保留为只读 `$Unresolved<Path>`：51 个 OptionalProperty、3 个 Utf8StrProperty、1 个 AnsiStrProperty。所有目标均确认有 getter/setter 绑定；Optional 与 UTF-8 的可实例化样本读值（含写入后读回）为 undefined，其余只检查了绑定，不能宣称可用映射。另有 5425 个内部蓝图入口/委托签名、377 个临时类型及 1 个丢失精度的大整数枚举值被排除。
 
-本次资产加载共处理 12,400 个登记表已确认的未覆盖路径，12,399 个成功。PBZCombatAsset、Game、HuaShira 三个优先目录全部完成；其余目录中 `Narrative/NarrativeUI/Widgets/Editor/WBP_DefaultQuestNode_C` 对应的类加载返回空值，未生成声明。具体完整路径和结果见仓库 `build/type-batches-20261030/final/report.md`；不代表全部游戏脚本或未反射 C++ API 已覆盖。
+本次按新版登记表分 27 批处理 12,303 个待采集路径，12,302 个成功。`Narrative/NarrativeUI/Widgets/Editor/WBP_DefaultQuestNode_C` 仍加载为空，保留为已知缺口。完整原始记录、窗口检查与重试证据位于仓库 `build/game-api-audit-20261104/`。登记表覆盖不是全部游戏脚本或未反射 C++ API 的覆盖承诺。
 
 部分 FName 属性在不同运行中出现大小写拼写差异；仅在其余反射结构一致时提供可选别名，并在 `memberNameVariants` 中记录。使用前应确认本次运行实际提供的拼写。
 
@@ -94,9 +94,25 @@ if (cls) {
 
 FieldPath 映射为字符串，形如 `/Script/Engine.Actor:bHidden`；读取未设置字段可能得到空字符串，但写入空字符串会抛 `invalid FieldPath`。实测临时 `GameplayAttribute` 的读写回环，以及该函数的空对象目标参数转换；0.3.2 另在新建临时 UObject 的嵌套 GameplayAttribute 字段上完成两次直接写入并读回；不修改现有游戏对象或类默认对象。
 
-## 0.3.2 绑定调查与安全边界
+## 0.3.3 新版游戏重采
 
-逐项结果和来源哈希见 [binding-support-verification.json](binding-support-verification.json)。
+补入实测的单参数 `UE.NewObject(Class)` 工厂声明。`Class.Load` 使用已采集的字面量类型路径时，返回值保留对应实例类型；普通 `Class` 参数返回保守的 `Object | null | undefined`。仅验证了临时 UObject 的创建，不表示任意反射类都可构造，也不补写未经验证的额外参数。
+
+原生类通过 `UE.TextBlock.StaticClass()` 这类入口取得。本轮 `Class.Load('/Script/UMG.TextBlock')` 返回空值；该次文本探测失败单独保留，成功证据取自改用 StaticClass 后的独立复测，不能把资产类加载经验套用到所有原生路径。
+
+修正了 **FText 被误声明为 string** 的问题：`TextProperty` 现在映射为不透明的 `UE.$FText`，包含函数参数、返回值、属性和 `BuiltinText` 容器。先调用 `KismetTextLibrary.Conv_StringToText(label)`，再传给 `TextBlock.SetText`；读取字符串使用 `Conv_TextToString`。新版已验证临时控件方法、属性以及数组、Map 值的文本读写回环，直接传 JS 字符串没有得到预期文本。
+
+相对 0.3.2 新增 14 个类型，并定向补回首轮遗漏的 10 个 RigVM 类型。旧 SDK 中另外 18 个类型在新版登记表中不再出现，逐项加载均返回空值，因此本版不复用它们的旧构建签名。完整路径和加载结果见仓库 `build/game-api-audit-20261104/prior-path-verification.json`。
+
+原生 API 新增 4 个类型、21 个普通函数和 2 个委托签名，另有 11 个已有类型的公开反射定义变化。新增内容包含非致命伤害计算器、序列与媒体预加载动作、着色器缓存提示子系统及 GameplayTag 数量变化监听。资产新增与移除按新版登记表及加载结果记录。
+
+新版重新检查了 55 个未映射属性的访问器、代表性临时值读写、8 个大整数枚举值，以及临时对象的两次 FieldPath 直接赋值。Optional 51 项、UTF-8 3 项、ANSI 1 项继续保留未解析声明；7 个大枚举标志位精确，_MAX 仍丢失精度。8 项新增类型/方法绑定检查和 10 项代表性 API 检查通过。
+
+当前引擎地图记录为 `PBZ_Fujizhilin_WP`。这是菜单界面下的采集与代表性调用复核，不代表完整战斗或切图验收。`property-mapping-verification.json` 保留 10 月 30 日的历史证据；当前构建复核见 `binding-support-verification.json`。此前会导致进程退出的 SetFieldPathPropertyByName 嵌套名实验未重放，继续标记 deprecated。
+
+## 0.3.2 历史绑定调查与安全边界
+
+当前构建逐项复核见 [binding-support-verification.json](binding-support-verification.json)。0.3.2 的完整历史记录保留在源码构建归档 `build/game-api-audit-20261104/prior-sdk/binding-support-verification.json`。
 
 - **55 个属性仍保留只读未解析声明**：55 个访问器均存在，35 个可实例化结构字段均读出 undefined；Optional 的整数、字符串、Name 与 UTF-8 样本赋值后仍读出 undefined。其余 20 项没有取得实例，包括含 ANSI 字符串的 Map，不能宣称已验证其值映射。此行为与上游 PuerTS 未支持类型的空转换器一致，但上游源码不是游戏的精确版本；无法仅靠补 TypeScript 声明修复运行时转换。
 - **补入 7 个精确的大整数枚举标志位**：ESkeletalMeshAsyncProperties 的 2^53 至 2^59 均实测为 number，并用 BigInt(number) 对照原始十进制整数确认精确。它们不是 bigint，不应使用 JS 的 32 位位运算。_MAX 的原始值为 576460752303423489，游戏转换后却为 576460752303423488，与 TargetMeshDeformers 相等，继续排除。
@@ -111,7 +127,8 @@ FieldPath 映射为字符串，形如 `/Script/Engine.Actor:bHidden`；读取未
 | 反射类型或行为 | 声明 |
 | --- | --- |
 | 普通数值 / 64 位整数 | `number` / `bigint` |
-| 字符串、Name、Text、FieldPath | `string`（FieldPath 输入需有效路径） |
+| 字符串、Name、FieldPath | `string`（FieldPath 输入需有效路径） |
+| 本地化文本 Text / FText | `UE.$FText`，通过 KismetTextLibrary 转换 |
 | 对象、接口、弱引用与延迟引用 | 目标类型加 `null \| undefined` |
 | 数组、集合、映射、定长数组 | `TArray`、`TSet`、`TMap`、`FixSizeArray` |
 | 非 const 的 out 参数 | `puerts.$Ref<T>`；使用 `$ref`/`$unref` |

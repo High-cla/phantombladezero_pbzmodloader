@@ -144,6 +144,22 @@ test('field paths map through nested containers and function parameters',()=>{
     assert.equal(r.report.unresolvedProperties.length,0);
 });
 
+test('native FText stays distinct from strings in fields, containers and ref parameters',()=>{
+    const f=fn('UseText',[
+        prop('text','TextProperty',{parameter:true}),
+        prop('copy','TextProperty',{parameter:true,out:true}),
+        prop('ReturnValue','TextProperty',{parameter:true,return:true})
+    ]);
+    const owner=type('Owner',{functions:[f.path],properties:[
+        prop('Title','TextProperty'),
+        prop('Labels','ArrayProperty',{inner:prop('element','TextProperty')})
+    ]});
+    const result=generate([capture([owner,f])],supplemental);
+    assert.match(decls(result),/"Title": UE\.\$FText/);
+    assert.match(decls(result),/"Labels": UE\.TArray<UE\.\$FText>/);
+    assert.match(decls(result),/"UseText"\(text: UE\.\$FText, copy: \$Ref<UE\.\$FText>\): UE\.\$FText/);
+});
+
 test('available capture inputs reproduce every checked-in generated file and report',t=>{
     const root=path.resolve(__dirname,'..');
     const saved=JSON.parse(fs.readFileSync(path.join(root,'sdk/generation-report.json')));

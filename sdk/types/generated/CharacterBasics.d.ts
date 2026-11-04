@@ -245,6 +245,10 @@ declare module 'ue' {
         "XP": UE.GameplayAttributeData;
         "Coin": UE.GameplayAttributeData;
         "Corrosion": UE.GameplayAttributeData;
+        "Resistance_FrostDuration": UE.GameplayAttributeData;
+        "TakenAdditiveMultiplier_FrostDuration": UE.GameplayAttributeData;
+        "TakenVulnerabilityMultiplier_FrostDuration": UE.GameplayAttributeData;
+        "TakenReductionMultiplier_FrostDuration": UE.GameplayAttributeData;
         "OnRep_Health"(OldValue: UE.GameplayAttributeData): void;
         "OnRep_Health_Max"(OldValue: UE.GameplayAttributeData): void;
     }

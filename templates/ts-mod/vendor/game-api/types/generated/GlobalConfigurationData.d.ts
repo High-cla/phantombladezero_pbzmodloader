@@ -17,8 +17,8 @@ declare module 'ue' {
         "GetConfigDataString"(EntryName: string, ValueOut: $Ref<string>): boolean;
         "GetConfigDataStringWithDefault"(EntryName: string, DefaultValue: string): string;
         "GetConfigDataStruct"(EntryName: string, StructType: UE.ScriptStruct | null | undefined, ValueOut: $Ref<UE.InstancedStruct>): boolean;
-        "GetConfigDataText"(EntryName: string, ValueOut: $Ref<string>): boolean;
-        "GetConfigDataTextWithDefault"(EntryName: string, DefaultValue: string): string;
+        "GetConfigDataText"(EntryName: string, ValueOut: $Ref<UE.$FText>): boolean;
+        "GetConfigDataTextWithDefault"(EntryName: string, DefaultValue: UE.$FText): UE.$FText;
     }
     }
     const GlobalConfigurationDataBlueprintLibrary: UE.$Static.GlobalConfigurationDataBlueprintLibrary & UE.$ClassType<UE.GlobalConfigurationDataBlueprintLibrary>;

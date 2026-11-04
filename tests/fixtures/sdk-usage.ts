@@ -104,3 +104,48 @@ lipsync.ReceiveTick('invalid');
 type Sacrifice = UE.ReflectedTypes['/PBZCombatAsset/ActorData/Mobs/058_MadDoctor/Ability/Abilities/Ceremony/ST_SacrificeVar.ST_SacrificeVar'];
 declare const sacrifice: Sacrifice;
 const sacrificeSide: boolean = sacrifice.LR_1_21DFE38F45FD872FC533C68C7A32B9CE;
+
+// CL-302256_JKS-17280 additions preserve reflected argument and return types.
+declare const sequencePlayer: UE.MovieSceneSequencePlayer;
+const primeAction: UE.PBZPrimeAndPlayAction | null | undefined = UE.PBZPrimeAndPlayAction.PrimeAndPlay(instance, sequencePlayer);
+const tagListener: UE.AbilityAsync_WaitGameplayTagCountDelta | null | undefined = UE.AbilityAsync_WaitGameplayTagCountDelta.WaitGameplayTagCountChangeOnActor(null, accessoryTag);
+declare const nonLethalCalculator: UE.DamageCalculator_PBZPlayerNonLethal;
+const originalCalculator: UE.DamageCalculatorBase | null | undefined = nonLethalCalculator.OriginalCalculator;
+// @ts-expect-error Sequence playback requires a reflected player object.
+UE.PBZPrimeAndPlayAction.PrimeAndPlay(instance, 'sequence');
+// @ts-expect-error A GameplayTag is a reflected struct, not a string.
+UE.AbilityAsync_WaitGameplayTagCountDelta.WaitGameplayTagCountChangeOnActor(null, 'Combat.Test');
+
+// FText is a native value, distinct from a JavaScript string.
+declare const labelWidget: UE.TextBlock;
+const nativeText: UE.$FText = UE.KismetTextLibrary.Conv_StringToText('采集文本');
+labelWidget.SetText(nativeText);
+labelWidget.Text = nativeText;
+const labelString: string = UE.KismetTextLibrary.Conv_TextToString(labelWidget.GetText());
+const textArray = UE.NewArray(UE.BuiltinText);
+textArray.Add(nativeText);
+const textElement: UE.$FText = textArray.Get(0);
+const textMap = UE.NewMap(UE.BuiltinString, UE.BuiltinText);
+textMap.Add('label', nativeText);
+// @ts-expect-error Native text cannot be passed off as a JavaScript string.
+const wrongTextString: string = nativeText;
+// @ts-expect-error TextBlock requires a converted native FText.
+labelWidget.SetText('unconverted');
+// @ts-expect-error TextProperty setters also require native FText.
+labelWidget.Text = 'unconverted';
+// @ts-expect-error BuiltinText arrays retain the native value type.
+textArray.Add('unconverted');
+// @ts-expect-error BuiltinText map values retain the native value type.
+textMap.Add('label', 'unconverted');
+// @ts-expect-error Native text values cannot be fabricated from plain objects.
+const fakeText: UE.$FText = {};
+// @ts-expect-error $FText is only a declaration helper, not a runtime value.
+UE.$FText;
+const textClass = UE.Class.Load('/Script/UMG.TextBlock');
+if (textClass) {
+    const createdLabel: UE.TextBlock | null | undefined = UE.NewObject(textClass);
+    createdLabel?.SetText(nativeText);
+}
+const genericObject: UE.Object | null | undefined = UE.NewObject(UE.TextBlock.StaticClass());
+// @ts-expect-error NewObject requires a class object, not a path string.
+UE.NewObject('/Script/UMG.TextBlock');

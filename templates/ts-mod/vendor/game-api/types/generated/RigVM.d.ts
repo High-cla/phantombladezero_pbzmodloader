@@ -5676,7 +5676,7 @@ declare module 'ue' {
         "Direction": UE.ERigVMPinDirection;
         "DefaultValue": string;
         "bIsConst": boolean;
-        "PathToTooltip": UE.TMap<string, string>;
+        "PathToTooltip": UE.TMap<string, UE.$FText>;
     }
     namespace $Static {
     interface RigVMGraphFunctionArgument {
@@ -5702,7 +5702,7 @@ declare module 'ue' {
         "Name": string;
         "NodeTitle": string;
         "NodeColor": UE.LinearColor;
-        "ToolTip": string;
+        "ToolTip": UE.$FText;
         "Description": string;
         "Category": string;
         "Keywords": string;
@@ -6161,7 +6161,7 @@ declare module 'ue' {
     interface RigVMTag {
         "Name": string;
         "Label": string;
-        "ToolTip": string;
+        "ToolTip": UE.$FText;
         "Color": UE.LinearColor;
         "bShowInUserInterface": boolean;
         "bMarksSubjectAsInvalid": boolean;

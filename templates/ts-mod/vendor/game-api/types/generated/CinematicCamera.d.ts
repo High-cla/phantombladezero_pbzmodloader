@@ -205,7 +205,7 @@ declare module 'ue' {
     /** /Script/CinematicCamera.NamedFilmbackPreset — reflection-generated, not individually call-tested. */
     interface NamedFilmbackPreset {
         "Name": string;
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
         "FilmbackSettings": UE.CameraFilmbackSettings;
     }
     namespace $Static {

@@ -17,13 +17,13 @@ declare module 'ue' {
         "ClientAckJoiningServer"(): void;
         "ClientJoinGame"(): void;
         "ClientLoginComplete"(InUniqueId: UE.UniqueNetIdRepl, bWasSuccessful: boolean): void;
-        "ClientPlayerJoined"(NewPlayerName: string, InUniqueId: UE.UniqueNetIdRepl): void;
+        "ClientPlayerJoined"(NewPlayerName: UE.$FText, InUniqueId: UE.UniqueNetIdRepl): void;
         "ClientPlayerLeft"(InUniqueId: UE.UniqueNetIdRepl): void;
         "ClientSetInviteFlags"(Settings: UE.JoinabilitySettings): void;
-        "ClientWasKicked"(KickReason: string): void;
+        "ClientWasKicked"(KickReason: UE.$FText): void;
         "ServerCheat"(Msg: string): void;
         "ServerDisconnectFromLobby"(): void;
-        "ServerKickPlayer"(PlayerToKick: UE.UniqueNetIdRepl, Reason: string): void;
+        "ServerKickPlayer"(PlayerToKick: UE.UniqueNetIdRepl, Reason: UE.$FText): void;
         "ServerLoginPlayer"(InSessionId: string, InUniqueId: UE.UniqueNetIdRepl, UrlString: string): void;
         "ServerNotifyJoiningServer"(): void;
         "ServerSetPartyOwner"(InUniqueId: UE.UniqueNetIdRepl, InPartyOwnerId: UE.UniqueNetIdRepl): void;
@@ -45,7 +45,7 @@ declare module 'ue' {
     const LobbyBeaconHost: UE.$Static.LobbyBeaconHost & UE.$ClassType<UE.LobbyBeaconHost>;
     /** /Script/Lobby.LobbyBeaconPlayerState — reflection-generated, not individually call-tested. */
     interface LobbyBeaconPlayerState extends UE.Info {
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
         "UniqueID": UE.UniqueNetIdRepl;
         "PartyOwnerUniqueId": UE.UniqueNetIdRepl;
         "bInLobby": boolean;

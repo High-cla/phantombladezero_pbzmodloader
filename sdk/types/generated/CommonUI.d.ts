@@ -31,7 +31,7 @@ declare module 'ue' {
         "bCollapsedWhenInvisible": boolean;
         "ProgressDynamicMaterial": UE.MaterialInstanceDynamic | null | undefined;
         "Icon": UE.SlateBrush;
-        "GetDisplayText"(): string;
+        "GetDisplayText"(): UE.$FText;
         "GetEnhancedInputAction"(): UE.InputAction | null | undefined;
         "GetIcon"(): UE.SlateBrush;
         "GetIconDynamicMaterial"(): UE.MaterialInstanceDynamic | null | undefined;
@@ -53,7 +53,7 @@ declare module 'ue' {
         "bIsCreateOld": boolean;
         "bIsBackHandler": boolean;
         "bIsBackActionDisplayedInActionBar": boolean;
-        "OverrideBackActionDisplayName": string;
+        "OverrideBackActionDisplayName": UE.$FText;
         "bAutoActivate": boolean;
         "bSupportsActivationFocus": boolean;
         "bIsModal": boolean;
@@ -313,7 +313,7 @@ declare module 'ue' {
         "BP_OnSelected"(): void;
         "BP_OnUnhovered"(): void;
         "ClearSelection"(): void;
-        "DisableButtonWithReason"(DisabledReason: string): void;
+        "DisableButtonWithReason"(DisabledReason: UE.$FText): void;
         "GetConvertInputActionToHold"(): boolean;
         "GetCurrentButtonPadding"(OutButtonPadding: $Ref<UE.Margin>): void;
         "GetCurrentCustomPadding"(OutCustomPadding: $Ref<UE.Margin>): void;
@@ -514,10 +514,10 @@ declare module 'ue' {
     const CommonCustomNavigation: UE.$Static.CommonCustomNavigation & UE.$ClassType<UE.CommonCustomNavigation>;
     /** /Script/CommonUI.CommonDateTimeTextBlock — reflection-generated, not individually call-tested. */
     interface CommonDateTimeTextBlock extends UE.CommonTextBlock {
-        "CustomTimespanFormat": string;
+        "CustomTimespanFormat": UE.$FText;
         "bCustomTimespanLeadingZeros": boolean;
         "GetDateTime"(): UE.DateTime;
-        "SetCountDownCompletionText"(InCompletionText: string): void;
+        "SetCountDownCompletionText"(InCompletionText: UE.$FText): void;
         "SetDateTimeValue"(InDateTime: UE.DateTime, bShowAsCountdown: boolean, InRefreshDelay: number): void;
         "SetTimespanValue"(InTimespan: UE.Timespan): void;
     }
@@ -563,8 +563,8 @@ declare module 'ue' {
     const CommonHierarchicalScrollBox: UE.$Static.CommonHierarchicalScrollBox & UE.$ClassType<UE.CommonHierarchicalScrollBox>;
     /** /Script/CommonUI.CommonInputActionDataBase — reflection-generated, not individually call-tested. */
     interface CommonInputActionDataBase extends UE.TableRowBase {
-        "DisplayName": string;
-        "HoldDisplayName": string;
+        "DisplayName": UE.$FText;
+        "HoldDisplayName": UE.$FText;
         "NavBarPriority": number;
         "KeyboardInputTypeInfo": UE.CommonInputTypeInfo;
         "DefaultGamepadInputTypeInfo": UE.CommonInputTypeInfo;
@@ -668,14 +668,14 @@ declare module 'ue' {
         "LoadingThrobberBrush": UE.SlateBrush;
         "ThrobberAlignment": UE.EHorizontalAlignment;
         "ThrobberPadding": UE.Margin;
-        "LoadingText": string;
+        "LoadingText": UE.$FText;
         "Textstyle": UE.Class | null | undefined;
         "BP_OnLoadingStateChanged": UE.$MulticastDelegate<(bIsLoading: boolean) => void>;
         "SpinnerMaterialPath": UE.SoftObjectPath;
         "BP_GuardAndLoadAsset"(InLazyAsset: UE.TSoftObjectPtr<UE.Object>, OnAssetLoaded: UE.$Delegate<(Object: UE.Object | null | undefined) => void>): void;
         "IsLoading"(): boolean;
         "SetIsLoading"(bInIsLoading: boolean): void;
-        "SetLoadingText"(InLoadingText: string): void;
+        "SetLoadingText"(InLoadingText: UE.$FText): void;
     }
     namespace $Static {
     interface CommonLoadGuard {
@@ -789,8 +789,8 @@ declare module 'ue' {
         "BP_OnOptionSelected"(Index: number): void;
         "BP_OnOptionsPopulated"(Count: number): void;
         "GetSelectedIndex"(): number;
-        "GetSelectedText"(): string;
-        "PopulateTextLabels"(Labels: UE.TArray<string>): void;
+        "GetSelectedText"(): UE.$FText;
+        "PopulateTextLabels"(Labels: UE.TArray<UE.$FText>): void;
         "SetSelectedItem"(InValue: number): void;
         "ShiftTextLeft"(): void;
         "ShiftTextRight"(): void;
@@ -817,7 +817,7 @@ declare module 'ue' {
         "TabButtonGroup": UE.CommonButtonGroupBase | null | undefined;
         "RegisteredTabsByID": UE.TMap<string, UE.CommonRegisteredTabInfo>;
         "TabButtonWidgetPool": UE.UserWidgetPool;
-        "DisableTabWithReason"(TabNameID: string, Reason: string): void;
+        "DisableTabWithReason"(TabNameID: string, Reason: UE.$FText): void;
         "GetActiveTab"(): string;
         "GetLinkedSwitcher"(): UE.CommonAnimatedSwitcher | null | undefined;
         "GetSelectedTabId"(): string;
@@ -1231,7 +1231,7 @@ declare module 'ue' {
     const LoadGuardSlot: UE.$Static.LoadGuardSlot & UE.$ClassType<UE.LoadGuardSlot>;
     /** /Script/CommonUI.RichTextIconData — reflection-generated, not individually call-tested. */
     interface RichTextIconData extends UE.TableRowBase {
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
         "ResourceObject": UE.TSoftObjectPtr<UE.Object>;
         "ImageSize": UE.Vector2D;
     }
@@ -1285,7 +1285,7 @@ declare module 'ue' {
     /** /Script/CommonUI.UIInputAction — reflection-generated, not individually call-tested. */
     interface UIInputAction {
         "ActionTag": UE.UIActionTag;
-        "DefaultDisplayName": string;
+        "DefaultDisplayName": UE.$FText;
         "KeyMappings": UE.TArray<UE.UIActionKeyMapping>;
     }
     namespace $Static {

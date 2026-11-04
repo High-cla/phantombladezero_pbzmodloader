@@ -2951,7 +2951,7 @@ declare module 'ue' {
     const GameplayEffectUIData: UE.$Static.GameplayEffectUIData & UE.$ClassType<UE.GameplayEffectUIData>;
     /** /Script/GameplayAbilities.GameplayEffectUIData_TextOnly — reflection-generated, not individually call-tested. */
     interface GameplayEffectUIData_TextOnly extends UE.GameplayEffectUIData {
-        "Description": string;
+        "Description": UE.$FText;
     }
     namespace $Static {
     interface GameplayEffectUIData_TextOnly {

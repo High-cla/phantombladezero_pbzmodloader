@@ -52,11 +52,11 @@ declare module 'ue' {
         "Options": UE.SubtitleDisplayOptions | null | undefined;
         "WrapTextAt": number;
         "bPreviewMode": boolean;
-        "PreviewText": string;
+        "PreviewText": UE.$FText;
         "GeneratedStyle": UE.TextBlockStyle;
         "GeneratedBackgroundBorder": UE.SlateBrush;
         "HasSubtitles"(): boolean;
-        "SetDisPlayText"(Text: string): void;
+        "SetDisPlayText"(Text: UE.$FText): void;
     }
     namespace $Static {
     interface SubtitleDisplay {

@@ -2029,7 +2029,7 @@ declare module 'ue' {
     /** /Script/InteractiveToolsFramework.ScalableSphereGizmo — reflection-generated, not individually call-tested. */
     interface ScalableSphereGizmo extends UE.InteractiveGizmo {
         "HitErrorThreshold": number;
-        "TransactionDescription": string;
+        "TransactionDescription": UE.$FText;
         "Radius": number;
         "bIsHovering": boolean;
         "bIsDragging": boolean;

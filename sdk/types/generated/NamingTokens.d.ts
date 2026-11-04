@@ -13,8 +13,8 @@ declare module 'ue' {
     /** /Script/NamingTokens.NamingTokenData — reflection-generated, not individually call-tested. */
     interface NamingTokenData {
         "TokenKey": string;
-        "DisplayName": string;
-        "Description": string;
+        "DisplayName": UE.$FText;
+        "Description": UE.$FText;
         "FunctionName": string;
     }
     namespace $Static {
@@ -36,8 +36,8 @@ declare module 'ue' {
     const NamingTokenFilterArgs: UE.$Static.NamingTokenFilterArgs & UE.$StructType<UE.NamingTokenFilterArgs>;
     /** /Script/NamingTokens.NamingTokenResultData — reflection-generated, not individually call-tested. */
     interface NamingTokenResultData {
-        "OriginalText": string;
-        "EvaluatedText": string;
+        "OriginalText": UE.$FText;
+        "EvaluatedText": UE.$FText;
         "TokenValues": UE.TArray<UE.NamingTokenValueData>;
     }
     namespace $Static {
@@ -49,7 +49,7 @@ declare module 'ue' {
     interface NamingTokenValueData {
         "TokenKey": string;
         "TokenNamespace": string;
-        "TokenValue": string;
+        "TokenValue": UE.$FText;
         "bWasEvaluated": boolean;
     }
     namespace $Static {
@@ -62,11 +62,11 @@ declare module 'ue' {
         "CustomTokens": UE.TArray<UE.NamingTokenData>;
         "CurrentEvaluationData": UE.NamingTokensEvaluationData;
         "Namespace": string;
-        "NamespaceDisplayName": string;
+        "NamespaceDisplayName": UE.$FText;
         "GetCurrentDateTime"(): UE.DateTime;
         "OnPostEvaluate"(): void;
         "OnPreEvaluate"(InEvaluationData: UE.NamingTokensEvaluationData): void;
-        "ProcessTokenTemplateFunction"(): string;
+        "ProcessTokenTemplateFunction"(): UE.$FText;
     }
     namespace $Static {
     interface NamingTokens {
@@ -79,7 +79,7 @@ declare module 'ue' {
         "ClearCachedNamingTokens"(): void;
         "EvaluateTokenList"(InTokenList: UE.TArray<string>, InFilter: UE.NamingTokenFilterArgs, InContexts: UE.TArray<UE.Object | null | undefined>): UE.TArray<UE.NamingTokenValueData>;
         "EvaluateTokenString"(InTokenString: string, InFilter: UE.NamingTokenFilterArgs, InContexts: UE.TArray<UE.Object | null | undefined>): UE.NamingTokenResultData;
-        "EvaluateTokenText"(InTokenText: string, InFilter: UE.NamingTokenFilterArgs, InContexts: UE.TArray<UE.Object | null | undefined>): UE.NamingTokenResultData;
+        "EvaluateTokenText"(InTokenText: UE.$FText, InFilter: UE.NamingTokenFilterArgs, InContexts: UE.TArray<UE.Object | null | undefined>): UE.NamingTokenResultData;
         "GetAllNamespaces"(): UE.TArray<string>;
         "GetGlobalNamespaces"(): UE.TArray<string>;
         "GetMultipleNamingTokens"(InNamespaces: UE.TArray<string>): UE.TArray<UE.NamingTokens | null | undefined>;

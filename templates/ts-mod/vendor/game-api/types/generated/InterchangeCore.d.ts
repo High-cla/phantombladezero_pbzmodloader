@@ -278,7 +278,7 @@ declare module 'ue' {
     const InterchangeResult: UE.$Static.InterchangeResult & UE.$ClassType<UE.InterchangeResult>;
     /** /Script/InterchangeCore.InterchangeResultDisplay_Generic — reflection-generated, not individually call-tested. */
     interface InterchangeResultDisplay_Generic extends UE.InterchangeResultSuccess {
-        "Text": string;
+        "Text": UE.$FText;
     }
     namespace $Static {
     interface InterchangeResultDisplay_Generic {
@@ -295,7 +295,7 @@ declare module 'ue' {
     const InterchangeResultError: UE.$Static.InterchangeResultError & UE.$ClassType<UE.InterchangeResultError>;
     /** /Script/InterchangeCore.InterchangeResultError_Generic — reflection-generated, not individually call-tested. */
     interface InterchangeResultError_Generic extends UE.InterchangeResultError {
-        "Text": string;
+        "Text": UE.$FText;
     }
     namespace $Static {
     interface InterchangeResultError_Generic {
@@ -328,7 +328,7 @@ declare module 'ue' {
     const InterchangeResultWarning: UE.$Static.InterchangeResultWarning & UE.$ClassType<UE.InterchangeResultWarning>;
     /** /Script/InterchangeCore.InterchangeResultWarning_Generic — reflection-generated, not individually call-tested. */
     interface InterchangeResultWarning_Generic extends UE.InterchangeResultWarning {
-        "Text": string;
+        "Text": UE.$FText;
     }
     namespace $Static {
     interface InterchangeResultWarning_Generic {

@@ -23,6 +23,16 @@ declare module 'ue' {
     }
     }
     const AbilityAsync_WaitGameplayEffectRemoved: UE.$Static.AbilityAsync_WaitGameplayEffectRemoved & UE.$ClassType<UE.AbilityAsync_WaitGameplayEffectRemoved>;
+    /** /Script/SGameUtils.AbilityAsync_WaitGameplayTagCountDelta — reflection-generated, not individually call-tested. */
+    interface AbilityAsync_WaitGameplayTagCountDelta extends UE.AbilityAsync {
+        "Changed": UE.$MulticastDelegate<(OldCount: number, NewCount: number) => void>;
+    }
+    namespace $Static {
+    interface AbilityAsync_WaitGameplayTagCountDelta {
+        "WaitGameplayTagCountChangeOnActor"(TargetActor: UE.Actor | null | undefined, Tag: UE.GameplayTag): UE.AbilityAsync_WaitGameplayTagCountDelta | null | undefined;
+    }
+    }
+    const AbilityAsync_WaitGameplayTagCountDelta: UE.$Static.AbilityAsync_WaitGameplayTagCountDelta & UE.$ClassType<UE.AbilityAsync_WaitGameplayTagCountDelta>;
     /** /Script/SGameUtils.AbilityAsync_WaitGameplayTagQueryBatched — reflection-generated, not individually call-tested. */
     interface AbilityAsync_WaitGameplayTagQueryBatched extends UE.AbilityAsync {
         "Triggered": UE.$MulticastDelegate<() => void>;

@@ -39,7 +39,7 @@ function canonical(value) {
 function generate(inputs, supplemental) {
     const records = new Map(), origins = new Map();
     const memberNameVariants = new Map();
-    const report = {schemaVersion:1, generatorVersion:4, captures:[], conflicts:[], implementationChanges:[], propertyResolutions:[], metadataLimitedProperties:[], excludedTypes:[], omittedMembers:[], omittedEnumValues:[], verifiedLargeEnumValues:[], unresolvedProperties:[], ignoredLocals:0, nameCollisions:[], inheritanceOverrides:[], counts:{}};
+    const report = {schemaVersion:1, generatorVersion:5, captures:[], conflicts:[], implementationChanges:[], propertyResolutions:[], metadataLimitedProperties:[], excludedTypes:[], omittedMembers:[], omittedEnumValues:[], verifiedLargeEnumValues:[], unresolvedProperties:[], ignoredLocals:0, nameCollisions:[], inheritanceOverrides:[], counts:{}};
     let build, exeSha256;
     for (const input of inputs.slice().sort((a,b) => a.name.localeCompare(b.name, 'en'))) {
         // Read one capture at a time: batch inventories repeat a large native graph.
@@ -128,7 +128,8 @@ function generate(inputs, supplemental) {
         case 'BoolProperty': t='boolean'; break;
         case 'Int8Property': case 'Int16Property': case 'IntProperty': case 'UInt16Property': case 'UInt32Property': case 'FloatProperty': case 'DoubleProperty': t='number'; break;
         case 'Int64Property': case 'UInt64Property': t='bigint'; break;
-        case 'NameProperty': case 'StrProperty': case 'TextProperty': case 'FieldPathProperty': t='string'; break;
+        case 'NameProperty': case 'StrProperty': case 'FieldPathProperty': t='string'; break;
+        case 'TextProperty': t='UE.$FText'; break;
         case 'ByteProperty': t=p.enum ? ref(p.enum,['Enum']) : 'number'; break;
         case 'EnumProperty':
             if(p.enum)t=ref(p.enum,['Enum']);

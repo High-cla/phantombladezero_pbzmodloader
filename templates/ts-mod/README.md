@@ -26,7 +26,7 @@ npm run build
 
 ```text
 src/main.ts          MOD 入口
-vendor/game-api/     SDK 0.3.2：反射生成并附实测补充的 UE / PuerTS 类型，本地开发依赖
+vendor/game-api/     SDK 0.3.3：反射生成并附实测补充的 UE / PuerTS 类型，本地开发依赖
 types/custom.d.ts    自己新增的已验证 API 声明（可选）
 scripts/clean.cjs    开发机上的输出清理工具
 tsconfig.json       严格检查、ES2020/CommonJS 输出
@@ -76,8 +76,8 @@ ID 只使用英文字母、数字、下划线、连字符，并选择不与其�
   配置刻意不引入 Node/DOM 全局类型；也不提供任意字符串 `require()` 来绕过检查。
 - `@pbz-mod-loader/game-api` 通过 `tsconfig.json` 的 `types` 加载，直接 `import ... from 'ue'` 或 `'puerts'` 即有补全。
   不要在源码中导入 SDK 包本身，它只有类型，没有运行时代码。
-  SDK 0.3.2 基于 Steam Win64 `CL-301524_JKS-17219` 的主菜单、`PBZ_Xigu_WP` 与 27 批资产加载反射采集，
-  包含 34,597 个类型、49,540 个函数和 119,260 个已映射属性，并保留手工实测补充层。
+  SDK 0.3.3 基于 Steam Win64 `CL-302256_JKS-17280`（2026-11-04 更新）重新采集，
+  包含 34,593 个类型、49,386 个函数和 119,282 个已映射属性，并保留实测补充层。
   生成声明不代表每项 API 都经过调用验证，也不覆盖所有未加载蓝图；其他游戏构建和 WeGame 尚未验证。
   [SDK 说明与迁移方法](vendor/game-api/README.md)列出了映射约定、蓝图路径用法及限制。
   `type-index.json` 可按反射完整路径定位声明，`generation-report.json` 记录生成覆盖和未解析项，
@@ -95,8 +95,8 @@ ID 只使用英文字母、数字、下划线、连字符，并选择不与其�
 ### 先转换为原生 FText，再写入并读回
 
 当前游戏实测 `KismetTextLibrary.Conv_StringToText()` 返回原生 `FText` 对象（`typeof` 为 `object`）。
-SDK 0.3.2 将相关文本接口声明为 `string`，没有反映这一运行时差异；直接把 JS 字符串传给
-`TextBlock.SetText()` 会出现空文本。应保留转换结果，直接传给文本接口，不要再用 `String()` 或字符串拼接转换它。
+SDK 0.3.3 已将文本接口修正为不透明的 `UE.$FText`；直接把 JS 字符串传给
+`TextBlock.SetText()` 会被类型检查拒绝。应保留转换结果，直接传给文本接口，不要再用 `String()` 或字符串拼接转换它。
 
 ```typescript
 import UE = require('ue');

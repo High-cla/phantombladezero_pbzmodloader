@@ -6,6 +6,10 @@ declare module 'ue' {
         readonly __unresolvedDoNotAccess: unique symbol;
         readonly __pathDoNotAccess: Path;
     }
+    /** Native localized text. Use KismetTextLibrary conversions; this is not a JS string or a runtime constructor. */
+    export interface $FText {
+        readonly __ftextDoNotAccess: unique symbol;
+    }
     export interface $TypedClass<K extends keyof ReflectedClasses> extends Class {
         readonly __classDoNotAccess: unique symbol;
         readonly __typePathDoNotAccess: K;
@@ -14,6 +18,9 @@ declare module 'ue' {
         StaticClass(): Class;
         Load(name: string): T | null | undefined;
     }
+    /** Verified one-argument UObject factory. Does not imply that every class can be constructed. */
+    export function NewObject<K extends keyof ReflectedClasses>(type: $TypedClass<K>): ReflectedClasses[K] | null | undefined;
+    export function NewObject(type: Class): Object | null | undefined;
     export interface $StructType<T> { StaticClass(): ScriptStruct; }
     export namespace $Static {
         interface Class {
@@ -69,7 +76,7 @@ declare module 'ue' {
     export const BuiltinText: 7;
     export const BuiltinName: 8;
     export type $ContainerToken = 0|1|2|3|4|5|6|7|8;
-    export type $ContainerElement<T extends $ContainerToken> = T extends 0 ? boolean : T extends 5 ? bigint : T extends 6|7|8 ? string : number;
+    export type $ContainerElement<T extends $ContainerToken> = T extends 0 ? boolean : T extends 5 ? bigint : T extends 7 ? $FText : T extends 6|8 ? string : number;
     export function NewArray<T extends $ContainerToken>(type: T): TArray<$ContainerElement<T>>;
     export function NewSet<T extends $ContainerToken>(type: T): TSet<$ContainerElement<T>>;
     export function NewMap<K extends $ContainerToken,V extends $ContainerToken>(key: K, value: V): TMap<$ContainerElement<K>,$ContainerElement<V>>;

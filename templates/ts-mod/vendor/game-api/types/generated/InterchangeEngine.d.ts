@@ -130,7 +130,7 @@ declare module 'ue' {
     /** /Script/InterchangeEngine.InterchangeFilePickerParameters — reflection-generated, not individually call-tested. */
     interface InterchangeFilePickerParameters {
         "bAllowMultipleFiles": boolean;
-        "Title": string;
+        "Title": UE.$FText;
         "DefaultPath": string;
         "bShowAllFactoriesExtension": boolean;
         "ExtraFormats": UE.TArray<string>;

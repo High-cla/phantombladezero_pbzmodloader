@@ -91,7 +91,7 @@ declare module 'ue' {
     const QosPingServerInfo: UE.$Static.QosPingServerInfo & UE.$StructType<UE.QosPingServerInfo>;
     /** /Script/Qos.QosRegionInfo — reflection-generated, not individually call-tested. */
     interface QosRegionInfo {
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
         "RegionId": string;
         "bEnabled": boolean;
         "bVisible": boolean;

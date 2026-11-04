@@ -23,13 +23,13 @@ declare module 'ue' {
     }
     namespace $Static {
     interface ELTBlueprintLibrary {
-        "AreTextKeysEqual"(A: string, B: string): boolean;
+        "AreTextKeysEqual"(A: UE.$FText, B: UE.$FText): boolean;
         "CanSetLanguage"(WorldContextObject: UE.Object | null | undefined, Language: string): boolean;
         "Conv_LocTextToString"(InLocText: UE.LocText): string;
-        "Conv_LocTextToText"(InLocText: UE.LocText): string;
+        "Conv_LocTextToText"(InLocText: UE.LocText): UE.$FText;
         "GetAvailableLanguages"(WorldContextObject: UE.Object | null | undefined): UE.TArray<string>;
         "GetCurrentLanguage"(WorldContextObject: UE.Object | null | undefined): string;
-        "GetTextData"(InText: string, OutPackage: $Ref<string>, OutNamespace: $Ref<string>, OutKey: $Ref<string>, OutSource: $Ref<string>): void;
+        "GetTextData"(InText: UE.$FText, OutPackage: $Ref<string>, OutNamespace: $Ref<string>, OutKey: $Ref<string>, OutSource: $Ref<string>): void;
         "RefreshLanguageResources"(WorldContextObject: UE.Object | null | undefined): void;
         "SetLanguage"(WorldContextObject: UE.Object | null | undefined, Language: string): boolean;
     }

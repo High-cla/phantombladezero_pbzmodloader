@@ -1,7 +1,7 @@
 """Read-only, build-locked UE reflection inventory. Python 3.10+, Windows x64.
 
 No injection, debugger attachment, game function calls or process writes.
-Offsets were measured against the SHA256 below, not inferred from UE version.
+Offsets are selected by executable SHA256, not inferred from UE version.
 """
 import argparse
 from collections import Counter
@@ -22,6 +22,12 @@ PROFILE = dict(nameBlocksRva=0xdd11ad0, objectArrayRva=0xddb3c50,
                structSize=0xa8, functionFlags=0x100, fieldNext=0x10,
                fieldOwner=0x18, fieldName=0x20, fieldClassName=0x30,
                propertyData=0x70, enumNames=0x40, enumValues=0x48, enumCount=0x50)
+BUILD_PROFILES = {
+    SHA256: dict(build=BUILD, profile=PROFILE),
+    '4415933ce33476f14c837abb61a1b60af8b78cd81783896501913a7aac69e423': dict(
+        build='CL-302256_JKS-17280',
+        profile={**PROFILE, 'nameBlocksRva': 0xdd86ad0, 'objectArrayRva': 0xde28c60}),
+}
 
 
 class ParseError(Exception):
@@ -31,6 +37,12 @@ class ParseError(Exception):
 def require(condition, message):
     if not condition:
         raise ParseError(message)
+
+
+def build_profile(sha256):
+    require(sha256 in BUILD_PROFILES, f'Unsupported executable SHA256: {sha256}')
+    entry = BUILD_PROFILES[sha256]
+    return entry['build'], dict(entry['profile'])
 
 
 class Process:
@@ -54,7 +66,7 @@ class Process:
                 for block in iter(lambda: f.read(1024 * 1024), b''):
                     digest.update(block)
             self.sha256 = digest.hexdigest()
-            require(self.sha256 == SHA256, f'Unsupported executable SHA256: {self.sha256}')
+            self.build, self.profile = build_profile(self.sha256)
             ps = C.WinDLL('psapi')
             ps.EnumProcessModules.argtypes = [W.HANDLE, C.c_void_p, W.DWORD, C.c_void_p]
             modules = (C.c_void_p * 1024)()
@@ -84,6 +96,7 @@ class Process:
 class Exporter:
     def __init__(self, process):
         self.m = process
+        self.profile = process.profile
         self.names = {}
         self.objects = {}
         self.paths = {}
@@ -101,7 +114,7 @@ class Exporter:
     def name(self, index, number=0):
         if index not in self.names:
             require(index >> 16 < 8192, f'Invalid FName index {index:#x}')
-            block = self.ptr(self.m.base + PROFILE['nameBlocksRva'] + 8*(index >> 16))
+            block = self.ptr(self.m.base + self.profile['nameBlocksRva'] + 8*(index >> 16))
             address = block + 2*(index & 65535)
             header = self.unpack('H', address)[0]
             length = header >> 6
@@ -117,7 +130,7 @@ class Exporter:
         self.failures.append(dict(stage=stage, address=hex(address), owner=owner, error=str(error)))
 
     def header(self):
-        a = self.m.base + PROFILE['objectArrayRva']
+        a = self.m.base + self.profile['objectArrayRva']
         max_chunks, chunks, data, count, maximum = self.unpack('IIQII', a)
         require(0 < count <= maximum <= 10000000 and 0 < chunks <= max_chunks <= 1024,
                 'Object array bounds invalid')
@@ -400,9 +413,9 @@ def main(argv=None):
                      enumValues=sum(len(r.get('values',[])) for r in records),
                      propertyKinds=dict(sorted(exporter.property_kinds.items())),
                      failureCount=len(exporter.failures))
-        manifest = dict(schemaVersion=1, build=BUILD, exeSha256=process.sha256,
+        manifest = dict(schemaVersion=1, build=process.build, exeSha256=process.sha256,
                         capturedAt=datetime.now(timezone.utc).isoformat(), label=args.label,
-                        processId=args.pid, profile=PROFILE, checks=checks,
+                        processId=args.pid, profile=process.profile, checks=checks,
                         display=display,
                         scope='Registered native and currently loaded reflected types/functions; no asset loading',
                         consistency='Read-only live capture; stable array and reflection identities, not an atomic engine snapshot',

@@ -5,11 +5,12 @@ import struct
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
-from reflection_export import Exporter, ParseError, PROFILE
+from reflection_export import Exporter, ParseError, PROFILE, SHA256, build_profile
 
 
 class Memory:
     base = 0x140000000
+    profile = PROFILE
 
     def __init__(self): self.bytes = {}
 
@@ -103,6 +104,26 @@ class ParserTest(unittest.TestCase):
         self.m.put(0x40014,'H',2*64+1)
         self.m.put(0x40016,'HH',ord('角'),ord('色'))
         self.assertEqual(self.e.name(10,2),'角色_1')
+
+    def test_build_profiles_are_hash_locked_and_independent(self):
+        old_build, old = build_profile(SHA256)
+        build, profile = build_profile('4415933ce33476f14c837abb61a1b60af8b78cd81783896501913a7aac69e423')
+        self.assertEqual(old_build, 'CL-301524_JKS-17219')
+        self.assertEqual(build, 'CL-302256_JKS-17280')
+        self.assertNotEqual(old['nameBlocksRva'], profile['nameBlocksRva'])
+        with self.assertRaisesRegex(ParseError, 'Unsupported executable'):
+            build_profile('0'*64)
+        profile['nameBlocksRva'] = 0
+        self.assertNotEqual(build_profile('4415933ce33476f14c837abb61a1b60af8b78cd81783896501913a7aac69e423')[1]['nameBlocksRva'], 0)
+
+    def test_updated_build_uses_its_own_name_pool_and_object_array(self):
+        _, self.m.profile = build_profile('4415933ce33476f14c837abb61a1b60af8b78cd81783896501913a7aac69e423')
+        e = Exporter(self.m)
+        self.m.put(self.m.base+self.m.profile['nameBlocksRva'], 'Q', 0x40000)
+        self.m.put(0x40000, 'H4s', 4*64, b'None')
+        self.m.put(self.m.base+self.m.profile['objectArrayRva'], 'IIQII', 65, 1, 0x50000, 10, 65*65536)
+        self.assertEqual(e.name(0), 'None')
+        self.assertEqual(e.header(), (65, 1, 0x50000, 10, 65*65536))
 
 
 if __name__ == '__main__': unittest.main()

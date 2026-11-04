@@ -108,10 +108,10 @@ declare module 'ue' {
         "GetParent"(LiveLinkTransform: $Ref<UE.LiveLinkTransform>, Parent: $Ref<UE.LiveLinkTransform>): void;
         "GetPropertyValue"(BasicData: $Ref<UE.LiveLinkBasicBlueprintData>, PropertyName: string, Value: $Ref<number>): boolean;
         "GetRootTransform"(SubjectFrameHandle: $Ref<UE.SubjectFrameHandle>, LiveLinkTransform: $Ref<UE.LiveLinkTransform>): void;
-        "GetSourceMachineName"(SourceHandle: $Ref<UE.LiveLinkSourceHandle>): string;
-        "GetSourceStatus"(SourceHandle: $Ref<UE.LiveLinkSourceHandle>): string;
-        "GetSourceType"(SourceHandle: $Ref<UE.LiveLinkSourceHandle>): string;
-        "GetSourceTypeFromGuid"(SourceGuid: UE.Guid): string;
+        "GetSourceMachineName"(SourceHandle: $Ref<UE.LiveLinkSourceHandle>): UE.$FText;
+        "GetSourceStatus"(SourceHandle: $Ref<UE.LiveLinkSourceHandle>): UE.$FText;
+        "GetSourceType"(SourceHandle: $Ref<UE.LiveLinkSourceHandle>): UE.$FText;
+        "GetSourceTypeFromGuid"(SourceGuid: UE.Guid): UE.$FText;
         "GetSpecificLiveLinkSubjectRole"(SubjectKey: UE.LiveLinkSubjectKey): UE.Class | null | undefined;
         "GetTransformByIndex"(SubjectFrameHandle: $Ref<UE.SubjectFrameHandle>, TransformIndex: number, LiveLinkTransform: $Ref<UE.LiveLinkTransform>): void;
         "GetTransformByName"(SubjectFrameHandle: $Ref<UE.SubjectFrameHandle>, TransformName: string, LiveLinkTransform: $Ref<UE.LiveLinkTransform>): void;

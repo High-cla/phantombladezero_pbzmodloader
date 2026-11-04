@@ -76,7 +76,7 @@ declare module 'ue' {
     interface MaterialExpressionSpriteTextureSampler extends UE.MaterialExpressionTextureSampleParameter2D {
         "bSampleAdditionalTextures": boolean;
         "AdditionalSlotIndex": number;
-        "SlotDisplayName": string;
+        "SlotDisplayName": UE.$FText;
     }
     namespace $Static {
     interface MaterialExpressionSpriteTextureSampler {
@@ -372,7 +372,7 @@ declare module 'ue' {
     const PaperTileInfo: UE.$Static.PaperTileInfo & UE.$StructType<UE.PaperTileInfo>;
     /** /Script/Paper2D.PaperTileLayer — reflection-generated, not individually call-tested. */
     interface PaperTileLayer extends UE.Object {
-        "LayerName": string;
+        "LayerName": UE.$FText;
         "LayerWidth": number;
         "LayerHeight": number;
         "bHiddenInGame": boolean;

@@ -1363,10 +1363,10 @@ declare module 'ue' {
     const StateTreeNodeBase: UE.$Static.StateTreeNodeBase & UE.$StructType<UE.StateTreeNodeBase>;
     /** /Script/StateTreeModule.StateTreeNodeBlueprintBase — reflection-generated, not individually call-tested. */
     interface StateTreeNodeBlueprintBase extends UE.Object {
-        "GetPropertyDescriptionByPropertyName"(PropertyName: string): string;
+        "GetPropertyDescriptionByPropertyName"(PropertyName: string): UE.$FText;
         "GetPropertyReference"(PropertyRef: UE.StateTreeBlueprintPropertyRef): void;
         "IsPropertyRefValid"(PropertyRef: UE.StateTreeBlueprintPropertyRef): boolean;
-        "ReceiveGetDescription"(Formatting: UE.EStateTreeNodeFormatting): string;
+        "ReceiveGetDescription"(Formatting: UE.EStateTreeNodeFormatting): UE.$FText;
         "RequestTransition"(TargetState: UE.StateTreeStateLink, Priority: UE.EStateTreeTransitionPriority): void;
         "SendEvent"(Event: UE.StateTreeEvent): void;
     }

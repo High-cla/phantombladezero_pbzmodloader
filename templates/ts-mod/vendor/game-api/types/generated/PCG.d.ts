@@ -4465,8 +4465,8 @@ declare module 'ue' {
     const PCGGraphInstance: UE.$Static.PCGGraphInstance & UE.$ClassType<UE.PCGGraphInstance>;
     /** /Script/PCG.PCGGraphInstanceToolDataOverrides — reflection-generated, not individually call-tested. */
     interface PCGGraphInstanceToolDataOverrides {
-        "DisplayName": string;
-        "ToolTip": string;
+        "DisplayName": UE.$FText;
+        "ToolTip": UE.$FText;
         "bIsPreset": boolean;
     }
     namespace $Static {
@@ -4576,8 +4576,8 @@ declare module 'ue' {
     const PCGGraphTasks: UE.$Static.PCGGraphTasks & UE.$StructType<UE.PCGGraphTasks>;
     /** /Script/PCG.PCGGraphToolData — reflection-generated, not individually call-tested. */
     interface PCGGraphToolData {
-        "DisplayName": string;
-        "ToolTip": string;
+        "DisplayName": UE.$FText;
+        "ToolTip": UE.$FText;
         "CompatibleToolTags": UE.TArray<string>;
         "InitialActorClassToSpawn": UE.Class | null | undefined;
         "NewActorLabel": string;
@@ -4849,7 +4849,7 @@ declare module 'ue' {
     const PCGKernelAttributeTable: UE.$Static.PCGKernelAttributeTable & UE.$StructType<UE.PCGKernelAttributeTable>;
     /** /Script/PCG.PCGKernelLogEntry — reflection-generated, not individually call-tested. */
     interface PCGKernelLogEntry {
-        "Message": string;
+        "Message": UE.$FText;
         "Verbosity": UE.EPCGKernelLogVerbosity;
     }
     namespace $Static {
@@ -6069,10 +6069,10 @@ declare module 'ue' {
         "Label": string;
         "Edges": UE.TArray<UE.PCGEdge | null | undefined>;
         "Properties": UE.PCGPinProperties;
-        "GetTooltip"(): string;
+        "GetTooltip"(): UE.$FText;
         "IsConnected"(): boolean;
         "IsOutputPin"(): boolean;
-        "SetToolTip"(InTooltip: string): void;
+        "SetToolTip"(InTooltip: UE.$FText): void;
     }
     namespace $Static {
     interface PCGPin {
@@ -6356,7 +6356,7 @@ declare module 'ue' {
     /** /Script/PCG.PCGPreconfiguredInfo — reflection-generated, not individually call-tested. */
     interface PCGPreconfiguredInfo {
         "PreconfiguredIndex": number;
-        "Label": string;
+        "Label": UE.$FText;
     }
     namespace $Static {
     interface PCGPreconfiguredInfo {

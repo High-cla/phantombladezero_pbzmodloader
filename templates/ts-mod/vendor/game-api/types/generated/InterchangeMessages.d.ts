@@ -13,7 +13,7 @@ declare module 'ue' {
     const InterchangeResultMeshError: UE.$Static.InterchangeResultMeshError & UE.$ClassType<UE.InterchangeResultMeshError>;
     /** /Script/InterchangeMessages.InterchangeResultMeshError_Generic — reflection-generated, not individually call-tested. */
     interface InterchangeResultMeshError_Generic extends UE.InterchangeResultMeshError {
-        "Text": string;
+        "Text": UE.$FText;
     }
     namespace $Static {
     interface InterchangeResultMeshError_Generic {
@@ -31,7 +31,7 @@ declare module 'ue' {
     const InterchangeResultMeshWarning: UE.$Static.InterchangeResultMeshWarning & UE.$ClassType<UE.InterchangeResultMeshWarning>;
     /** /Script/InterchangeMessages.InterchangeResultMeshWarning_Generic — reflection-generated, not individually call-tested. */
     interface InterchangeResultMeshWarning_Generic extends UE.InterchangeResultMeshWarning {
-        "Text": string;
+        "Text": UE.$FText;
     }
     namespace $Static {
     interface InterchangeResultMeshWarning_Generic {

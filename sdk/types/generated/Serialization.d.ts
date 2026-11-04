@@ -63,7 +63,7 @@ declare module 'ue' {
         "Guid": UE.Guid;
         "Name": string;
         "String": string;
-        "Text": string;
+        "Text": UE.$FText;
         "DateTime": UE.DateTime;
         "Timespan": UE.Timespan;
         "Vector": UE.Vector;

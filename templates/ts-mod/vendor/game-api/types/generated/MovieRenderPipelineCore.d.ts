@@ -278,7 +278,7 @@ declare module 'ue' {
         "GetCurrentExecutorShot"(InMoviePipeline: UE.MovieGraphPipeline | null | undefined): UE.MoviePipelineExecutorShot | null | undefined;
         "GetCurrentFocalLength"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined, InCameraIndex: number): number;
         "GetCurrentFocusDistance"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined, InCameraIndex: number): number;
-        "GetCurrentSegmentName"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined, OutOuterName: $Ref<string>, OutInnerName: $Ref<string>): void;
+        "GetCurrentSegmentName"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined, OutOuterName: $Ref<UE.$FText>, OutInnerName: $Ref<UE.$FText>): void;
         "GetCurrentSegmentState"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined): UE.EMovieRenderShotState;
         "GetCurrentSegmentWorkMetrics"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined): UE.MoviePipelineSegmentWorkMetrics;
         "GetCurrentShotFrameNumber"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined): UE.FrameNumber;
@@ -288,9 +288,9 @@ declare module 'ue' {
         "GetEffectiveFrameRate"(InNode: UE.MovieGraphGlobalOutputSettingNode | null | undefined, InDefaultRate: UE.FrameRate): UE.FrameRate;
         "GetEffectiveOutputResolution"(InEvaluatedGraph: UE.MovieGraphEvaluatedConfig | null | undefined, DefaultOverscan: number): UE.IntPoint;
         "GetEstimatedTimeRemaining"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined, OutEstimate: $Ref<UE.Timespan>): boolean;
-        "GetJobAuthor"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined): string;
+        "GetJobAuthor"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined): UE.$FText;
         "GetJobInitializationTime"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined): UE.DateTime;
-        "GetJobName"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined): string;
+        "GetJobName"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined): UE.$FText;
         "GetOverallOutputFrames"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined, OutCurrentIndex: $Ref<number>, OutTotalCount: $Ref<number>): void;
         "GetOverallSegmentCounts"(InMovieGraphPipeline: UE.MovieGraphPipeline | null | undefined, OutCurrentIndex: $Ref<number>, OutTotalCount: $Ref<number>): void;
         "GetOverscanCropRectangle"(InEvaluatedGraph: UE.MovieGraphEvaluatedConfig | null | undefined, DefaultOverscan: number, CameraAspectRatio: number): UE.IntRect;
@@ -582,9 +582,9 @@ declare module 'ue' {
         "GlobalVariables": UE.TArray<UE.MovieGraphGlobalVariable | null | undefined>;
         "Inputs": UE.TArray<UE.MovieGraphInput | null | undefined>;
         "Outputs": UE.TArray<UE.MovieGraphOutput | null | undefined>;
-        "AddInput"(InBaseName: string): UE.MovieGraphInput | null | undefined;
+        "AddInput"(InBaseName: UE.$FText): UE.MovieGraphInput | null | undefined;
         "AddLabeledEdge"(FromNode: UE.MovieGraphNode | null | undefined, FromPinLabel: string, ToNode: UE.MovieGraphNode | null | undefined, ToPinLabel: string): boolean;
-        "AddOutput"(InBaseName: string): UE.MovieGraphOutput | null | undefined;
+        "AddOutput"(InBaseName: UE.$FText): UE.MovieGraphOutput | null | undefined;
         "AddVariable"(InCustomBaseName: string): UE.MovieGraphVariable | null | undefined;
         "CreateFlattenedGraph"(InContext: UE.MovieGraphTraversalContext, OutError: $Ref<string>): UE.MovieGraphEvaluatedConfig | null | undefined;
         "CreateNodeByClass"(InClass: UE.Class | null | undefined): UE.MovieGraphNode | null | undefined;
@@ -731,7 +731,7 @@ declare module 'ue' {
         "PinBeingFollowed": UE.MovieGraphPin | null | undefined;
         "SubgraphStack": UE.TArray<UE.MovieGraphSubgraphNode | null | undefined>;
         "bCircularGraphReferenceFound": boolean;
-        "TraversalError": string;
+        "TraversalError": UE.$FText;
     }
     namespace $Static {
     interface MovieGraphEvaluationContext {
@@ -1024,7 +1024,7 @@ declare module 'ue' {
         "Name": string;
         "Guid": UE.Guid;
         "bIsEditable": boolean;
-        "CanRename"(InNewName: string, OutError: $Ref<string>): boolean;
+        "CanRename"(InNewName: UE.$FText, OutError: $Ref<UE.$FText>): boolean;
         "GetGuid"(): UE.Guid;
         "GetMemberName"(): string;
         "IsDeletable"(): boolean;
@@ -1068,7 +1068,7 @@ declare module 'ue' {
     /** /Script/MovieRenderPipelineCore.MovieGraphModifierBase — reflection-generated, not individually call-tested. */
     interface MovieGraphModifierBase extends UE.Object {
         "ApplyModifier"(World: UE.World | null | undefined): void;
-        "GetModifierName"(): string;
+        "GetModifierName"(): UE.$FText;
         "UndoModifier"(): void;
     }
     namespace $Static {
@@ -1141,7 +1141,7 @@ declare module 'ue' {
         "GetInputPin"(InPinLabel: string, PinRequirement: UE.EMovieGraphPinQueryRequirement): UE.MovieGraphPin | null | undefined;
         "GetInputPinProperties"(): UE.TArray<UE.MovieGraphPinProperties>;
         "GetInputPins"(): UE.TArray<UE.MovieGraphPin | null | undefined>;
-        "GetNodeValidationErrors"(InBranchName: string, InEvaluatedConfig: UE.MovieGraphEvaluatedConfig | null | undefined, OutValidationErrors: $Ref<UE.TArray<string>>): boolean;
+        "GetNodeValidationErrors"(InBranchName: string, InEvaluatedConfig: UE.MovieGraphEvaluatedConfig | null | undefined, OutValidationErrors: $Ref<UE.TArray<UE.$FText>>): boolean;
         "GetOutputPin"(InPinLabel: string): UE.MovieGraphPin | null | undefined;
         "GetOutputPinProperties"(): UE.TArray<UE.MovieGraphPinProperties>;
         "GetOutputPins"(): UE.TArray<UE.MovieGraphPin | null | undefined>;
@@ -1201,7 +1201,7 @@ declare module 'ue' {
         "GetConnectedNodes"(): UE.TArray<UE.MovieGraphNode | null | undefined>;
         "GetFirstConnectedPin"(bFollowRerouteConnections: boolean): UE.MovieGraphPin | null | undefined;
         "IsConnected"(): boolean;
-        "IsConnectionToBranchAllowed"(OtherPin: UE.MovieGraphPin | null | undefined, OutError: $Ref<string>): boolean;
+        "IsConnectionToBranchAllowed"(OtherPin: UE.MovieGraphPin | null | undefined, OutError: $Ref<UE.$FText>): boolean;
         "IsInputPin"(): boolean;
         "IsOutputPin"(): boolean;
         "IsPinDirectionCompatibleWith"(OtherPin: UE.MovieGraphPin | null | undefined): boolean;
@@ -1318,7 +1318,7 @@ declare module 'ue' {
     /** /Script/MovieRenderPipelineCore.MovieGraphPropertyInfo — reflection-generated, not individually call-tested. */
     interface MovieGraphPropertyInfo {
         "Name": string;
-        "ContextMenuName": string;
+        "ContextMenuName": UE.$FText;
         "PromotionName": string;
         "bIsDynamicProperty": boolean;
         "ValueType": UE.EMovieGraphValueType;
@@ -1757,7 +1757,7 @@ declare module 'ue' {
         "GetValueObject"(OutValue: UE.Object | null | undefined, RequestedClass: UE.Class | null | undefined): boolean;
         "GetValueSerializedString"(): string;
         "GetValueString"(OutValue: $Ref<string>): boolean;
-        "GetValueText"(OutValue: $Ref<string>): boolean;
+        "GetValueText"(OutValue: $Ref<UE.$FText>): boolean;
         "GetValueType"(): UE.EMovieGraphValueType;
         "GetValueTypeObject"(): UE.Object | null | undefined;
         "SetValueBool"(bInValue: boolean): boolean;
@@ -1773,7 +1773,7 @@ declare module 'ue' {
         "SetValueObject"(InValue: UE.Object | null | undefined): boolean;
         "SetValueSerializedString"(NewValue: string): boolean;
         "SetValueString"(InValue: string): boolean;
-        "SetValueText"(InValue: string): boolean;
+        "SetValueText"(InValue: UE.$FText): boolean;
         "SetValueType"(ValueType: UE.EMovieGraphValueType, InValueTypeObject: UE.Object | null | undefined): void;
         "SetValueTypeObject"(ValueTypeObject: UE.Object | null | undefined): void;
     }
@@ -1865,7 +1865,7 @@ declare module 'ue' {
         "GetValueObject"(InGraphVariable: UE.MovieGraphVariable | null | undefined, OutValue: UE.Object | null | undefined, RequestedClass: UE.Class | null | undefined): boolean;
         "GetValueSerializedString"(InGraphVariable: UE.MovieGraphVariable | null | undefined): string;
         "GetValueString"(InGraphVariable: UE.MovieGraphVariable | null | undefined, OutValue: $Ref<string>): boolean;
-        "GetValueText"(InGraphVariable: UE.MovieGraphVariable | null | undefined, OutValue: $Ref<string>): boolean;
+        "GetValueText"(InGraphVariable: UE.MovieGraphVariable | null | undefined, OutValue: $Ref<UE.$FText>): boolean;
         "GetValueType"(InGraphVariable: UE.MovieGraphVariable | null | undefined): UE.EMovieGraphValueType;
         "GetValueTypeObject"(InGraphVariable: UE.MovieGraphVariable | null | undefined): UE.Object | null | undefined;
         "GetVariableAssignmentEnableState"(InGraphVariable: UE.MovieGraphVariable | null | undefined, bOutIsEnabled: $Ref<boolean>): boolean;
@@ -1882,7 +1882,7 @@ declare module 'ue' {
         "SetValueObject"(InGraphVariable: UE.MovieGraphVariable | null | undefined, InValue: UE.Object | null | undefined): boolean;
         "SetValueSerializedString"(InGraphVariable: UE.MovieGraphVariable | null | undefined, NewValue: string): boolean;
         "SetValueString"(InGraphVariable: UE.MovieGraphVariable | null | undefined, InValue: string): boolean;
-        "SetValueText"(InGraphVariable: UE.MovieGraphVariable | null | undefined, InValue: string): boolean;
+        "SetValueText"(InGraphVariable: UE.MovieGraphVariable | null | undefined, InValue: UE.$FText): boolean;
         "SetVariableAssignmentEnableState"(InGraphVariable: UE.MovieGraphVariable | null | undefined, bIsEnabled: boolean): boolean;
     }
     namespace $Static {
@@ -1956,7 +1956,7 @@ declare module 'ue' {
         "GetCurrentExecutorShot"(InMoviePipeline: UE.MoviePipeline | null | undefined): UE.MoviePipelineExecutorShot | null | undefined;
         "GetCurrentFocalLength"(InMoviePipeline: UE.MoviePipeline | null | undefined): number;
         "GetCurrentFocusDistance"(InMoviePipeline: UE.MoviePipeline | null | undefined): number;
-        "GetCurrentSegmentName"(InMoviePipeline: UE.MoviePipeline | null | undefined, OutOuterName: $Ref<string>, OutInnerName: $Ref<string>): void;
+        "GetCurrentSegmentName"(InMoviePipeline: UE.MoviePipeline | null | undefined, OutOuterName: $Ref<UE.$FText>, OutInnerName: $Ref<UE.$FText>): void;
         "GetCurrentSegmentState"(InMoviePipeline: UE.MoviePipeline | null | undefined): UE.EMovieRenderShotState;
         "GetCurrentSegmentWorkMetrics"(InMoviePipeline: UE.MoviePipeline | null | undefined): UE.MoviePipelineSegmentWorkMetrics;
         "GetCurrentSequence"(InMoviePipeline: UE.MoviePipeline | null | undefined): UE.LevelSequence | null | undefined;
@@ -1966,11 +1966,11 @@ declare module 'ue' {
         "GetDesiredOutputResolution"(InPrimaryConfig: UE.MoviePipelinePrimaryConfig | null | undefined): UE.IntPoint;
         "GetEffectiveOutputResolution"(InPrimaryConfig: UE.MoviePipelinePrimaryConfig | null | undefined, InPipelineExecutorShot: UE.MoviePipelineExecutorShot | null | undefined, DefaultOverscan: number): UE.IntPoint;
         "GetEstimatedTimeRemaining"(InPipeline: UE.MoviePipeline | null | undefined, OutEstimate: $Ref<UE.Timespan>): boolean;
-        "GetJobAuthor"(InMoviePipeline: UE.MoviePipeline | null | undefined): string;
+        "GetJobAuthor"(InMoviePipeline: UE.MoviePipeline | null | undefined): UE.$FText;
         "GetJobInitializationTime"(InMoviePipeline: UE.MoviePipeline | null | undefined): UE.DateTime;
-        "GetJobName"(InMoviePipeline: UE.MoviePipeline | null | undefined): string;
+        "GetJobName"(InMoviePipeline: UE.MoviePipeline | null | undefined): UE.$FText;
         "GetMapPackageName"(InJob: UE.MoviePipelineExecutorJob | null | undefined): string;
-        "GetMoviePipelineEngineChangelistLabel"(InMoviePipeline: UE.MoviePipeline | null | undefined): string;
+        "GetMoviePipelineEngineChangelistLabel"(InMoviePipeline: UE.MoviePipeline | null | undefined): UE.$FText;
         "GetOverallOutputFrames"(InMoviePipeline: UE.MoviePipeline | null | undefined, OutCurrentIndex: $Ref<number>, OutTotalCount: $Ref<number>): void;
         "GetOverallSegmentCounts"(InMoviePipeline: UE.MoviePipeline | null | undefined, OutCurrentIndex: $Ref<number>, OutTotalCount: $Ref<number>): void;
         "GetOverscanCropRectangle"(InPrimaryConfig: UE.MoviePipelinePrimaryConfig | null | undefined, InPipelineExecutorShot: UE.MoviePipelineExecutorShot | null | undefined, DefaultOverscan: number): UE.IntRect;
@@ -2032,7 +2032,7 @@ declare module 'ue' {
     /** /Script/MovieRenderPipelineCore.MoviePipelineCommandLineEncoderSettings — reflection-generated, not individually call-tested. */
     interface MoviePipelineCommandLineEncoderSettings extends UE.DeveloperSettings {
         "ExecutablePath": string;
-        "CodecHelpText": string;
+        "CodecHelpText": UE.$FText;
         "VideoCodec": string;
         "AudioCodec": string;
         "OutputFileExtension": string;
@@ -2102,7 +2102,7 @@ declare module 'ue' {
     /** /Script/MovieRenderPipelineCore.MoviePipelineExecutorBase — reflection-generated, not individually call-tested. */
     interface MoviePipelineExecutorBase extends UE.Object {
         "OnExecutorFinishedDelegate": UE.$MulticastDelegate<(PipelineExecutor: UE.MoviePipelineExecutorBase | null | undefined, bSuccess: boolean) => void>;
-        "OnExecutorErroredDelegate": UE.$MulticastDelegate<(PipelineExecutor: UE.MoviePipelineExecutorBase | null | undefined, PipelineWithError: UE.MoviePipeline | null | undefined, bIsFatal: boolean, ErrorText: string) => void>;
+        "OnExecutorErroredDelegate": UE.$MulticastDelegate<(PipelineExecutor: UE.MoviePipelineExecutorBase | null | undefined, PipelineWithError: UE.MoviePipeline | null | undefined, bIsFatal: boolean, ErrorText: UE.$FText) => void>;
         "SocketMessageRecievedDelegate": UE.$MulticastDelegate<(Message: string) => void>;
         "HTTPResponseRecievedDelegate": UE.$MulticastDelegate<(RequestIndex: number, ResponseCode: number, Message: string) => void>;
         "DebugWidgetClass": UE.Class | null | undefined;
@@ -2118,7 +2118,7 @@ declare module 'ue' {
         "IsRendering"(): boolean;
         "IsSocketConnected"(): boolean;
         "OnBeginFrame"(): void;
-        "OnExecutorErroredImpl"(ErroredPipeline: UE.MoviePipeline | null | undefined, bFatal: boolean, ErrorReason: string): void;
+        "OnExecutorErroredImpl"(ErroredPipeline: UE.MoviePipeline | null | undefined, bFatal: boolean, ErrorReason: UE.$FText): void;
         "OnExecutorFinishedImpl"(): void;
         "SendHTTPRequest"(InURL: string, InVerb: string, InMessage: string, InHeaders: UE.TMap<string, string>): number;
         "SendSocketMessage"(InMessage: string): boolean;
@@ -2504,7 +2504,7 @@ declare module 'ue' {
     const MoviePipelineSetting: UE.$Static.MoviePipelineSetting & UE.$ClassType<UE.MoviePipelineSetting>;
     /** /Script/MovieRenderPipelineCore.MoviePipelineSetting_BlueprintBase — reflection-generated, not individually call-tested. */
     interface MoviePipelineSetting_BlueprintBase extends UE.MoviePipelineSetting {
-        "CategoryText": string;
+        "CategoryText": UE.$FText;
         "bIsValidOnPrimary": boolean;
         "bIsValidOnShots": boolean;
         "bCanBeDisabled": boolean;

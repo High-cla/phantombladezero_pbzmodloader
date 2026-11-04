@@ -7,7 +7,7 @@ declare module 'ue' {
     }
     namespace $Static {
     interface AchievementBlueprintLibrary {
-        "GetCachedAchievementDescription"(WorldContextObject: UE.Object | null | undefined, PlayerController: UE.PlayerController | null | undefined, AchievementID: string, bFoundID: $Ref<boolean>, Title: $Ref<string>, LockedDescription: $Ref<string>, UnlockedDescription: $Ref<string>, bHidden: $Ref<boolean>): void;
+        "GetCachedAchievementDescription"(WorldContextObject: UE.Object | null | undefined, PlayerController: UE.PlayerController | null | undefined, AchievementID: string, bFoundID: $Ref<boolean>, Title: $Ref<UE.$FText>, LockedDescription: $Ref<UE.$FText>, UnlockedDescription: $Ref<UE.$FText>, bHidden: $Ref<boolean>): void;
         "GetCachedAchievementProgress"(WorldContextObject: UE.Object | null | undefined, PlayerController: UE.PlayerController | null | undefined, AchievementID: string, bFoundID: $Ref<boolean>, Progress: $Ref<number>): void;
     }
     }
@@ -549,12 +549,12 @@ declare module 'ue' {
     /** /Script/OnlineSubsystemUtils.OnlineProxyStoreOffer — reflection-generated, not individually call-tested. */
     interface OnlineProxyStoreOffer {
         "OfferId": string;
-        "Title": string;
-        "Description": string;
-        "LongDescription": string;
-        "RegularPriceText": string;
+        "Title": UE.$FText;
+        "Description": UE.$FText;
+        "LongDescription": UE.$FText;
+        "RegularPriceText": UE.$FText;
         "RegularPrice": number;
-        "PriceText": string;
+        "PriceText": UE.$FText;
         "NumericPrice": number;
         "CurrencyCode": string;
         "ReleaseDate": UE.DateTime;

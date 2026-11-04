@@ -23,7 +23,7 @@ declare module 'ue' {
         "FindDataTableRowByProperty_Name"(DataTable: UE.DataTable | null | undefined, Property: string, ColumnName: string, OutRow: $Ref<UE.TableRowBase>): boolean;
         "FindDataTableRowByProperty_Object"(DataTable: UE.DataTable | null | undefined, Property: UE.Object | null | undefined, ColumnName: string, OutRow: $Ref<UE.TableRowBase>): boolean;
         "FindDataTableRowByProperty_String"(DataTable: UE.DataTable | null | undefined, Property: string, ColumnName: string, OutRow: $Ref<UE.TableRowBase>): boolean;
-        "FindDataTableRowByProperty_Text"(DataTable: UE.DataTable | null | undefined, Property: string, ColumnName: string, OutRow: $Ref<UE.TableRowBase>): boolean;
+        "FindDataTableRowByProperty_Text"(DataTable: UE.DataTable | null | undefined, Property: UE.$FText, ColumnName: string, OutRow: $Ref<UE.TableRowBase>): boolean;
         "FindDataTableRowsByPredicate"(DataTable: UE.DataTable | null | undefined, Predicate: UE.$Delegate<(RowObject: UE.DataTableRowObject | null | undefined) => boolean>, OutRows: $Ref<UE.TArray<number>>): boolean;
         "FindDataTableRowsByProperty_Bool"(DataTable: UE.DataTable | null | undefined, Property: boolean, ColumnName: string, OutRows: $Ref<UE.TArray<number>>): boolean;
         "FindDataTableRowsByProperty_Enum"(DataTable: UE.DataTable | null | undefined, Property: number, ColumnName: string, OutRows: $Ref<UE.TArray<number>>): boolean;
@@ -36,7 +36,7 @@ declare module 'ue' {
         "FindDataTableRowsByProperty_Name"(DataTable: UE.DataTable | null | undefined, Property: string, ColumnName: string, OutRows: $Ref<UE.TArray<number>>): boolean;
         "FindDataTableRowsByProperty_Object"(DataTable: UE.DataTable | null | undefined, Property: UE.Object | null | undefined, ColumnName: string, OutRows: $Ref<UE.TArray<number>>): boolean;
         "FindDataTableRowsByProperty_String"(DataTable: UE.DataTable | null | undefined, Property: string, ColumnName: string, OutRows: $Ref<UE.TArray<number>>): boolean;
-        "FindDataTableRowsByProperty_Text"(DataTable: UE.DataTable | null | undefined, Property: string, ColumnName: string, OutRows: $Ref<UE.TArray<number>>): boolean;
+        "FindDataTableRowsByProperty_Text"(DataTable: UE.DataTable | null | undefined, Property: UE.$FText, ColumnName: string, OutRows: $Ref<UE.TArray<number>>): boolean;
         "GetAsDataTableRow"(RowObject: UE.DataTableRowObject | null | undefined, Row: $Ref<UE.TableRowBase>): void;
         "GetDataTableAsArrayStruct"(DataTable: UE.DataTable | null | undefined, Row: $Ref<UE.TArray<number>>): void;
         "GetDataTableRowAtIndex"(DataTable: UE.DataTable | null | undefined, Index: number, Row: $Ref<UE.TableRowBase>): void;

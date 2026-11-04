@@ -426,20 +426,20 @@ declare module 'ue' {
         "ProfileIdentifier": UE.GameplayTag;
         "ProfileIdentifierString": string;
         "OwningUserId": UE.PlatformUserId;
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
         "PlayerMappedKeys": UE.TMap<string, UE.KeyMappingRow>;
         "DoesMappingPassQueryOptions"(PlayerMapping: UE.PlayerKeyMapping, Options: UE.PlayerMappableKeyQueryOptions): boolean;
         "DumpProfileToLog"(): void;
         "GetMappedKeysInRow"(MappingName: string, OutKeys: $Ref<UE.TArray<UE.Key>>): number;
         "GetMappingNamesForKey"(InKey: UE.Key, OutMappingNames: $Ref<UE.TArray<string>>): number;
         "GetPlayerMappingRows"(): UE.TMap<string, UE.KeyMappingRow>;
-        "GetProfileDisplayName"(): string;
+        "GetProfileDisplayName"(): UE.$FText;
         "GetProfileIdString"(): string;
         "K2_FindKeyMapping"(OutKeyMapping: $Ref<UE.PlayerKeyMapping>, InArgs: UE.MapPlayerKeyArgs): void;
         "QueryPlayerMappedKeys"(Options: UE.PlayerMappableKeyQueryOptions, OutKeys: $Ref<UE.TArray<UE.Key>>): number;
         "ResetMappingToDefault"(InMappingName: string): void;
         "ResetToDefault"(): void;
-        "SetDisplayName"(NewDisplayName: string): void;
+        "SetDisplayName"(NewDisplayName: UE.$FText): void;
         "ToString"(): string;
     }
     namespace $Static {
@@ -468,7 +468,7 @@ declare module 'ue' {
     const InjectedInputArray: UE.$Static.InjectedInputArray & UE.$StructType<UE.InjectedInputArray>;
     /** /Script/EnhancedInput.InputAction — reflection-generated, not individually call-tested. */
     interface InputAction extends UE.DataAsset {
-        "ActionDescription": string;
+        "ActionDescription": UE.$FText;
         "bTriggerWhenPaused": boolean;
         "bConsumeInput": boolean;
         "bConsumesActionAndAxisMappings": boolean;
@@ -546,7 +546,7 @@ declare module 'ue' {
         "InputModeFilterOptions": UE.EMappingContextInputModeFilterOptions;
         "InputModeQueryOverride": UE.GameplayTagQuery;
         "RegistrationTrackingMode": UE.EMappingContextRegistrationTrackingMode;
-        "ContextDescription": string;
+        "ContextDescription": UE.$FText;
         "MapKey"(Action: UE.InputAction | null | undefined, ToKey: UE.Key): UE.EnhancedActionKeyMapping;
         "UnmapAll"(): void;
         "UnmapAllKeysFromAction"(Action: UE.InputAction | null | undefined): void;
@@ -869,8 +869,8 @@ declare module 'ue' {
     /** /Script/EnhancedInput.PlayerKeyMapping — reflection-generated, not individually call-tested. */
     interface PlayerKeyMapping {
         "MappingName": string;
-        "DisplayName": string;
-        "DisplayCategory": string;
+        "DisplayName": UE.$FText;
+        "DisplayCategory": UE.$FText;
         "Slot": UE.EPlayerMappableKeySlot;
         "bIsDirty": boolean;
         "DefaultKey": UE.Key;
@@ -887,12 +887,12 @@ declare module 'ue' {
     /** /Script/EnhancedInput.PlayerMappableInputConfig — reflection-generated, not individually call-tested. */
     interface PlayerMappableInputConfig extends UE.PrimaryDataAsset {
         "ConfigName": string;
-        "ConfigDisplayName": string;
+        "ConfigDisplayName": UE.$FText;
         "bIsDeprecated": boolean;
         "MetaData": UE.Object | null | undefined;
         "Contexts": UE.TMap<UE.InputMappingContext | null | undefined, number>;
         "GetConfigName"(): string;
-        "GetDisplayName"(): string;
+        "GetDisplayName"(): UE.$FText;
         "GetKeysBoundToAction"(InAction: UE.InputAction | null | undefined): UE.TArray<UE.EnhancedActionKeyMapping>;
         "GetMappingByName"(MappingName: string): UE.EnhancedActionKeyMapping;
         "GetMappingContexts"(): UE.TMap<UE.InputMappingContext | null | undefined, number>;
@@ -912,7 +912,7 @@ declare module 'ue' {
         "ProfileIdentifier": UE.GameplayTag;
         "ProfileStringIdentifier": string;
         "UserId": UE.PlatformUserId;
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
         "bSetAsCurrentProfile": boolean;
     }
     namespace $Static {
@@ -939,8 +939,8 @@ declare module 'ue' {
     interface PlayerMappableKeySettings extends UE.Object {
         "MetaData": UE.Object | null | undefined;
         "Name": string;
-        "DisplayName": string;
-        "DisplayCategory": string;
+        "DisplayName": UE.$FText;
+        "DisplayCategory": UE.$FText;
         "SupportedKeyProfiles": UE.GameplayTagContainer;
         "SupportedKeyProfileIds": UE.TArray<string>;
     }

@@ -15,8 +15,8 @@ declare module 'ue' {
         "ContextName": string;
         "Set": string;
         "Name": string;
-        "Label": string;
-        "Description": string;
+        "Label": UE.$FText;
+        "Description": UE.$FText;
         "InputChord": UE.InputChord;
     }
     namespace $Static {

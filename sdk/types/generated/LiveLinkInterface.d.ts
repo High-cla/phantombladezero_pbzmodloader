@@ -514,7 +514,7 @@ declare module 'ue' {
     interface LiveLinkSourcePreset {
         "Guid": UE.Guid;
         "Settings": UE.LiveLinkSourceSettings | null | undefined;
-        "SourceType": string;
+        "SourceType": UE.$FText;
     }
     namespace $Static {
     interface LiveLinkSourcePreset {

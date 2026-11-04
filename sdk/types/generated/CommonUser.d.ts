@@ -4,8 +4,8 @@ declare module 'ue' {
     import { $Ref } from 'puerts';
     /** /Script/CommonUser.AsyncAction_CommonUserInitialize — reflection-generated, not individually call-tested. */
     interface AsyncAction_CommonUserInitialize extends UE.CancellableAsyncAction {
-        "OnInitializationComplete": UE.$MulticastDelegate<(UserInfo: UE.CommonUserInfo | null | undefined, bSuccess: boolean, Error: string, RequestedPrivilege: UE.ECommonUserPrivilege, OnlineContext: UE.ECommonUserOnlineContext) => void>;
-        "HandleInitializationComplete"(UserInfo: UE.CommonUserInfo | null | undefined, bSuccess: boolean, Error: string, RequestedPrivilege: UE.ECommonUserPrivilege, OnlineContext: UE.ECommonUserOnlineContext): void;
+        "OnInitializationComplete": UE.$MulticastDelegate<(UserInfo: UE.CommonUserInfo | null | undefined, bSuccess: boolean, Error: UE.$FText, RequestedPrivilege: UE.ECommonUserPrivilege, OnlineContext: UE.ECommonUserOnlineContext) => void>;
+        "HandleInitializationComplete"(UserInfo: UE.CommonUserInfo | null | undefined, bSuccess: boolean, Error: UE.$FText, RequestedPrivilege: UE.ECommonUserPrivilege, OnlineContext: UE.ECommonUserOnlineContext): void;
     }
     namespace $Static {
     interface AsyncAction_CommonUserInitialize {
@@ -66,7 +66,7 @@ declare module 'ue' {
         "OnlineMode": UE.ECommonSessionOnlineMode;
         "bUseLobbies": boolean;
         "Results": UE.TArray<UE.CommonSession_SearchResult | null | undefined>;
-        "K2_OnSearchFinished": UE.$MulticastDelegate<(bSucceeded: boolean, ErrorMessage: string) => void>;
+        "K2_OnSearchFinished": UE.$MulticastDelegate<(bSucceeded: boolean, ErrorMessage: UE.$FText) => void>;
     }
     namespace $Static {
     interface CommonSession_SearchSessionRequest {
@@ -105,7 +105,7 @@ declare module 'ue' {
         "bCanCreateNewLocalPlayer": boolean;
         "bCanUseGuestLogin": boolean;
         "bSuppressLoginErrors": boolean;
-        "OnUserInitializeComplete": UE.$Delegate<(UserInfo: UE.CommonUserInfo | null | undefined, bSuccess: boolean, Error: string, RequestedPrivilege: UE.ECommonUserPrivilege, OnlineContext: UE.ECommonUserOnlineContext) => void>;
+        "OnUserInitializeComplete": UE.$Delegate<(UserInfo: UE.CommonUserInfo | null | undefined, bSuccess: boolean, Error: UE.$FText, RequestedPrivilege: UE.ECommonUserPrivilege, OnlineContext: UE.ECommonUserOnlineContext) => void>;
     }
     namespace $Static {
     interface CommonUserInitializeParams {
@@ -114,8 +114,8 @@ declare module 'ue' {
     const CommonUserInitializeParams: UE.$Static.CommonUserInitializeParams & UE.$StructType<UE.CommonUserInitializeParams>;
     /** /Script/CommonUser.CommonUserSubsystem — reflection-generated, not individually call-tested. */
     interface CommonUserSubsystem extends UE.GameInstanceSubsystem {
-        "OnUserInitializeComplete": UE.$MulticastDelegate<(UserInfo: UE.CommonUserInfo | null | undefined, bSuccess: boolean, Error: string, RequestedPrivilege: UE.ECommonUserPrivilege, OnlineContext: UE.ECommonUserOnlineContext) => void>;
-        "OnHandleSystemMessage": UE.$MulticastDelegate<(MessageType: UE.GameplayTag, TitleText: string, BodyText: string) => void>;
+        "OnUserInitializeComplete": UE.$MulticastDelegate<(UserInfo: UE.CommonUserInfo | null | undefined, bSuccess: boolean, Error: UE.$FText, RequestedPrivilege: UE.ECommonUserPrivilege, OnlineContext: UE.ECommonUserOnlineContext) => void>;
+        "OnHandleSystemMessage": UE.$MulticastDelegate<(MessageType: UE.GameplayTag, TitleText: UE.$FText, BodyText: UE.$FText) => void>;
         "OnUserPrivilegeChanged": UE.$MulticastDelegate<(UserInfo: UE.CommonUserInfo | null | undefined, Privilege: UE.ECommonUserPrivilege, OldAvailability: UE.ECommonUserAvailability, NewAvailability: UE.ECommonUserAvailability) => void>;
         "LocalUserInfos": UE.TMap<number, UE.CommonUserInfo | null | undefined>;
         "CancelUserInitialization"(LocalPlayerIndex: number): boolean;
@@ -131,7 +131,7 @@ declare module 'ue' {
         "HasTraitTag"(TraitTag: UE.GameplayTag): boolean;
         "ListenForLoginKeyInput"(AnyUserKeys: UE.TArray<UE.Key>, NewUserKeys: UE.TArray<UE.Key>, Params: UE.CommonUserInitializeParams): void;
         "ResetUserState"(): void;
-        "SendSystemMessage"(MessageType: UE.GameplayTag, TitleText: string, BodyText: string): void;
+        "SendSystemMessage"(MessageType: UE.GameplayTag, TitleText: UE.$FText, BodyText: UE.$FText): void;
         "SetMaxLocalPlayers"(InMaxLocalPLayers: number): void;
         "ShouldWaitForStartInput"(): boolean;
         "TryToInitializeForLocalPlay"(LocalPlayerIndex: number, PrimaryInputDevice: UE.InputDeviceId, bCanUseGuestLogin: boolean): boolean;
@@ -212,7 +212,7 @@ declare module 'ue' {
     interface OnlineResultInformation {
         "bWasSuccessful": boolean;
         "ErrorId": string;
-        "ErrorText": string;
+        "ErrorText": UE.$FText;
     }
     namespace $Static {
     interface OnlineResultInformation {

@@ -1042,7 +1042,7 @@ declare module 'ue' {
     interface GeometryScriptDebugMessage {
         "MessageType": UE.EGeometryScriptDebugMessageType;
         "ErrorType": UE.EGeometryScriptErrorType;
-        "Message": string;
+        "Message": UE.$FText;
     }
     namespace $Static {
     interface GeometryScriptDebugMessage {

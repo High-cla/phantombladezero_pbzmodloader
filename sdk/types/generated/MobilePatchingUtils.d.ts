@@ -22,7 +22,7 @@ declare module 'ue' {
         "GetInstalledContent"(InstallDirectory: string): UE.MobileInstalledContent | null | undefined;
         "GetSupportedPlatformNames"(): UE.TArray<string>;
         "HasActiveWiFiConnection"(): boolean;
-        "RequestContent"(RemoteManifestURL: string, CloudURL: string, InstallDirectory: string, OnSucceeded: UE.$Delegate<(MobilePendingContent: UE.MobilePendingContent | null | undefined) => void>, OnFailed: UE.$Delegate<(ErrorText: string, ErrorCode: number) => void>): void;
+        "RequestContent"(RemoteManifestURL: string, CloudURL: string, InstallDirectory: string, OnSucceeded: UE.$Delegate<(MobilePendingContent: UE.MobilePendingContent | null | undefined) => void>, OnFailed: UE.$Delegate<(ErrorText: UE.$FText, ErrorCode: number) => void>): void;
     }
     }
     const MobilePatchingLibrary: UE.$Static.MobilePatchingLibrary & UE.$ClassType<UE.MobilePatchingLibrary>;
@@ -30,11 +30,11 @@ declare module 'ue' {
     interface MobilePendingContent extends UE.MobileInstalledContent {
         "GetDownloadSize"(): number;
         "GetDownloadSpeed"(): number;
-        "GetDownloadStatusText"(): string;
+        "GetDownloadStatusText"(): UE.$FText;
         "GetInstallProgress"(): number;
         "GetRequiredDiskSpace"(): number;
         "GetTotalDownloadedSize"(): number;
-        "StartInstall"(OnSucceeded: UE.$Delegate<() => void>, OnFailed: UE.$Delegate<(ErrorText: string, ErrorCode: number) => void>): void;
+        "StartInstall"(OnSucceeded: UE.$Delegate<() => void>, OnFailed: UE.$Delegate<(ErrorText: UE.$FText, ErrorCode: number) => void>): void;
     }
     namespace $Static {
     interface MobilePendingContent {

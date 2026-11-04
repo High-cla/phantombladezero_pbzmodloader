@@ -600,7 +600,7 @@ declare module 'ue' {
     /** /Script/Flow.FlowPin — reflection-generated, not individually call-tested. */
     interface FlowPin {
         "PinName": string;
-        "PinFriendlyName": string;
+        "PinFriendlyName": UE.$FText;
         "PinToolTip": string;
     }
     namespace $Static {

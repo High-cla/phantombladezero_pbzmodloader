@@ -3,9 +3,19 @@
 `reflection_export.py` 是独立的开发工具，只使用 Python 标准库和 Windows 只读进程 API。
 不注入 DLL、不附加调试器、不执行游戏函数、不写进程内存；不会改变加载器或已发布 SDK。
 
-支持 Steam Win64 `CL-301524_JKS-17219`，EXE SHA256：
-`7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4`。
-先核对正在运行进程对应的 EXE 哈希，再读取相对模块基址的地址。其他构建直接拒绝。
+支持以下实测 Steam Win64 构建；先核对正在运行进程对应的 EXE 哈希，再选择地址配置。
+未知哈希直接拒绝，不回退到旧地址。
+
+| 构建 | EXE SHA256 | 名称块 / 对象数组 RVA |
+| --- | --- | --- |
+| `CL-301524_JKS-17219` | `7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4` | `0xdd11ad0` / `0xddb3c50` |
+| `CL-302256_JKS-17280`（2026-11-04） | `4415933ce33476f14c837abb61a1b60af8b78cd81783896501913a7aac69e423` | `0xdd86ad0` / `0xde28c60` |
+
+新版地址分别通过名称块内容和对象数组槽位独立定位，并通过 Vector、Actor、GetPlayerPawn、
+EAxis 及采集前后一致性校验。定位证据在 `build/game-api-audit-20261104/`，
+首份完整清单在 `build/reflection/update-20261104-PBZ_Fujizhilin_WP/`；其地图名来自引擎，
+即使用户界面显示主菜单，也不应将该值改写为旧版菜单地图名。
+每份清单记录实际选用的构建和配置，生成 SDK 时继续禁止混合两个构建的数据。
 
 ## 使用
 
@@ -188,3 +198,17 @@ ANSI 仅有绑定证据，仍保留未解析声明。原始采集目录为 `buil
 大整数枚举证据保存在 `scripts/sdk-supplemental.json` 的 `bindingVerification` 中，
 绑定构建、EXE 哈希、完整成员名、原始整数和运行时精确整数。只有实测为 number 且
 `BigInt(Number(raw))` 与原始整数一致的条目可以进入声明；不能将四舍五入后的值用于补全。
+
+## FText 与 UObject 工厂复核
+
+`tests/text-mapping-probe.js` 导出 `run()`，应在窗口检查后通过临时开发命令调用。
+它用 `UE.TextBlock.StaticClass()` 和单参数 `UE.NewObject` 创建临时文本控件，
+检查原生文本转换、方法/属性赋值，以及 BuiltinText 数组和 Map 值的读写回环。
+控件不加入视口，不据此宣称字体或画面渲染正常；没有修改已有游戏对象。
+
+`node tests/verify-text-mapping.cjs <loader.log> <new-report.json>` 要求完整、唯一的观测记录，
+确认窗口设置、实例类型、原生对象表示及实际文本读回；缺失、重复、错误值或普通字符串
+替代原生值均不计为通过。成功证据用于 `TextProperty` / `BuiltinText` 的 `UE.$FText`
+声明，以及单参数 `NewObject(Class)` 声明；不猜测构造函数和工厂的其他参数形式。
+本轮 `Class.Load('/Script/UMG.TextBlock')` 返回空值；原生类应从对应类型的 `StaticClass()`
+取得类对象，不能将资产类路径加载经验直接套用到所有原生 `/Script/` 路径。

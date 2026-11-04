@@ -1343,7 +1343,7 @@ declare module 'ue' {
     interface CharacterWeaponsActorConfig extends UE.Interface {
         "GetAbilities"(Abilities: $Ref<UE.TArray<UE.Class | null | undefined>>): void;
         "GetChangeWeaponCooldown"(SlotTag: UE.GameplayTag): number;
-        "GetCharacterName"(): string;
+        "GetCharacterName"(): UE.$FText;
         "GetDefaultLinkedAnimationLayers"(Layers: $Ref<UE.TArray<UE.Class | null | undefined>>): void;
         "GetInitialTags"(Tags: $Ref<UE.GameplayTagContainer>): void;
         "GetPassiveAbilities"(Abilities: $Ref<UE.TArray<UE.Class | null | undefined>>): void;

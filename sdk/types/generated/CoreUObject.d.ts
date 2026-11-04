@@ -1895,7 +1895,7 @@ declare module 'ue' {
         "NativeString": string;
         "LocalizedStrings": UE.TMap<string, string>;
         "bIsMinimalPatch": boolean;
-        "CachedText": string;
+        "CachedText": UE.$FText;
     }
     namespace $Static {
     interface PolyglotTextData {
@@ -2376,7 +2376,7 @@ declare module 'ue' {
     /** /Script/CoreUObject.TemplateString — reflection-generated, not individually call-tested. */
     interface TemplateString {
         "Template": string;
-        "Resolved": string;
+        "Resolved": UE.$FText;
     }
     namespace $Static {
     interface TemplateString {

@@ -4,7 +4,7 @@ declare module 'ue' {
     import { $Ref } from 'puerts';
     /** /Script/TypedElementFramework.DescriptionColumn — reflection-generated, not individually call-tested. */
     interface DescriptionColumn extends UE.EditorDataStorageColumn {
-        "Description": string;
+        "Description": UE.$FText;
     }
     namespace $Static {
     interface DescriptionColumn {
@@ -13,7 +13,7 @@ declare module 'ue' {
     const DescriptionColumn: UE.$Static.DescriptionColumn & UE.$StructType<UE.DescriptionColumn>;
     /** /Script/TypedElementFramework.DisplayNameColumn — reflection-generated, not individually call-tested. */
     interface DisplayNameColumn extends UE.EditorDataStorageColumn {
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
     }
     namespace $Static {
     interface DisplayNameColumn {
@@ -470,8 +470,8 @@ declare module 'ue' {
     const TestTagColumnD: UE.$Static.TestTagColumnD & UE.$StructType<UE.TestTagColumnD>;
     /** /Script/TypedElementFramework.TestTypedElementInterfaceA — reflection-generated, not individually call-tested. */
     interface TestTypedElementInterfaceA extends UE.Interface {
-        "GetDisplayName"(InElementHandle: UE.ScriptTypedElementHandle): string;
-        "SetDisplayName"(InElementHandle: UE.ScriptTypedElementHandle, InNewName: string, bNotify: boolean): boolean;
+        "GetDisplayName"(InElementHandle: UE.ScriptTypedElementHandle): UE.$FText;
+        "SetDisplayName"(InElementHandle: UE.ScriptTypedElementHandle, InNewName: UE.$FText, bNotify: boolean): boolean;
     }
     namespace $Static {
     interface TestTypedElementInterfaceA {

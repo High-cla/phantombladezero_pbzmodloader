@@ -145,8 +145,8 @@ declare module 'ue' {
         "ProjectName": string;
         "ProjectVersion": string;
         "SupportContact": string;
-        "ProjectDisplayedTitle": string;
-        "ProjectDebugTitleInfo": string;
+        "ProjectDisplayedTitle": UE.$FText;
+        "ProjectDebugTitleInfo": UE.$FText;
         "bShouldWindowPreserveAspectRatio": boolean;
         "bUseBorderlessWindow": boolean;
         "bStartInVR": boolean;
@@ -178,7 +178,7 @@ declare module 'ue' {
     interface TemplateMapInfoOverride {
         "Thumbnail": UE.SoftObjectPath;
         "Map": UE.SoftObjectPath;
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
     }
     namespace $Static {
     interface TemplateMapInfoOverride {

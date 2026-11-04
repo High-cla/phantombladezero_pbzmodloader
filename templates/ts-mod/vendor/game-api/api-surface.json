@@ -1,16 +1,15 @@
 {
   "schemaVersion": 2,
-  "sdkVersion": "0.3.2",
+  "sdkVersion": "0.3.3",
   "kind": "reflection-generated-with-runtime-verified-supplements",
-  "testedAt": "2026-10-30",
+  "testedAt": "2026-11-04",
   "game": {
     "platform": "Steam Win64",
-    "build": "CL-301524_JKS-17219",
-    "engine": "5.7.4-301524+42ecbfa37f78",
-    "exeSha256": "7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4",
+    "build": "CL-302256_JKS-17280",
+    "engine": "5.7.4-302256+b7c82f11b864",
+    "exeSha256": "4415933ce33476f14c837abb61a1b60af8b78cd81783896501913a7aac69e423",
     "maps": [
-      "PBZ_StartMenu_CE_WP",
-      "PBZ_Xigu_WP"
+      "PBZ_Fujizhilin_WP"
     ],
     "display": {
       "width": 1280,
@@ -20,10 +19,9 @@
   },
   "evidence": {
     "probe": "tests/api-probe.js",
-    "run": "20261029-172759-60680-dll",
-    "localArchive": "build/api-game-test-20261029/",
-    "previousTemplateRun": "build/template-game-test-20261029/",
-    "note": "Paths are relative to the loader source checkout; full logs are local build artifacts. Both maps tested; interfaces and nullable annotations are conservative handwritten models, not extracted native signatures."
+    "run": "20261104-175955-51344-dll",
+    "localArchive": "build/game-api-audit-20261104/",
+    "note": "One-shot adaptation in runtime-checks/api-probe.js; complete logs and window checks retained. Prior build verification remains separately identified."
   },
   "modules": {
     "ue": {
@@ -125,19 +123,19 @@
     "embeddedDeclarations": "unknown"
   },
   "coverage": {
-    "types": 34597,
-    "nativeTypes": 18453,
-    "assetTypes": 16144,
-    "classes": 22924,
-    "structs": 8420,
+    "types": 34593,
+    "nativeTypes": 18457,
+    "assetTypes": 16136,
+    "classes": 22921,
+    "structs": 8419,
     "enums": 3253,
-    "functions": 49540,
-    "properties": 119260,
-    "enumValues": 19518,
+    "functions": 49386,
+    "properties": 119282,
+    "enumValues": 19519,
     "manualMembers": 34,
-    "uniqueRecords": 90946,
-    "excludedTypes": 352,
-    "omittedMembers": 5434,
+    "uniqueRecords": 91182,
+    "excludedTypes": 377,
+    "omittedMembers": 5425,
     "unresolvedProperties": 55
   },
   "generation": {
@@ -152,22 +150,23 @@
     "call-verified": "Representative call completed and its result was checked in the recorded maps"
   },
   "runtimeVerification": {
-    "date": "2026-10-29",
-    "run": "20261029-183916-63768-dll",
+    "date": "2026-11-04",
+    "run": "20261104-175955-51344-dll",
     "probe": "tests/generated-api-probe.js",
     "probeSha256": "dc787a0e306f4e81f509f7a78511cba6b31424902999c74c8cdbdff634a031ef",
+    "adaptedProbe": "build/game-api-audit-20261104/runtime-checks/generated-api-probe.js",
+    "adaptedProbeSha256": "eac10d30d2f41e567818ee69a63cd0fb711f777b1eb217d820588373a3bd075f",
     "verifier": "tests/verify-generated-api.cjs",
-    "archive": "build/sdk-game-test-20261029/final/",
+    "archive": "build/game-api-audit-20261104/",
     "maps": [
-      "PBZ_StartMenu_CE_WP",
-      "PBZ_Xigu_WP"
+      "PBZ_Fujizhilin_WP"
     ],
     "display": {
       "width": 1280,
       "height": 720,
       "mode": "windowed"
     },
-    "checks": 20,
+    "checks": 10,
     "passed": true,
     "callVerified": [
       "Vector.constructor",
@@ -185,23 +184,20 @@
     "excluded": [
       "native and blueprint Cast"
     ],
-    "note": "Representative samples only. Soft-class Get/ToString tested on an empty reference; LoadSynchronous and delegate mutation were not invoked. Cast absence is an expected exclusion."
+    "note": "Current-build representative checks in the recorded map; user remained in the menu UI. No gameplay scenario or transition guarantee."
   },
   "batchCapture": {
-    "date": "2026-10-30",
-    "archive": "build/type-batches-20261030",
+    "date": "2026-11-04",
+    "archive": "build/game-api-audit-20261104",
     "probe": "scripts/load-types-probe.js",
     "controller": "scripts/capture-type-batches.cjs",
     "batches": 27,
-    "requested": 12400,
-    "loaded": 12399,
+    "requested": 12303,
+    "loaded": 12302,
     "priorities": [
       "PBZCombatAsset",
       "Game",
       "HuaShira"
-    ],
-    "maps": [
-      "PBZ_StartMenu_CE_WP"
     ],
     "display": {
       "width": 1280,
@@ -209,13 +205,14 @@
       "mode": "windowed",
       "clientAreaVerified": true
     },
-    "bindingProbe": "tests/loaded-types-probe.js",
-    "bindingEvidence": "build/type-batches-20261030/binding-verification.json",
-    "note": "Signatures from validated reflection captures. Representative bindings inspected without executing gameplay methods; old runtime call evidence remains separate.",
-    "bindingVerification": {
-      "passed": true,
-      "checks": 3,
-      "kind": "binding-presence-only"
+    "note": "New-build captures only. Failed/inconsistent snapshots excluded; runtime-call verification remains separate.",
+    "supplementalRecovery": {
+      "batches": 2,
+      "knownPriorTypes": 28,
+      "recovered": 10,
+      "unavailable": 18,
+      "report": "build/game-api-audit-20261104/prior-path-verification.json",
+      "note": "14 malformed paths from a preliminary offline encoding error were diagnosed and excluded from authoritative missing-type counts; corrected UTF-8 paths were then captured."
     }
   },
   "propertyMappingVerification": {
@@ -226,7 +223,8 @@
     "fieldPathProperties": 19,
     "functions": 1,
     "remainingUnresolved": 55,
-    "note": "Optional/UTF-8 samples return undefined; ANSI and remaining class-only fields have no verified value mapping. One incomplete process-exit run excluded; successful first and third runs retained. Field-path function tested with null target for parameter marshaling only."
+    "note": "Historical prior-build mapping investigation; current 55-property binding and sample-value checks are in binding-support-verification.json.",
+    "gameBuild": "CL-301524_JKS-17219"
   },
   "bindingSupportVerification": {
     "report": "binding-support-verification.json",
@@ -235,6 +233,269 @@
     "unresolvedProperties": 55,
     "validObjectFieldPathWrites": 2,
     "fieldPathFunction": "unsafe-unverified",
-    "previousExit": "unresolved-not-reproduced"
+    "newBindingChecks": 8,
+    "ftextMapping": "opaque native object; conversion, TextBlock method/property, array and map-value roundtrips verified"
+  },
+  "runtimeHelpers": {
+    "NewObject": {
+      "signature": "NewObject(Class)",
+      "evidence": "binding-support-verification.json",
+      "typedClassPathOverload": true,
+      "scope": "Verified one-argument UObject factory; extra arguments and arbitrary class construction not verified."
+    }
+  },
+  "historicalRuntimeVerification": {
+    "game": {
+      "platform": "Steam Win64",
+      "build": "CL-301524_JKS-17219",
+      "engine": "5.7.4-301524+42ecbfa37f78",
+      "exeSha256": "7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4",
+      "maps": [
+        "PBZ_StartMenu_CE_WP",
+        "PBZ_Xigu_WP"
+      ],
+      "display": {
+        "width": 1280,
+        "height": 720,
+        "mode": "windowed"
+      }
+    },
+    "evidence": {
+      "probe": "tests/api-probe.js",
+      "run": "20261029-172759-60680-dll",
+      "localArchive": "build/api-game-test-20261029/",
+      "previousTemplateRun": "build/template-game-test-20261029/",
+      "note": "Paths are relative to the loader source checkout; full logs are local build artifacts. Both maps tested; interfaces and nullable annotations are conservative handwritten models, not extracted native signatures."
+    },
+    "runtimeVerification": {
+      "date": "2026-10-29",
+      "run": "20261029-183916-63768-dll",
+      "probe": "tests/generated-api-probe.js",
+      "probeSha256": "dc787a0e306f4e81f509f7a78511cba6b31424902999c74c8cdbdff634a031ef",
+      "verifier": "tests/verify-generated-api.cjs",
+      "archive": "build/sdk-game-test-20261029/final/",
+      "maps": [
+        "PBZ_StartMenu_CE_WP",
+        "PBZ_Xigu_WP"
+      ],
+      "display": {
+        "width": 1280,
+        "height": 720,
+        "mode": "windowed"
+      },
+      "checks": 20,
+      "passed": true,
+      "callVerified": [
+        "Vector.constructor",
+        "KismetMathLibrary.BreakVector",
+        "KismetMathLibrary.Add_Int64Int64",
+        "containers",
+        "nativeClass",
+        "softClass",
+        "blueprint",
+        "enum"
+      ],
+      "bindingOnly": [
+        "delegate"
+      ],
+      "excluded": [
+        "native and blueprint Cast"
+      ],
+      "note": "Representative samples only. Soft-class Get/ToString tested on an empty reference; LoadSynchronous and delegate mutation were not invoked. Cast absence is an expected exclusion."
+    },
+    "batchCapture": {
+      "date": "2026-10-30",
+      "archive": "build/type-batches-20261030",
+      "probe": "scripts/load-types-probe.js",
+      "controller": "scripts/capture-type-batches.cjs",
+      "batches": 27,
+      "requested": 12400,
+      "loaded": 12399,
+      "priorities": [
+        "PBZCombatAsset",
+        "Game",
+        "HuaShira"
+      ],
+      "maps": [
+        "PBZ_StartMenu_CE_WP"
+      ],
+      "display": {
+        "width": 1280,
+        "height": 720,
+        "mode": "windowed",
+        "clientAreaVerified": true
+      },
+      "bindingProbe": "tests/loaded-types-probe.js",
+      "bindingEvidence": "build/type-batches-20261030/binding-verification.json",
+      "note": "Signatures from validated reflection captures. Representative bindings inspected without executing gameplay methods; old runtime call evidence remains separate.",
+      "bindingVerification": {
+        "passed": true,
+        "checks": 3,
+        "kind": "binding-presence-only"
+      }
+    }
+  },
+  "updateComparison": {
+    "previousSdkVersion": "0.3.2",
+    "previousGameBuild": "CL-301524_JKS-17219",
+    "addedTypes": [
+      "/Game/PBZContent/Blueprint/FlowGraph/DataAsset/FlowPresetData/BP_FlowPresetData_DelayInteract.BP_FlowPresetData_DelayInteract_C",
+      "/Game/PBZContent/Blueprint/FlowGraph/FlowGraphNode/FromActor/FromActor_AddInteractBlockTime.FromActor_AddInteractBlockTime_C",
+      "/Game/PBZContent/Environments/Props/Wooden_frames/BP_XG_Wooden_Frames_005_E.BP_XG_Wooden_Frames_005_E_C",
+      "/Game/PBZContent/Sequencer/GenerateSequencer/Seq152/cam05/Seq152_cam05_Main_Control.Seq152_cam05_Main_Control_DirectorBP_C",
+      "/Game/PBZContent/Sequencer/GenerateSequencer/Seq152/cam06/Seq152_cam06_Main_Control.Seq152_cam06_Main_Control_DirectorBP_C",
+      "/PBZCombatAsset/ActorData/Mobs/FemaleDoll/BP_Monster_FemaleDoll_TieChiSan_Summon.BP_Monster_FemaleDoll_TieChiSan_Summon_C",
+      "/PBZCombatAsset/ActorData/Mobs/MaleDoll/BP_Monster_MaleDoll_Cannon_Summon.BP_Monster_MaleDoll_Cannon_Summon_C",
+      "/PBZCombatAsset/Prototypes/GameplayEffects/Achievements/GE_Achievement_BaiYingFrostHit.GE_Achievement_BaiYingFrostHit_C",
+      "/PBZCombatAsset/Prototypes/GameplayEffects/Achievements/GE_Achievement_IronBloodBurstHit.GE_Achievement_IronBloodBurstHit_C",
+      "/PBZCombatAsset/Prototypes/GameplayEffects/Achievements/GE_Achievement_ThunderSpearParalyzeHit.GE_Achievement_ThunderSpearParalyzeHit_C",
+      "/Script/PBZCombatAsset.DamageCalculator_PBZPlayerNonLethal",
+      "/Script/ProjectPBZ.PBZPrimeAndPlayAction",
+      "/Script/ProjectPBZ.PBZShaderCacheSavePromptSubsystem",
+      "/Script/SGameUtils.AbilityAsync_WaitGameplayTagCountDelta"
+    ],
+    "unavailablePriorTypes": [
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/Blueprint/FlowGraph/DebugUI/FlowLogic/PlaySeqCollectHelpStruct.PlaySeqCollectHelpStruct",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/Blueprint/FlowGraph/DebugUI/FlowQuest/UI/WBP_FlowEventEditor.WBP_FlowEventEditor_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/Blueprint/FlowGraph/DebugUI/FlowQuest/UI/WBP_FlowEventGroup.WBP_FlowEventGroup_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/Blueprint/FlowGraph/DebugUI/FlowQuest/UI/WBP_FlowEventGroupNav.WBP_FlowEventGroupNav_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/Blueprint/FlowGraph/DebugUI/FlowQuest/UI/WBP_FlowEventItem.WBP_FlowEventItem_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/Blueprint/FlowGraph/DebugUI/MapCollect/UI/WBP_MapCollectEditor.WBP_MapCollectEditor_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/Blueprint/FlowGraph/DebugUI/MapCollect/UI/WBP_MapCollectGroup.WBP_MapCollectGroup_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/Blueprint/FlowGraph/DebugUI/MapCollect/UI/WBP_MapCollectItem.WBP_MapCollectItem_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/UI/Help/BP_CollectHelp.BP_CollectHelp_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/UI/Help/BP_DebugTeleport.BP_DebugTeleport_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/UI/Help/GE_Debug_OverrideSpeed.GE_Debug_OverrideSpeed_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/UI/Help/WB_GameplayHelpButton.WB_GameplayHelpButton_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/UI/Help/W_Debug_loadGameButton.W_Debug_loadGameButton_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/Game/PBZContent/UI/Help/W_LoadServerGame.W_LoadServerGame_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/PBZCombatAsset/ActorData/Mobs/060_GuiChai_Yellow/Ability/ShuangGou/Abilities/ShuangGou/GA_GuiChai_Yellow_ShuangGou_Skill_01_Short.GA_GuiChai_Yellow_ShuangGou_Skill_01_Short_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/PBZCombatAsset/ActorData/Mobs/060_GuiChai_Yellow/Ability/ShuangGou/Abilities/ShuangGou/GA_GuiChai_Yellow_ShuangGou_Skill_02_Short.GA_GuiChai_Yellow_ShuangGou_Skill_02_Short_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/PBZCombatAsset/ActorData/Mobs/060_GuiChai_Yellow/Ability/ShuangGou/Abilities/ShuangGou/GA_GuiChai_Yellow_ShuangGou_SpecialAttack_10_B_NoRot.GA_GuiChai_Yellow_ShuangGou_SpecialAttack_10_B_NoRot_C",
+        "error": "Error: Object.Load returned null"
+      },
+      {
+        "event": "failed",
+        "sequence": 30,
+        "path": "/SGameAI/Core/AIScript/AIScript_HighPriorityLeaderAI.AIScript_HighPriorityLeaderAI_C",
+        "error": "Error: Object.Load returned null"
+      }
+    ],
+    "unavailablePriorTypesAbsentFromRegistry": true,
+    "countsDelta": {
+      "types": -4,
+      "nativeTypes": 4,
+      "assetTypes": -8,
+      "classes": -3,
+      "structs": -1,
+      "enums": 0,
+      "functions": -154,
+      "properties": 22,
+      "enumValues": 1,
+      "manualMembers": 0,
+      "uniqueRecords": 236,
+      "excludedTypes": 25,
+      "omittedMembers": -9,
+      "unresolvedProperties": 0
+    },
+    "nativeSchema": {
+      "addedTypes": 4,
+      "addedFunctions": 21,
+      "addedDelegateSignatures": 2,
+      "changedTypes": 11
+    },
+    "report": "build/game-api-audit-20261104/sdk-version-diff.json"
+  },
+  "registryCoverage": {
+    "assets": 267026,
+    "uniqueTypePaths": 15147,
+    "covered": 15146,
+    "uncovered": 1,
+    "searchAllAssets": false,
+    "unclassifiedTypeLikeAssets": 8,
+    "unclassifiedExplanation": "Seven SoundClass assets and one DialogueFlowBlueprintMap data asset; not claimed as missing reflected types."
   }
 }

@@ -33,14 +33,14 @@ declare module 'ue' {
         "LocalPlayer": UE.LocalPlayer | null | undefined;
         "SettingParent": UE.GameSetting | null | undefined;
         "OwningRegistry": UE.GameSettingRegistry | null | undefined;
-        "GetDescriptionRichText"(): string;
-        "GetDetailTitleRichText"(): string;
+        "GetDescriptionRichText"(): UE.$FText;
+        "GetDetailTitleRichText"(): UE.$FText;
         "GetDevName"(): string;
-        "GetDisplayName"(): string;
+        "GetDisplayName"(): UE.$FText;
         "GetDisplayNameVisibility"(): UE.ESlateVisibility;
-        "GetDynamicDetails"(): string;
+        "GetDynamicDetails"(): UE.$FText;
         "GetTags"(): UE.GameplayTagContainer;
-        "GetWarningRichText"(): string;
+        "GetWarningRichText"(): UE.$FText;
     }
     namespace $Static {
     interface GameSetting {
@@ -170,7 +170,7 @@ declare module 'ue' {
     interface GameSettingListEntrySetting_Action extends UE.GameSettingListEntry_Setting {
         "ActionSetting": UE.GameSettingAction | null | undefined;
         "Button_Action": UE.CommonButtonBase | null | undefined;
-        "OnSettingAssigned"(ActionText: string): void;
+        "OnSettingAssigned"(ActionText: UE.$FText): void;
     }
     namespace $Static {
     interface GameSettingListEntrySetting_Action {
@@ -213,7 +213,7 @@ declare module 'ue' {
         "CollectionSetting": UE.GameSettingCollectionPage | null | undefined;
         "Button_Navigate": UE.CommonButtonBase | null | undefined;
         "Text_NavigationAction": UE.CommonTextBlock | null | undefined;
-        "OnSettingAssigned"(ActionText: string): void;
+        "OnSettingAssigned"(ActionText: UE.$FText): void;
     }
     namespace $Static {
     interface GameSettingListEntrySetting_Navigation {
@@ -231,7 +231,7 @@ declare module 'ue' {
         "Text_RightValue": UE.CommonTextBlock | null | undefined;
         "Button_Decrease": UE.CommonButtonBase | null | undefined;
         "Button_Increase": UE.CommonButtonBase | null | undefined;
-        "GetFormatValueText"(): string;
+        "GetFormatValueText"(): UE.$FText;
         "HandleDecreasePressed"(): void;
         "HandleDecreaseReleased"(): void;
         "HandleIncreasePressed"(): void;
@@ -393,9 +393,9 @@ declare module 'ue' {
     /** /Script/GameSettings.GameSettingValueDiscrete — reflection-generated, not individually call-tested. */
     interface GameSettingValueDiscrete extends UE.GameSettingValue {
         "GetDiscreteOptionDefaultIndex"(): number;
-        "GetDiscreteOptionDetails"(): UE.TArray<string>;
+        "GetDiscreteOptionDetails"(): UE.TArray<UE.$FText>;
         "GetDiscreteOptionIndex"(): number;
-        "GetDiscreteOptions"(): UE.TArray<string>;
+        "GetDiscreteOptions"(): UE.TArray<UE.$FText>;
     }
     namespace $Static {
     interface GameSettingValueDiscrete {
@@ -464,7 +464,7 @@ declare module 'ue' {
     const GameSettingValueScalar: UE.$Static.GameSettingValueScalar & UE.$ClassType<UE.GameSettingValueScalar>;
     /** /Script/GameSettings.GameSettingValueScalarDynamic — reflection-generated, not individually call-tested. */
     interface GameSettingValueScalarDynamic extends UE.GameSettingValueScalar {
-        "GetFormattedText"(): string;
+        "GetFormattedText"(): UE.$FText;
     }
     namespace $Static {
     interface GameSettingValueScalarDynamic {

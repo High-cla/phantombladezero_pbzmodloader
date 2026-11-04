@@ -101,7 +101,7 @@ declare module 'ue' {
     const MediaBlueprintFunctionLibrary: UE.$Static.MediaBlueprintFunctionLibrary & UE.$ClassType<UE.MediaBlueprintFunctionLibrary>;
     /** /Script/MediaAssets.MediaCaptureDevice — reflection-generated, not individually call-tested. */
     interface MediaCaptureDevice {
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
         "URL": string;
     }
     namespace $Static {
@@ -182,7 +182,7 @@ declare module 'ue' {
         "GetDuration"(): UE.Timespan;
         "GetHorizontalFieldOfView"(): number;
         "GetMediaMetadataItems"(): UE.TMap<string, UE.MediaMetadataItemsBPT>;
-        "GetMediaName"(): string;
+        "GetMediaName"(): UE.$FText;
         "GetNumTrackFormats"(TrackType: UE.EMediaPlayerTrack, TrackIndex: number): number;
         "GetNumTracks"(TrackType: UE.EMediaPlayerTrack): number;
         "GetPlaybackTimeRange"(InRangeToGet: UE.EMediaTimeRangeBPType): UE.FloatInterval;
@@ -195,7 +195,7 @@ declare module 'ue' {
         "GetTime"(): UE.Timespan;
         "GetTimeDelay"(): UE.Timespan;
         "GetTimeStamp"(): UE.MediaTimeStampInfo | null | undefined;
-        "GetTrackDisplayName"(TrackType: UE.EMediaPlayerTrack, TrackIndex: number): string;
+        "GetTrackDisplayName"(TrackType: UE.EMediaPlayerTrack, TrackIndex: number): UE.$FText;
         "GetTrackFormat"(TrackType: UE.EMediaPlayerTrack, TrackIndex: number): number;
         "GetTrackLanguage"(TrackType: UE.EMediaPlayerTrack, TrackIndex: number): string;
         "GetUrl"(): string;

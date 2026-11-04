@@ -57,8 +57,8 @@ declare module 'ue' {
         "OnQuestNewState": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, NewState: UE.QuestState | null | undefined) => void>;
         "OnQuestTaskProgressChanged": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, ProgressedTask: UE.NarrativeTask | null | undefined, Branch: UE.QuestBranch | null | undefined, OldProgress: number, NewProgress: number) => void>;
         "OnQuestTaskCompleted": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, CompletedTask: UE.NarrativeTask | null | undefined, Branch: UE.QuestBranch | null | undefined) => void>;
-        "OnQuestSucceeded": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, QuestSucceededMessage: string) => void>;
-        "OnQuestFailed": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, QuestFailedMessage: string) => void>;
+        "OnQuestSucceeded": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, QuestSucceededMessage: UE.$FText) => void>;
+        "OnQuestFailed": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, QuestFailedMessage: UE.$FText) => void>;
         "OnQuestStarted": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined) => void>;
         "OnQuestForgotten": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined) => void>;
         "OnQuestRestarted": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined) => void>;
@@ -100,11 +100,11 @@ declare module 'ue' {
         "NarrativeDataTaskCompleted"(NarrativeTask: UE.NarrativeDataTask | null | undefined, Name: string): void;
         "OnRep_PendingUpdateList"(): void;
         "QuestBranchCompleted"(Quest: UE.Quest | null | undefined, Branch: UE.QuestBranch | null | undefined): void;
-        "QuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: string): void;
+        "QuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: UE.$FText): void;
         "QuestForgotten"(Quest: UE.Quest | null | undefined): void;
         "QuestNewState"(Quest: UE.Quest | null | undefined, NewState: UE.QuestState | null | undefined): void;
         "QuestStarted"(Quest: UE.Quest | null | undefined): void;
-        "QuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: string): void;
+        "QuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: UE.$FText): void;
         "QuestTaskCompleted"(Quest: UE.Quest | null | undefined, Task: UE.NarrativeTask | null | undefined, Branch: UE.QuestBranch | null | undefined): void;
         "QuestTaskProgressMade"(Quest: UE.Quest | null | undefined, Task: UE.NarrativeTask | null | undefined, Branch: UE.QuestBranch | null | undefined, OldProgress: number, NewProgress: number): void;
         "RestartQuest"(QuestClass: UE.Class | null | undefined, StartFromID: string): boolean;
@@ -133,7 +133,7 @@ declare module 'ue' {
     /** /Script/Narrative.NarrativeDataTask — reflection-generated, not individually call-tested. */
     interface NarrativeDataTask extends UE.DataAsset {
         "TaskName": string;
-        "TaskDescription": string;
+        "TaskDescription": UE.$FText;
         "ArgumentName": string;
         "TaskCategory": string;
         "DefaultArgument": string;
@@ -220,7 +220,7 @@ declare module 'ue' {
     /** /Script/Narrative.NarrativeTask — reflection-generated, not individually call-tested. */
     interface NarrativeTask extends UE.Object {
         "RequiredQuantity": number;
-        "DescriptionOverride": string;
+        "DescriptionOverride": UE.$FText;
         "bOptional": boolean;
         "bHidden": boolean;
         "TickInterval": number;
@@ -238,8 +238,8 @@ declare module 'ue' {
         "CompleteTask"(): void;
         "GetMapIDNames"(): UE.TArray<string>;
         "GetOwningBranch"(): UE.QuestBranch | null | undefined;
-        "GetTaskDescription"(): string;
-        "GetTaskNodeDescription"(): string;
+        "GetTaskDescription"(): UE.$FText;
+        "GetTaskNodeDescription"(): UE.$FText;
         "IsComplete"(): boolean;
         "K2_BeginTask"(): void;
         "SetProgress"(NewProgress: number): void;
@@ -265,11 +265,11 @@ declare module 'ue' {
         "BPOnBeginLoad"(SaveName: string): void;
         "BPOnBeginSave"(SaveName: string): void;
         "BPOnLoadComplete"(SaveName: string): void;
-        "BPOnQuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: string): void;
+        "BPOnQuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: UE.$FText): void;
         "BPOnQuestNewState"(Quest: UE.Quest | null | undefined, NewState: UE.QuestState | null | undefined): void;
         "BPOnQuestStarted"(Quest: UE.Quest | null | undefined): void;
         "BPOnQuestStepCompleted"(Quest: UE.Quest | null | undefined, Step: UE.QuestBranch | null | undefined): void;
-        "BPOnQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: string): void;
+        "BPOnQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: UE.$FText): void;
         "BPOnQuestTaskCompleted"(Quest: UE.Quest | null | undefined, Task: UE.NarrativeTask | null | undefined, Step: UE.QuestBranch | null | undefined): void;
         "BPOnQuestTaskProgressMade"(Quest: UE.Quest | null | undefined, Task: UE.NarrativeTask | null | undefined, Step: UE.QuestBranch | null | undefined, CurrentProgress: number, RequiredProgress: number): void;
         "BPOnSaveComplete"(SaveName: string): void;
@@ -277,11 +277,11 @@ declare module 'ue' {
         "OnBeginLoad"(SaveName: string): void;
         "OnBeginSave"(SaveName: string): void;
         "OnLoadComplete"(SaveName: string): void;
-        "OnQuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: string): void;
+        "OnQuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: UE.$FText): void;
         "OnQuestNewState"(Quest: UE.Quest | null | undefined, NewState: UE.QuestState | null | undefined): void;
         "OnQuestStarted"(Quest: UE.Quest | null | undefined): void;
         "OnQuestStepCompleted"(Quest: UE.Quest | null | undefined, Step: UE.QuestBranch | null | undefined): void;
-        "OnQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: string): void;
+        "OnQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: UE.$FText): void;
         "OnQuestTaskCompleted"(Quest: UE.Quest | null | undefined, Task: UE.NarrativeTask | null | undefined, Step: UE.QuestBranch | null | undefined): void;
         "OnQuestTaskProgressMade"(Quest: UE.Quest | null | undefined, Task: UE.NarrativeTask | null | undefined, Step: UE.QuestBranch | null | undefined, CurrentProgress: number, RequiredProgress: number): void;
         "OnSaveComplete"(SaveName: string): void;
@@ -330,42 +330,42 @@ declare module 'ue' {
         "QuestNewState": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, NewState: UE.QuestState | null | undefined) => void>;
         "QuestTaskProgressChanged": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, ProgressedTask: UE.NarrativeTask | null | undefined, Branch: UE.QuestBranch | null | undefined, OldProgress: number, NewProgress: number) => void>;
         "QuestTaskCompleted": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, CompletedTask: UE.NarrativeTask | null | undefined, Branch: UE.QuestBranch | null | undefined) => void>;
-        "QuestSucceeded": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, QuestSucceededMessage: string) => void>;
-        "QuestFailed": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, QuestFailedMessage: string) => void>;
+        "QuestSucceeded": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, QuestSucceededMessage: UE.$FText) => void>;
+        "QuestFailed": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, QuestFailedMessage: UE.$FText) => void>;
         "QuestStarted": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined) => void>;
         "QuestForgotten": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined) => void>;
         "QuestRestarted": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined) => void>;
         "SkipQuestBranch": UE.$MulticastDelegate<(Quest: UE.Quest | null | undefined, Branch: UE.QuestBranch | null | undefined) => void>;
         "BPOnQuestBranchCompleted"(Quest: UE.Quest | null | undefined, Branch: UE.QuestBranch | null | undefined): void;
-        "BPOnQuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: string): void;
+        "BPOnQuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: UE.$FText): void;
         "BPOnQuestNewState"(Quest: UE.Quest | null | undefined, NewState: UE.QuestState | null | undefined): void;
         "BPOnQuestStarted"(Quest: UE.Quest | null | undefined): void;
-        "BPOnQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: string): void;
+        "BPOnQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: UE.$FText): void;
         "BPOnQuestTaskCompleted"(Quest: UE.Quest | null | undefined, Task: UE.NarrativeTask | null | undefined, Step: UE.QuestBranch | null | undefined): void;
         "BPOnQuestTaskProgressChanged"(Quest: UE.Quest | null | undefined, Task: UE.NarrativeTask | null | undefined, Step: UE.QuestBranch | null | undefined, CurrentProgress: number, RequiredProgress: number): void;
         "DeactivateAllActivatingBranches"(): void;
         "EnterState"(NewState: UE.QuestState | null | undefined): void;
-        "FailQuest"(QuestFailedMessage: string): void;
+        "FailQuest"(QuestFailedMessage: UE.$FText): void;
         "GetActivatingBranches"(): UE.TArray<UE.QuestBranch | null | undefined>;
         "GetAllBranches"(): UE.TArray<UE.QuestBranch | null | undefined>;
-        "GetAllReachedStateDescText"(): UE.TArray<string>;
-        "GetAllReachedStateTargetText"(): UE.TArray<string>;
+        "GetAllReachedStateDescText"(): UE.TArray<UE.$FText>;
+        "GetAllReachedStateTargetText"(): UE.TArray<UE.$FText>;
         "GetAllStates"(): UE.TArray<UE.QuestNode | null | undefined>;
         "GetBranch"(ID: string): UE.QuestBranch | null | undefined;
-        "GetCurrentTargetText"(): string;
+        "GetCurrentTargetText"(): UE.$FText;
         "GetNodes"(): UE.TArray<UE.QuestNode | null | undefined>;
         "GetOwningNarrativeComponent"(): UE.NarrativeComponent | null | undefined;
         "GetPawnOwner"(): UE.Pawn | null | undefined;
         "GetQuestCompletion"(): UE.EQuestCompletion;
-        "GetQuestDescription"(): string;
-        "GetQuestName"(): string;
+        "GetQuestDescription"(): UE.$FText;
+        "GetQuestName"(): UE.$FText;
         "GetState"(ID: string): UE.QuestState | null | undefined;
         "IsQuestBlocked"(): boolean;
         "OnQuestBranchCompleted"(Branch: UE.QuestBranch | null | undefined): void;
         "OnQuestTaskCompleted"(Task: UE.NarrativeTask | null | undefined, Branch: UE.QuestBranch | null | undefined): void;
         "OnQuestTaskProgressChanged"(Task: UE.NarrativeTask | null | undefined, Step: UE.QuestBranch | null | undefined, CurrentProgress: number, RequiredProgress: number): void;
         "SkipBranch"(Branch: UE.QuestBranch | null | undefined): void;
-        "SucceedQuest"(QuestSucceededMessage: string): void;
+        "SucceedQuest"(QuestSucceededMessage: UE.$FText): void;
         "TakeBranch"(Branch: UE.QuestBranch | null | undefined): void;
     }
     namespace $Static {
@@ -416,8 +416,8 @@ declare module 'ue' {
         "LastExecTime": UE.DateTime;
         "OnEnteredFuncName": string;
         "OwningQuest": UE.Quest | null | undefined;
-        "GetFlowLocDescText"(): string;
-        "GetFlowLocTargetText"(): string;
+        "GetFlowLocDescText"(): UE.$FText;
+        "GetFlowLocTargetText"(): UE.$FText;
     }
     namespace $Static {
     interface QuestNode {
@@ -445,7 +445,7 @@ declare module 'ue' {
         "bHidden": boolean;
         "bOptional": boolean;
         "bRetroactive": boolean;
-        "TaskDescription": string;
+        "TaskDescription": UE.$FText;
         "CurrentProgress": number;
     }
     namespace $Static {
@@ -468,7 +468,7 @@ declare module 'ue' {
     /** /Script/Narrative.TutorialDisplayData — reflection-generated, not individually call-tested. */
     interface TutorialDisplayData {
         "DisplayName": string;
-        "DisplayText": string;
+        "DisplayText": UE.$FText;
         "LocDisplayText": UE.LocText;
     }
     namespace $Static {
@@ -488,7 +488,7 @@ declare module 'ue' {
     /** /Script/Narrative.TutorialTip — reflection-generated, not individually call-tested. */
     interface TutorialTip {
         "TutorialWidgetName": string;
-        "DisplayText": string;
+        "DisplayText": UE.$FText;
         "LocDisplayText": UE.LocText;
     }
     namespace $Static {

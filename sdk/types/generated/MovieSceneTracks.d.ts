@@ -823,7 +823,7 @@ declare module 'ue' {
     /** /Script/MovieSceneTracks.MovieSceneCinematicShotSection — reflection-generated, not individually call-tested. */
     interface MovieSceneCinematicShotSection extends UE.MovieSceneSubSection {
         "ShotDisplayName": string;
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
         "GetShotDisplayName"(): string;
         "SetShotDisplayName"(InShotDisplayName: string): void;
     }
@@ -2207,8 +2207,8 @@ declare module 'ue' {
     /** /Script/MovieSceneTracks.MovieSceneTextChannel — reflection-generated, not individually call-tested. */
     interface MovieSceneTextChannel extends UE.MovieSceneChannel {
         "Times": UE.TArray<UE.FrameNumber>;
-        "Values": UE.TArray<string>;
-        "DefaultValue": string;
+        "Values": UE.TArray<UE.$FText>;
+        "DefaultValue": UE.$FText;
         "bHasDefaultValue": boolean;
         "KeyHandles": UE.MovieSceneKeyHandleMap;
     }

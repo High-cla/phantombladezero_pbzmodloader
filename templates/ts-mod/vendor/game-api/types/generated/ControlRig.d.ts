@@ -639,7 +639,7 @@ declare module 'ue' {
     const ControlRigReference: UE.$Static.ControlRigReference & UE.$StructType<UE.ControlRigReference>;
     /** /Script/ControlRig.ControlRigReplay — reflection-generated, not individually call-tested. */
     interface ControlRigReplay extends UE.Object {
-        "Description": string;
+        "Description": UE.$FText;
         "ControlRigObjectPath": UE.SoftObjectPath;
         "PreviewSkeletalMeshObjectPath": UE.SoftObjectPath;
         "InputTracks": UE.ControlRigReplayTracks;
@@ -1351,8 +1351,8 @@ declare module 'ue' {
         "AutoConnectModules"(InModuleNames: UE.TArray<string>, bReplaceExistingConnections: boolean, bSetupUndo: boolean): boolean;
         "AutoConnectSecondaryConnectors"(InConnectorKeys: UE.TArray<UE.RigElementKey>, bReplaceExistingConnections: boolean, bSetupUndo: boolean): boolean;
         "BindModuleVariable"(InModuleName: string, InVariableName: string, InSourcePath: string, bSetupUndo: boolean): boolean;
-        "CanConnectConnectorToElement"(InConnectorKey: UE.RigElementKey, InTargetKey: UE.RigElementKey, OutErrorMessage: $Ref<string>): boolean;
-        "CanConnectConnectorToElements"(InConnectorKey: UE.RigElementKey, InTargetKeys: UE.TArray<UE.RigElementKey>, OutErrorMessage: $Ref<string>): boolean;
+        "CanConnectConnectorToElement"(InConnectorKey: UE.RigElementKey, InTargetKey: UE.RigElementKey, OutErrorMessage: $Ref<UE.$FText>): boolean;
+        "CanConnectConnectorToElements"(InConnectorKey: UE.RigElementKey, InTargetKeys: UE.TArray<UE.RigElementKey>, OutErrorMessage: $Ref<UE.$FText>): boolean;
         "ConnectConnectorToElement"(InConnectorKey: UE.RigElementKey, InTargetKey: UE.RigElementKey, bSetupUndo: boolean, bAutoResolveOtherConnectors: boolean, bCheckValidConnection: boolean): boolean;
         "ConnectConnectorToElements"(InConnectorKey: UE.RigElementKey, InTargetKeys: UE.TArray<UE.RigElementKey>, bSetupUndo: boolean, bAutoResolveOtherConnectors: boolean, bCheckValidConnection: boolean): boolean;
         "DeleteModule"(InModuleName: string, bSetupUndo: boolean): boolean;
@@ -1421,7 +1421,7 @@ declare module 'ue' {
         "Matches": UE.TArray<UE.RigElementResolveResult>;
         "Excluded": UE.TArray<UE.RigElementResolveResult>;
         "State": UE.EModularRigResolveState;
-        "Message": string;
+        "Message": UE.$FText;
     }
     namespace $Static {
     interface ModularRigResolveResult {
@@ -2146,7 +2146,7 @@ declare module 'ue' {
     interface RigElementResolveResult {
         "Key": UE.RigElementKey;
         "State": UE.ERigElementResolveState;
-        "Message": string;
+        "Message": UE.$FText;
     }
     namespace $Static {
     interface RigElementResolveResult {

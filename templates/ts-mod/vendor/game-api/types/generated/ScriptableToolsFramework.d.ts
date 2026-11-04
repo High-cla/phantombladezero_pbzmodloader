@@ -159,10 +159,10 @@ declare module 'ue' {
     const ScriptableClickDragTool: UE.$Static.ScriptableClickDragTool & UE.$ClassType<UE.ScriptableClickDragTool>;
     /** /Script/ScriptableToolsFramework.ScriptableInteractiveTool — reflection-generated, not individually call-tested. */
     interface ScriptableInteractiveTool extends UE.InteractiveTool {
-        "ToolName": string;
-        "ToolLongName": string;
-        "ToolCategory": string;
-        "ToolTooltip": string;
+        "ToolName": UE.$FText;
+        "ToolLongName": UE.$FText;
+        "ToolCategory": UE.$FText;
+        "ToolTooltip": UE.$FText;
         "CustomIconPath": string;
         "ToolIconTexture": UE.Texture2D | null | undefined;
         "bShowToolInEditor": boolean;
@@ -185,7 +185,7 @@ declare module 'ue' {
         "ToolPanelToolHeaderWidget": UE.UserWidget | null | undefined;
         "GroupTags": UE.ScriptableToolGroupSet;
         "AddLineSet"(): UE.ScriptableToolLineSet | null | undefined;
-        "AddLogMessage"(Message: string, bHighlighted: boolean): void;
+        "AddLogMessage"(Message: UE.$FText, bHighlighted: boolean): void;
         "AddPointSet"(): UE.ScriptableToolPointSet | null | undefined;
         "AddPropertySetOfType"(PropertySetType: UE.Class | null | undefined, Identifier: string, Outcome: $Ref<UE.EToolsFrameworkOutcomePins>): UE.ScriptableInteractiveToolPropertySet | null | undefined;
         "AddTriangleSet"(): UE.ScriptableToolTriangleSet | null | undefined;
@@ -193,8 +193,8 @@ declare module 'ue' {
         "ClearUserMessages"(bHelpMessage: boolean, bWarningMessage: boolean): void;
         "CreateTRSGizmo"(Identifier: string, InitialTransform: UE.Transform, GizmoOptions: UE.ScriptableToolGizmoOptions, Outcome: $Ref<UE.EToolsFrameworkOutcomePins>): void;
         "DestroyTRSGizmo"(Identifier: string, Outcome: $Ref<UE.EToolsFrameworkOutcomePins>): void;
-        "DisplayUserHelpMessage"(Message: string): void;
-        "DisplayUserWarningMessage"(Message: string): void;
+        "DisplayUserHelpMessage"(Message: UE.$FText): void;
+        "DisplayUserWarningMessage"(Message: UE.$FText): void;
         "ForcePropertySetUpdateByName"(Identifier: string): void;
         "GetDefaultLineSet"(): UE.ScriptableToolLineSet | null | undefined;
         "GetDefaultPointSet"(): UE.ScriptableToolPointSet | null | undefined;
@@ -212,7 +212,7 @@ declare module 'ue' {
         "OnScriptShutdown"(ShutdownType: UE.EToolShutdownType): void;
         "OnScriptTick"(DeltaTime: number): void;
         "RemovePropertySetByName"(Identifier: string, Outcome: $Ref<UE.EToolsFrameworkOutcomePins>): void;
-        "RequestToolShutdown"(bAccept: boolean, bShowUserPopupMessage: boolean, UserMessage: string): void;
+        "RequestToolShutdown"(bAccept: boolean, bShowUserPopupMessage: boolean, UserMessage: UE.$FText): void;
         "RestorePropertySetSettings"(PropertySet: UE.ScriptableInteractiveToolPropertySet | null | undefined, SaveKey: string): UE.ScriptableInteractiveToolPropertySet | null | undefined;
         "SavePropertySetSettings"(PropertySet: UE.ScriptableInteractiveToolPropertySet | null | undefined, SaveKey: string): UE.ScriptableInteractiveToolPropertySet | null | undefined;
         "SetFocusInViewport"(): void;

@@ -231,7 +231,7 @@ declare module 'ue' {
         "GetEditorGraphPropertyAsArray"(PropertyName: string, NodeInstance: UE.SMNodeInstance | null | undefined, ArrayIndex: number): UE.TArray<UE.SMEditorGraphPropertyNodeInterface | null | undefined>;
         "GetNodeName"(): string;
         "ResetNodeName"(): void;
-        "SetNodeName"(NewName: string, OutErrorMessage: $Ref<string>): boolean;
+        "SetNodeName"(NewName: string, OutErrorMessage: $Ref<UE.$FText>): boolean;
     }
     namespace $Static {
     interface SMEditorGraphNodeInterface {
@@ -598,8 +598,8 @@ declare module 'ue' {
     /** /Script/SMSystem.SMNodeDescription — reflection-generated, not individually call-tested. */
     interface SMNodeDescription {
         "Name": string;
-        "Category": string;
-        "Description": string;
+        "Category": UE.$FText;
+        "Description": UE.$FText;
     }
     namespace $Static {
     interface SMNodeDescription {
@@ -627,7 +627,7 @@ declare module 'ue' {
         "GetGuid"(): UE.Guid;
         "GetInputComponent"(): UE.InputComponent | null | undefined;
         "GetNetworkInterface"(): UE.SMStateMachineNetworkedInterface | null | undefined;
-        "GetNodeDescriptionText"(): string;
+        "GetNodeDescriptionText"(): UE.$FText;
         "GetNodeIcon"(): UE.Texture2D | null | undefined;
         "GetNodeIconSize"(): UE.Vector2D;
         "GetNodeIconTintColor"(): UE.LinearColor;
@@ -651,7 +651,7 @@ declare module 'ue' {
         "ResetVariables"(): void;
         "SetDisplayName"(NewDisplayName: string): void;
         "SetNodeColor"(NewColor: UE.LinearColor): void;
-        "SetNodeDescriptionText"(NewDescription: string): void;
+        "SetNodeDescriptionText"(NewDescription: UE.$FText): void;
         "SetUseCustomColor"(bValue: boolean): void;
         "SetUseCustomIcon"(bValue: boolean): void;
         "SetVariableHidden"(VariableName: string, bSetHidden: boolean): void;

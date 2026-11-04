@@ -607,10 +607,10 @@ declare module 'ue' {
     }
     /** /Script/UMG.EditableText — reflection-generated, not individually call-tested. */
     interface EditableText extends UE.Widget {
-        "Text": string;
-        "TextDelegate": UE.$Delegate<() => string>;
-        "HintText": string;
-        "HintTextDelegate": UE.$Delegate<() => string>;
+        "Text": UE.$FText;
+        "TextDelegate": UE.$Delegate<() => UE.$FText>;
+        "HintText": UE.$FText;
+        "HintTextDelegate": UE.$Delegate<() => UE.$FText>;
         "WidgetStyle": UE.EditableTextStyle;
         "IsReadOnly": boolean;
         "IsPassword": boolean;
@@ -628,22 +628,22 @@ declare module 'ue' {
         "Justification": UE.ETextJustify;
         "OverflowPolicy": UE.ETextOverflowPolicy;
         "ShapedTextOptions": UE.ShapedTextOptions;
-        "OnTextChanged": UE.$MulticastDelegate<(Text: string) => void>;
-        "OnTextCommitted": UE.$MulticastDelegate<(Text: string, CommitMethod: UE.ETextCommit) => void>;
+        "OnTextChanged": UE.$MulticastDelegate<(Text: UE.$FText) => void>;
+        "OnTextCommitted": UE.$MulticastDelegate<(Text: UE.$FText, CommitMethod: UE.ETextCommit) => void>;
         "EnableIntegratedKeyboard": boolean;
         "GetFont"(): UE.SlateFontInfo;
-        "GetHintText"(): string;
+        "GetHintText"(): UE.$FText;
         "GetJustification"(): UE.ETextJustify;
-        "GetText"(): string;
+        "GetText"(): UE.$FText;
         "SetFont"(InFontInfo: UE.SlateFontInfo): void;
         "SetFontMaterial"(InMaterial: UE.MaterialInterface | null | undefined): void;
         "SetFontOutlineMaterial"(InMaterial: UE.MaterialInterface | null | undefined): void;
-        "SetHintText"(InHintText: string): void;
+        "SetHintText"(InHintText: UE.$FText): void;
         "SetIsPassword"(InbIsPassword: boolean): void;
         "SetIsReadOnly"(InbIsReadyOnly: boolean): void;
         "SetJustification"(InJustification: UE.ETextJustify): void;
         "SetMinimumDesiredWidth"(InMinDesiredWidth: number): void;
-        "SetText"(InText: string): void;
+        "SetText"(InText: UE.$FText): void;
         "SetTextOverflowPolicy"(InOverflowPolicy: UE.ETextOverflowPolicy): void;
         "ToggleVirtualKeyboard"(bShow: boolean): void;
     }
@@ -654,11 +654,11 @@ declare module 'ue' {
     const EditableText: UE.$Static.EditableText & UE.$ClassType<UE.EditableText>;
     /** /Script/UMG.EditableTextBox — reflection-generated, not individually call-tested. */
     interface EditableTextBox extends UE.Widget {
-        "Text": string;
-        "TextDelegate": UE.$Delegate<() => string>;
+        "Text": UE.$FText;
+        "TextDelegate": UE.$Delegate<() => UE.$FText>;
         "WidgetStyle": UE.EditableTextBoxStyle;
-        "HintText": string;
-        "HintTextDelegate": UE.$Delegate<() => string>;
+        "HintText": UE.$FText;
+        "HintTextDelegate": UE.$Delegate<() => UE.$FText>;
         "IsReadOnly": boolean;
         "IsPassword": boolean;
         "MinimumDesiredWidth": number;
@@ -675,18 +675,18 @@ declare module 'ue' {
         "Justification": UE.ETextJustify;
         "OverflowPolicy": UE.ETextOverflowPolicy;
         "ShapedTextOptions": UE.ShapedTextOptions;
-        "OnTextChanged": UE.$MulticastDelegate<(Text: string) => void>;
-        "OnTextCommitted": UE.$MulticastDelegate<(Text: string, CommitMethod: UE.ETextCommit) => void>;
+        "OnTextChanged": UE.$MulticastDelegate<(Text: UE.$FText) => void>;
+        "OnTextCommitted": UE.$MulticastDelegate<(Text: UE.$FText, CommitMethod: UE.ETextCommit) => void>;
         "ClearError"(): void;
-        "GetText"(): string;
+        "GetText"(): UE.$FText;
         "HasError"(): boolean;
-        "SetError"(InError: string): void;
+        "SetError"(InError: UE.$FText): void;
         "SetForegroundColor"(Color: UE.LinearColor): void;
-        "SetHintText"(InText: string): void;
+        "SetHintText"(InText: UE.$FText): void;
         "SetIsPassword"(bIsPassword: boolean): void;
         "SetIsReadOnly"(bReadOnly: boolean): void;
         "SetJustification"(InJustification: UE.ETextJustify): void;
-        "SetText"(InText: string): void;
+        "SetText"(InText: UE.$FText): void;
         "SetTextOverflowPolicy"(InOverflowPolicy: UE.ETextOverflowPolicy): void;
     }
     namespace $Static {
@@ -860,8 +860,8 @@ declare module 'ue' {
         "Textstyle": UE.TextBlockStyle;
         "SelectedKey": UE.InputChord;
         "Margin": UE.Margin;
-        "KeySelectionText": string;
-        "NoKeySpecifiedText": string;
+        "KeySelectionText": UE.$FText;
+        "NoKeySpecifiedText": UE.$FText;
         "bAllowModifierKeys": boolean;
         "bAllowGamepadKeys": boolean;
         "EscapeKeys": UE.TArray<UE.Key>;
@@ -871,8 +871,8 @@ declare module 'ue' {
         "SetAllowGamepadKeys"(bInAllowGamepadKeys: boolean): void;
         "SetAllowModifierKeys"(bInAllowModifierKeys: boolean): void;
         "SetEscapeKeys"(InKeys: UE.TArray<UE.Key>): void;
-        "SetKeySelectionText"(InKeySelectionText: string): void;
-        "SetNoKeySpecifiedText"(InNoKeySpecifiedText: string): void;
+        "SetKeySelectionText"(InKeySelectionText: UE.$FText): void;
+        "SetNoKeySpecifiedText"(InNoKeySpecifiedText: UE.$FText): void;
         "SetSelectedKey"(InSelectedKey: UE.InputChord): void;
         "SetTextBlockVisibility"(InVisibility: UE.ESlateVisibility): void;
     }
@@ -1159,9 +1159,9 @@ declare module 'ue' {
     const MovieSceneWidgetMaterialTrack: UE.$Static.MovieSceneWidgetMaterialTrack & UE.$ClassType<UE.MovieSceneWidgetMaterialTrack>;
     /** /Script/UMG.MultiLineEditableText — reflection-generated, not individually call-tested. */
     interface MultiLineEditableText extends UE.TextLayoutWidget {
-        "Text": string;
-        "HintText": string;
-        "HintTextDelegate": UE.$Delegate<() => string>;
+        "Text": UE.$FText;
+        "HintText": UE.$FText;
+        "HintTextDelegate": UE.$Delegate<() => UE.$FText>;
         "WidgetStyle": UE.TextBlockStyle;
         "bIsReadOnly": boolean;
         "SelectAllTextWhenFocused": boolean;
@@ -1171,17 +1171,17 @@ declare module 'ue' {
         "AllowContextMenu": boolean;
         "VirtualKeyboardOptions": UE.VirtualKeyboardOptions;
         "VirtualKeyboardDismissAction": UE.EVirtualKeyboardDismissAction;
-        "OnTextChanged": UE.$MulticastDelegate<(Text: string) => void>;
-        "OnTextCommitted": UE.$MulticastDelegate<(Text: string, CommitMethod: UE.ETextCommit) => void>;
+        "OnTextChanged": UE.$MulticastDelegate<(Text: UE.$FText) => void>;
+        "OnTextCommitted": UE.$MulticastDelegate<(Text: UE.$FText, CommitMethod: UE.ETextCommit) => void>;
         "GetFont"(): UE.SlateFontInfo;
-        "GetHintText"(): string;
-        "GetText"(): string;
+        "GetHintText"(): UE.$FText;
+        "GetText"(): UE.$FText;
         "SetFont"(InFontInfo: UE.SlateFontInfo): void;
         "SetFontMaterial"(InMaterial: UE.MaterialInterface | null | undefined): void;
         "SetFontOutlineMaterial"(InMaterial: UE.MaterialInterface | null | undefined): void;
-        "SetHintText"(InHintText: string): void;
+        "SetHintText"(InHintText: UE.$FText): void;
         "SetIsReadOnly"(bReadOnly: boolean): void;
-        "SetText"(InText: string): void;
+        "SetText"(InText: UE.$FText): void;
         "SetWidgetStyle"(InWidgetStyle: UE.TextBlockStyle): void;
     }
     namespace $Static {
@@ -1191,23 +1191,23 @@ declare module 'ue' {
     const MultiLineEditableText: UE.$Static.MultiLineEditableText & UE.$ClassType<UE.MultiLineEditableText>;
     /** /Script/UMG.MultiLineEditableTextBox — reflection-generated, not individually call-tested. */
     interface MultiLineEditableTextBox extends UE.TextLayoutWidget {
-        "Text": string;
-        "HintText": string;
-        "HintTextDelegate": UE.$Delegate<() => string>;
+        "Text": UE.$FText;
+        "HintText": UE.$FText;
+        "HintTextDelegate": UE.$Delegate<() => UE.$FText>;
         "WidgetStyle": UE.EditableTextBoxStyle;
         "bIsReadOnly": boolean;
         "AllowContextMenu": boolean;
         "VirtualKeyboardOptions": UE.VirtualKeyboardOptions;
         "VirtualKeyboardDismissAction": UE.EVirtualKeyboardDismissAction;
-        "OnTextChanged": UE.$MulticastDelegate<(Text: string) => void>;
-        "OnTextCommitted": UE.$MulticastDelegate<(Text: string, CommitMethod: UE.ETextCommit) => void>;
-        "GetHintText"(): string;
-        "GetText"(): string;
-        "SetError"(InError: string): void;
+        "OnTextChanged": UE.$MulticastDelegate<(Text: UE.$FText) => void>;
+        "OnTextCommitted": UE.$MulticastDelegate<(Text: UE.$FText, CommitMethod: UE.ETextCommit) => void>;
+        "GetHintText"(): UE.$FText;
+        "GetText"(): UE.$FText;
+        "SetError"(InError: UE.$FText): void;
         "SetForegroundColor"(Color: UE.LinearColor): void;
-        "SetHintText"(InHintText: string): void;
+        "SetHintText"(InHintText: UE.$FText): void;
         "SetIsReadOnly"(bReadOnly: boolean): void;
-        "SetText"(InText: string): void;
+        "SetText"(InText: UE.$FText): void;
         "SetTextStyle"(InTextStyle: UE.TextBlockStyle): void;
     }
     namespace $Static {
@@ -1430,7 +1430,7 @@ declare module 'ue' {
     const RichImageRow: UE.$Static.RichImageRow & UE.$StructType<UE.RichImageRow>;
     /** /Script/UMG.RichTextBlock — reflection-generated, not individually call-tested. */
     interface RichTextBlock extends UE.TextLayoutWidget {
-        "Text": string;
+        "Text": UE.$FText;
         "TextStyleSet": UE.DataTable | null | undefined;
         "DecoratorClasses": UE.TArray<UE.Class | null | undefined>;
         "DefaultTextStyleOverride": UE.TextBlockStyle;
@@ -1443,7 +1443,7 @@ declare module 'ue' {
         "ClearAllDefaultStyleOverrides"(): void;
         "GetDecoratorByClass"(DecoratorClass: UE.Class | null | undefined): UE.RichTextBlockDecorator | null | undefined;
         "GetDefaultDynamicMaterial"(): UE.MaterialInstanceDynamic | null | undefined;
-        "GetText"(): string;
+        "GetText"(): UE.$FText;
         "GetTextStyleSet"(): UE.DataTable | null | undefined;
         "RefreshTextLayout"(): void;
         "SetAutoWrapText"(InAutoTextWrap: boolean): void;
@@ -1456,7 +1456,7 @@ declare module 'ue' {
         "SetDefaultStrikeBrush"(InStrikeBrush: UE.SlateBrush): void;
         "SetDefaultTextStyle"(InDefaultTextStyle: UE.TextBlockStyle): void;
         "SetMinDesiredWidth"(InMinDesiredWidth: number): void;
-        "SetText"(InText: string): void;
+        "SetText"(InText: UE.$FText): void;
         "SetTextOverflowPolicy"(InOverflowPolicy: UE.ETextOverflowPolicy): void;
         "SetTextStyleSet"(NewTextStyleSet: UE.DataTable | null | undefined): void;
         "SetTextTransformPolicy"(InTransformPolicy: UE.ETextTransformPolicy): void;
@@ -1772,10 +1772,10 @@ declare module 'ue' {
         "bCanChildrenBeAccessible": boolean;
         "AccessibleBehavior": UE.ESlateAccessibleBehavior;
         "AccessibleSummaryBehavior": UE.ESlateAccessibleBehavior;
-        "AccessibleText": string;
-        "AccessibleTextDelegate": UE.$Delegate<() => string>;
-        "AccessibleSummaryText": string;
-        "AccessibleSummaryTextDelegate": UE.$Delegate<() => string>;
+        "AccessibleText": UE.$FText;
+        "AccessibleTextDelegate": UE.$Delegate<() => UE.$FText>;
+        "AccessibleSummaryText": UE.$FText;
+        "AccessibleSummaryTextDelegate": UE.$Delegate<() => UE.$FText>;
     }
     namespace $Static {
     interface SlateAccessibleWidgetData {
@@ -2001,7 +2001,7 @@ declare module 'ue' {
     /** /Script/UMG.TextBinding — reflection-generated, not individually call-tested. */
     interface TextBinding extends UE.PropertyBinding {
         "GetStringValue"(): string;
-        "GetTextValue"(): string;
+        "GetTextValue"(): UE.$FText;
     }
     namespace $Static {
     interface TextBinding {
@@ -2010,8 +2010,8 @@ declare module 'ue' {
     const TextBinding: UE.$Static.TextBinding & UE.$ClassType<UE.TextBinding>;
     /** /Script/UMG.TextBlock — reflection-generated, not individually call-tested. */
     interface TextBlock extends UE.TextLayoutWidget {
-        "Text": string;
-        "TextDelegate": UE.$Delegate<() => string>;
+        "Text": UE.$FText;
+        "TextDelegate": UE.$Delegate<() => UE.$FText>;
         "ColorAndOpacity": UE.SlateColor;
         "ColorAndOpacityDelegate": UE.$Delegate<() => UE.SlateColor>;
         "MinDesiredWidth": number;
@@ -2026,7 +2026,7 @@ declare module 'ue' {
         "bSimpleTextMode": boolean;
         "GetDynamicFontMaterial"(): UE.MaterialInstanceDynamic | null | undefined;
         "GetDynamicOutlineMaterial"(): UE.MaterialInstanceDynamic | null | undefined;
-        "GetText"(): string;
+        "GetText"(): UE.$FText;
         "SetAutoWrapText"(InAutoTextWrap: boolean): void;
         "SetColorAndOpacity"(InColorAndOpacity: UE.SlateColor): void;
         "SetFont"(InFontInfo: UE.SlateFontInfo): void;
@@ -2037,7 +2037,7 @@ declare module 'ue' {
         "SetShadowColorAndOpacity"(InShadowColorAndOpacity: UE.LinearColor): void;
         "SetShadowOffset"(InShadowOffset: UE.Vector2D): void;
         "SetStrikeBrush"(InStrikeBrush: UE.SlateBrush): void;
-        "SetText"(InText: string): void;
+        "SetText"(InText: UE.$FText): void;
         "SetTextOverflowPolicy"(InOverflowPolicy: UE.ETextOverflowPolicy): void;
         "SetTextTransformPolicy"(InTransformPolicy: UE.ETextTransformPolicy): void;
     }
@@ -2497,8 +2497,8 @@ declare module 'ue' {
     interface Widget extends UE.Visual {
         "Slot": UE.PanelSlot | null | undefined;
         "bIsEnabledDelegate": UE.$Delegate<() => boolean>;
-        "ToolTipTextDelegate": UE.$Delegate<() => string>;
-        "ToolTipText": string;
+        "ToolTipTextDelegate": UE.$Delegate<() => UE.$FText>;
+        "ToolTipText": UE.$FText;
         "ToolTipWidget": UE.Widget | null | undefined;
         "ToolTipWidgetDelegate": UE.$Delegate<() => UE.Widget | null | undefined>;
         "VisibilityDelegate": UE.$Delegate<() => UE.ESlateVisibility>;
@@ -2521,8 +2521,8 @@ declare module 'ue' {
         "NativeBindings": UE.TArray<UE.PropertyBinding | null | undefined>;
         "ForceLayoutPrepass"(): void;
         "ForceVolatile"(bForce: boolean): void;
-        "GetAccessibleSummaryText"(): string;
-        "GetAccessibleText"(): string;
+        "GetAccessibleSummaryText"(): UE.$FText;
+        "GetAccessibleText"(): UE.$FText;
         "GetCachedGeometry"(): UE.Geometry;
         "GetClipping"(): UE.EWidgetClipping;
         "GetDesiredSize"(): UE.Vector2D;
@@ -2572,7 +2572,7 @@ declare module 'ue' {
         "SetRenderTransformPivot"(Pivot: UE.Vector2D): void;
         "SetRenderTranslation"(Translation: UE.Vector2D): void;
         "SetToolTip"(Widget: UE.Widget | null | undefined): void;
-        "SetToolTipText"(InToolTipText: string): void;
+        "SetToolTipText"(InToolTipText: UE.$FText): void;
         "SetUserFocus"(PlayerController: UE.PlayerController | null | undefined): void;
         "SetVisibility"(InVisibility: UE.ESlateVisibility): void;
     }
@@ -2715,7 +2715,7 @@ declare module 'ue' {
         "DrawLines"(Context: $Ref<UE.PaintContext>, Points: UE.TArray<UE.Vector2D>, Tint: UE.LinearColor, bAntiAlias: boolean, Thickness: number): void;
         "DrawSpline"(Context: $Ref<UE.PaintContext>, Start: UE.Vector2D, StartDir: UE.Vector2D, End: UE.Vector2D, EndDir: UE.Vector2D, Tint: UE.LinearColor, Thickness: number): void;
         "DrawText"(Context: $Ref<UE.PaintContext>, InString: string, position: UE.Vector2D, Tint: UE.LinearColor): void;
-        "DrawTextFormatted"(Context: $Ref<UE.PaintContext>, Text: string, position: UE.Vector2D, Font: UE.Font | null | undefined, FontSize: number, FontTypeFace: string, Tint: UE.LinearColor): void;
+        "DrawTextFormatted"(Context: $Ref<UE.PaintContext>, Text: UE.$FText, position: UE.Vector2D, Font: UE.Font | null | undefined, FontSize: number, FontTypeFace: string, Tint: UE.LinearColor): void;
         "EndDragDrop"(Reply: $Ref<UE.EventReply>): UE.EventReply;
         "GetAllWidgetsOfClass"(WorldContextObject: UE.Object | null | undefined, FoundWidgets: $Ref<UE.TArray<UE.UserWidget | null | undefined>>, WidgetClass: UE.Class | null | undefined, TopLevelOnly: boolean): void;
         "GetAllWidgetsWithInterface"(WorldContextObject: UE.Object | null | undefined, FoundWidgets: $Ref<UE.TArray<UE.UserWidget | null | undefined>>, Interface: UE.Class | null | undefined, TopLevelOnly: boolean): void;

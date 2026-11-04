@@ -31,9 +31,9 @@ declare module 'ue' {
     interface CommonInputBaseControllerData extends UE.Object {
         "InputType": UE.ECommonInputType;
         "GamepadName": string;
-        "GamepadDisplayName": string;
-        "GamepadCategory": string;
-        "GamepadPlatformName": string;
+        "GamepadDisplayName": UE.$FText;
+        "GamepadCategory": UE.$FText;
+        "GamepadPlatformName": UE.$FText;
         "GamepadHardwareIdMapping": UE.TArray<UE.InputDeviceIdentifierPair>;
         "ControllerTexture": UE.TSoftObjectPtr<UE.Texture2D>;
         "ControllerButtonMaskTexture": UE.TSoftObjectPtr<UE.Texture2D>;

@@ -4,10 +4,12 @@ const fs = require('node:fs');
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const log = process.argv[2];
-if (!log) throw Error('Usage: node tests/verify-generated-api.cjs <loader.log>');
+if (!log) throw Error('Usage: node tests/verify-generated-api.cjs <loader.log> [map ...]');
 const source = fs.readFileSync(log,'utf8');
 const rows = source.split(/\r?\n/).filter(line=>line.includes('generated-api-probe {')).map(line=>JSON.parse(line.slice(line.indexOf('generated-api-probe ')+20)));
-const maps = ['PBZ_StartMenu_CE_WP','PBZ_Xigu_WP'];
+const maps = process.argv.length > 3 ? process.argv.slice(3) : ['PBZ_StartMenu_CE_WP','PBZ_Xigu_WP'];
+assert.equal(new Set(maps).size, maps.length, 'Expected distinct map names');
+assert.ok(rows.every(row => maps.includes(row.map)), 'Unexpected map observations');
 for (const map of maps) {
     const items=rows.filter(r=>r.map===map), byName=Object.fromEntries(items.map(r=>[r.name,r]));
     assert.equal(items.length,10,map+' must have ten distinct probe results');

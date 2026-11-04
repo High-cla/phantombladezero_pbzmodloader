@@ -2310,7 +2310,7 @@ declare module 'ue' {
     const EnvQueryGenerator_ActorsOfClass: UE.$Static.EnvQueryGenerator_ActorsOfClass & UE.$ClassType<UE.EnvQueryGenerator_ActorsOfClass>;
     /** /Script/AIModule.EnvQueryGenerator_BlueprintBase — reflection-generated, not individually call-tested. */
     interface EnvQueryGenerator_BlueprintBase extends UE.EnvQueryGenerator {
-        "GeneratorsActionDescription": string;
+        "GeneratorsActionDescription": UE.$FText;
         "Context": UE.Class | null | undefined;
         "GeneratedItemType": UE.Class | null | undefined;
         "AddGeneratedActor"(GeneratedActor: UE.Actor | null | undefined): void;

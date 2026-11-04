@@ -1,47 +1,71 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-30",
-  "gameBuild": "CL-301524_JKS-17219",
-  "exeSha256": "7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4",
+  "date": "2026-11-04",
+  "gameBuild": "CL-302256_JKS-17280",
+  "exeSha256": "4415933ce33476f14c837abb61a1b60af8b78cd81783896501913a7aac69e423",
   "sources": [
     {
-      "path": "build/binding-support-20261030/loader-final.log",
-      "sha256": "4639efdfe32a35bbfe0ab0a9b4af69dab5f3382bf1fb800210fd7da9a5f5cea1"
+      "path": "build/game-api-audit-20261104/runtime-loader.log",
+      "sha256": "3dc0a4eb71cb3eef321a41f36b608508f19e16176191814b86cedc8f73eb5ae0"
     },
     {
-      "path": "build/binding-support-20261030/loader-first.log",
-      "sha256": "528317de2d6e416e36738396bac1ae4d0b32fa84239e523e59f4368604af3412"
+      "path": "build/game-api-audit-20261104/runtime-first.log",
+      "sha256": "bd47a6fea73ce1808fe1f8699a3df9671952feb9df715fb1c5167a045cd3b4a7"
     },
     {
-      "path": "build/binding-support-20261030/0001.js",
+      "path": "build/game-api-audit-20261104/runtime-retry.log",
+      "sha256": "4da701fa5b4294ccb23e48f1921f125c2afb87f4109f9c3081a4d72ecbdb7a77"
+    },
+    {
+      "path": "build/game-api-audit-20261104/runtime-evidence-selection.json",
+      "sha256": "f4079bd5d210a7291acd701eb935f1b9530a0ad8f547828114fe88c8a11113d9"
+    },
+    {
+      "path": "build/game-api-audit-20261104/runtime-checks/run.js",
+      "sha256": "1fd57ce29df3c374ead83527455d30bb4452dc421d4dea8aa57d845c59d4a512"
+    },
+    {
+      "path": "build/game-api-audit-20261104/runtime-checks/ftext.js",
+      "sha256": "766458a3cedfb738e325a319f6ca76391647276209dca36b11afd5048864412b"
+    },
+    {
+      "path": "build/game-api-audit-20261104/runtime-checks/ftext-first-failed.js",
+      "sha256": "2d12d47fe4f2f07d2b1c77a32a0e4effc9a817e5ca189d7a5005bebb389cacfb"
+    },
+    {
+      "path": "build/game-api-audit-20261104/runtime-checks/retry-command.js",
+      "sha256": "19b82d24416438df7a804bc16b3edf757b747d7a10b8d5b2809f89c4d978bc60"
+    },
+    {
+      "path": "build/game-api-audit-20261104/runtime-checks/0001.js",
       "sha256": "9a37a833186f5cc072cfadcef0dae77deb24f194996a5160819f66c14b926e9d"
     },
     {
-      "path": "build/binding-support-20261030/0002.js",
+      "path": "build/game-api-audit-20261104/runtime-checks/0002.js",
       "sha256": "0d5f92e7aef93c89c3efa633220dcd96a2a7d036fba7cdf11c235bf9d1bd3aad"
     },
     {
-      "path": "build/binding-support-20261030/0003.js",
+      "path": "build/game-api-audit-20261104/runtime-checks/0003.js",
       "sha256": "44c39b43964d402977f3ac3b4cd7c7193b6eef366a48daefec0f55fd1b33109d"
     },
     {
-      "path": "build/binding-support-20261030/0004.js",
+      "path": "build/game-api-audit-20261104/runtime-checks/0004.js",
       "sha256": "eb0a18f018a60fb4b02c3078ba0ad0f5b3594871d5067f0d6e25b557901c310d"
     },
     {
-      "path": "build/binding-support-20261030/0005.js",
-      "sha256": "3bca613a332c74cb6237e98a4db407400a1b6d6698a4a4b14731bbec0eeba75e"
-    },
-    {
-      "path": "build/binding-support-20261030/safe-fieldpath.js",
+      "path": "build/game-api-audit-20261104/runtime-checks/0005.js",
       "sha256": "2d3bfe986d8eeaf960d659883c1615d7524f06c6ba615db73a27291db54b994a"
     },
     {
-      "path": "build/binding-support-20261030/crash.dmp",
-      "sha256": "bfc960796e55e8e451771b5c0246dcf2d98f06077b7b5bab619a18d3fe151da1"
+      "path": "build/game-api-audit-20261104/runtime-window-before.json",
+      "sha256": "342d4e1bce839f4c52c84a12c66d92e3776e022729ef9125e0633609ed5ffee4"
+    },
+    {
+      "path": "build/game-api-audit-20261104/runtime-window-after.json",
+      "sha256": "e0a8a0a18e581bb59a0873a019927fffd6092b45ba6f03e1c578c2df2368f2e7"
     }
   ],
-  "scope": "55 accessors; 35 readable struct fields; 4 sample writes; all 61 enum members; exact-integer check of 8 large enum members; two FieldPath writes on a fresh transient UObject. Not a universal callable-API guarantee.",
+  "scope": "55 accessors; readable temporary struct fields; four representative writes; eight large enum integer comparisons; two direct FieldPath writes on a fresh transient UObject. No gameplay method callability guarantee.",
   "properties": [
     {
       "target": "/Script/CoreUObject.SoftObjectPath:SubPathString",
@@ -623,13 +647,13 @@
   "conversions": [
     {
       "event": "after",
-      "sequence": 4,
+      "sequence": 3,
       "step": "new StructSerializerOptionalTestStruct",
       "result": {}
     },
     {
       "event": "after",
-      "sequence": 4,
+      "sequence": 3,
       "step": "StructSerializerOptionalTestStruct.IntOptional",
       "result": {
         "before": {
@@ -642,7 +666,7 @@
     },
     {
       "event": "after",
-      "sequence": 4,
+      "sequence": 3,
       "step": "StructSerializerOptionalTestStruct.StrOptional",
       "result": {
         "before": {
@@ -655,7 +679,7 @@
     },
     {
       "event": "after",
-      "sequence": 4,
+      "sequence": 3,
       "step": "StructSerializerOptionalTestStruct.NameOptional",
       "result": {
         "before": {
@@ -668,13 +692,13 @@
     },
     {
       "event": "after",
-      "sequence": 4,
+      "sequence": 3,
       "step": "new SoftObjectPath",
       "result": {}
     },
     {
       "event": "after",
-      "sequence": 4,
+      "sequence": 3,
       "step": "SoftObjectPath.SubPathString",
       "result": {
         "before": {
@@ -687,7 +711,7 @@
     },
     {
       "event": "after",
-      "sequence": 4,
+      "sequence": 3,
       "step": "enum-exact-integers",
       "result": [
         {
@@ -815,7 +839,7 @@
       "step": "valid-object",
       "result": {
         "valid": true,
-        "name": "GEAR_AttributeRange_2147478516"
+        "name": "GEAR_AttributeRange_2147465439"
       }
     },
     {
@@ -843,11 +867,57 @@
       }
     }
   ],
+  "ftext": {
+    "passed": true,
+    "schemaVersion": 1,
+    "display": {
+      "width": 1280,
+      "height": 720,
+      "mode": 2
+    },
+    "label": "采集 FText ✓ 1280",
+    "newObject": {
+      "classPath": "/Script/UMG.TextBlock",
+      "actualClass": "TextBlock",
+      "valid": true
+    },
+    "converted": {
+      "type": "object",
+      "readback": "采集 FText ✓ 1280"
+    },
+    "widget": {
+      "type": "object",
+      "readback": "采集 FText ✓ 1280"
+    },
+    "property": {
+      "type": "object",
+      "readback": "采集 FText ✓ 1280",
+      "writtenType": "object",
+      "written": "属性 采集 FText ✓ 1280"
+    },
+    "directString": {
+      "type": "object",
+      "value": ""
+    },
+    "array": {
+      "type": "object",
+      "readback": "采集 FText ✓ 1280"
+    },
+    "map": {
+      "type": "object",
+      "readback": "采集 FText ✓ 1280"
+    },
+    "source": {
+      "path": "build/game-api-audit-20261104/runtime-loader.log",
+      "sha256": "3dc0a4eb71cb3eef321a41f36b608508f19e16176191814b86cedc8f73eb5ae0"
+    }
+  },
   "fieldPathFunction": {
     "status": "unsafe-unverified",
-    "directFieldPathClassOwnersInCaptures": 0,
     "positiveMutationVerified": false,
-    "observedCrash": {
+    "priorBuildCrash": {
+      "gameBuild": "CL-301524_JKS-17219",
+      "exeSha256": "7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4",
       "sequence": 5,
       "lastOperation": "function-valid-object-nested-name",
       "objectClass": "/Script/SGameUtils.GEAR_AttributeRange",
@@ -856,63 +926,120 @@
       "processId": 62588,
       "log": "build/binding-support-20261030/loader-first.log"
     },
-    "note": "Direct nested property assignment succeeded twice on a fresh transient UObject. The Kismet function terminated the process on a nested property name. No successful non-null function mutation was established. Do not use nested names or assume invalid names are ignored."
+    "note": "The previously crashing function call was not repeated. Direct nested assignment succeeded in the current build; this does not establish function safety."
   },
   "previousExit": {
-    "processId": 62008,
-    "status": "unresolved-not-reproduced",
-    "oldLog": "build/property-mapping-20261030/loader-second.log",
-    "lastEvent": "begin, before first property result",
-    "replays": 2,
-    "replayTarget": [
-      {
-        "event": "after",
-        "sequence": 1,
-        "step": "Class.Load",
-        "result": {}
-      },
-      {
-        "event": "after",
-        "sequence": 1,
-        "step": "blueprint.tojs"
-      },
-      {
-        "event": "after",
-        "sequence": 1,
-        "step": "property-descriptor",
-        "result": {
-          "get": "function",
-          "set": "function"
+    "status": "historical-prior-build",
+    "gameBuild": "CL-301524_JKS-17219",
+    "details": {
+      "processId": 62008,
+      "status": "unresolved-not-reproduced",
+      "oldLog": "build/property-mapping-20261030/loader-second.log",
+      "lastEvent": "begin, before first property result",
+      "replays": 2,
+      "replayTarget": [
+        {
+          "event": "after",
+          "sequence": 1,
+          "step": "Class.Load",
+          "result": {}
+        },
+        {
+          "event": "after",
+          "sequence": 1,
+          "step": "blueprint.tojs"
+        },
+        {
+          "event": "after",
+          "sequence": 1,
+          "step": "property-descriptor",
+          "result": {
+            "get": "function",
+            "set": "function"
+          }
+        },
+        {
+          "event": "after",
+          "sequence": 1,
+          "step": "load-default-object",
+          "result": {}
+        },
+        {
+          "event": "after",
+          "sequence": 1,
+          "step": "read-enum",
+          "result": {
+            "type": "number",
+            "value": 5
+          }
         }
-      },
-      {
-        "event": "after",
-        "sequence": 1,
-        "step": "load-default-object",
-        "result": {}
-      },
-      {
-        "event": "after",
-        "sequence": 1,
-        "step": "read-enum",
-        "result": {
-          "type": "number",
-          "value": 5
-        }
-      }
-    ],
-    "note": "First target succeeded in both warm and fresh processes. Old crash report had already disappeared; encrypted game logs are not readable stack traces. The new nested-name crash is a distinct observation, not proof of the old cause."
+      ],
+      "note": "First target succeeded in both warm and fresh processes. Old crash report had already disappeared; encrypted game logs are not readable stack traces. The new nested-name crash is a distinct observation, not proof of the old cause."
+    }
   },
-  "upstreamComparison": {
-    "url": "https://github.com/Tencent/puerts/blob/master/unreal/Puerts/Source/JsEnv/Private/PropertyTranslator.cpp",
-    "sha256": "49d4d1486ddaa9f15291f3af4e8fa3e924ea888653669b3dd3853922155c45ae",
-    "finding": "No Optional/Utf8/Ansi branches; fallback DoNothingPropertyTranslator returns undefined and accepts writes without conversion.",
-    "limitation": "Reference only; not the exact game source. Game accepted mismatched FieldPath target kinds unlike this upstream source."
+  "newBindings": {
+    "bindings": [
+      [
+        "DamageCalculator_PBZPlayerNonLethal",
+        "function"
+      ],
+      [
+        "PBZPrimeAndPlayAction.PrimeAndPlay",
+        "function"
+      ],
+      [
+        "PBZShaderCacheSavePromptSubsystem",
+        "function"
+      ],
+      [
+        "AbilityAsync_WaitGameplayTagCountDelta.WaitGameplayTagCountChangeOnActor",
+        "function"
+      ],
+      [
+        "PBZBlueprintFunctionLibrary.ExecuteDebugMenuCommand",
+        "function"
+      ],
+      [
+        "PBZSettingsShared.GetHitBrightness",
+        "function"
+      ],
+      [
+        "PBZSettingsShared.GetHitHead",
+        "function"
+      ],
+      [
+        "PBZSettingsShared.GetHitVolume",
+        "function"
+      ]
+    ],
+    "passed": true
+  },
+  "excludedObservation": {
+    "nativeClassLoad": "/Script/UMG.TextBlock returned null",
+    "source": "runtime-first.log",
+    "stage": 6
+  },
+  "evidenceSelection": "runtime-evidence-selection.json",
+  "newObject": {
+    "signature": "NewObject(Class)",
+    "verifiedClasses": [
+      "/Script/SGameUtils.GEAR_AttributeRange",
+      "/Script/UMG.TextBlock"
+    ],
+    "scope": "One-argument factory only; no claim that arbitrary reflected classes are constructible.",
+    "nativeClassSource": "StaticClass(); Class.Load(/Script/UMG.TextBlock) returned null"
   },
   "cleanup": {
     "probeRemoved": true,
     "configRestored": true,
-    "sha256": "8AC9142CE65A2692CCDD4478F468AC590706002FA6D433B09EC4CC963538A22E",
-    "gameExited": true
+    "sha256": "8ac9142ce65a2692ccdd4478f468ac590706002fa6d433b09ec4cc963538a22e",
+    "gameExited": true,
+    "removed": [
+      "D:\\Program Files\\Steam\\steamapps\\common\\PBZ\\ProjectPBZ\\PBZModLoader\\mods\\api-audit-inventory",
+      "D:\\Program Files\\Steam\\steamapps\\common\\PBZ\\ProjectPBZ\\Content\\JavaScript\\PBZModLoader\\generated-mods\\api-audit-inventory",
+      "D:\\Program Files\\Steam\\steamapps\\common\\PBZ\\ProjectPBZ\\PBZModLoader\\mods\\api-audit-types",
+      "D:\\Program Files\\Steam\\steamapps\\common\\PBZ\\ProjectPBZ\\Content\\JavaScript\\PBZModLoader\\generated-mods\\api-audit-types"
+    ],
+    "completedAt": "2026-11-04T18:53:12.0472251+08:00"
   }
 }

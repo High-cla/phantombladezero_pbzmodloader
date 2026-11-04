@@ -35,10 +35,10 @@ declare module 'ue' {
     namespace $Static {
     interface AsyncAction_ShowConfirmation {
         "ShowConfirmationCustom"(InWorldContextObject: UE.Object | null | undefined, Descriptor: UE.CommonGameDialogDescriptor | null | undefined): UE.AsyncAction_ShowConfirmation | null | undefined;
-        "ShowConfirmationOk"(InWorldContextObject: UE.Object | null | undefined, Title: string, Message: string): UE.AsyncAction_ShowConfirmation | null | undefined;
+        "ShowConfirmationOk"(InWorldContextObject: UE.Object | null | undefined, Title: UE.$FText, Message: UE.$FText): UE.AsyncAction_ShowConfirmation | null | undefined;
         "ShowConfirmationOkByKey"(InWorldContextObject: UE.Object | null | undefined, Title: string, Message: string): UE.AsyncAction_ShowConfirmation | null | undefined;
-        "ShowConfirmationOkCancel"(InWorldContextObject: UE.Object | null | undefined, Title: string, Message: string): UE.AsyncAction_ShowConfirmation | null | undefined;
-        "ShowConfirmationYesNo"(InWorldContextObject: UE.Object | null | undefined, Title: string, Message: string): UE.AsyncAction_ShowConfirmation | null | undefined;
+        "ShowConfirmationOkCancel"(InWorldContextObject: UE.Object | null | undefined, Title: UE.$FText, Message: UE.$FText): UE.AsyncAction_ShowConfirmation | null | undefined;
+        "ShowConfirmationYesNo"(InWorldContextObject: UE.Object | null | undefined, Title: UE.$FText, Message: UE.$FText): UE.AsyncAction_ShowConfirmation | null | undefined;
         "ShowConfirmationYesNoByKey"(InWorldContextObject: UE.Object | null | undefined, TitleKey: string, MessageKey: string): UE.AsyncAction_ShowConfirmation | null | undefined;
     }
     }
@@ -53,14 +53,14 @@ declare module 'ue' {
     const CommonGameDialog: UE.$Static.CommonGameDialog & UE.$ClassType<UE.CommonGameDialog>;
     /** /Script/CommonGame.CommonGameDialogDescriptor — reflection-generated, not individually call-tested. */
     interface CommonGameDialogDescriptor extends UE.Object {
-        "Header": string;
-        "Body": string;
+        "Header": UE.$FText;
+        "Body": UE.$FText;
         "ButtonActions": UE.TArray<UE.ConfirmationDialogAction>;
         "CachedDialog": UE.CommonGameDialog | null | undefined;
     }
     namespace $Static {
     interface CommonGameDialogDescriptor {
-        "CreateConfirmationOk"(WorldContextObject: UE.Object | null | undefined, Header: string, Body: string): UE.CommonGameDialogDescriptor | null | undefined;
+        "CreateConfirmationOk"(WorldContextObject: UE.Object | null | undefined, Header: UE.$FText, Body: UE.$FText): UE.CommonGameDialogDescriptor | null | undefined;
     }
     }
     const CommonGameDialogDescriptor: UE.$Static.CommonGameDialogDescriptor & UE.$ClassType<UE.CommonGameDialogDescriptor>;
@@ -68,8 +68,8 @@ declare module 'ue' {
     interface CommonGameInstance extends UE.GameInstance {
         "RequestedSession": UE.CommonSession_SearchResult | null | undefined;
         "HandlePrivilegeChanged"(UserInfo: UE.CommonUserInfo | null | undefined, Privilege: UE.ECommonUserPrivilege, OldAvailability: UE.ECommonUserAvailability, NewAvailability: UE.ECommonUserAvailability): void;
-        "HandleSystemMessage"(MessageType: UE.GameplayTag, Title: string, Message: string): void;
-        "HandlerUserInitialized"(UserInfo: UE.CommonUserInfo | null | undefined, bSuccess: boolean, Error: string, RequestedPrivilege: UE.ECommonUserPrivilege, OnlineContext: UE.ECommonUserOnlineContext): void;
+        "HandleSystemMessage"(MessageType: UE.GameplayTag, Title: UE.$FText, Message: UE.$FText): void;
+        "HandlerUserInitialized"(UserInfo: UE.CommonUserInfo | null | undefined, bSuccess: boolean, Error: UE.$FText, RequestedPrivilege: UE.ECommonUserPrivilege, OnlineContext: UE.ECommonUserOnlineContext): void;
     }
     namespace $Static {
     interface CommonGameInstance {
@@ -163,7 +163,7 @@ declare module 'ue' {
     /** /Script/CommonGame.ConfirmationDialogAction — reflection-generated, not individually call-tested. */
     interface ConfirmationDialogAction {
         "Result": UE.ECommonMessagingResult;
-        "OptionalDisplayText": string;
+        "OptionalDisplayText": UE.$FText;
     }
     namespace $Static {
     interface ConfirmationDialogAction {

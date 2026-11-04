@@ -83,7 +83,7 @@ declare module 'ue' {
         "ValueBytes": UE.TArray<number>;
         "PropCategory": UE.EPropertyValueCategory;
         "GetFullDisplayString"(): string;
-        "GetPropertyTooltip"(): string;
+        "GetPropertyTooltip"(): UE.$FText;
         "HasRecordedData"(): boolean;
     }
     namespace $Static {
@@ -155,7 +155,7 @@ declare module 'ue' {
     /** /Script/VariantManagerContent.Variant — reflection-generated, not individually call-tested. */
     interface Variant extends UE.Object {
         "Dependencies": UE.TArray<UE.VariantDependency>;
-        "DisplayText": string;
+        "DisplayText": UE.$FText;
         "ObjectBindings": UE.TArray<UE.VariantObjectBinding | null | undefined>;
         "Thumbnail": UE.Texture2D | null | undefined;
         "AddDependency"(Dependency: $Ref<UE.VariantDependency>): number;
@@ -163,14 +163,14 @@ declare module 'ue' {
         "GetActor"(ActorIndex: number): UE.Actor | null | undefined;
         "GetDependency"(Index: number): UE.VariantDependency;
         "GetDependents"(LevelVariantSets: UE.LevelVariantSets | null | undefined, bOnlyEnabledDependencies: boolean): UE.TArray<UE.Variant | null | undefined>;
-        "GetDisplayText"(): string;
+        "GetDisplayText"(): UE.$FText;
         "GetNumActors"(): number;
         "GetNumDependencies"(): number;
         "GetParent"(): UE.VariantSet | null | undefined;
         "GetThumbnail"(): UE.Texture2D | null | undefined;
         "IsActive"(): boolean;
         "SetDependency"(Index: number, Dependency: $Ref<UE.VariantDependency>): void;
-        "SetDisPlayText"(NewDisplayText: string): void;
+        "SetDisPlayText"(NewDisplayText: UE.$FText): void;
         "SetThumbnailFromCamera"(WorldContextObject: UE.Object | null | undefined, CameraTransform: UE.Transform, FOVDegrees: number, MinZ: number, Gamma: number): void;
         "SetThumbnailFromEditorViewport"(): void;
         "SetThumbnailFromFile"(FilePath: string): void;
@@ -208,17 +208,17 @@ declare module 'ue' {
     const VariantObjectBinding: UE.$Static.VariantObjectBinding & UE.$ClassType<UE.VariantObjectBinding>;
     /** /Script/VariantManagerContent.VariantSet — reflection-generated, not individually call-tested. */
     interface VariantSet extends UE.Object {
-        "DisplayText": string;
+        "DisplayText": UE.$FText;
         "bExpanded": boolean;
         "Variants": UE.TArray<UE.Variant | null | undefined>;
         "Thumbnail": UE.Texture2D | null | undefined;
-        "GetDisplayText"(): string;
+        "GetDisplayText"(): UE.$FText;
         "GetNumVariants"(): number;
         "GetParent"(): UE.LevelVariantSets | null | undefined;
         "GetThumbnail"(): UE.Texture2D | null | undefined;
         "GetVariant"(VariantIndex: number): UE.Variant | null | undefined;
         "GetVariantByName"(VariantName: string): UE.Variant | null | undefined;
-        "SetDisPlayText"(NewDisplayText: string): void;
+        "SetDisPlayText"(NewDisplayText: UE.$FText): void;
         "SetThumbnailFromCamera"(WorldContextObject: UE.Object | null | undefined, CameraTransform: UE.Transform, FOVDegrees: number, MinZ: number, Gamma: number): void;
         "SetThumbnailFromEditorViewport"(): void;
         "SetThumbnailFromFile"(FilePath: string): void;

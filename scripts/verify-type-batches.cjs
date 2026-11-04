@@ -27,6 +27,7 @@ function verify(archive,sdk,out) {
     for(const r of outcomes){const ns=r.path.split('/')[1];const n=namespaces[ns]||={requested:0,loaded:0,failed:0};n.requested++;n[r.event==='loaded'?'loaded':'failed']++;}
     const delta=Object.fromEntries(Object.entries(report.counts).filter(([,v])=>typeof v==='number').map(([k,v])=>[k,v-(oldReport.counts[k]||0)]));
     const result={schemaVersion:1,batches:batches.length,requested:outcomes.length,loaded:outcomes.length-failed.length,failed,
+        comparisonBaseline:{build:oldReport.build,counts:oldReport.counts,index:'type-index-before.json'},
         missingLoadedTypes:missing,removedOldTypes:removed,addedTypes:added.length,namespaces,counts:report.counts,delta,captures,
         sdkVersion:read(path.join(sdk,'package.json')).version,
         scope:'Loaded type definitions and reflected signatures; not individual gameplay-call verification.'};
@@ -36,7 +37,7 @@ function verify(archive,sdk,out) {
     fs.writeFileSync(path.join(out,'remaining-load-targets.json'),JSON.stringify(failed,null,2)+'\n');
     const md=['# 分批加载与 SDK 合并报告','',
         `共 ${result.batches} 批、${result.requested} 个目标，加载成功 ${result.loaded}，失败 ${failed.length}。`,
-        `SDK ${result.sdkVersion} 新增 ${added.length} 个类型（含依赖），保留全部旧类型。`, '',
+        `SDK ${result.sdkVersion} 相对输入基线新增 ${added.length} 个类型（含依赖），保留全部基线类型；基线构建为 ${oldReport.build}。`, '',
         '| 目录 | 请求 | 成功 | 失败 |','| --- | ---: | ---: | ---: |',
         ...Object.entries(namespaces).sort((a,b)=>b[1].requested-a[1].requested).map(([k,v])=>`| ${k} | ${v.requested} | ${v.loaded} | ${v.failed} |`),'',
         '| 声明项 | 合并后 | 新增 |','| --- | ---: | ---: |',

@@ -337,7 +337,7 @@ declare module 'ue' {
     interface SocialGroupChannel extends UE.Object {
         "SocialUser": UE.SocialUser | null | undefined;
         "GroupID": UE.UniqueNetIdRepl;
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
         "Members": UE.TArray<UE.SocialUser | null | undefined>;
     }
     namespace $Static {

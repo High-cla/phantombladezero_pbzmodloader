@@ -818,6 +818,7 @@ declare module 'ue' {
     /** /Script/ProjectPBZ.BellDataStruct — reflection-generated, not individually call-tested. */
     interface BellDataStruct extends UE.TableRowBase {
         "BellID": string;
+        "BellType": UE.EBellType;
         "BellName": UE.FlowLocText;
         "BellTexture": UE.TSoftObjectPtr<UE.Texture2D>;
         "CraneBellTexture": UE.TSoftObjectPtr<UE.Texture2D>;
@@ -837,8 +838,8 @@ declare module 'ue' {
     const BellDataStruct: UE.$Static.BellDataStruct & UE.$StructType<UE.BellDataStruct>;
     /** /Script/ProjectPBZ.BellInteractWidget — reflection-generated, not individually call-tested. */
     interface BellInteractWidget extends UE.PBZActivatableWidget {
-        "BellName": string;
-        "BellText": string;
+        "BellName": UE.$FText;
+        "BellText": UE.$FText;
         "OwnerBell": UE.PBZCheckPoint | null | undefined;
         "SlideInSound": UE.AkAudioEvent | null | undefined;
         "SlideOutSound": UE.AkAudioEvent | null | undefined;
@@ -863,7 +864,7 @@ declare module 'ue' {
     /** /Script/ProjectPBZ.BellLevelEntry — reflection-generated, not individually call-tested. */
     interface BellLevelEntry {
         "BellID": string;
-        "BellName": string;
+        "BellName": UE.$FText;
         "BellTransform": UE.Transform;
     }
     namespace $Static {
@@ -1137,7 +1138,7 @@ declare module 'ue' {
         "GetPageText": UE.FlowLocText;
         "BookDesc": UE.FlowLocText;
         "InCompletedPages": UE.TSet<number>;
-        "PageTexts": UE.TArray<string>;
+        "PageTexts": UE.TArray<UE.$FText>;
         "BookIcon": UE.TSoftObjectPtr<UE.Texture2D>;
         "PageIcon": UE.TSoftObjectPtr<UE.Texture2D>;
     }
@@ -1376,7 +1377,7 @@ declare module 'ue' {
     const CheckParryStageActions: UE.$Static.CheckParryStageActions & UE.$StructType<UE.CheckParryStageActions>;
     /** /Script/ProjectPBZ.ChoiceData — reflection-generated, not individually call-tested. */
     interface ChoiceData {
-        "ChoiceText": string;
+        "ChoiceText": UE.$FText;
         "ChoiceTag": UE.GameplayTagContainer;
     }
     namespace $Static {
@@ -1387,8 +1388,8 @@ declare module 'ue' {
     /** /Script/ProjectPBZ.CodexDataStruct — reflection-generated, not individually call-tested. */
     interface CodexDataStruct extends UE.ItemDataBase {
         "CodexID": string;
-        "NPCName": string;
-        "NPCDesc": string;
+        "NPCName": UE.$FText;
+        "NPCDesc": UE.$FText;
         "BIsMonster": boolean;
         "PreviewSkeletalMesh": UE.TSoftObjectPtr<UE.SkeletalMesh>;
         "PreviewAnimationAsset": UE.TSoftObjectPtr<UE.AnimationAsset>;
@@ -1469,9 +1470,9 @@ declare module 'ue' {
     const CompletedData: UE.$Static.CompletedData & UE.$ClassType<UE.CompletedData>;
     /** /Script/ProjectPBZ.CompletedQuestTextInfo — reflection-generated, not individually call-tested. */
     interface CompletedQuestTextInfo {
-        "QuestNames": string;
-        "ReachedStateQuestTarget": UE.TArray<string>;
-        "ReachedStateQuestDescs": UE.TArray<string>;
+        "QuestNames": UE.$FText;
+        "ReachedStateQuestTarget": UE.TArray<UE.$FText>;
+        "ReachedStateQuestDescs": UE.TArray<UE.$FText>;
     }
     namespace $Static {
     interface CompletedQuestTextInfo {
@@ -1641,7 +1642,7 @@ declare module 'ue' {
     const DemoVersionScreenData: UE.$Static.DemoVersionScreenData & UE.$ClassType<UE.DemoVersionScreenData>;
     /** /Script/ProjectPBZ.DialogText — reflection-generated, not individually call-tested. */
     interface DialogText extends UE.ItemDataBase {
-        "DisplayText": string;
+        "DisplayText": UE.$FText;
     }
     namespace $Static {
     interface DialogText {
@@ -1678,7 +1679,7 @@ declare module 'ue' {
     const DialogueContentData: UE.$Static.DialogueContentData & UE.$StructType<UE.DialogueContentData>;
     /** /Script/ProjectPBZ.DialogueData — reflection-generated, not individually call-tested. */
     interface DialogueData {
-        "Text": string;
+        "Text": UE.$FText;
         "DialogueSound": UE.SoundBase | null | undefined;
         "AudioEvent": UE.AkAudioEvent | null | undefined;
         "ActiveEffect": UE.NiagaraSystem | null | undefined;
@@ -1895,7 +1896,8 @@ declare module 'ue' {
         "Melodious" = 0,
         "Broken" = 1,
         "DeerAntler" = 2,
-        "EBellType_MAX" = 3,
+        "Unknown" = 3,
+        "EBellType_MAX" = 4,
     }
     /** /Script/ProjectPBZ.ECameraEndInteractMode — reflection-generated, not individually call-tested. */
     enum ECameraEndInteractMode {
@@ -3609,7 +3611,7 @@ declare module 'ue' {
         "GetSequenceHair"(): number;
         "GetStreamingSourcesByName"(InSeqName: string): UE.ActorArray;
         "GetTagDegree"(Tag: UE.GameplayTag): number;
-        "GetTagDescribe"(Tag: UE.GameplayTag): string;
+        "GetTagDescribe"(Tag: UE.GameplayTag): UE.$FText;
         "HasTagWithOutSource"(Tag: UE.GameplayTag): boolean;
         "HasTagWithSource"(Tag: UE.GameplayTag, SourceSaveGuid: string): boolean;
         "HasTagsWithOutSource"(Tags: UE.GameplayTagContainer): boolean;
@@ -3645,7 +3647,7 @@ declare module 'ue' {
         "AddTagStringsFromTagAndSource"(OwnerTagWithSourceArray: $Ref<UE.TArray<string>>, Tags: UE.GameplayTagContainer, SourceSaveGuid: string): void;
         "Conv_LocTextToAKAudio"(InLocText: UE.FlowLocText): UE.AkAudioEvent | null | undefined;
         "Conv_LocTextToString"(InLocText: UE.FlowLocText): string;
-        "Conv_LocTextToText"(InLocText: UE.FlowLocText): string;
+        "Conv_LocTextToText"(InLocText: UE.FlowLocText): UE.$FText;
         "CreateStreamingSourceAtTransform"(WorldContextObject: UE.Object | null | undefined, InTransform: UE.Transform, SectorAngle: number, bUseSector: boolean): UE.EventpipelineStreamingSource | null | undefined;
         "GetAKByString"(AKName: string): UE.AkAudioEvent | null | undefined;
         "GetAKByStringAsync"(Owner: UE.Object | null | undefined, AKName: string, OnLoaded: UE.$Delegate<(AkAudioEvent: UE.AkAudioEvent | null | undefined) => void>, Priority: number): UE.PBZAsyncLoadHandle;
@@ -3730,7 +3732,7 @@ declare module 'ue' {
     const FlowBranchParam: UE.$Static.FlowBranchParam & UE.$StructType<UE.FlowBranchParam>;
     /** /Script/ProjectPBZ.FlowChoiceData — reflection-generated, not individually call-tested. */
     interface FlowChoiceData {
-        "ChoiceText": string;
+        "ChoiceText": UE.$FText;
         "ChoiceIndex": number;
         "Last": boolean;
     }
@@ -3809,7 +3811,7 @@ declare module 'ue' {
     interface FlowLocText {
         "Namespace": string;
         "Key": string;
-        "ValueCache": string;
+        "ValueCache": UE.$FText;
     }
     namespace $Static {
     interface FlowLocText {
@@ -4276,7 +4278,7 @@ declare module 'ue' {
     const GameInstanceSubsystemSaveData: UE.$Static.GameInstanceSubsystemSaveData & UE.$StructType<UE.GameInstanceSubsystemSaveData>;
     /** /Script/ProjectPBZ.GameSettingValueDiscreteDynamic2 — reflection-generated, not individually call-tested. */
     interface GameSettingValueDiscreteDynamic2 extends UE.GameSettingValueDiscreteDynamic {
-        "CollectOptions"(): UE.TArray<string>;
+        "CollectOptions"(): UE.TArray<UE.$FText>;
         "IsCurrentSelected"(StrValue: string): boolean;
         "ResetOptions"(): void;
         "SetDiscreteOptionByIndex"(Index: number): void;
@@ -4466,8 +4468,8 @@ declare module 'ue' {
     const GuideSplineComponent: UE.$Static.GuideSplineComponent & UE.$ClassType<UE.GuideSplineComponent>;
     /** /Script/ProjectPBZ.GuideUIData — reflection-generated, not individually call-tested. */
     interface GuideUIData extends UE.TableRowBase {
-        "Title": string;
-        "Description": string;
+        "Title": UE.$FText;
+        "Description": UE.$FText;
         "ButtonImg": UE.TSoftObjectPtr<UE.Texture>;
         "bExtraButton": boolean;
         "ExtraButtonImg": UE.TSoftObjectPtr<UE.Texture>;
@@ -5644,14 +5646,14 @@ declare module 'ue' {
         "SlotID": string;
         "Location": UE.Vector;
         "bIsSelected": boolean;
-        "BP_InitWidget"(SlotText: string, InSlotID: string): void;
+        "BP_InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
         "BP_OnDeselected"(): void;
         "BP_OnSelected"(): void;
         "ClearSelected"(): void;
         "GetIsSelected"(): boolean;
         "GetSlotID"(): string;
-        "GetSlotText"(): string;
-        "InitWidget"(SlotText: string, InSlotID: string): void;
+        "GetSlotText"(): UE.$FText;
+        "InitWidget"(SlotText: UE.$FText, InSlotID: string): void;
         "SetLocation"(InLocation: UE.Vector): void;
         "SetSelected"(bIsSelected: boolean): void;
     }
@@ -6254,7 +6256,7 @@ declare module 'ue' {
         "HandleNarrativeLoadComplete"(SaveGameName: string): void;
         "HandlePossessedPawnChanged"(OldPawn: UE.Pawn | null | undefined, NewPawn: UE.Pawn | null | undefined): void;
         "HandleQuestBranchStateChanged"(Quest: UE.Quest | null | undefined, Branch: UE.QuestBranch | null | undefined, NewState: UE.EPBZQuestBranchState): void;
-        "HandleQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: string): void;
+        "HandleQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: UE.$FText): void;
         "HandleSourceTagAdd"(SourceSaveGuid: string, NewTags: UE.GameplayTagContainer): void;
         "StartListening"(): void;
         "StopListening"(): void;
@@ -6978,7 +6980,7 @@ declare module 'ue' {
         "PushItemToInventory": UE.$MulticastDelegate<() => void>;
         "OnMemoryFlowerComposed": UE.$MulticastDelegate<(FlowerID: string) => void>;
         "InventoryAmountChanged": UE.$MulticastDelegate<(ItemId: string, NewAmount: number) => void>;
-        "GetBooks": UE.$MulticastDelegate<(BookName: string, bIsBook: boolean, PageIndex: number) => void>;
+        "GetBooks": UE.$MulticastDelegate<(BookName: UE.$FText, bIsBook: boolean, PageIndex: number) => void>;
         "PushQuestWidget": UE.$MulticastDelegate<() => void>;
         "ReplaceWeaponDelegate": UE.$MulticastDelegate<(WeaponTag: UE.GameplayTag, Index: number, bIsChangeCurrentWeapon: boolean) => void>;
         "ReplaceWeaponConfigReady": UE.$MulticastDelegate<(WeaponConfig: UE.DataAsset | null | undefined, WeaponTag: UE.GameplayTag, Index: number, bIsChangeCurrentWeapon: boolean) => void>;
@@ -7280,7 +7282,7 @@ declare module 'ue' {
         "GetAccessoryLevelData"(AccessoryID: string, Level: number): UE.AccessoryLevelData;
         "GetAccessoryPreviewGEData"(AccessoryID: string, Level: number): UE.TArray<UE.GETextData>;
         "GetBackPackSubsytemByContextObject"(ContextObject: UE.Object | null | undefined): UE.PBZBackPackSubsystem | null | undefined;
-        "GetBookPageTextDesc"(ReturnDesc: $Ref<string>, BookID: string, PageIndex: number): void;
+        "GetBookPageTextDesc"(ReturnDesc: $Ref<UE.$FText>, BookID: string, PageIndex: number): void;
         "GetCommonItemID"(ItemType: UE.EInteractableObjectType): string;
         "GetMedicineData"(MedicineID: string): UE.PBZMedicineDataStruct;
         "GetPropData"(UsablePropID: string): UE.PBZItemDataStruct;
@@ -7396,6 +7398,7 @@ declare module 'ue' {
         "DrawDebugSphere"(Center: UE.Vector, Radius: number, Segments: number, LineColor: UE.LinearColor, duration: number, Thickness: number): void;
         "EnableClothTick"(bEnable: boolean, SkeletalMeshComponent: UE.SkeletalMeshComponent | null | undefined): void;
         "EnableSimulatePhysicsBelowBoneIndex"(SkeletalMeshComponent: UE.SkeletalMeshComponent | null | undefined, BelowIndex: number): void;
+        "ExecuteDebugMenuCommand"(WorldContextObject: UE.Object | null | undefined, Command: string, SpecificPlayer: UE.PlayerController | null | undefined): void;
         "ExecuteWidgetKeyDown"(UserWidget: UE.UserWidget | null | undefined, MyGeometry: UE.Geometry, InKeyEvent: UE.KeyEvent): void;
         "ExecuteWidgetKeyUp"(UserWidget: UE.UserWidget | null | undefined, MyGeometry: UE.Geometry, InKeyEvent: UE.KeyEvent): void;
         "FadeInAllSound"(ContextObject: UE.Object | null | undefined, FadeInTime: number): void;
@@ -7442,7 +7445,7 @@ declare module 'ue' {
         "GetDiffcultMode"(ContextObject: UE.Object | null | undefined): UE.EDifficultMode;
         "GetDifficulty"(ContextObject: UE.Object | null | undefined): UE.EDifficultMode;
         "GetDistance"(ContextObject: UE.Object | null | undefined, FirstActor: UE.Actor | null | undefined, SecondActor: UE.Actor | null | undefined): number;
-        "GetEnumValueAsDisplayName"(EnumName: string, Index: number): string;
+        "GetEnumValueAsDisplayName"(EnumName: string, Index: number): UE.$FText;
         "GetEnumValueAsString"(EnumName: string, Index: number): string;
         "GetEnumValueByString"(EnumName: string, EnumValueString: string): number;
         "GetEventPipelineManagerWithoutWorld"(): UE.EventPipelineManager | null | undefined;
@@ -7538,7 +7541,7 @@ declare module 'ue' {
         "IsWidgetValidInput"(Widget: UE.Widget | null | undefined): boolean;
         "LoadBank"(BanksToLoad: UE.TArray<string>): void;
         "MakeAttribute"(AttributeName: string, Set: UE.Class | null | undefined): UE.GameplayAttribute;
-        "MakeTextByKey"(Key: string): string;
+        "MakeTextByKey"(Key: string): UE.$FText;
         "MarkHelpUnlocked"(WorldContext: UE.Object | null | undefined, HelpID: string): void;
         "MatchCurrentCulture"(Candidates: UE.TArray<string>): string;
         "MaxItemLevel"(FirstLevel: UE.EItemLevel, SecondLevel: UE.EItemLevel): UE.EItemLevel;
@@ -7684,7 +7687,7 @@ declare module 'ue' {
     interface PBZBookPageItem extends UE.Object {
         "Index": number;
         "bIsGet": boolean;
-        "PageText": string;
+        "PageText": UE.$FText;
     }
     namespace $Static {
     interface PBZBookPageItem {
@@ -7808,7 +7811,7 @@ declare module 'ue' {
         "WidthOverride": number;
         "HeightOverride": number;
         "bOverride_ButtonText": boolean;
-        "ButtonText": string;
+        "ButtonText": UE.$FText;
         "ButtonResetHoldPercentage"(): void;
         "ClearActiveSequencer"(): void;
         "ClearButtonIcon"(): void;
@@ -7820,11 +7823,11 @@ declare module 'ue' {
         "GetCause"(FocusEvent: UE.FocusEvent): UE.EFocusCause;
         "OnHoldActionPressed"(): void;
         "OnHoldActionReleased"(): void;
-        "OverrideDisplayText"(Text: string): void;
+        "OverrideDisplayText"(Text: UE.$FText): void;
         "PBZSetSelected"(InSelected: boolean): void;
         "ReleaseSlateButton"(): void;
         "SetButtonIcon"(InBrush: UE.SlateBrush): void;
-        "SetButtonText"(InText: string): void;
+        "SetButtonText"(InText: UE.$FText): void;
         "SetButtonTextByKey"(Key: string): void;
         "SetGreyState"(): void;
         "SetHeightOverride"(Height: number): void;
@@ -7834,7 +7837,7 @@ declare module 'ue' {
         "SetWidthOverride"(Width: number): void;
         "UpdateButtonIcon"(InBrush: UE.SlateBrush): void;
         "UpdateButtonStyle"(): void;
-        "UpdateButtonText"(InText: string): void;
+        "UpdateButtonText"(InText: UE.$FText): void;
     }
     namespace $Static {
     interface PBZButtonBase {
@@ -8263,6 +8266,9 @@ declare module 'ue' {
         "Gm_MusicOn"(): void;
         "Gm_ReSetAudioVolume"(): void;
         "Gm_SetAudioDeflectBrightness"(Volume: number): void;
+        "Gm_SetAudioHitBrightness"(Volume: number): void;
+        "Gm_SetAudioHitHead"(Volume: number): void;
+        "Gm_SetAudioHitVolume"(Volume: number): void;
         "Gm_SetAudioVolume_Music"(Volume: number): void;
         "Gm_SetAudioVolume_Pad"(Volume: number): void;
         "Gm_SetAudioVolume_SFX"(Volume: number): void;
@@ -8414,8 +8420,8 @@ declare module 'ue' {
     interface PBZCodexItem extends UE.Object {
         "BIsMonster": boolean;
         "CodexID": string;
-        "CodeName": string;
-        "CodeDesc": string;
+        "CodeName": UE.$FText;
+        "CodeDesc": UE.$FText;
         "bActivate": boolean;
     }
     namespace $Static {
@@ -8485,7 +8491,7 @@ declare module 'ue' {
         "RichTextStyleConfig": UE.PBZRichTextStyleConfig | null | undefined;
         "GetDisplayCultureName"(): string;
         "GetOutlineRatio"(): number;
-        "GetSynchronizedText"(): string;
+        "GetSynchronizedText"(): UE.$FText;
         "GetTrailingGlyphWhitespace"(): number;
         "GetVisualLineRects"(): UE.TArray<UE.Vector4>;
         "OnCultureChanged"(): void;
@@ -8497,7 +8503,7 @@ declare module 'ue' {
         "SetOutlineOverrideEnabled"(bEnabled: boolean): void;
         "SetOutlineSettings"(InSettings: UE.FontOutlineSettings): void;
         "SetOutlineSize"(InSize: number): void;
-        "SetPBZFormatText"(InText: string): void;
+        "SetPBZFormatText"(InText: UE.$FText): void;
         "SetTagStyleMapping"(InMapping: UE.TMap<string, string>): void;
         "SetTextByLocKey"(Str: string): void;
         "SetWrapTextWidth"(InWrapTextAt: number): void;
@@ -8523,7 +8529,7 @@ declare module 'ue' {
         "NumericDecoratorInstance": UE.LanguageTextDecorator | null | undefined;
         "DisplayCultureOverride": string;
         "GetDisplayCultureName"(): string;
-        "GetSynchronizedText"(): string;
+        "GetSynchronizedText"(): UE.$FText;
         "OnCultureChanged"(): void;
         "OverrideTextColor"(Color: UE.SlateColor): void;
         "SetChangeTextDecoratorClass"(InClass: UE.Class | null | undefined): void;
@@ -8534,7 +8540,7 @@ declare module 'ue' {
         "SetOutlineOverrideEnabled"(bEnabled: boolean): void;
         "SetOutlineSettings"(InSettings: UE.FontOutlineSettings): void;
         "SetOutlineSize"(InSize: number): void;
-        "SetPBZFormatText"(InText: string): void;
+        "SetPBZFormatText"(InText: UE.$FText): void;
         "SetTextByLocKey"(Str: string): void;
     }
     namespace $Static {
@@ -10005,8 +10011,8 @@ declare module 'ue' {
         "CultureDisplayNames": UE.TMap<string, string>;
         "AllowLanguages": UE.TArray<string>;
         "GetCurrentWwiseLanguage"(): string;
-        "GetLanguageDiscreteOptions"(): UE.TMap<string, string>;
-        "GetWwiseAudioDiscreteOptions"(): UE.TMap<string, string>;
+        "GetLanguageDiscreteOptions"(): UE.TMap<string, UE.$FText>;
+        "GetWwiseAudioDiscreteOptions"(): UE.TMap<string, UE.$FText>;
         "IsCurrentLanguage"(LanguageName: string): boolean;
         "IsSonyVersion"(): boolean;
         "SetLanguage"(CultureName: string): void;
@@ -10459,7 +10465,7 @@ declare module 'ue' {
         "BossPoint": UE.UIExtensionPointWidget | null | undefined;
         "RegisterBossHandles": UE.TMap<UE.Actor | null | undefined, UE.UIExtensionHandle>;
         "ApplyCharacterStateVisibility"(Mode: UE.EPBZHUDVisibility): void;
-        "DisplayBookItem"(BookName: string, bIsInCompletedBook: boolean, PageIndex: number): void;
+        "DisplayBookItem"(BookName: UE.$FText, bIsInCompletedBook: boolean, PageIndex: number): void;
         "DisplayItem"(PropID: string, bIsAdd: boolean, Num: number): void;
         "DisplayNextPropText"(): void;
         "FadeOutPropText"(): void;
@@ -10500,7 +10506,7 @@ declare module 'ue' {
     /** /Script/ProjectPBZ.PBZHelpCategoryInfo — reflection-generated, not individually call-tested. */
     interface PBZHelpCategoryInfo {
         "Category": UE.EPBZHelpCategory;
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
     }
     namespace $Static {
     interface PBZHelpCategoryInfo {
@@ -11114,7 +11120,7 @@ declare module 'ue' {
     }
     namespace $Static {
     interface PBZItemCostDialogDescriptor {
-        "CreateItemCostConfirmationYesNo"(WorldContextObject: UE.Object | null | undefined, InHeader: string, InBody: string, bInDisplayCount: boolean, InItemID: string, InCostCount: number): UE.PBZItemCostDialogDescriptor | null | undefined;
+        "CreateItemCostConfirmationYesNo"(WorldContextObject: UE.Object | null | undefined, InHeader: UE.$FText, InBody: UE.$FText, bInDisplayCount: boolean, InItemID: string, InCostCount: number): UE.PBZItemCostDialogDescriptor | null | undefined;
     }
     }
     const PBZItemCostDialogDescriptor: UE.$Static.PBZItemCostDialogDescriptor & UE.$ClassType<UE.PBZItemCostDialogDescriptor>;
@@ -11272,7 +11278,7 @@ declare module 'ue' {
         "InvertedKeyIconBrush": UE.SlateBrush;
         "ClearCellText"(): void;
         "RefreshCellVisual"(): void;
-        "SetCellText"(InText: string): void;
+        "SetCellText"(InText: UE.$FText): void;
         "SetConflictVisual"(bInConflict: boolean): void;
         "SetContentState"(InState: UE.EPBZKeyBindingCellContentState): void;
         "SetEditingVisual"(bInEditing: boolean): void;
@@ -11348,7 +11354,7 @@ declare module 'ue' {
         "ConfirmSelection"(): void;
         "HandlePresetNext"(): void;
         "HandlePresetPrev"(): void;
-        "OnOverviewImageChanged"(Image: UE.Texture2D | null | undefined, SchemeName: string): void;
+        "OnOverviewImageChanged"(Image: UE.Texture2D | null | undefined, SchemeName: UE.$FText): void;
         "StepPreset"(Direction: number): void;
     }
     namespace $Static {
@@ -11779,9 +11785,9 @@ declare module 'ue' {
         "ExitCodexView"(): void;
         "ExitLetterView"(): void;
         "ExitReadMode"(): void;
-        "GetNotHasAnyItemText"(LiteratureType: UE.ELiteratureType): string;
+        "GetNotHasAnyItemText"(LiteratureType: UE.ELiteratureType): UE.$FText;
         "GetReadModeIconRowName"(): string;
-        "GetReadModeText"(): string;
+        "GetReadModeText"(): UE.$FText;
         "InitNavigationRule"(LiteratureType: UE.ELiteratureType): void;
         "LetterButtonRightNavigation"(TempNavigation: UE.EUINavigation): UE.Widget | null | undefined;
         "OnBookButtonClicked"(): void;
@@ -12505,7 +12511,7 @@ declare module 'ue' {
         "GetBranchesOnBigMap"(ActivatingBranchesDatas: $Ref<UE.TArray<UE.QuestDataOnMap>>, SucceedQuestDatas: $Ref<UE.TArray<UE.QuestDataOnMap>>, FailedStopDatas: $Ref<UE.TArray<UE.QuestDataOnMap>>): void;
         "GetBranchesOnMiniMap"(ActivatingBranchesDatas: $Ref<UE.TArray<UE.QuestDataOnMap>>, MapID: string): void;
         "GetCompletedQuestNames"(): UE.TArray<string>;
-        "GetCompletedQuestNamesByMapID"(MapID: string, State: UE.EPBZQuestBranchState): UE.TArray<string>;
+        "GetCompletedQuestNamesByMapID"(MapID: string, State: UE.EPBZQuestBranchState): UE.TArray<UE.$FText>;
         "GetCompletedQuests"(): UE.TArray<UE.Quest | null | undefined>;
         "GetLastUpdatedMainQuest"(): UE.Quest | null | undefined;
         "GetMainCompletedQuests"(): UE.TArray<UE.CompletedQuestTextInfo>;
@@ -12530,8 +12536,8 @@ declare module 'ue' {
         "GetTrackedTaskPointID"(): string;
         "HandleGlobalTagsAdded"(SourceSaveGuid: string, NewTags: UE.GameplayTagContainer): void;
         "HandleMainQuestBranchStateChanged"(Quest: UE.Quest | null | undefined, Branch: UE.QuestBranch | null | undefined, NewState: UE.EPBZQuestBranchState): void;
-        "HandleMainQuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: string): void;
-        "HandleMainQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: string): void;
+        "HandleMainQuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: UE.$FText): void;
+        "HandleMainQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: UE.$FText): void;
         "HandleMainQuestTaskCompleted"(Quest: UE.Quest | null | undefined, CompletedTask: UE.NarrativeTask | null | undefined, Branch: UE.QuestBranch | null | undefined): void;
         "HandlePossessedPawnChanged"(OldPawn: UE.Pawn | null | undefined, NewPawn: UE.Pawn | null | undefined): void;
         "HandleTrackingBranchCompleted"(Quest: UE.Quest | null | undefined, Branch: UE.QuestBranch | null | undefined): void;
@@ -12696,11 +12702,11 @@ declare module 'ue' {
         "BPOnBeginLoad"(SaveName: string): void;
         "BPOnBeginSave"(SaveName: string): void;
         "BPOnLoadComplete"(SaveName: string): void;
-        "BPOnQuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: string): void;
+        "BPOnQuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: UE.$FText): void;
         "BPOnQuestNewState"(Quest: UE.Quest | null | undefined, NewState: UE.QuestState | null | undefined): void;
         "BPOnQuestStarted"(Quest: UE.Quest | null | undefined): void;
         "BPOnQuestStepCompleted"(Quest: UE.Quest | null | undefined, Step: UE.QuestBranch | null | undefined): void;
-        "BPOnQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: string): void;
+        "BPOnQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: UE.$FText): void;
         "BPOnQuestTaskCompleted"(Quest: UE.Quest | null | undefined, Task: UE.QuestTask, Step: UE.QuestBranch | null | undefined): void;
         "BPOnQuestTaskProgressMade"(Quest: UE.Quest | null | undefined, Task: UE.QuestTask, Step: UE.QuestBranch | null | undefined, CurrentProgress: number, RequiredProgress: number): void;
         "BPOnSaveComplete"(SaveName: string): void;
@@ -12714,11 +12720,11 @@ declare module 'ue' {
         "OnBeginLoad"(SaveName: string): void;
         "OnBeginSave"(SaveName: string): void;
         "OnLoadComplete"(SaveName: string): void;
-        "OnQuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: string): void;
+        "OnQuestFailed"(Quest: UE.Quest | null | undefined, QuestFailedMessage: UE.$FText): void;
         "OnQuestNewState"(Quest: UE.Quest | null | undefined, NewState: UE.QuestState | null | undefined): void;
         "OnQuestStarted"(Quest: UE.Quest | null | undefined): void;
         "OnQuestStepCompleted"(Quest: UE.Quest | null | undefined, Step: UE.QuestBranch | null | undefined): void;
-        "OnQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: string): void;
+        "OnQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: UE.$FText): void;
         "OnQuestTaskCompleted"(Quest: UE.Quest | null | undefined, Task: UE.QuestTask, Step: UE.QuestBranch | null | undefined): void;
         "OnQuestTaskProgressMade"(Quest: UE.Quest | null | undefined, Task: UE.QuestTask, Step: UE.QuestBranch | null | undefined, CurrentProgress: number, RequiredProgress: number): void;
         "OnSaveComplete"(SaveName: string): void;
@@ -13442,6 +13448,21 @@ declare module 'ue' {
     }
     }
     const PBZPreviewPlayerClassRow: UE.$Static.PBZPreviewPlayerClassRow & UE.$StructType<UE.PBZPreviewPlayerClassRow>;
+    /** /Script/ProjectPBZ.PBZPrimeAndPlayAction — reflection-generated, not individually call-tested. */
+    interface PBZPrimeAndPlayAction extends UE.BlueprintAsyncActionBase {
+        "Played": UE.$MulticastDelegate<() => void>;
+        "Abandoned": UE.$MulticastDelegate<() => void>;
+        "HandleMediaOpened"(OpenedUrl: string): void;
+        "HandlePlayerStopped"(): void;
+    }
+    namespace $Static {
+    interface PBZPrimeAndPlayAction {
+        "IsPreparingForOwner"(WorldContextObject: UE.Object | null | undefined): boolean;
+        "IsPrimeAndPlayEnabled"(): boolean;
+        "PrimeAndPlay"(WorldContextObject: UE.Object | null | undefined, SequencePlayer: UE.MovieSceneSequencePlayer | null | undefined): UE.PBZPrimeAndPlayAction | null | undefined;
+    }
+    }
+    const PBZPrimeAndPlayAction: UE.$Static.PBZPrimeAndPlayAction & UE.$ClassType<UE.PBZPrimeAndPlayAction>;
     /** /Script/ProjectPBZ.PBZPriorityForceRotation — reflection-generated, not individually call-tested. */
     interface PBZPriorityForceRotation {
         "Rotation": UE.Rotator;
@@ -13542,7 +13563,7 @@ declare module 'ue' {
     const PBZQualityDetailImageRow: UE.$Static.PBZQualityDetailImageRow & UE.$StructType<UE.PBZQualityDetailImageRow>;
     /** /Script/ProjectPBZ.PBZQualityDeviceProfileVariant — reflection-generated, not individually call-tested. */
     interface PBZQualityDeviceProfileVariant {
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
         "DeviceProfileSuffix": string;
         "MinRefreshRate": number;
     }
@@ -13614,7 +13635,7 @@ declare module 'ue' {
         "OwnerComponent": UE.PBZNarrativeComponent | null | undefined;
         "BuildPayload"(Quest: UE.Quest | null | undefined, Branch: UE.QuestBranch | null | undefined, bIsCompleted: boolean, bGroupCompleted: boolean): UE.PBZQuestNotificationPayload | null | undefined;
         "HandleBranchStateChanged"(Quest: UE.Quest | null | undefined, Branch: UE.QuestBranch | null | undefined, NewState: UE.EPBZQuestBranchState): void;
-        "HandleQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: string): void;
+        "HandleQuestSucceeded"(Quest: UE.Quest | null | undefined, QuestSucceededMessage: UE.$FText): void;
         "HandleTaskCompleted"(Quest: UE.Quest | null | undefined, CompletedTask: UE.NarrativeTask | null | undefined, Branch: UE.QuestBranch | null | undefined): void;
         "InitializeWithOwner"(InOwner: UE.PBZNarrativeComponent | null | undefined): void;
         "ShouldEnqueue"(Quest: UE.Quest | null | undefined, Branch: UE.QuestBranch | null | undefined, bIsCompleted: boolean): boolean;
@@ -13632,8 +13653,8 @@ declare module 'ue' {
         "bGroupCompleted": boolean;
         "NodeType": number;
         "QuestType": number;
-        "QuestTitle": string;
-        "BranchDescription": string;
+        "QuestTitle": UE.$FText;
+        "BranchDescription": UE.$FText;
     }
     namespace $Static {
     interface PBZQuestNotificationPayload {
@@ -13915,12 +13936,12 @@ declare module 'ue' {
         "WrapTextWidth": number;
         "ParagraphPadding": UE.Margin;
         "DefaultJustification": UE.ETextJustify;
-        "SourceText": string;
+        "SourceText": UE.$FText;
         "ParagraphWidgets": UE.TArray<UE.PBZCommonLocRichText | null | undefined>;
-        "GetText"(): string;
+        "GetText"(): UE.$FText;
         "SetDefaultJustification"(InJustification: UE.ETextJustify): void;
         "SetParagraphPadding"(InPadding: UE.Margin): void;
-        "SetText"(InText: string): void;
+        "SetText"(InText: UE.$FText): void;
         "SetTextByLocKey"(Key: string): void;
         "SetWrapTextWidth"(InWrapTextAt: number): void;
     }
@@ -14068,7 +14089,7 @@ declare module 'ue' {
         "GetManualSaveSummariesSorted"(): UE.TArray<UE.SaveSlotSummary>;
         "GetNightmareRunSummaries"(): UE.TArray<UE.SaveSlotSummary>;
         "GetSaveSlotSummary"(SlotName: string): UE.SaveSlotSummary;
-        "GetSaveTipDurationText"(OutText: $Ref<string>): boolean;
+        "GetSaveTipDurationText"(OutText: $Ref<UE.$FText>): boolean;
         "GetSettlementData"(): UE.PBZSettlementData;
         "HandleSuspendedFireComplete"(SlotName: string, SaveJsonObjectWrapper: UE.JsonObjectWrapper, Index: number, Success: boolean): void;
         "HasAnyLoadableSave"(): boolean;
@@ -14325,6 +14346,8 @@ declare module 'ue' {
         "TimedOut": UE.$MulticastDelegate<() => void>;
         "Invalid": UE.$MulticastDelegate<() => void>;
         "Cancelled": UE.$MulticastDelegate<() => void>;
+        "HandleHeldPlayerPaused"(): void;
+        "HandleHeldSectionOpened"(OpenedUrl: string): void;
     }
     namespace $Static {
     interface PBZSetPlaybackPositionAndWaitForMediaFrameAction {
@@ -14369,7 +14392,7 @@ declare module 'ue' {
         "DefaultPresetScrollHintBox": UE.SizeBox | null | undefined;
         "ScrollHintActionTable": UE.DataTable | null | undefined;
         "HandleInputHardwareDeviceChanged"(UserId: UE.PlatformUserId, DeviceID: UE.InputDeviceId): void;
-        "OnSchemeImageChanged"(Image: UE.Texture2D | null | undefined, SchemeName: string): void;
+        "OnSchemeImageChanged"(Image: UE.Texture2D | null | undefined, SchemeName: UE.$FText): void;
     }
     namespace $Static {
     interface PBZSettingDetailExtension_KeySchemeImage {
@@ -14402,7 +14425,7 @@ declare module 'ue' {
         "ChangeBinding"(InKeyBindSlot: number, NewKey: UE.Key): boolean;
         "ClearBinding"(InKeyBindSlot: number): boolean;
         "GetKeyBrushFromSlot"(InSlot: UE.EPlayerMappableKeySlot, OutBrush: $Ref<UE.SlateBrush>): boolean;
-        "GetKeyTextFromSlot"(InSlot: UE.EPlayerMappableKeySlot): string;
+        "GetKeyTextFromSlot"(InSlot: UE.EPlayerMappableKeySlot): UE.$FText;
         "IsPlaceholder"(): boolean;
         "IsRebindable"(): boolean;
         "IsSlotEditable"(InKeyBindSlot: number): boolean;
@@ -14449,8 +14472,8 @@ declare module 'ue' {
         "BarMaterial": UE.MaterialInterface | null | undefined;
         "BarMID": UE.MaterialInstanceDynamic | null | undefined;
         "BarBrush": UE.SlateBrush;
-        "GetFormattedText"(): string;
-        "SetDisplayValue"(InText: string): void;
+        "GetFormattedText"(): UE.$FText;
+        "SetDisplayValue"(InText: UE.$FText): void;
         "SetForceHovered"(bInForceHovered: boolean): void;
     }
     namespace $Static {
@@ -14742,6 +14765,9 @@ declare module 'ue' {
         "PadSpeakerVolume": number;
         "ClashStyle": number;
         "ClashVolume": number;
+        "HitVolume": number;
+        "HitHead": number;
+        "HitBrightness": number;
         "MotionIntensity": UE.EWwiseMotionIntensity;
         "bMotionMovementVibrationEnabled": boolean;
         "AllowAudioInBackground": UE.EPBZAllowBackgroundAudioSetting;
@@ -14865,6 +14891,9 @@ declare module 'ue' {
         "GetHDRMode"(): UE.EPBZHDRMode;
         "GetHDRUILuminance"(): number;
         "GetHUDCharacterStateMode"(): UE.EPBZHUDVisibility;
+        "GetHitBrightness"(): number;
+        "GetHitHead"(): number;
+        "GetHitVolume"(): number;
         "GetInvertHorizontalAxis"(): boolean;
         "GetInvertVerticalAxis"(): boolean;
         "GetKeyBindingScheme"(): UE.EPBZKeyBindingScheme;
@@ -14999,6 +15028,9 @@ declare module 'ue' {
         "SetHDRMode"(InHDRMode: UE.EPBZHDRMode): void;
         "SetHDRUILuminance"(InValue: number): void;
         "SetHUDCharacterStateMode"(Value: UE.EPBZHUDVisibility): void;
+        "SetHitBrightness"(InBrightness: number): void;
+        "SetHitHead"(InHead: number): void;
+        "SetHitVolume"(InVolume: number): void;
         "SetInvertHorizontalAxis"(NewValue: boolean): void;
         "SetInvertVerticalAxis"(NewValue: boolean): void;
         "SetKeyBindingScheme"(NewValue: UE.EPBZKeyBindingScheme): void;
@@ -15092,6 +15124,14 @@ declare module 'ue' {
     }
     }
     const PBZSettlementData: UE.$Static.PBZSettlementData & UE.$StructType<UE.PBZSettlementData>;
+    /** /Script/ProjectPBZ.PBZShaderCacheSavePromptSubsystem — reflection-generated, not individually call-tested. */
+    interface PBZShaderCacheSavePromptSubsystem extends UE.GameInstanceSubsystem {
+    }
+    namespace $Static {
+    interface PBZShaderCacheSavePromptSubsystem {
+    }
+    }
+    const PBZShaderCacheSavePromptSubsystem: UE.$Static.PBZShaderCacheSavePromptSubsystem & UE.$ClassType<UE.PBZShaderCacheSavePromptSubsystem>;
     /** /Script/ProjectPBZ.PBZShotLengthEntry — reflection-generated, not individually call-tested. */
     interface PBZShotLengthEntry {
         "ShotName": string;
@@ -15428,6 +15468,9 @@ declare module 'ue' {
         "SetClashStyle"(StyleValue: number): void;
         "SetClashVolume"(Volume: number): void;
         "SetDeflectBrightness"(Brightness: number): void;
+        "SetHitBrightness"(Brightness: number): void;
+        "SetHitHead"(Head: number): void;
+        "SetHitVolume"(Volume: number): void;
         "SetMixingPreset"(Preset: UE.EMixingPreset): void;
         "SetShowAudioSourceInfo"(bShow: boolean): void;
         "SetWwiseMotionIntensity"(Intensity: UE.EWwiseMotionIntensity): void;
@@ -15751,7 +15794,7 @@ declare module 'ue' {
     const PBZSubtitleAudioPreloadSubsystem: UE.$Static.PBZSubtitleAudioPreloadSubsystem & UE.$ClassType<UE.PBZSubtitleAudioPreloadSubsystem>;
     /** /Script/ProjectPBZ.PBZSubtitlesDetail — reflection-generated, not individually call-tested. */
     interface PBZSubtitlesDetail {
-        "Content": string;
+        "Content": UE.$FText;
         "duration": number;
     }
     namespace $Static {
@@ -15969,11 +16012,11 @@ declare module 'ue' {
         "CompleteInitWidgets": UE.TSet<UE.PBZSystemWidgetBase | null | undefined>;
         "DeferredTabContent": UE.TMap<number, UE.Widget | null | undefined>;
         "TabToSwitcherIndexMap": UE.TMap<string, number>;
-        "BP_ChangeInputIcon"(bVisibility: boolean, InputIndex: number, IconName: string, DisplayText: string): void;
+        "BP_ChangeInputIcon"(bVisibility: boolean, InputIndex: number, IconName: string, DisplayText: UE.$FText): void;
         "BackInput"(): void;
         "ChangeInputAndRegisterAxis"(IsBindAxisKey: boolean, InputActionRowName: string, DisplayInActionBar: boolean, DelegateHandle: UE.$Delegate<(AxisValue: number) => void>): void;
         "ChangeInputAndRegisterAxisAndRelease"(IsBindAxisKey: boolean, InputActionRowName: string, DisplayInActionBar: boolean, DelegateHandle: UE.$Delegate<(AxisValue: number) => void>, Delegate: UE.$Delegate<() => void>): void;
-        "ChangeInputAndRegisterKey"(bVisibility: boolean, InputText: string, InputActionRowName: string, InputWidgetIndex: number, DelegateHandle: UE.$Delegate<() => void>): void;
+        "ChangeInputAndRegisterKey"(bVisibility: boolean, InputText: UE.$FText, InputActionRowName: string, InputWidgetIndex: number, DelegateHandle: UE.$Delegate<() => void>): void;
         "ChangeInputBar"(bIsAdd: boolean, InputBarName: string): void;
         "GetCurrentWidget"(): UE.PBZSystemWidgetBase | null | undefined;
         "InitWidget"(): void;
@@ -16010,7 +16053,7 @@ declare module 'ue' {
         "BP_FirstInitWidget"(): void;
         "BP_InitWidget"(): void;
         "BackInput"(): void;
-        "BroadcastInputWidget"(bVisibility: boolean, InputText: string, InputActionRowName: string, InputWidgetIndex: number, DelegateHandle: UE.$Delegate<() => void>): void;
+        "BroadcastInputWidget"(bVisibility: boolean, InputText: UE.$FText, InputActionRowName: string, InputWidgetIndex: number, DelegateHandle: UE.$Delegate<() => void>): void;
         "BroadcastInputWidgetByAxis"(bVisibility: boolean, InputActionRowName: string, DisplayInActionBar: boolean, DelegateHandle: UE.$Delegate<(AxisValue: number) => void>): void;
         "BroadcastInputWidgetByAxisAndRelease"(bVisibility: boolean, InputActionRowName: string, DisplayInActionBar: boolean, DelegateHandle: UE.$Delegate<(AxisValue: number) => void>, ReleaseDelegate: UE.$Delegate<() => void>): void;
         "CanNavigateToOtherWidget"(TabId: string): boolean;
@@ -16238,7 +16281,7 @@ declare module 'ue' {
     const PBZTestClothStubFactory: UE.$Static.PBZTestClothStubFactory & UE.$ClassType<UE.PBZTestClothStubFactory>;
     /** /Script/ProjectPBZ.PBZText — reflection-generated, not individually call-tested. */
     interface PBZText extends UE.PBZCommonUserWidget {
-        "GetTextByBook"(BookName: string, bIsInCompletedBook: boolean, Index: number): string;
+        "GetTextByBook"(BookName: UE.$FText, bIsInCompletedBook: boolean, Index: number): UE.$FText;
     }
     namespace $Static {
     interface PBZText {
@@ -17065,8 +17108,8 @@ declare module 'ue' {
     const ProjectToScreenTweenObject: UE.$Static.ProjectToScreenTweenObject & UE.$ClassType<UE.ProjectToScreenTweenObject>;
     /** /Script/ProjectPBZ.PropsItem — reflection-generated, not individually call-tested. */
     interface PropsItem extends UE.ItemDataBase {
-        "PropsName": string;
-        "PropDesc": string;
+        "PropsName": UE.$FText;
+        "PropDesc": UE.$FText;
         "bCanHaveAny": boolean;
         "bCanSell": boolean;
         "SellPrice": number;
@@ -17080,7 +17123,7 @@ declare module 'ue' {
     /** /Script/ProjectPBZ.PushGetBookInfo — reflection-generated, not individually call-tested. */
     interface PushGetBookInfo {
         "bIsInCompleted": boolean;
-        "BookName": string;
+        "BookName": UE.$FText;
         "PageNum": number;
     }
     namespace $Static {
@@ -17796,9 +17839,9 @@ declare module 'ue' {
     const ShopSystem: UE.$Static.ShopSystem & UE.$ClassType<UE.ShopSystem>;
     /** /Script/ProjectPBZ.SkillData — reflection-generated, not individually call-tested. */
     interface SkillData extends UE.ItemDataBase {
-        "SkillName": string;
+        "SkillName": UE.$FText;
         "Icon": UE.TSoftObjectPtr<UE.Texture2D>;
-        "SkillDescription": string;
+        "SkillDescription": UE.$FText;
         "SkillType": UE.ESKillType;
         "Video": UE.TSoftObjectPtr<UE.FileMediaSource>;
         "WeaponType": UE.EWeaponType;
@@ -18006,7 +18049,7 @@ declare module 'ue' {
     interface TagCompleteDegree extends UE.TableRowBase {
         "Tag": UE.GameplayTag;
         "Degree": number;
-        "Describe": string;
+        "Describe": UE.$FText;
     }
     namespace $Static {
     interface TagCompleteDegree {

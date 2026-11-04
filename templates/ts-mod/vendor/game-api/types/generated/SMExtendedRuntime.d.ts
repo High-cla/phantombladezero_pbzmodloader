@@ -7,14 +7,14 @@ declare module 'ue' {
     }
     namespace $Static {
     interface SMExtendedGraphPropertyHelpers {
-        "BreakTextGraphProperty"(GraphProperty: UE.SMTextGraphProperty, Result: $Ref<string>): void;
-        "ObjectToText"(InObject: UE.Object | null | undefined, InFunctionName: string): string;
+        "BreakTextGraphProperty"(GraphProperty: UE.SMTextGraphProperty, Result: $Ref<UE.$FText>): void;
+        "ObjectToText"(InObject: UE.Object | null | undefined, InFunctionName: string): UE.$FText;
     }
     }
     const SMExtendedGraphPropertyHelpers: UE.$Static.SMExtendedGraphPropertyHelpers & UE.$ClassType<UE.SMExtendedGraphPropertyHelpers>;
     /** /Script/SMExtendedRuntime.SMTextGraphProperty — reflection-generated, not individually call-tested. */
     interface SMTextGraphProperty extends UE.SMGraphProperty_Base {
-        "Result": string;
+        "Result": UE.$FText;
         "TextSerializer": UE.SMTextSerializer;
         "WidgetInfo": UE.SMTextNodeWidgetInfo;
         "RichTextInfo": UE.SMTextNodeRichTextInfo;
@@ -26,7 +26,7 @@ declare module 'ue' {
     const SMTextGraphProperty: UE.$Static.SMTextGraphProperty & UE.$StructType<UE.SMTextGraphProperty>;
     /** /Script/SMExtendedRuntime.SMTextGraphProperty_Runtime — reflection-generated, not individually call-tested. */
     interface SMTextGraphProperty_Runtime extends UE.SMGraphProperty_Base_Runtime {
-        "Result": string;
+        "Result": UE.$FText;
         "TextSerializer": UE.SMTextSerializer;
     }
     namespace $Static {

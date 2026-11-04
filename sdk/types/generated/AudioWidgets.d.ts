@@ -348,7 +348,7 @@ declare module 'ue' {
         "SliderProgressColor": UE.LinearColor;
         "SliderBarColor": UE.LinearColor;
         "HandStartEndRatio": UE.Vector2D;
-        "UnitsText": string;
+        "UnitsText": UE.$FText;
         "TextLabelBackgroundColor": UE.LinearColor;
         "ShowLabelOnlyOnHover": boolean;
         "ShowUnitsText": boolean;
@@ -368,7 +368,7 @@ declare module 'ue' {
         "SetSliderProgressColor"(InValue: UE.LinearColor): void;
         "SetSliderThickness"(InThickness: number): void;
         "SetTextLabelBackgroundColor"(InColor: UE.SlateColor): void;
-        "SetUnitsText"(Units: string): void;
+        "SetUnitsText"(Units: UE.$FText): void;
         "SetUnitsTextReadOnly"(bIsReadOnly: boolean): void;
         "SetValueTextReadOnly"(bIsReadOnly: boolean): void;
         "SetWidgetLayout"(InLayout: UE.EAudioRadialSliderLayout): void;
@@ -405,7 +405,7 @@ declare module 'ue' {
     /** /Script/AudioWidgets.AudioSliderBase — reflection-generated, not individually call-tested. */
     interface AudioSliderBase extends UE.Widget {
         "Value": number;
-        "UnitsText": string;
+        "UnitsText": UE.$FText;
         "TextLabelBackgroundColor": UE.LinearColor;
         "TextLabelBackgroundColorDelegate": UE.$Delegate<() => UE.LinearColor>;
         "ShowLabelOnlyOnHover": boolean;
@@ -432,7 +432,7 @@ declare module 'ue' {
         "SetSliderBarColor"(InValue: UE.LinearColor): void;
         "SetSliderThumbColor"(InValue: UE.LinearColor): void;
         "SetTextLabelBackgroundColor"(InColor: UE.SlateColor): void;
-        "SetUnitsText"(Units: string): void;
+        "SetUnitsText"(Units: UE.$FText): void;
         "SetUnitsTextReadOnly"(bIsReadOnly: boolean): void;
         "SetValueTextReadOnly"(bIsReadOnly: boolean): void;
         "SetWidgetBackgroundColor"(InValue: UE.LinearColor): void;

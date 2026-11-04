@@ -975,6 +975,15 @@ declare module 'ue' {
     }
     }
     const DamageCalculator_PBZNormal: UE.$Static.DamageCalculator_PBZNormal & UE.$ClassType<UE.DamageCalculator_PBZNormal>;
+    /** /Script/PBZCombatAsset.DamageCalculator_PBZPlayerNonLethal — reflection-generated, not individually call-tested. */
+    interface DamageCalculator_PBZPlayerNonLethal extends UE.DamageCalculator_PBZNormal {
+        "OriginalCalculator": UE.DamageCalculatorBase | null | undefined;
+    }
+    namespace $Static {
+    interface DamageCalculator_PBZPlayerNonLethal {
+    }
+    }
+    const DamageCalculator_PBZPlayerNonLethal: UE.$Static.DamageCalculator_PBZPlayerNonLethal & UE.$ClassType<UE.DamageCalculator_PBZPlayerNonLethal>;
     /** /Script/PBZCombatAsset.DamageCalculator_PBZPlayerScaled — reflection-generated, not individually call-tested. */
     interface DamageCalculator_PBZPlayerScaled extends UE.DamageCalculator_PBZNormal {
         "PlayerDamageMultiplier": number;
@@ -1096,7 +1105,7 @@ declare module 'ue' {
     /** /Script/PBZCombatAsset.DamageNumberSegment — reflection-generated, not individually call-tested. */
     interface DamageNumberSegment {
         "IconTexture": UE.Texture2D | null | undefined;
-        "Icon": string;
+        "Icon": UE.$FText;
         "Value": number;
         "Color": UE.LinearColor;
         "DisplayOrder": number;
@@ -1110,7 +1119,7 @@ declare module 'ue' {
     interface DamageTypeDisplayInfo {
         "DamageTag": UE.GameplayTag;
         "IconTexture": UE.Texture2D | null | undefined;
-        "EmojiIcon": string;
+        "EmojiIcon": UE.$FText;
         "Color": UE.LinearColor;
         "DisplayOrder": number;
     }
@@ -2237,7 +2246,10 @@ declare module 'ue' {
     /** /Script/PBZCombatAsset.GA_ThunderSpearParalyzeAchievementPassive — reflection-generated, not individually call-tested. */
     interface GA_ThunderSpearParalyzeAchievementPassive extends UE.SGameGameplayAbility {
         "HitEventTag": UE.GameplayTag;
-        "ThunderSpearBulletTag": UE.GameplayTag;
+        "ThunderSpearWeaponTag": UE.GameplayTag;
+        "HitMarkerEffect": UE.Class | null | undefined;
+        "HitMarkerTag": UE.GameplayTag;
+        "ParalyzeEffectTag": UE.GameplayTag;
         "UnlockEventTag": UE.GameplayTag;
         "IsAchievementCompleted"(): boolean;
         "IsThunderSpearDamage"(DamageTakenPayload: UE.DamageTakenPayload | null | undefined): boolean;
@@ -3672,6 +3684,7 @@ declare module 'ue' {
         "Resistance_IgniteAccumulation": number;
         "Resistance_PoisonAccumulation": number;
         "Resistance_FrostAccumulation": number;
+        "Resistance_FrostDuration": number;
         "Resistance_ElectrifiedAccumulation": number;
         "Resistance_BleedAccumulation": number;
         "Resistance_BloodBurstAccumulation": number;
@@ -3744,6 +3757,7 @@ declare module 'ue' {
         "Resistance_IgniteAccumulation": number;
         "Resistance_PoisonAccumulation": number;
         "Resistance_FrostAccumulation": number;
+        "Resistance_FrostDuration": number;
         "Resistance_ElectrifiedAccumulation": number;
         "Resistance_BleedAccumulation": number;
         "Resistance_BloodBurstAccumulation": number;

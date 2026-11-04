@@ -1470,8 +1470,8 @@ declare module 'ue' {
         "MouseSpeed": number;
         "MouseFineTuneSpeed": number;
         "ShowTooltipInfo": boolean;
-        "ParameterName": string;
-        "ParameterUnits": string;
+        "ParameterName": UE.$FText;
+        "ParameterUnits": UE.$FText;
         "ValueDelegate": UE.$Delegate<() => number>;
         "WidgetStyle": UE.SynthKnobStyle;
         "Locked": boolean;

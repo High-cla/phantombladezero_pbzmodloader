@@ -528,7 +528,7 @@ declare module 'ue' {
     /** /Script/OptimusCore.OptimusDataType — reflection-generated, not individually call-tested. */
     interface OptimusDataType {
         "TypeName": string;
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
         "ShaderValueType": UE.ShaderValueTypeHandle;
         "ShaderValueSize": number;
         "TypeCategory": string;
@@ -977,12 +977,12 @@ declare module 'ue' {
     const OptimusMorphTargetDataProvider: UE.$Static.OptimusMorphTargetDataProvider & UE.$ClassType<UE.OptimusMorphTargetDataProvider>;
     /** /Script/OptimusCore.OptimusNode — reflection-generated, not individually call-tested. */
     interface OptimusNode extends UE.Object {
-        "DisplayName": string;
+        "DisplayName": UE.$FText;
         "GraphPosition": UE.Vector2D;
         "Pins": UE.TArray<UE.OptimusNodePin | null | undefined>;
         "ExpandedPins": UE.TSet<string>;
         "DiagnosticLevel": UE.EOptimusDiagnosticLevel;
-        "GetDisplayName"(): string;
+        "GetDisplayName"(): UE.$FText;
         "GetGraphPosition"(): UE.Vector2D;
         "GetNodeCategory"(): string;
         "GetNodeName"(): string;

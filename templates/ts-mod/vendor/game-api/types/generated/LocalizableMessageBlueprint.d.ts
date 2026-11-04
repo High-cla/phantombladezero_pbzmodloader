@@ -7,7 +7,7 @@ declare module 'ue' {
     }
     namespace $Static {
     interface LocalizableMessageLibrary {
-        "Conv_LocalizableMessageToText"(WorldContextObject: UE.Object | null | undefined, Message: UE.LocalizableMessage): string;
+        "Conv_LocalizableMessageToText"(WorldContextObject: UE.Object | null | undefined, Message: UE.LocalizableMessage): UE.$FText;
         "EqualEqual_LocalizableMessage"(A: UE.LocalizableMessage, B: UE.LocalizableMessage): boolean;
         "IsEmpty_LocalizableMessage"(Message: UE.LocalizableMessage): boolean;
         "Reset_LocalizableMessage"(Message: $Ref<UE.LocalizableMessage>): void;

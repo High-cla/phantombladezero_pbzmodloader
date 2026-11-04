@@ -18,7 +18,7 @@ declare module 'ue' {
         "FindTracksByExactType"(InBinding: UE.MovieSceneBindingProxy, TrackType: UE.Class | null | undefined): UE.TArray<UE.MovieSceneTrack | null | undefined>;
         "FindTracksByType"(InBinding: UE.MovieSceneBindingProxy, TrackType: UE.Class | null | undefined): UE.TArray<UE.MovieSceneTrack | null | undefined>;
         "GetChildPossessables"(InBinding: UE.MovieSceneBindingProxy): UE.TArray<UE.MovieSceneBindingProxy>;
-        "GetDisplayName"(InBinding: UE.MovieSceneBindingProxy): string;
+        "GetDisplayName"(InBinding: UE.MovieSceneBindingProxy): UE.$FText;
         "GetId"(InBinding: UE.MovieSceneBindingProxy): UE.Guid;
         "GetName"(InBinding: UE.MovieSceneBindingProxy): string;
         "GetObjectTemplate"(InBinding: UE.MovieSceneBindingProxy): UE.Object | null | undefined;
@@ -31,7 +31,7 @@ declare module 'ue' {
         "NotEqual_MovieSceneBindingProxy"(A: UE.MovieSceneBindingProxy, B: UE.MovieSceneBindingProxy): boolean;
         "Remove"(InBinding: UE.MovieSceneBindingProxy): void;
         "RemoveTrack"(InBinding: UE.MovieSceneBindingProxy, TrackToRemove: UE.MovieSceneTrack | null | undefined): void;
-        "SetDisplayName"(InBinding: UE.MovieSceneBindingProxy, InDisplayName: string): void;
+        "SetDisplayName"(InBinding: UE.MovieSceneBindingProxy, InDisplayName: UE.$FText): void;
         "SetName"(InBinding: UE.MovieSceneBindingProxy, InName: string): void;
         "SetParent"(InBinding: UE.MovieSceneBindingProxy, InParentBinding: UE.MovieSceneBindingProxy): void;
         "SetSortingOrder"(InBinding: UE.MovieSceneBindingProxy, SortingOrder: number): void;
@@ -504,14 +504,14 @@ declare module 'ue' {
     const MovieSceneScriptingStringKey: UE.$Static.MovieSceneScriptingStringKey & UE.$ClassType<UE.MovieSceneScriptingStringKey>;
     /** /Script/SequencerScripting.MovieSceneScriptingTextChannel — reflection-generated, not individually call-tested. */
     interface MovieSceneScriptingTextChannel extends UE.MovieSceneScriptingChannel {
-        "AddKey"(InTime: UE.FrameNumber, NewValue: string, SubFrame: number, TimeUnit: UE.EMovieSceneTimeUnit): UE.MovieSceneScriptingTextKey | null | undefined;
-        "GetDefault"(): string;
+        "AddKey"(InTime: UE.FrameNumber, NewValue: UE.$FText, SubFrame: number, TimeUnit: UE.EMovieSceneTimeUnit): UE.MovieSceneScriptingTextKey | null | undefined;
+        "GetDefault"(): UE.$FText;
         "GetKeys"(): UE.TArray<UE.MovieSceneScriptingKey | null | undefined>;
         "GetKeysByIndex"(Indices: UE.TArray<number>): UE.TArray<UE.MovieSceneScriptingKey | null | undefined>;
         "HasDefault"(): boolean;
         "RemoveDefault"(): void;
         "RemoveKey"(Key: UE.MovieSceneScriptingKey | null | undefined): void;
-        "SetDefault"(InDefaultValue: string): void;
+        "SetDefault"(InDefaultValue: UE.$FText): void;
         "Transform"(OffsetFrame: UE.FrameNumber, Scale: number, PivotFrame: UE.FrameNumber, ScriptingRange: UE.SequencerScriptingRange, TimeUnit: UE.EMovieSceneTimeUnit): void;
     }
     namespace $Static {
@@ -522,9 +522,9 @@ declare module 'ue' {
     /** /Script/SequencerScripting.MovieSceneScriptingTextKey — reflection-generated, not individually call-tested. */
     interface MovieSceneScriptingTextKey extends UE.MovieSceneScriptingKey {
         "GetTime"(TimeUnit: UE.EMovieSceneTimeUnit): UE.FrameTime;
-        "GetValue"(): string;
+        "GetValue"(): UE.$FText;
         "SetTime"(NewFrameNumber: UE.FrameNumber, SubFrame: number, TimeUnit: UE.EMovieSceneTimeUnit): void;
-        "SetValue"(InNewValue: string): void;
+        "SetValue"(InNewValue: UE.$FText): void;
     }
     namespace $Static {
     interface MovieSceneScriptingTextKey {
@@ -662,17 +662,17 @@ declare module 'ue' {
     interface MovieSceneTrackExtensions {
         "AddSection"(Track: UE.MovieSceneTrack | null | undefined): UE.MovieSceneSection | null | undefined;
         "GetColorTint"(Track: UE.MovieSceneTrack | null | undefined): UE.Color;
-        "GetDisplayName"(Track: UE.MovieSceneTrack | null | undefined): string;
+        "GetDisplayName"(Track: UE.MovieSceneTrack | null | undefined): UE.$FText;
         "GetSectionToKey"(Track: UE.MovieSceneTrack | null | undefined): UE.MovieSceneSection | null | undefined;
         "GetSections"(Track: UE.MovieSceneTrack | null | undefined): UE.TArray<UE.MovieSceneSection | null | undefined>;
         "GetSortingOrder"(Track: UE.MovieSceneTrack | null | undefined): number;
-        "GetTrackRowDisplayName"(Track: UE.MovieSceneTrack | null | undefined, RowIndex: number): string;
+        "GetTrackRowDisplayName"(Track: UE.MovieSceneTrack | null | undefined, RowIndex: number): UE.$FText;
         "RemoveSection"(Track: UE.MovieSceneTrack | null | undefined, Section: UE.MovieSceneSection | null | undefined): void;
         "SetColorTint"(Track: UE.MovieSceneTrack | null | undefined, ColorTint: UE.Color): void;
-        "SetDisplayName"(Track: UE.MovieSceneTrack | null | undefined, InName: string): void;
+        "SetDisplayName"(Track: UE.MovieSceneTrack | null | undefined, InName: UE.$FText): void;
         "SetSectionToKey"(Track: UE.MovieSceneTrack | null | undefined, Section: UE.MovieSceneSection | null | undefined): void;
         "SetSortingOrder"(Track: UE.MovieSceneTrack | null | undefined, SortingOrder: number): void;
-        "SetTrackRowDisplayName"(Track: UE.MovieSceneTrack | null | undefined, InName: string, RowIndex: number): void;
+        "SetTrackRowDisplayName"(Track: UE.MovieSceneTrack | null | undefined, InName: UE.$FText, RowIndex: number): void;
     }
     }
     const MovieSceneTrackExtensions: UE.$Static.MovieSceneTrackExtensions & UE.$ClassType<UE.MovieSceneTrackExtensions>;
