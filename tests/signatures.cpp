@@ -37,6 +37,18 @@ int main(int argc,char** argv) {
         image.sections.push_back({original.validateText,80,IMAGE_SCN_MEM_EXECUTE|IMAGE_SCN_MEM_READ});
         rejectValidation(); image.sections.pop_back();
         std::cout<<"PASS script validation pair, all five call sites, damaged/missing/ambiguous rejection\n";
+        // A tool that hooked first leaves a 5-byte jump at each entry. The start order must not matter.
+        const Bytes savedBytes(image.bytes.begin()+original.validateBytes,image.bytes.begin()+original.validateBytes+5);
+        const Bytes savedText(image.bytes.begin()+original.validateText,image.bytes.begin()+original.validateText+5);
+        for(auto entry:{original.validateBytes,original.validateText}) { image.bytes[entry]=0xe9; std::memset(image.bytes.data()+entry+1,0x11,4); }
+        auto hooked=resolveSites(image);
+        assert(hooked.validateBytes==original.validateBytes && hooked.validateText==original.validateText);
+        assert(hooked.validationCalls==original.validationCalls);
+        // Only that jump is accepted: other changed entry bytes stay rejected.
+        image.bytes[original.validateText]=0xcc; rejectValidation();
+        std::copy(savedBytes.begin(),savedBytes.end(),image.bytes.begin()+original.validateBytes);
+        std::copy(savedText.begin(),savedText.end(),image.bytes.begin()+original.validateText);
+        std::cout<<"PASS validators already hooked by another tool, other changed entries rejected\n";
     }
     std::cout<<"PASS real PE: unique MainStart and three PuerTS loggers\n";
     // Exercise the other observed stack layout against the same validated PE.

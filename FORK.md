@@ -36,3 +36,11 @@ on top of them.
 |---|---|---|
 | 2026-11-05 | `FORK.md`, `LICENSE`, `openmods.json`, `openmods.md` | Added, `LICENSE` as a placeholder. No file of the author changed; the loader code is unchanged. |
 | 2026-11-05 | `LICENSE`, `FORK.md` | The placeholder is replaced by the author's GPL-3.0 file, merged from upstream. |
+| 2026-11-05 | `src/signatures.hpp`, `tests/signatures.cpp` | The loader also finds a script validator that another tool has already hooked with a 5-byte jump. Before this, the loader skipped all mods when such a tool started first (seen with UE4SS C++ BYPASS). Any other changed entry byte is still rejected. |
+
+## Build
+
+The unchanged upstream code reproduces the official `v1.0.0` DLLs, except for the build date, with
+[llvm-mingw](https://github.com/mstorsjo/llvm-mingw) `20261020` (UCRT, x86_64; clang 23.1.4) and PowerShell 7. This fork
+builds with the same tools: `build.ps1` and `package.ps1` as the upstream README describes them. They do not run in
+Windows PowerShell 5.1.
