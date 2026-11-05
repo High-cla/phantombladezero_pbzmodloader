@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openmods.nexus/openmods.schema.json",
+  "openmods": 1,
+  "name": "PBZModLoader",
+  "summary": "Placeholder, not listed on openmods yet. Unofficial fork of PBZModLoader by LKF, a mod loader for Phantom Blade Zero.",
+  "games": ["phantom-blade-zero"],
+  "tags": ["tools", "library"],
+  "cover": "docs/images/pbzmodloader-cover.png",
+  "links": {
+    "website": "https://github.com/zoneoflkf/PBZModLoader"
+  }
+}
