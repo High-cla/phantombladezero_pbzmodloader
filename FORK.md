@@ -18,7 +18,7 @@ the upstream layout; this section and [docs/MOD-MANAGER.md](docs/MOD-MANAGER.md)
 
 | | Upstream 1.0.0 | This fork |
 |---|---|---|
-| Player package | 122 files, 13.4 MB | 4 files, 1.1 MB; spare proxies and developer tools in their own zips |
+| Player package | 122 files, 13.4 MB | 8 files, about 3.4 MB, of which a player needs 2 in the game; developer tools in their own zip |
 | Loader scripts | loose `bootstrap.js` and `manager.js` | inside the DLL |
 | Mods | copied to `Content/JavaScript/.../generated-mods` at each start | loaded from `PBZModLoader/mods`, no copies |
 | Hot reload | copied to `generated-reloads` | no copies: each reload spells the root path differently, so the game's module cache sees new modules |

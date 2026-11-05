@@ -21,15 +21,16 @@ The loader writes nothing else: no generated scripts, no cache, no per-run folde
 
 | File | For |
 |---|---|
-| `PBZModLoader-<version>-win64.zip` | Players and managers: `platform/steam/version.dll`, `platform/wegame/version.dll`, `ProjectPBZ/PBZModLoader/LICENSES.txt`, the install guide, an empty `mods/`. |
-| `PBZModLoader-<version>-alternative-entries.zip` | `hid.dll`, `winmm.dll`, `dsound.dll`, `dxgi.dll`: separate, because each is a choice and only one may be installed. |
+| `PBZModLoader-<version>-win64.zip` | Players and managers: `platform/steam/version.dll`, `platform/wegame/version.dll`, `alternative-entries/<name>/<name>.dll` for `hid`, `winmm`, `dsound` and `dxgi`, `ProjectPBZ/PBZModLoader/LICENSES.txt`, the install guide, an empty `mods/`. |
 | `PBZModLoader-<version>-developer.zip` | The TypeScript template and SDK for MOD authors. Never for a game folder. |
 
 ## Choosing the entry
 
+The manager decides, or offers a selection. The manifest's `entries` names every choice with its path in the zip, and `files` has its SHA-256.
+
 1. Install `version.dll` for the player's store. It is the tested default.
-2. If that name next to the exe belongs to another tool, do not overwrite it. Offer one alternative with a free name, under its own name. Renaming a
-   DLL does not work: each one is built for its own name.
+2. If that name next to the exe belongs to another tool, do not overwrite it. Use one alternative with a free name, under its own name, next to the exe.
+   Renaming a DLL does not work: each one is built for its own name.
 3. Never install two entries. A second one stays inactive and only forwards system calls, which is a safeguard, not a feature.
 4. A free name does not prove that the game loads that DLL early enough. `version.dll` is tested on Steam build 26367565. The alternatives passed
    a start test by the original author on an earlier Steam build; check `loader.log` after a change.
@@ -68,9 +69,11 @@ UE4SS C++ BYPASS runs next to it without a problem, but it is no longer needed.
 
 Read from its `PackageScanner` and tested with it on this package:
 
-- The main zip already installs correctly as game files: `platform/<store>/version.dll` for the player's store. The other store's copy stays out.
+- The zip's default entry already installs correctly as a game file: `platform/<store>/version.dll` for the player's store. The other store's copy stays out.
+- Each spare DLL is its own part, because each has its own folder, so the dialog already lets a player choose. **But its defaults tick `version.dll`, `dsound`, `dxgi` and
+  `winmm`, and only `hid` starts unticked** (`IsUncertain`, because `hid` is not in `ProxyDllNames`). Without a rule, a player who accepts the defaults gets four entries next to the exe.
+  The loader's own guard then lets one hook, and the others only forward, but that is untidy and untested in the game. So the manager needs a rule here: tick only one entry.
 - `LICENSES.txt` is not installed: the scanner takes only `Saved`, `Config` and `Content/JavaScript` below the project folder, and it skips documents. That is fine
   for the license, because the player has the zip.
 - **Mods for this loader are not installed yet:** the scanner ignores `ProjectPBZ/PBZModLoader/mods/...`, so a zip such as PBZMapMarkers' installs only its Mods Menu copy.
   Accepting `PBZModLoader` next to `Saved` and `Config` in `GameFilePath` would be enough. Keep each mod as its own part (`GamePartFolder`), as it does for scripts.
-- Do not hand it the alternatives zip: the scanner would offer all four DLLs as one part.

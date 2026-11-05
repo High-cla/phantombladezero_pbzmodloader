@@ -1,8 +1,8 @@
 param([string]$Version='1.0.0')
 $ErrorActionPreference='Stop'
 if ($Version -notmatch '^\d+\.\d+\.\d+(?:-[A-Za-z0-9-]+)?$') { throw 'Invalid release version' }
-# The player's package: the default proxy DLL per platform and one license file. The loader's own
-# scripts are inside the DLL. The spare proxies and the developer tools are separate zips.
+# The player's package: the default proxy DLL per platform, the spare proxies and one license file.
+# The loader's own scripts are inside the DLL. The developer tools are a separate zip.
 $files=@(
     'PBZModLoader-安装说明.txt'
 )
@@ -15,9 +15,8 @@ $licenseParts=@(
 $alternatives=@('hid','winmm','dsound','dxgi')
 $release=Join-Path $PSScriptRoot "releases/PBZModLoader-$Version-win64"
 $zip="$release.zip"
-$alternativeZip=Join-Path $PSScriptRoot "releases/PBZModLoader-$Version-alternative-entries.zip"
 $developerZip=Join-Path $PSScriptRoot "releases/PBZModLoader-$Version-developer.zip"
-foreach ($existing in @($release,$zip,$alternativeZip,$developerZip)) {
+foreach ($existing in @($release,$zip,$developerZip)) {
     if (Test-Path -LiteralPath $existing) { throw 'Release already exists; choose a new version or archive the existing release first.' }
 }
 foreach ($relative in $files) {
@@ -49,6 +48,17 @@ foreach ($platform in @('steam','wegame')) {
     Copy-Item -LiteralPath "$PSScriptRoot/build/version.dll" -Destination $dllDestination
     $files += $dllRelative
 }
+# Spare proxies, for a game where another tool holds version.dll. Each is a choice, so each has its own
+# folder: a mod manager's scanner then sees one part per DLL. Install only one entry.
+$alternativePaths=[ordered]@{}
+foreach($proxy in $alternatives) {
+    $relative="alternative-entries/$proxy/$proxy.dll"
+    $destination=Join-Path $release $relative
+    New-Item -ItemType Directory -Force (Split-Path $destination) | Out-Null
+    Copy-Item -LiteralPath "$PSScriptRoot/build/$proxy.dll" -Destination $destination
+    $files += $relative
+    $alternativePaths["$proxy.dll"]=$relative
+}
 $directories=@('ProjectPBZ/PBZModLoader/mods/')
 foreach ($relative in $directories) {
     New-Item -ItemType Directory -Force (Join-Path $release $relative) | Out-Null
@@ -75,15 +85,6 @@ foreach ($relative in $files) {
     if ($actual -ne $expected) { throw "Extracted content mismatch: $relative" }
     $hashes[$relative]=$actual.ToLower()
 }
-# The spare proxies: each one is a choice for a game where another tool holds version.dll. Never install more than one.
-$alternativeDir=Join-Path $PSScriptRoot ('build/alternatives-'+[guid]::NewGuid().ToString('N'))
-New-Item -ItemType Directory -Path $alternativeDir | Out-Null
-$alternativeHashes=[ordered]@{}
-foreach($proxy in $alternatives) {
-    Copy-Item -LiteralPath "$PSScriptRoot/build/$proxy.dll" -Destination $alternativeDir
-    $alternativeHashes["$proxy.dll"]=(Get-FileHash -LiteralPath "$PSScriptRoot/build/$proxy.dll").Hash.ToLower()
-}
-[IO.Compression.ZipFile]::CreateFromDirectory($alternativeDir,$alternativeZip,[IO.Compression.CompressionLevel]::Optimal,$false)
 # For MOD authors: the TypeScript template with its SDK, and the license. Never for the game folder.
 $developerDir=Join-Path $PSScriptRoot ('build/developer-'+[guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $developerDir | Out-Null
@@ -100,8 +101,7 @@ Copy-Item -LiteralPath "$PSScriptRoot/LICENSE" -Destination $developerDir
     entries=[ordered]@{
         default='version.dll'
         locations=[ordered]@{steam='platform/steam/version.dll';wegame='platform/wegame/version.dll'}
-        alternatives=$alternativeHashes
-        alternativesZip=[ordered]@{name=(Split-Path $alternativeZip -Leaf);sha256=(Get-FileHash -LiteralPath $alternativeZip).Hash.ToLower()}
+        alternatives=$alternativePaths
     }
     owned=@($licenseFile,'ProjectPBZ/PBZModLoader/loader.log')
     playerOwned=@('ProjectPBZ/PBZModLoader/mods/','ProjectPBZ/PBZModLoader/mods.ini')
@@ -109,5 +109,4 @@ Copy-Item -LiteralPath "$PSScriptRoot/LICENSE" -Destination $developerDir
 } | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath "$zip.manifest.json" -Encoding utf8
 Write-Output "PASS ZIP root layout, exact allowlist ($($files.Count) files), extraction and SHA-256 checks"
 Write-Output $zip
-Write-Output $alternativeZip
 Write-Output $developerZip

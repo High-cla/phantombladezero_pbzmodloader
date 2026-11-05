@@ -39,9 +39,9 @@ old copy stays, and that mod is skipped until the next game start. A mod that fa
 The log line "reload complete" confirms it. After about 4000 reloads, restart the game.
 
 ANOTHER ENTRY
-If another tool holds version.dll, keep it. Take one DLL from PBZModLoader-<version>-alternative-entries.zip (hid.dll, winmm.dll, dsound.dll,
-dxgi.dll), keep its name, and put it next to the game exe. Install only one entry of this loader. A DLL file name that is free does not
-prove that the game loads it early enough: if loader.log stays empty, try another one.
+If another tool holds version.dll, keep it. In this zip, alternative-entries holds one folder each for hid.dll, winmm.dll, dsound.dll and dxgi.dll.
+Do not extract that folder into the game. Take one DLL, keep its name, and put it next to the game exe. Install only one entry of this loader. A DLL file
+name that is free does not prove that the game loads it early enough: if loader.log stays empty, try another one.
 
 UPDATE FROM VERSION 1.0.0
 Close the game, replace the DLL as above, and delete what the old version left, all of it safe to remove:
@@ -96,8 +96,8 @@ MOD
 缺少 stop() 时旧实例保留，该 MOD 在下次启动前被跳过。启动时失败的 MOD 在下次启动前不会重试。日志中的 “reload complete” 表示完成。约 4000 次重载后请重启游戏。
 
 备用入口
-如果其他工具占用了 version.dll，请保留它。从 PBZModLoader-<版本>-alternative-entries.zip 中选择一个 DLL（hid.dll、winmm.dll、dsound.dll、dxgi.dll），
-保持原文件名，放到游戏 EXE 旁。本加载器只安装一个入口。文件名未被占用不代表游戏会足够早地加载它：如果 loader.log 没有内容，请换一个。
+如果其他工具占用了 version.dll，请保留它。本压缩包的 alternative-entries 中，hid.dll、winmm.dll、dsound.dll、dxgi.dll 各有一个文件夹。
+不要把该文件夹解压到游戏中。选择一个 DLL，保持原文件名，放到游戏 EXE 旁。本加载器只安装一个入口。文件名未被占用不代表游戏会足够早地加载它：如果 loader.log 没有内容，请换一个。
 
 从 1.0.0 更新
 退出游戏，按上述方式替换 DLL，然后删除旧版本留下的内容（均可安全删除）：
