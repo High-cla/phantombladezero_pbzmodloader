@@ -146,12 +146,12 @@ test('reload results distinguish blocked cleanup and preparation errors on scree
     const state = { mods: [{ id: 'a', status: 'loaded', instance: {} }] };
     watch(state, () => mail, () => () => ({}), () => {}, callback => { tick = callback; }, (message, failed) => notices.push({ message, failed }));
     await tick();
-    assert.match(notices[0].message, /成功 0，失败或跳过 1/);
+    assert.match(notices[0].message, /^MOD reload done: 0 OK, 1 failed or skipped - MOD 重载完成：成功 0，失败或跳过 1$/);
     assert.equal(notices[0].failed, true);
     const instance = state.mods[0];
     mail = { revision: 2, error: 'preparation failed' };
     await tick();
-    assert.match(notices[1].message, /重载失败/);
+    assert.match(notices[1].message, /^MOD reload failed, see loader\.log - MOD 重载失败，请查看 loader\.log$/);
     assert.equal(state.mods[0], instance);
     await tick();
     assert.equal(notices.length, 2);

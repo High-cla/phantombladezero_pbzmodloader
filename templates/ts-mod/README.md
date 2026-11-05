@@ -4,7 +4,7 @@
 
 # PBZ TypeScript mod: minimal template
 
-For PBZModLoader with automatic discovery of `mods/<ID>/main.js` (currently 2.0.0).
+For PBZModLoader with automatic discovery of `mods/<ID>/main.js` (currently 2.0.1).
 Copy this whole template folder to develop on your own. You need neither the loader's C++ project nor the game's source.
 
 ## Get started
@@ -147,7 +147,7 @@ The template's compile and simulated load checks do not equal a test in the game
 
 # PBZ TypeScript MOD 最小模板（中文）
 
-适用于支持 `mods/<ID>/main.js` 自动发现的 PBZModLoader（当前 2.0.0）。
+适用于支持 `mods/<ID>/main.js` 自动发现的 PBZModLoader（当前 2.0.1）。
 复制整个模板文件夹即可独立开发，不需要加载器的 C++ 工程或游戏源码。
 
 ## 开始开发

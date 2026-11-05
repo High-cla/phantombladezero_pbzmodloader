@@ -65,6 +65,7 @@ on top of them.
 | 2026-11-05 | `src/`, `scripts/embed-script.cjs`, `build.ps1`, `package.ps1`, `runtime/`, `tests/`, `docs/MOD-MANAGER.md`, READMEs, template README | The layout described in "What this fork does differently". `runtime/.../bootstrap.js` and `manager.js` moved to `src/script-bootstrap.js` and `src/script-manager.js`. |
 | 2026-11-05 | `runtime/PBZModLoader-Install-Guide.txt`, `scripts/PhantomBladeZero-*.cmd` | File names in English only: `PBZModLoader-安装说明.txt`, `影之刃零-恢复1280x720.cmd`, `影之刃零-最大化.cmd` and `影之刃零-窗口模式1280x720.cmd` renamed. Content unchanged. |
 | 2026-11-05 | `README.md`, `templates/ts-mod/README.md`, `sdk/README.md` | English first, Chinese further down. `README.md` is rewritten for this fork in both languages, and `README.en.md` is gone. The two guides have an English translation; their Chinese text is the author's, with the outdated version, TypeScript and game build lines corrected. |
+| 2026-11-05 | `src/script-manager.js`, `tests/manager.test.cjs` | The Alt+F5 message on screen is English, then a dash, then the author's Chinese text. Its box is wider, 1600 instead of 800, so that the longer text fits. |
 
 ## Build
 

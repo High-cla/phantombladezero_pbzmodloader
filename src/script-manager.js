@@ -110,10 +110,12 @@ exports.watch = function watch(state, readMail, importerFor, log, schedule = set
             log('reload complete revision=' + revision);
             const failed = state.mods.filter(mod => mod.status === 'failed' || mod.reloadError).length;
             const loaded = state.mods.filter(mod => mod.status === 'loaded' && !mod.reloadError).length;
-            notify(failed ? 'MOD 重载完成：成功 ' + loaded + '，失败或跳过 ' + failed : 'MOD 重载成功（' + loaded + ' 个）', failed > 0);
+            notify(failed
+                ? 'MOD reload done: ' + loaded + ' OK, ' + failed + ' failed or skipped - MOD 重载完成：成功 ' + loaded + '，失败或跳过 ' + failed
+                : 'MODs reloaded (' + loaded + ') - MOD 重载成功（' + loaded + ' 个）', failed > 0);
         } catch (error) {
             log('reload failed: ' + String(error && error.stack || error));
-            notify('MOD 重载失败，请查看 loader.log', true);
+            notify('MOD reload failed, see loader.log - MOD 重载失败，请查看 loader.log', true);
         } finally { busy = false; }
     }, 1000);
 };
@@ -144,7 +146,7 @@ exports.createNotifier = function createNotifier(importMod, log, delay = setTime
             const slot = new UE.GameViewportWidgetSlot();
             // Reflected structs do not all implement positional constructors.
             const offsets = new UE.Margin();
-            offsets.Left = 24; offsets.Top = 24; offsets.Right = 800; offsets.Bottom = 50;
+            offsets.Left = 24; offsets.Top = 24; offsets.Right = 1600; offsets.Bottom = 50;
             slot.Offsets = offsets;
             slot.ZOrder = 1000000;
             slot.bAutoRemoveOnWorldRemoved = true;

@@ -102,7 +102,7 @@ You need [llvm-mingw](https://github.com/mstorsjo/llvm-mingw) `20261020` (UCRT, 
 npm ci
 .\build.ps1 -Compiler C:\path\to\llvm-mingw\bin\clang++.exe -Test -GameExe C:\path\to\PBZ.exe
 npm test
-.\package.ps1 -Version 2.0.0
+.\package.ps1 -Version 2.0.1
 ```
 
 `-GameExe` is optional, and it only reads the file. The zips land in `releases/`. Offline tests do not replace a test in the game: `tests/game-fixture/loader-check` is a mod for that, and `tests/verify-run.ps1` checks a log.
@@ -224,7 +224,7 @@ MOD 是一个文件夹，例如 `ProjectPBZ/PBZModLoader/mods/my-mod/`，其中�
 npm ci
 .\build.ps1 -Compiler C:\path\to\llvm-mingw\bin\clang++.exe -Test -GameExe C:\path\to\PBZ.exe
 npm test
-.\package.ps1 -Version 2.0.0
+.\package.ps1 -Version 2.0.1
 ```
 
 `-GameExe` 是可选的，只读取该文件。压缩包生成在 `releases/`。离线测试不能代替游戏内测试：`tests/game-fixture/loader-check` 是用于游戏内测试的 MOD，`tests/verify-run.ps1` 用于检查日志。
