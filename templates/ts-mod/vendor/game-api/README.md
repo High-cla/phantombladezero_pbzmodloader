@@ -2,7 +2,7 @@
 
 `@pbz-mod-loader/game-api` 0.3.3 是 MOD 开发使用的类型声明包，为游戏提供的 `ue`、`puerts` 模块补全和检查类型。包内没有运行时代码，发布 MOD 时只携带编译后的 MOD 文件。
 
-适用构建：Steam Win64 `CL-301524_JKS-17219`，EXE SHA256 为 `7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4`。其他游戏构建和 WeGame 尚未验证。
+适用构建：Steam Win64 `CL-301524_JKS-17219`，EXE SHA256 为 `7b4fcd286a350780faf0824d73aa150b21cbf1bccde883e6a96386cbe09973b4`。WeGame 平台已通过加载器与 MOD 运行实测；这不代表 SDK 的全部 API 均已在 WeGame 上逐项验证，其他游戏构建仍需单独验证。
 
 ## 安装与使用
 

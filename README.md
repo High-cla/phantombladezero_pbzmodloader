@@ -30,7 +30,7 @@ PBZModLoader 是《影之刃零》（Phantom Blade Zero）的 MOD 加载器，�
 已确认 WeGame 主程序位于 `platform/wegame`。安装包同时包含
 `platform/steam/version.dll` 和 `platform/wegame/version.dll`，两份文件来自同一构建。
 无同名 DLL 冲突时，两个平台均可直接解压到游戏根目录，无需手动搬移 DLL。
-本次仅调整打包布局和安装说明，沿用 0.3.6 的 DLL；WeGame 自动加载与 MOD 运行仍待实机验证。
+本次仅调整打包布局和安装说明，沿用 0.3.6 的 DLL；WeGame 平台已实测可用，已确认加载器自动加载与 MOD 运行。
 
 ## 0.3.6-preview：11 月 4 日游戏更新兼容
 
@@ -91,7 +91,7 @@ Start 跳板指令、JSLogger.cpp 源文件引用、日志等级和共享日志�
 
 这组特征来自 CL-301524_JKS-17219，并补充了 2026-11-04 Steam 更新的 MainStart 布局，允许地址和相对位移变化，但不是任意版本的通用 ABI。
 编译器、运行时结构或保护机制变化仍可能需要新特征。WeGame 主程序目录已确认为
-platform/wegame；目录布局测试不代表 DLL 自动加载与 MOD 运行已通过 WeGame 实机验证。
+platform/wegame；WeGame 平台已通过加载器自动加载与 MOD 运行实测。
 
 新增检查：
 ```powershell
