@@ -8,7 +8,7 @@
 
 A mod loader for **Phantom Blade Zero**. It runs JavaScript mods in the game's own script engine, and it lets pak mods change the game's scripts again. A player installs one DLL. You need no UE4SS, no Node.js and no compiler.
 
-This is an unofficial fork of [PBZModLoader](https://github.com/zoneoflkf/PBZModLoader) by LKF, under GPL-3.0. Please report problems with this fork here, not to the author. [FORK.md](FORK.md) lists every change.
+This is an official fork of [PBZModLoader](https://github.com/zoneoflkf/PBZModLoader) by LKF, under GPL-3.0. Please report problems with this fork here, not to the author. [FORK.md](FORK.md) lists every change.
 
 **Download:** [releases](https://github.com/KintaroModding/phantombladezero_pbzmodloader/releases). The player needs `PBZModLoader-<version>-win64.zip`, and mod authors also need `PBZModLoader-<version>-developer.zip`.
 
@@ -130,7 +130,7 @@ GNU General Public License, version 3: see [LICENSE](LICENSE). The DLLs include 
 
 《影之刃零》（Phantom Blade Zero）的 MOD 加载器。它在游戏自身的脚本引擎中运行 JavaScript MOD，并重新支持修改游戏脚本的 pak MOD。玩家只需安装一个 DLL，无需 UE4SS、Node.js 或编译器。
 
-这是 LKF 的 [PBZModLoader](https://github.com/zoneoflkf/PBZModLoader) 的非官方分支，遵循 GPL-3.0。本分支的问题请在此反馈，不要反馈给原作者。[FORK.md](FORK.md) 列出了所有改动。
+这是 LKF 的 [PBZModLoader](https://github.com/zoneoflkf/PBZModLoader) 的官方分支，遵循 GPL-3.0。本分支的问题请在此反馈，不要反馈给原作者。[FORK.md](FORK.md) 列出了所有改动。
 
 **下载：**[releases](https://github.com/KintaroModding/phantombladezero_pbzmodloader/releases)。玩家需要 `PBZModLoader-<版本>-win64.zip`，MOD 作者还需要 `PBZModLoader-<版本>-developer.zip`。
 

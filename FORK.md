@@ -2,8 +2,9 @@
 
 This repository is a fork of [PBZModLoader](https://github.com/zoneoflkf/PBZModLoader) by LKF, a mod loader for
 Phantom Blade Zero. The original downloads are on [Nexus Mods](https://www.nexusmods.com/phantombladezero/mods/113) and
-in the [upstream releases](https://github.com/zoneoflkf/PBZModLoader/releases). This fork is unofficial: LKF did not
-make it and does not support it. Please report problems with this fork here, not to the author.
+in the [upstream releases](https://github.com/zoneoflkf/PBZModLoader/releases). This is an official fork: LKF gave
+KintaroModding the source code, added the license KintaroModding asked for, and trusts KintaroModding to take the project
+forward. KintaroModding maintains this fork, so please report problems with it here, not to the author.
 
 ## Why it exists
 
@@ -66,6 +67,7 @@ on top of them.
 | 2026-11-05 | `runtime/PBZModLoader-Install-Guide.txt`, `scripts/PhantomBladeZero-*.cmd` | File names in English only: `PBZModLoader-安装说明.txt`, `影之刃零-恢复1280x720.cmd`, `影之刃零-最大化.cmd` and `影之刃零-窗口模式1280x720.cmd` renamed. Content unchanged. |
 | 2026-11-05 | `README.md`, `templates/ts-mod/README.md`, `sdk/README.md` | English first, Chinese further down. `README.md` is rewritten for this fork in both languages, and `README.en.md` is gone. The two guides have an English translation; their Chinese text is the author's, with the outdated version, TypeScript and game build lines corrected. |
 | 2026-11-05 | `src/script-manager.js`, `tests/manager.test.cjs` | The Alt+F5 message on screen is English, then a dash, then the author's Chinese text. Its box is wider, 1600 instead of 800, so that the longer text fits. |
+| 2026-11-05 | `README.md`, `FORK.md`, `openmods.json` | This fork is described as official, not unofficial: the author gave the source code, added the license and trusts KintaroModding to take the project forward. |
 
 ## Build
 
