@@ -13,8 +13,8 @@ into KintaroModding's mod manager.
 
 ## What this fork does differently
 
-The goal is the fewest files in the game. A player installs one DLL and one license file, and no other tool. The upstream READMEs below still describe
-the upstream layout; this section and [docs/MOD-MANAGER.md](docs/MOD-MANAGER.md) describe this fork, and `runtime/PBZModLoader-Install-Guide.txt` is its install guide.
+The goal is the fewest files in the game. A player installs one DLL and one license file, and no other tool. [README.md](README.md), this section and
+[docs/MOD-MANAGER.md](docs/MOD-MANAGER.md) describe this fork, and `runtime/PBZModLoader-Install-Guide.txt` is its install guide. The original README is in the [upstream repository](https://github.com/zoneoflkf/PBZModLoader).
 
 | | Upstream 1.0.0 | This fork |
 |---|---|---|
@@ -64,10 +64,11 @@ on top of them.
 | 2026-11-05 | `src/signatures.hpp`, `tests/signatures.cpp` | The loader also finds a script validator that another tool has already hooked with a 5-byte jump. Before this, the loader skipped all mods when such a tool started first (seen with UE4SS C++ BYPASS). Any other changed entry byte is still rejected. |
 | 2026-11-05 | `src/`, `scripts/embed-script.cjs`, `build.ps1`, `package.ps1`, `runtime/`, `tests/`, `docs/MOD-MANAGER.md`, READMEs, template README | The layout described in "What this fork does differently". `runtime/.../bootstrap.js` and `manager.js` moved to `src/script-bootstrap.js` and `src/script-manager.js`. |
 | 2026-11-05 | `runtime/PBZModLoader-Install-Guide.txt`, `scripts/PhantomBladeZero-*.cmd` | File names in English only: `PBZModLoader-安装说明.txt`, `影之刃零-恢复1280x720.cmd`, `影之刃零-最大化.cmd` and `影之刃零-窗口模式1280x720.cmd` renamed. Content unchanged. |
+| 2026-11-05 | `README.md`, `templates/ts-mod/README.md`, `sdk/README.md` | English first, Chinese further down. `README.md` is rewritten for this fork in both languages, and `README.en.md` is gone. The two guides have an English translation; their Chinese text is the author's, with the outdated version, TypeScript and game build lines corrected. |
 
 ## Build
 
 The unchanged upstream code reproduces the official `v1.0.0` DLLs, except for the build date, with
 [llvm-mingw](https://github.com/mstorsjo/llvm-mingw) `20261020` (UCRT, x86_64; clang 23.1.4) and PowerShell 7. This fork
-builds with the same tools: `build.ps1` and `package.ps1` as the upstream README describes them. They do not run in
+builds with the same tools: `build.ps1` and `package.ps1` as `README.md` describes them. They do not run in
 Windows PowerShell 5.1.

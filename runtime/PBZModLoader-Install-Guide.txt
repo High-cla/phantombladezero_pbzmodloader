@@ -1,11 +1,14 @@
-PBZModLoader: install guide (English below, 中文在后)
+The Chinese version is further down. / 中文版在下方。
+------------------------------------------------------------------------------
+
+PBZModLoader: install guide
 This is the KintaroModding fork of PBZModLoader by LKF: https://github.com/KintaroModding/phantombladezero_pbzmodloader
 
 INSTALL
 1. Close the game. Open its install folder, the one that holds ProjectPBZ.
 2. Look next to the real game exe (platform\steam or platform\wegame). If another tool already has a version.dll
    there, do not overwrite it: see ANOTHER ENTRY below.
-3. Extract this zip into the install folder. Correct: D:\Games\PBZ\ProjectPBZ. Wrong: D:\Games\PBZ\PBZModLoader\ProjectPBZ.
+3. Extract this zip into the install folder, without alternative-entries. Correct: D:\Games\PBZ\ProjectPBZ. Wrong: D:\Games\PBZ\PBZModLoader\ProjectPBZ.
 4. Start the game from its platform as usual. You need no Node.js, no compiler and no UE4SS.
 
 WHAT GOES INTO THE GAME
@@ -59,6 +62,7 @@ IF SOMETHING IS WRONG
 Read ProjectPBZ\PBZModLoader\loader.log. "MODs skipped" means this game build is not supported yet: the game still runs, without mods.
 Without the entry DLL, the game runs as if the loader was never there.
 
+------------------------------------------------------------------------------
 
 PBZModLoader 安装说明
 这是 KintaroModding 基于 LKF 的 PBZModLoader 的分支：https://github.com/KintaroModding/phantombladezero_pbzmodloader
@@ -66,7 +70,7 @@ PBZModLoader 安装说明
 安装
 1. 退出游戏，打开游戏安装目录（能看到 ProjectPBZ 文件夹的位置）。
 2. 检查实际游戏 EXE 旁（platform\steam 或 platform\wegame）是否已有其他工具的 version.dll；如有，请勿覆盖，见下方“备用入口”。
-3. 将本压缩包解压到游戏安装目录。正确：D:\Games\PBZ\ProjectPBZ；错误：D:\Games\PBZ\PBZModLoader\ProjectPBZ。
+3. 将本压缩包解压到游戏安装目录，但不要解压 alternative-entries。正确：D:\Games\PBZ\ProjectPBZ；错误：D:\Games\PBZ\PBZModLoader\ProjectPBZ。
 4. 从原游戏平台启动游戏即可。无需 Node.js、编译器或 UE4SS。
 
 安装到游戏中的文件

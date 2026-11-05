@@ -1,190 +1,237 @@
-[![PBZModLoader — Alt+F5 Hot Reload](docs/images/pbzmodloader-cover.png)](https://www.nexusmods.com/phantombladezero/mods/113)
+**The Chinese version is further down. / 中文版在下方：[跳转到中文版](#chinese)**
 
-# PBZModLoader 主工程
+---
 
-**简体中文** | [English](README.en.md)
+[![PBZModLoader](docs/images/pbzmodloader-cover.png)](https://github.com/KintaroModding/phantombladezero_pbzmodloader/releases)
 
-> **这是非官方分支。** 它安装的文件少得多：一个 DLL 和一个许可证文件，与下文有多处不同，请先阅读 [FORK.md](FORK.md)。下文是原作者的文字，描述的是上游布局。
+# PBZModLoader
 
-PBZModLoader 是《影之刃零》（Phantom Blade Zero）的 MOD 加载器，为玩家提供统一的脚本 MOD 加载入口，也为开发者提供 JavaScript / TypeScript 开发模板和游戏 API 类型声明 SDK。支持自动发现 MOD、配置启用或禁用，以及通过 `Alt+F5` 热重载支持清理生命周期的 MOD。
+A mod loader for **Phantom Blade Zero**. It runs JavaScript mods in the game's own script engine, and it lets pak mods change the game's scripts again. A player installs one DLL. You need no UE4SS, no Node.js and no compiler.
 
-**下载与发布页面：[Nexus Mods · PBZModLoader](https://www.nexusmods.com/phantombladezero/mods/113)**
+This is an unofficial fork of [PBZModLoader](https://github.com/zoneoflkf/PBZModLoader) by LKF, under GPL-3.0. Please report problems with this fork here, not to the author. [FORK.md](FORK.md) lists every change.
 
-### MOD 开发模板
+**Download:** [releases](https://github.com/KintaroModding/phantombladezero_pbzmodloader/releases). The player needs `PBZModLoader-<version>-win64.zip`, and mod authors also need `PBZModLoader-<version>-developer.zip`.
 
-**直接下载：[MOD 开发模板 ZIP（模板 0.2.0 / SDK 0.3.3）](https://github.com/zoneoflkf/PBZModLoader/releases/download/v1.0.0/PBZModLoader-TS-Template-0.2.0-SDK-0.3.3.zip)**
+## What it does
 
-想制作自己的 MOD，可从 [TypeScript MOD 最小模板](templates/ts-mod/) 开始，详细步骤见 [模板开发说明](templates/ts-mod/README.md)。模板包含示例入口、构建脚本和游戏 API SDK，提供 UE / PuerTS 类型补全与严格类型检查；复制整个模板目录即可独立开发，无需编译加载器 C++ 工程。
+- **Loads mods by itself.** Every folder in `ProjectPBZ/PBZModLoader/mods/` with a `main.js` is a mod. You need no configuration.
+- **Keeps pak mods working.** Since the game update of 2026-11-04, the game refuses changed game scripts. The loader allows them again, so script pak mods in `~mods` run without another tool.
+- **Reloads while you play.** Alt+F5 stops all mods and loads them again, without a game restart.
+- **Stays out of the way.** If the loader cannot match a game build, it skips the mods and the game runs normally.
 
-开发电脑安装 Node.js 和 npm 后，在模板副本中依次执行 `npm ci`、`npm run check`、`npm run build`。修改 `src/main.ts` 编写逻辑，将构建生成的 `dist/my-mod/` 整个文件夹放入游戏的 `ProjectPBZ/PBZModLoader/mods/`，即可由加载器自动发现。玩家只需安装加载器和构建后的 MOD，无需安装开发工具。
+## What it puts in the game
 
-### 技术路线
+| File | Note |
+|---|---|
+| `platform/steam/version.dll` (or `platform/wegame/`) | The whole loader. Its scripts are inside this file. |
+| `ProjectPBZ/PBZModLoader/LICENSES.txt` | The license texts. |
+| `ProjectPBZ/PBZModLoader/mods/` | Your mods. |
+| `ProjectPBZ/PBZModLoader/mods.ini` | Optional. Only you create it. |
+| `ProjectPBZ/PBZModLoader/loader.log` | The log. It starts new with each game start and stops at about 8 MB. |
 
-- **原生 DLL 代理引导**：以 `version.dll` 为默认入口，并提供 `hid.dll`、`winmm.dll`、`dsound.dll`、`dxgi.dll` 备用入口。代理转发系统 DLL 导出，在游戏启动阶段接入加载器；安装时只使用一个入口。
-- **特征扫描与校验**：扫描游戏可执行文件中的指令特征，结合字符串和调用关系定位 `MainStart`、PuerTS 启动及日志接口，不依赖固定地址。匹配缺失或存在歧义时跳过 MOD 加载；游戏更新仍可能需要适配。
-- **复用游戏内置脚本环境**：通过游戏已有的 PuerTS 执行引导脚本和 MOD 管理器，使 JS/TS MOD 能够使用游戏暴露的 UE API。加载器将 MOD 同步到脚本搜索目录，并对本地加载器脚本及生成内容进行限定范围的校验适配。
-- **TypeScript 与开发支持**：启动时使用随包编译器将 TS 转换为 ES2020/CommonJS，再交由 PuerTS 加载；完整类型检查由开发阶段完成。SDK 基于游戏反射信息生成类型声明，配合独立模板提供补全与类型检查；热重载通过 `stop()` 清理旧实例并隔离模块缓存。
+The loader writes nothing else: no copies of mods, no caches, no generated scripts.
 
-本仓库包含加载器源码、运行文件模板、SDK 和开发工具。玩家请从上方发布页面获取安装包；本地构建的玩家运行包位于 `releases/`，游戏安装目录只需保留运行文件。
+## Install
 
-## 1.0.0：首个正式发布版
+1. Close the game and open its install folder, the one that holds `ProjectPBZ`.
+2. Look next to the real game exe (`platform/steam` or `platform/wegame`). If another tool already has a `version.dll` there, do not overwrite it: use one of the DLLs in `alternative-entries/` instead.
+3. Extract the zip into the install folder, without `alternative-entries/`.
+4. Start the game from its platform as usual.
 
-将原 0.3.7-preview 的打包内容作为 1.0.0 正式发布，后续发布不再默认使用 preview 后缀。
+The [install guide](runtime/PBZModLoader-Install-Guide.txt) in the zip explains the alternative entries, updates and removal. Mod managers: see [docs/MOD-MANAGER.md](docs/MOD-MANAGER.md).
 
-已确认 WeGame 主程序位于 `platform/wegame`。安装包同时包含
-`platform/steam/version.dll` 和 `platform/wegame/version.dll`，两份文件来自同一构建。
-无同名 DLL 冲突时，两个平台均可直接解压到游戏根目录，无需手动搬移 DLL。
-本次仅调整打包布局和安装说明，沿用 0.3.6 的 DLL；WeGame 平台已实测可用，已确认加载器自动加载与 MOD 运行。
+**Updating from version 1.0.0:** remove `ProjectPBZ/Content/JavaScript/PBZModLoader/`, `ProjectPBZ/PBZModLoader/compiler/`, `ProjectPBZ/PBZModLoader/evidence/` and `ProjectPBZ/PBZModLoader/TOOLCHAIN-LICENSE.txt`. Keep `mods/` and `mods.ini`.
 
-## 0.3.6-preview：11 月 4 日游戏更新兼容
+## Settings
 
-新增此次 Steam 更新的 MainStart 指令布局，修复启动日志出现
-`MainStart signature requires one validated match; found=0` 后跳过全部 MOD 的问题。
-新版 FString 参数使用 `[rsp+60h]`，旧版使用 `[rbp-69h]`；两种完整指令布局分别匹配，
-仍共同要求唯一候选、MainStart 字符串及 Start 跳板验证，三个 PuerTS 日志挂钩校验保持不变。
-新版游戏还增加了模块字节与执行源码校验。加载器识别两个校验函数及五处调用，
-仅为 `PBZModLoader` 下的引导、管理器、配置及生成的 MOD 目录提供适配：
-传入内容须与对应本地文件一致，执行源码只允许原文或 PuerTS 的 CommonJS 包装。
-原游戏脚本仍由原校验函数处理；路径越界、内容不一致或特征缺失时拒绝。
-PuerTS 警告和错误现在也写入 loader.log，便于定位引导脚本执行前的失败。
-不使用固定地址回退。升级时退出游戏，替换当前选用的代理 DLL，并更新 bootstrap.js；配置与 MOD 无需改动。
+Without `mods.ini`, every mod loads. Create `ProjectPBZ/PBZModLoader/mods.ini` only to change something:
 
-先前的 0.3.5-preview 只补充 MainStart 指令匹配，遗漏了脚本校验适配，会导致原游戏菜单初始化异常，
-已撤回到 releases/archive，不应继续使用。
+```ini
+[Loader]
+Version=1
+; 0 turns the whole loader off.
+Enabled=1
+; 0 refuses pak mods that change game scripts.
+AllowScriptPaks=1
 
-`build.ps1 -Test -GameExe <游戏EXE>` 支持旧版基准和本次更新，覆盖两种栈布局、跨布局歧义、
-栈参数不一致拒绝、两个脚本校验函数和五处调用的完整性，以及原有重定位、ASLR 和日志挂钩检查。
-原生测试另覆盖本地脚本内容、UTF-8、CommonJS 包装、官方脚本路径及越界拒绝。
-
-## 0.3.4-preview：备用 DLL 入口
-
-默认使用 `version.dll`，正式构建同时提供 `hid.dll`、`winmm.dll`、`dsound.dll`、`dxgi.dll`。
-安装包默认入口位于 `platform/steam/version.dll` 和 `platform/wegame/version.dll`；其余四个放在顶层 `备用入口/`，不会自动启用。
-**本加载器只选择一个入口安装到实际游戏 EXE 旁，保持原文件名，不要同时安装多个。**
-
-如果其他 MOD 已占用 `version.dll`，只合并包内 `ProjectPBZ`，再从 `备用入口/` 选择一个未被占用的
-DLL 复制到实际 EXE 旁；不要解压默认 `version.dll` 覆盖其他 MOD。更换入口时移走本加载器旧入口；
-升级时只替换已选择的入口并更新运行文件，保留配置和 MOD。卸载时也只移除本加载器选用的入口。
-无需在 `mods.ini` 配置入口，不能靠重命名 `version.dll` 代替对应的专用代理。
-
-四个入口已在当前 Steam 构建完成启动验证；其他平台、切图、长期运行及与其他 MOD 共存不在此保证范围内。
-备用入口解决文件名冲突，不解决多个 MOD 的游戏逻辑冲突。误装多个本版本入口时只有一个安装钩子，
-其余保留系统函数转发；这只是保护机制，仍应按单入口安装。
-
-构建使用 `src/version.def` 和 `src/proxies/*.def` 中固定的导出清单，`scripts/generate-proxies.cjs`
-生成五组配置与转发桩，不读取构建机的 System32。导出名优先按名称转发，NONAME 按序号转发；
-系统函数按需解析，未使用的可选接口缺失不会阻止启动。未知系统上实际调用不存在的接口时快速失败。
-这些清单源自本机实测系统的导出面；并不保证所有历史 Windows 的未公开序号 ABI。
-只有启动期静态加载的代理会安装 EXE 入口钩子，运行中 LoadLibrary 加载时仅提供函数转发。
-
-`build.ps1 -Test` 验证五种代理的静态加载、入口恢复、代表性 API 转发、并发调用、导出数量，
-以及重复入口与晚加载保护；原有 version 多布局、ABI 和游戏特征测试继续保留。
-`package.ps1` 默认生成正式版 `1.0.0`，检查全部五种 DLL、两个平台的默认入口、ZIP 白名单及解压哈希。
-
-## 0.3.0-preview：平台无关引导
-
-DLL 不再检查 Steam 路径、进程文件名或固定 EXE 哈希。将 version.dll 放在实际游戏进程的 EXE 旁；
-从该 EXE 目录向上寻找含 Content、加载器配置和 bootstrap.js 的 ProjectPBZ。
-启动壳进程、未知构建和错误安装不会通过完整特征校验。必须由游戏在 EXE 入口执行前加载代理 DLL。
-
-src/signatures.hpp 仅扫描可执行 PE 节，使用带通配符的指令序列，结合 MainStart 字符串、
-Start 跳板指令、JSLogger.cpp 源文件引用、日志等级和共享日志类别地址定位挂钩。
-所有匹配必须唯一，引用须位于有效 PE 节，所有挂钩验证完成后才修改游戏代码。
-跳板及调用原始字节从实际匹配位置取得，不再依赖固定 RVA 或固定相对位移。
-特征不匹配或歧义时跳过 MOD，继续原游戏；不会回退到旧固定地址。
-
-这组特征来自 CL-301524_JKS-17219，并补充了 2026-11-04 Steam 更新的 MainStart 布局，允许地址和相对位移变化，但不是任意版本的通用 ABI。
-编译器、运行时结构或保护机制变化仍可能需要新特征。WeGame 主程序目录已确认为
-platform/wegame；WeGame 平台已通过加载器自动加载与 MOD 运行实测。
-
-新增检查：
-```powershell
-.\build.ps1 -Compiler C:\path\to\clang++.exe -Test -GameExe C:\path\to\PBZ.exe
-.\package.ps1 -Version 1.0.0
+[Mods]
+; 0 turns one mod off.
+my-mod=0
 ```
--GameExe 只读文件，不启动或修改游戏；该回归测试针对已知 Steam 基准文件，
-验证扫描结果、地址重排、ASLR、调用位移变化及歧义/损坏拒绝。
-安装包包含 ProjectPBZ、platform、备用入口和安装说明，默认 DLL 分别位于
-platform/steam/version.dll 和 platform/wegame/version.dll。
-Steam 和 WeGame 首次安装均可直接解压到游戏根目录，合并同名文件夹，DLL 随包放到对应主程序目录。
-遇到已有同名 DLL 应先确认来源，更新时保留自己的配置和 MOD。
-当前新版通过静态匹配、原生/JS 测试及多布局代理宿主测试，尚待实际游戏启动、切图和退出验收。
 
-## 目录
+## For mod authors
 
-- src：原生 DLL 源码，无旧启动器源码。
-- runtime：玩家文件模板，按游戏根目录布局；JS 管理器也在此维护。
-- templates/ts-mod：独立的 TypeScript MOD 开发模板。
-- sdk：反射生成的 UE/PuerTS 类型声明、实测补充及构建清单，仅供 MOD 开发引用。
-- tests：原生、代理 DLL、JS 和运行验收工具。
-- build：编译输出及测试产物，不直接给玩家。
-- releases：玩家目录及 ZIP；只从明确的文件白名单打包。
-- archive：整理前的开发目录、旧原型与历史证据备份，不参与构建或发布。
+A mod is a folder such as `ProjectPBZ/PBZModLoader/mods/my-mod/` with a `main.js`. The folder name is the mod's ID: English letters, digits, `_` and `-`.
 
-## 开发与打包
+- **Ship JavaScript.** The loader compiles nothing. A mod with only `main.ts` does not run, and `loader.log` says so. Write TypeScript with the [template](templates/ts-mod/README.md) and the [game API types](sdk/README.md) from the developer zip, then ship the compiled result.
+- **Modules work as in the game.** Use `require('./helper')` for your own files, JSON included, and `require('ue')`, `require('puerts')` or `require('Library/TsHelper')` for the game's.
+- **Export `stop()`.** The loader starts a mod by running `main.js`. Before a reload it calls and awaits `stop()`, so clear your timers and events there. Without `stop()`, the old copy stays, and that mod is skipped until the next game start.
+- **Read the log.** Lines from `console.log` that start with `[PBZMOD]` reach `loader.log`, and so do the game's warnings and errors.
 
-开发自己的 TS MOD 可从 [最小开发模板](templates/ts-mod/README.md) 开始：复制 `templates/ts-mod/`，
-在副本中执行 `npm ci`、`npm run check`、`npm run build`，将输出的 `dist/my-mod/` 安装到
-游戏的 `ProjectPBZ/PBZModLoader/mods/`。模板独立维护开发依赖，不需要编译加载器 DLL。
+## How it works
 
-模板已通过本地开发依赖引用 [游戏 API SDK](sdk/README.md)，直接 `import ... from 'ue'` / `'puerts'`
-即可获得补全和类型检查。SDK 0.3.3 基于 2026-11-04 更新的 Steam 构建 CL-302256_JKS-17280 重新采集，
-包含 34,593 个类型、49,386 个函数和 119,282 个已映射属性，并保留实测补充接口；
-生成覆盖、未解析项与调用验证分别记录，详见 SDK 说明。
-已有 MOD 可运行 `npm run sdk:pack`，将 `build/sdk/` 中的 npm 包安装为开发依赖；迁移步骤见 SDK 说明。
-维护者修改 `sdk/` 后运行 `npm run sdk:sync` 更新模板副本，再执行 `npm test`。
+1. `version.dll` sits next to the exe, so Windows loads it at the game's start. It forwards all system calls to the real DLL, and it runs once before the game's own entry point.
+2. It finds the game's code by its bytes, not by fixed addresses. Each match must be unique, or it skips the mods and changes nothing.
+3. The game asks for its first script on disk. The loader names a game script that nothing else uses, and it replaces that script's bytes in memory, at the game's script check. So the loader's own scripts need no file. They start the game's `MainStart`, then the mods.
+4. Mods load directly from their folder through the game's module system. The check accepts a mod's file only if it matches the file on disk.
+5. On a reload, the loader spells its folder's path in a different case. Windows sees the same folder, but the game's module cache sees new modules, so nothing is copied.
 
-开发者可使用[只读反射导出工具](scripts/REFLECTION.md)，采集当前构建的原生类型与已加载蓝图，
-输出完整元数据清单、数量统计和解析失败报告。使用 `npm run sdk:generate -- <reflection.json> [<reflection.json> ...]`
-可转换为 PuerTS 类型声明；随后同步模板、运行测试并打包。
+## Compatibility
+
+- **Tested in the game:** Steam build 26367565 (`CL-302256_JKS-17280`), with UE4SS and its mods, and with pak mods that change game scripts.
+- **WeGame:** the package holds the same DLL. The original author tested an earlier build there; this fork has not.
+- **Game updates:** many patches should pass, because the loader searches for the code. A patch can still end support. Then `loader.log` says `MODs skipped`, and the game runs without mods.
+- **Other script loaders:** do not combine it with loaders that change the same check, such as Mods Menu. UE4SS C++ BYPASS runs next to it, but it is no longer needed.
+
+## Known limits
+
+- After a reload, an old mod copy that was not stopped and calls `require` late reads the file as it is now, because no old copy exists.
+- A mod that fails at its start is not tried again until the next game start.
+- After about 4000 reloads in one game run, restart the game.
+- Builds before the update of 2026-11-04 are not supported.
+
+## Build from source
+
+You need [llvm-mingw](https://github.com/mstorsjo/llvm-mingw) `20261020` (UCRT, x86_64), PowerShell 7 and Node.js. The scripts do not run in Windows PowerShell 5.1.
 
 ```powershell
 npm ci
-.\build.ps1 -Compiler C:\path\to\llvm-mingw\bin\clang++.exe -Test
-.\package.ps1 -Version 1.0.0
+.\build.ps1 -Compiler C:\path\to\llvm-mingw\bin\clang++.exe -Test -GameExe C:\path\to\PBZ.exe
+npm test
+.\package.ps1 -Version 2.0.0
 ```
 
-主工程和发布包均不预装 MOD；开发自己的 MOD 请使用上述独立模板。
-每次启动自动发现 `mods/<ID>/main.ts` 或 `main.js`，按 ID 排序加载；新增 MOD 无需修改配置。
-在 mods.ini 的 `[Mods]` 下设置 `ID=0` 可禁用，删除该行或设为 `1` 恢复。
-`[Loader]` 的 Enabled、Version 保留；Count 可省略。旧 Count / Mod.N 配置仍优先按编号加载，
-自动发现结果随后追加并去重；`[Mods]` 开关优先于旧项 Enabled。辅助脚本不会作为独立 MOD 加载。
-玩家的 mods.ini 与 mods/ 均位于 ProjectPBZ/PBZModLoader，Entry 相对于该目录。
-旧版带 Mods 层的目录需整体上移到 ProjectPBZ/PBZModLoader，并同步更新 DLL；
-具体迁移步骤见安装说明，mods.ini 中的 Entry 无需修改。
-启动时 DLL 校验配置，将 mods/ 同步到 Content/JavaScript/PBZModLoader/generated-mods，
-供原有 PuerTS 搜索路径加载；该缓存每次启动重建，不应直接编辑。运行中按 Alt+F5 可触发热重载，详见下文。
-Content/JavaScript 下只需随包安装 bootstrap.js 和 manager.js，MOD 源文件无需放在那里。
-原生编译输出 build 下的 version.dll、hid.dll、winmm.dll、dsound.dll、dxgi.dll。
--VerifyOnly -Test 可检查已有 DLL 而不重新编译它们。
-package.ps1 拒绝覆盖已有版本，并检查 ZIP 根目录、白名单及解压后全部文件哈希。
-发布前仍需对新代码进行实际 Steam 启动和切图验收；静态及宿主测试不能替代游戏实测。
+`-GameExe` is optional, and it only reads the file. The zips land in `releases/`. Offline tests do not replace a test in the game: `tests/game-fixture/loader-check` is a mod for that, and `tests/verify-run.ps1` checks a log.
 
-运行日志可用 `tests/verify-run.ps1 -Log <loader.log>` 检查，默认预期加载 0 个 MOD；
-安装自定义 MOD 后使用 `-ExpectedLoaded <数量>` 指定预期数量，`-RequireExit` 可额外检查退出证据。
-该脚本检查启动、加载数量与错误日志，不再检查地图往返或 GameInstance 一致性；切图行为需单独实测验收。
+| Folder | Content |
+|---|---|
+| `src/` | The DLL's source, and `script-bootstrap.js` and `script-manager.js`, which are built into it |
+| `runtime/` | The install guide and license texts for the package |
+| `templates/ts-mod/` | A minimal TypeScript mod |
+| `sdk/` | TypeScript types for the game's API |
+| `tests/`, `scripts/` | Tests and developer tools |
+| `docs/` | The contract for mod managers, and images |
 
-首个整理版 0.2.0 使用此前通过完整 Steam 实测的同一个 DLL，未重新编译或修改游戏内代码。
-其 SHA-256 为 0727d3c15b7453425df0538f30de9a6e6372e03ba9e41da4e77ee425ad0cb54b。
-来源记录为 build/tested-build-info.json；完整游戏证据保存在 archive/installed-development-0.2/evidence/20261029-132016-33200-dll。
+## Credits and license
 
-玩家不需要本主工程、Node.js、额外安装的编译器、Python、独立启动器或测试观察器。
-玩家安装、配置及卸载说明在 runtime/PBZModLoader-Install-Guide.txt，并随 ZIP 发布。
+PBZModLoader was created by [LKF](https://github.com/zoneoflkf/PBZModLoader), who also made the cover image. The original releases are on [Nexus Mods](https://www.nexusmods.com/phantombladezero/mods/113). This fork is maintained by KintaroModding.
 
-### 启动时编译 TypeScript
+GNU General Public License, version 3: see [LICENSE](LICENSE). The DLLs include the LLVM and MinGW-w64 runtimes under their own licenses: see `runtime/ProjectPBZ/PBZModLoader/`.
 
-将 `main.ts` 及它引用的 `.ts`/`.js` 文件放在 `mods/<MOD ID>/`，自动发现时优先使用 `main.ts`，没有时使用 `main.js`。显式 INI Entry 可以选择 `.ts` 或 `.js`。
+---
 
-启动时使用随包提供的原生 TypeScript 编译器生成 ES2020/CommonJS，产物位于 `Content/JavaScript/PBZModLoader/generated-mods/`，不覆盖源码。每次启动重建缓存。编译只转换语法，不执行完整类型检查；语法错误、编译器缺失或超时会禁用本次启动中的对应 MOD，诊断写入加载器日志及缓存中的 `compile.log`。引用文件应位于入口目录内，运行时依赖仍须随 MOD 提供。
+<a id="chinese"></a>
 
-构建前运行 `npm ci`；`build.ps1` 自动准备随包编译器及许可证，玩家不需要安装 Node.js。
+# PBZModLoader（中文）
 
-### MOD 热重载
+《影之刃零》（Phantom Blade Zero）的 MOD 加载器。它在游戏自身的脚本引擎中运行 JavaScript MOD，并让 pak MOD 重新可以修改游戏脚本。玩家只需安装一个 DLL，无需 UE4SS、Node.js 或编译器。
 
-安装新版 DLL、bootstrap.js 和 manager.js 并启动游戏后，保存 `ProjectPBZ/PBZModLoader/mods/` 下的 JS/TS 或依赖文件，切回游戏按 **Alt+F5**。仅游戏窗口在前台时响应，按住不连发，不监听文件变化。JS 线程每秒接收一次重载请求，TS 会先编译。本地构建的 MOD 需先把新产物覆盖到安装目录。完成后左上角显示约 4 秒提示，区分成功、失败或跳过；提示不拦截鼠标。
+这是 LKF 的 [PBZModLoader](https://github.com/zoneoflkf/PBZModLoader) 的非官方分支，遵循 GPL-3.0。本分支的问题请在此反馈，不要反馈给原作者。[FORK.md](FORK.md) 列出了所有改动。
 
-每次快捷键重载整组 MOD（包括未修改的 MOD），以独立版本目录隔离 CommonJS 入口及相对依赖缓存。加载新入口前，先调用并等待所有旧实例导出的 `stop()`，支持 Promise；MOD 须在其中清除定时器、取消事件订阅并释放持有的资源。无持久资源的 MOD 也应导出空 `stop()`。缺少该函数或清理抛错时保留旧实例并跳过该 MOD，新版本不会重复注册。挂起的 stop 会等待其完成，期间不会启动另一轮重载。切图和游戏退出不触发 stop。
+**下载：**[releases](https://github.com/KintaroModding/phantombladezero_pbzmodloader/releases)。玩家需要 `PBZModLoader-<版本>-win64.zip`，MOD 作者还需要 `PBZModLoader-<版本>-developer.zip`。
 
-新增、删除及 `[Mods] ID=0` 的变化按 Alt+F5 后同样生效；删除或禁用前也会调用 stop。TS 编译失败时保留旧实例并显示失败提示，修复后再次按 Alt+F5 重试。请保存完成后再触发重载，编译期间避免继续改写文件。JS 入口执行异常可能已经产生副作用且无法取得其导出，因此失败实例在本次游戏运行中不再自动重试，修复后需重启。MOD 应自行清理初始化失败前产生的资源。
+## 功能
 
-临时产物在 `Content/JavaScript/PBZModLoader/generated-reloads/`，版本目录保留至下一次启动清理，以支持旧实例和延迟 require；长时间大量重载会增加磁盘和模块缓存占用。仅 MOD 目录内的相对依赖随版本隔离，勿用加载器缓存绝对路径跨版本引用。日志查找 `hot reload published`、`stopped`、`reload complete` 和 `reload blocked`。
+- **自动加载 MOD。** `ProjectPBZ/PBZModLoader/mods/` 中每个含 `main.js` 的文件夹都是一个 MOD，无需配置。
+- **让 pak MOD 继续可用。** 自 2026-11-04 游戏更新起，游戏会拒绝被修改的游戏脚本。加载器重新允许它们，因此 `~mods` 中的脚本 pak MOD 无需其他工具即可运行。
+- **游戏中重载。** 按 Alt+F5 会停止所有 MOD 并重新加载，无需重启游戏。
+- **不影响游戏。** 如果加载器无法匹配某个游戏版本，它会跳过 MOD，游戏正常运行。
+
+## 安装到游戏中的内容
+
+| 文件 | 说明 |
+|---|---|
+| `platform/steam/version.dll`（或 `platform/wegame/`） | 整个加载器，脚本已内置其中。 |
+| `ProjectPBZ/PBZModLoader/LICENSES.txt` | 许可证文本。 |
+| `ProjectPBZ/PBZModLoader/mods/` | 你的 MOD。 |
+| `ProjectPBZ/PBZModLoader/mods.ini` | 可选，只由你自己创建。 |
+| `ProjectPBZ/PBZModLoader/loader.log` | 日志。每次启动游戏时重新生成，约 8 MB 后停止写入。 |
+
+加载器不会写入其他内容：没有 MOD 副本、没有缓存、没有生成的脚本。
+
+## 安装
+
+1. 退出游戏，打开游戏安装目录（能看到 `ProjectPBZ` 的位置）。
+2. 检查实际游戏 EXE 旁（`platform/steam` 或 `platform/wegame`）。如果其他工具已有 `version.dll`，请勿覆盖，改用 `alternative-entries/` 中的一个 DLL。
+3. 将压缩包解压到安装目录，但不要解压 `alternative-entries/`。
+4. 从原游戏平台启动游戏。
+
+压缩包内的[安装说明](runtime/PBZModLoader-Install-Guide.txt)介绍了备用入口、更新和卸载。MOD 管理器请参阅 [docs/MOD-MANAGER.md](docs/MOD-MANAGER.md)。
+
+**从 1.0.0 更新：** 删除 `ProjectPBZ/Content/JavaScript/PBZModLoader/`、`ProjectPBZ/PBZModLoader/compiler/`、`ProjectPBZ/PBZModLoader/evidence/` 和 `ProjectPBZ/PBZModLoader/TOOLCHAIN-LICENSE.txt`。保留 `mods/` 和 `mods.ini`。
+
+## 设置
+
+没有 `mods.ini` 时，所有 MOD 都会加载。只有需要更改时才创建 `ProjectPBZ/PBZModLoader/mods.ini`：
+
+```ini
+[Loader]
+Version=1
+; 0 表示关闭整个加载器。
+Enabled=1
+; 0 表示拒绝修改游戏脚本的 pak MOD。
+AllowScriptPaks=1
+
+[Mods]
+; 0 表示关闭单个 MOD。
+my-mod=0
+```
+
+## MOD 作者
+
+MOD 是一个文件夹，例如 `ProjectPBZ/PBZModLoader/mods/my-mod/`，其中包含 `main.js`。文件夹名即 MOD ID：英文字母、数字、`_` 和 `-`。
+
+- **发布 JavaScript。** 加载器不编译任何内容。只有 `main.ts` 的 MOD 不会运行，`loader.log` 会说明原因。请用开发包中的[模板](templates/ts-mod/README.md)和[游戏 API 类型](sdk/README.md)编写 TypeScript，然后发布编译结果。
+- **模块与游戏中相同。** 用 `require('./helper')` 引用自己的文件（包括 JSON），用 `require('ue')`、`require('puerts')` 或 `require('Library/TsHelper')` 引用游戏模块。
+- **导出 `stop()`。** 加载器通过运行 `main.js` 启动 MOD。重载前会调用并等待 `stop()`，请在其中清除定时器和事件。缺少 `stop()` 时旧实例保留，该 MOD 在下次启动前被跳过。
+- **查看日志。** 以 `[PBZMOD]` 开头的 `console.log` 内容会写入 `loader.log`，游戏的警告和错误也会写入。
+
+## 工作原理
+
+1. `version.dll` 位于 EXE 旁，因此 Windows 在游戏启动时加载它。它把所有系统调用转发给真正的 DLL，并在游戏自身入口点之前运行一次。
+2. 它按字节查找游戏代码，不使用固定地址。每项匹配必须唯一，否则跳过 MOD 且不做任何更改。
+3. 游戏从磁盘查找第一个脚本。加载器指定一个没有其他用途的游戏脚本，并在游戏的脚本校验处替换其内存中的字节。因此加载器自身的脚本不需要文件。这些脚本先启动游戏的 `MainStart`，再加载 MOD。
+4. MOD 通过游戏的模块系统直接从其文件夹加载。只有与磁盘文件一致的 MOD 文件才能通过校验。
+5. 重载时，加载器用不同的大小写拼写其文件夹路径。Windows 视为同一文件夹，而游戏的模块缓存视为新模块，因此无需复制任何内容。
+
+## 兼容性
+
+- **已在游戏中测试：** Steam 构建 26367565（`CL-302256_JKS-17280`），包括与 UE4SS 及其 MOD 同时使用，以及修改游戏脚本的 pak MOD。
+- **WeGame：** 压缩包内是同一个 DLL。原作者曾在较早版本上测试，本分支尚未测试。
+- **游戏更新：** 由于加载器是查找代码，许多补丁应可通过，但补丁仍可能导致不再支持。此时 `loader.log` 会显示 `MODs skipped`，游戏不加载 MOD 正常运行。
+- **其他脚本加载器：** 请勿与修改同一校验的加载器（例如 Mods Menu）同时使用。UE4SS C++ BYPASS 可以同时运行，但已不再需要。
+
+## 已知限制
+
+- 重载后，未被停止且延迟调用 `require` 的旧实例读取的是文件当前的内容，因为没有旧副本。
+- 启动时失败的 MOD 在下次启动游戏前不会重试。
+- 一次游戏运行中约 4000 次重载后，请重启游戏。
+- 不支持 2026-11-04 更新之前的版本。
+
+## 从源码构建
+
+需要 [llvm-mingw](https://github.com/mstorsjo/llvm-mingw) `20261020`（UCRT、x86_64）、PowerShell 7 和 Node.js。这些脚本无法在 Windows PowerShell 5.1 中运行。
+
+```powershell
+npm ci
+.\build.ps1 -Compiler C:\path\to\llvm-mingw\bin\clang++.exe -Test -GameExe C:\path\to\PBZ.exe
+npm test
+.\package.ps1 -Version 2.0.0
+```
+
+`-GameExe` 是可选的，只读取该文件。压缩包生成在 `releases/`。离线测试不能代替游戏内测试：`tests/game-fixture/loader-check` 是用于游戏内测试的 MOD，`tests/verify-run.ps1` 用于检查日志。
+
+| 文件夹 | 内容 |
+|---|---|
+| `src/` | DLL 源码，以及内置其中的 `script-bootstrap.js` 和 `script-manager.js` |
+| `runtime/` | 压缩包中的安装说明和许可证文本 |
+| `templates/ts-mod/` | 最小的 TypeScript MOD |
+| `sdk/` | 游戏 API 的 TypeScript 类型 |
+| `tests/`、`scripts/` | 测试和开发工具 |
+| `docs/` | MOD 管理器约定和图片 |
+
+## 致谢与许可证
+
+PBZModLoader 由 [LKF](https://github.com/zoneoflkf/PBZModLoader) 创建，封面图片也由其制作。原版发布在 [Nexus Mods](https://www.nexusmods.com/phantombladezero/mods/113)。本分支由 KintaroModding 维护。
+
+GNU 通用公共许可证第 3 版：见 [LICENSE](LICENSE)。DLL 包含 LLVM 和 MinGW-w64 运行库，它们使用各自的许可证：见 `runtime/ProjectPBZ/PBZModLoader/`。
