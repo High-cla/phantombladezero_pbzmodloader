@@ -68,7 +68,7 @@ Set it to `0` to disable the mod. To uninstall, close the game and remove the mo
   It responds only while the game window is in the foreground, it does not watch for file changes, and holding the keys does not repeat. Each reload covers the whole set of mods, unchanged ones included.
   New and removed mods and changes to the `[Mods]` switches in `mods.ini` take effect too. `stop()` also runs before a mod is removed or disabled.
   The loader waits for the cleanup of all old instances before it runs the new entries. Keep an empty `stop()` even without lasting resources.
-  A missing `stop()` or a failed cleanup keeps the old instance and blocks that mod's reload. A Promise that never ends blocks all later reloads.
+  A missing `stop()` or a failed cleanup keeps the old instance and blocks that mod's reload. A Promise that never settles blocks all later reloads.
   After an entry fails, the mod is not tried again in this run, so that partial registrations do not run twice. Fix it and restart the game.
   Your startup code should clean up whatever it created before it threw an error.
 - Hot reload separates the CommonJS cache of the entry and of relative dependencies in the mod's folder. Always use relative paths for your own modules, not absolute ones.

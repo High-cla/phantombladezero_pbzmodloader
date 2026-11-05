@@ -16,8 +16,8 @@ This is an unofficial fork of [PBZModLoader](https://github.com/zoneoflkf/PBZMod
 
 - **Loads mods by itself.** Every folder in `ProjectPBZ/PBZModLoader/mods/` with a `main.js` is a mod. You need no configuration.
 - **Keeps pak mods working.** Since the game update of 2026-11-04, the game refuses changed game scripts. The loader allows them again, so script pak mods in `~mods` run without another tool.
-- **Reloads while you play.** Alt+F5 stops all mods and loads them again, without a game restart.
-- **Stays out of the way.** If the loader cannot match a game build, it skips the mods and the game runs normally.
+- **Reloads while you play.** Alt+F5 reloads JavaScript mods that support hot reload, without a game restart. It does not reload pak or UE4SS mods.
+- **Skips unsupported builds.** If the loader cannot match a game build, it skips initialization. Mods that depend on the loader may not work.
 
 ## What it puts in the game
 
@@ -26,7 +26,7 @@ This is an unofficial fork of [PBZModLoader](https://github.com/zoneoflkf/PBZMod
 | `platform/steam/version.dll` (or `platform/wegame/`) | The whole loader. Its scripts are inside this file. |
 | `ProjectPBZ/PBZModLoader/LICENSES.txt` | The license texts. |
 | `ProjectPBZ/PBZModLoader/mods/` | Your mods. |
-| `ProjectPBZ/PBZModLoader/mods.ini` | Optional. Only you create it. |
+| `ProjectPBZ/PBZModLoader/mods.ini` | Optional. The loader does not create it automatically. |
 | `ProjectPBZ/PBZModLoader/loader.log` | The log. It starts new with each game start and stops at about 8 MB. |
 
 The loader writes nothing else: no copies of mods, no caches, no generated scripts.
@@ -35,7 +35,7 @@ The loader writes nothing else: no copies of mods, no caches, no generated scrip
 
 1. Close the game and open its install folder, the one that holds `ProjectPBZ`.
 2. Look next to the real game exe (`platform/steam` or `platform/wegame`). If another tool already has a `version.dll` there, do not overwrite it: use one of the DLLs in `alternative-entries/` instead.
-3. Extract the zip into the install folder, without `alternative-entries/`.
+3. For the default entry, copy `ProjectPBZ/` and the DLL from the matching platform folder into the game installation. If `version.dll` belongs to another tool, copy only `ProjectPBZ/` and place one selected alternative DLL beside the game exe. Keep its original name. In that case, do not copy the packaged `version.dll` or the whole `alternative-entries/` folder.
 4. Start the game from its platform as usual.
 
 The [install guide](runtime/PBZModLoader-Install-Guide.txt) in the zip explains the alternative entries, updates and removal. Mod managers: see [docs/MOD-MANAGER.md](docs/MOD-MANAGER.md).
@@ -65,12 +65,12 @@ A mod is a folder such as `ProjectPBZ/PBZModLoader/mods/my-mod/` with a `main.js
 
 - **Ship JavaScript.** The loader compiles nothing. A mod with only `main.ts` does not run, and `loader.log` says so. Write TypeScript with the [template](templates/ts-mod/README.md) and the [game API types](sdk/README.md) from the developer zip, then ship the compiled result.
 - **Modules work as in the game.** Use `require('./helper')` for your own files, JSON included, and `require('ue')`, `require('puerts')` or `require('Library/TsHelper')` for the game's.
-- **Export `stop()`.** The loader starts a mod by running `main.js`. Before a reload it calls and awaits `stop()`, so clear your timers and events there. Without `stop()`, the old copy stays, and that mod is skipped until the next game start.
+- **Export `stop()`.** The loader starts a mod by running `main.js`. Before a reload it calls and awaits `stop()`, so clear your timers and unsubscribe from events there. If `stop()` is missing or fails, the existing instance is retained and its replacement is not loaded.
 - **Read the log.** Lines from `console.log` that start with `[PBZMOD]` reach `loader.log`, and so do the game's warnings and errors.
 
 ## How it works
 
-1. `version.dll` sits next to the exe, so Windows loads it at the game's start. It forwards all system calls to the real DLL, and it runs once before the game's own entry point.
+1. `version.dll` sits next to the exe, so Windows loads it at the game's start. It forwards calls to the corresponding Windows system DLL, and it runs once before the game's own entry point.
 2. It finds the game's code by its bytes, not by fixed addresses. Each match must be unique, or it skips the mods and changes nothing.
 3. The game asks for its first script on disk. The loader names a game script that nothing else uses, and it replaces that script's bytes in memory, at the game's script check. So the loader's own scripts need no file. They start the game's `MainStart`, then the mods.
 4. Mods load directly from their folder through the game's module system. The check accepts a mod's file only if it matches the file on disk.
@@ -80,7 +80,7 @@ A mod is a folder such as `ProjectPBZ/PBZModLoader/mods/my-mod/` with a `main.js
 
 - **Tested in the game:** Steam build 26367565 (`CL-302256_JKS-17280`), with UE4SS and its mods, and with pak mods that change game scripts.
 - **WeGame:** the package holds the same DLL. The original author tested an earlier build there; this fork has not.
-- **Game updates:** many patches should pass, because the loader searches for the code. A patch can still end support. Then `loader.log` says `MODs skipped`, and the game runs without mods.
+- **Game updates:** updates may require a loader update even though it searches for code signatures. If initialization fails, read the reason after `MODs skipped` in `loader.log`. Mods that depend on the loader may not work.
 - **Other script loaders:** do not combine it with loaders that change the same check, such as Mods Menu. UE4SS C++ BYPASS runs next to it, but it is no longer needed.
 
 ## Known limits
@@ -124,7 +124,7 @@ GNU General Public License, version 3: see [LICENSE](LICENSE). The DLLs include 
 
 # PBZModLoader（中文）
 
-《影之刃零》（Phantom Blade Zero）的 MOD 加载器。它在游戏自身的脚本引擎中运行 JavaScript MOD，并让 pak MOD 重新可以修改游戏脚本。玩家只需安装一个 DLL，无需 UE4SS、Node.js 或编译器。
+《影之刃零》（Phantom Blade Zero）的 MOD 加载器。它在游戏自身的脚本引擎中运行 JavaScript MOD，并重新支持修改游戏脚本的 pak MOD。玩家只需安装一个 DLL，无需 UE4SS、Node.js 或编译器。
 
 这是 LKF 的 [PBZModLoader](https://github.com/zoneoflkf/PBZModLoader) 的非官方分支，遵循 GPL-3.0。本分支的问题请在此反馈，不要反馈给原作者。[FORK.md](FORK.md) 列出了所有改动。
 
@@ -134,8 +134,8 @@ GNU General Public License, version 3: see [LICENSE](LICENSE). The DLLs include 
 
 - **自动加载 MOD。** `ProjectPBZ/PBZModLoader/mods/` 中每个含 `main.js` 的文件夹都是一个 MOD，无需配置。
 - **让 pak MOD 继续可用。** 自 2026-11-04 游戏更新起，游戏会拒绝被修改的游戏脚本。加载器重新允许它们，因此 `~mods` 中的脚本 pak MOD 无需其他工具即可运行。
-- **游戏中重载。** 按 Alt+F5 会停止所有 MOD 并重新加载，无需重启游戏。
-- **不影响游戏。** 如果加载器无法匹配某个游戏版本，它会跳过 MOD，游戏正常运行。
+- **游戏中重载。** 按 Alt+F5 可重载支持热重载的 JavaScript MOD，无需重启游戏。此操作不会重载 pak MOD 或 UE4SS MOD。
+- **不支持时跳过初始化。** 如果加载器无法匹配某个游戏版本，它会跳过初始化。依赖此加载器的 MOD 可能无法正常运行。
 
 ## 安装到游戏中的内容
 
@@ -144,7 +144,7 @@ GNU General Public License, version 3: see [LICENSE](LICENSE). The DLLs include 
 | `platform/steam/version.dll`（或 `platform/wegame/`） | 整个加载器，脚本已内置其中。 |
 | `ProjectPBZ/PBZModLoader/LICENSES.txt` | 许可证文本。 |
 | `ProjectPBZ/PBZModLoader/mods/` | 你的 MOD。 |
-| `ProjectPBZ/PBZModLoader/mods.ini` | 可选，只由你自己创建。 |
+| `ProjectPBZ/PBZModLoader/mods.ini` | 可选。加载器不会自动创建此文件。 |
 | `ProjectPBZ/PBZModLoader/loader.log` | 日志。每次启动游戏时重新生成，约 8 MB 后停止写入。 |
 
 加载器不会写入其他内容：没有 MOD 副本、没有缓存、没有生成的脚本。
@@ -153,7 +153,7 @@ GNU General Public License, version 3: see [LICENSE](LICENSE). The DLLs include 
 
 1. 退出游戏，打开游戏安装目录（能看到 `ProjectPBZ` 的位置）。
 2. 检查实际游戏 EXE 旁（`platform/steam` 或 `platform/wegame`）。如果其他工具已有 `version.dll`，请勿覆盖，改用 `alternative-entries/` 中的一个 DLL。
-3. 将压缩包解压到安装目录，但不要解压 `alternative-entries/`。
+3. 使用默认入口时，将 `ProjectPBZ/` 和对应平台文件夹中的 DLL 复制到游戏安装目录。如果 `version.dll` 属于其他工具，则只复制 `ProjectPBZ/`，并将一个选定的备用 DLL 放到游戏 EXE 旁，保持原文件名。此时不要复制压缩包中的 `version.dll`，也不要复制整个 `alternative-entries/` 文件夹。
 4. 从原游戏平台启动游戏。
 
 压缩包内的[安装说明](runtime/PBZModLoader-Install-Guide.txt)介绍了备用入口、更新和卸载。MOD 管理器请参阅 [docs/MOD-MANAGER.md](docs/MOD-MANAGER.md)。
@@ -183,12 +183,12 @@ MOD 是一个文件夹，例如 `ProjectPBZ/PBZModLoader/mods/my-mod/`，其中�
 
 - **发布 JavaScript。** 加载器不编译任何内容。只有 `main.ts` 的 MOD 不会运行，`loader.log` 会说明原因。请用开发包中的[模板](templates/ts-mod/README.md)和[游戏 API 类型](sdk/README.md)编写 TypeScript，然后发布编译结果。
 - **模块与游戏中相同。** 用 `require('./helper')` 引用自己的文件（包括 JSON），用 `require('ue')`、`require('puerts')` 或 `require('Library/TsHelper')` 引用游戏模块。
-- **导出 `stop()`。** 加载器通过运行 `main.js` 启动 MOD。重载前会调用并等待 `stop()`，请在其中清除定时器和事件。缺少 `stop()` 时旧实例保留，该 MOD 在下次启动前被跳过。
+- **导出 `stop()`。** 加载器通过运行 `main.js` 启动 MOD。重载前会调用并等待 `stop()`，请在其中清除定时器并取消事件订阅。如果缺少 `stop()` 或清理失败，将保留现有实例，不加载新版本。
 - **查看日志。** 以 `[PBZMOD]` 开头的 `console.log` 内容会写入 `loader.log`，游戏的警告和错误也会写入。
 
 ## 工作原理
 
-1. `version.dll` 位于 EXE 旁，因此 Windows 在游戏启动时加载它。它把所有系统调用转发给真正的 DLL，并在游戏自身入口点之前运行一次。
+1. `version.dll` 位于 EXE 旁，因此 Windows 在游戏启动时加载它。它将对应 Windows DLL 的函数调用转发给系统原版 DLL，并在游戏自身入口点之前运行一次。
 2. 它按字节查找游戏代码，不使用固定地址。每项匹配必须唯一，否则跳过 MOD 且不做任何更改。
 3. 游戏从磁盘查找第一个脚本。加载器指定一个没有其他用途的游戏脚本，并在游戏的脚本校验处替换其内存中的字节。因此加载器自身的脚本不需要文件。这些脚本先启动游戏的 `MainStart`，再加载 MOD。
 4. MOD 通过游戏的模块系统直接从其文件夹加载。只有与磁盘文件一致的 MOD 文件才能通过校验。
@@ -198,7 +198,7 @@ MOD 是一个文件夹，例如 `ProjectPBZ/PBZModLoader/mods/my-mod/`，其中�
 
 - **已在游戏中测试：** Steam 构建 26367565（`CL-302256_JKS-17280`），包括与 UE4SS 及其 MOD 同时使用，以及修改游戏脚本的 pak MOD。
 - **WeGame：** 压缩包内是同一个 DLL。原作者曾在较早版本上测试，本分支尚未测试。
-- **游戏更新：** 由于加载器是查找代码，许多补丁应可通过，但补丁仍可能导致不再支持。此时 `loader.log` 会显示 `MODs skipped`，游戏不加载 MOD 正常运行。
+- **游戏更新：** 即使加载器通过代码特征进行匹配，游戏更新后仍可能需要更新加载器。如果初始化失败，请查看 `loader.log` 中 `MODs skipped` 后的具体原因。依赖此加载器的 MOD 可能无法正常运行。
 - **其他脚本加载器：** 请勿与修改同一校验的加载器（例如 Mods Menu）同时使用。UE4SS C++ BYPASS 可以同时运行，但已不再需要。
 
 ## 已知限制
