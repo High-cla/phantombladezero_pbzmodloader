@@ -1,6 +1,17 @@
 # PBZModLoader 主工程
 
-这是后续开发入口。玩家运行包位于 releases，游戏安装目录只保留运行文件。
+PBZModLoader 是《影之刃零》（Phantom Blade Zero）的 MOD 加载器，为玩家提供统一的脚本 MOD 加载入口，也为开发者提供 JavaScript / TypeScript 开发模板和游戏 API 类型声明 SDK。支持自动发现 MOD、配置启用或禁用，以及通过 `Alt+F5` 热重载支持清理生命周期的 MOD。
+
+**下载与发布页面：[Nexus Mods · PBZModLoader](https://www.nexusmods.com/phantombladezero/mods/113)**
+
+### 技术路线
+
+- **原生 DLL 代理引导**：以 `version.dll` 为默认入口，并提供 `hid.dll`、`winmm.dll`、`dsound.dll`、`dxgi.dll` 备用入口。代理转发系统 DLL 导出，在游戏启动阶段接入加载器；安装时只使用一个入口。
+- **特征扫描与校验**：扫描游戏可执行文件中的指令特征，结合字符串和调用关系定位 `MainStart`、PuerTS 启动及日志接口，不依赖固定地址。匹配缺失或存在歧义时跳过 MOD 加载；游戏更新仍可能需要适配。
+- **复用游戏内置脚本环境**：通过游戏已有的 PuerTS 执行引导脚本和 MOD 管理器，使 JS/TS MOD 能够使用游戏暴露的 UE API。加载器将 MOD 同步到脚本搜索目录，并对本地加载器脚本及生成内容进行限定范围的校验适配。
+- **TypeScript 与开发支持**：启动时使用随包编译器将 TS 转换为 ES2020/CommonJS，再交由 PuerTS 加载；完整类型检查由开发阶段完成。SDK 基于游戏反射信息生成类型声明，配合独立模板提供补全与类型检查；热重载通过 `stop()` 清理旧实例并隔离模块缓存。
+
+本仓库包含加载器源码、运行文件模板、SDK 和开发工具。玩家请从上方发布页面获取安装包；本地构建的玩家运行包位于 `releases/`，游戏安装目录只需保留运行文件。
 
 ## 1.0.0：首个正式发布版
 
