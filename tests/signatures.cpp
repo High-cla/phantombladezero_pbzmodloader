@@ -49,6 +49,11 @@ int main(int argc,char** argv) {
         std::copy(savedBytes.begin(),savedBytes.end(),image.bytes.begin()+original.validateBytes);
         std::copy(savedText.begin(),savedText.end(),image.bytes.begin()+original.validateText);
         std::cout<<"PASS validators already hooked by another tool, other changed entries rejected\n";
+        // The game must list the slot script; a build that dropped it falls to the next one, then to none.
+        assert(std::wstring(chooseScriptSlot(image).module)==SCRIPT_SLOTS[0].module);
+        assert(imageListsScript(image,SCRIPT_SLOTS[1].listed));
+        assert(!imageListsScript(image,L"project/no/such/script.js"));
+        std::cout<<"PASS script slot listed by the game\n";
     }
     std::cout<<"PASS real PE: unique MainStart and three PuerTS loggers\n";
     // Exercise the other observed stack layout against the same validated PE.

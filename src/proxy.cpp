@@ -2,7 +2,9 @@
 #include "core.hpp"
 #include "mod-validation.hpp"
 #include "proxy_config.hpp"
+#include "embedded_script.hpp"
 #include <atomic>
+#include <mutex>
 
 extern "C" void pbz_entry_gate();
 extern "C" { void* pbz_original_entry=nullptr; }
@@ -12,21 +14,65 @@ static HANDLE logFile=INVALID_HANDLE_VALUE;
 static INIT_ONCE versionOnce=INIT_ONCE_STATIC_INIT;
 static HMODULE realVersion=nullptr;
 static std::atomic<FARPROC> versionFunctions[proxyCount]{};
-static fs::path reloadRoot,reloadScripts;
+static fs::path modRoot;
+static std::wstring slotSuffix;
+static bool allowScriptPaks=true;
+static std::atomic<bool> scriptDelivered{false};
+static std::string deliveredScript;
+static std::mutex mailLock;
+static std::string mail;
+static std::mutex changedLock;
+static std::set<std::wstring> changedScripts;
 static bool (*originalValidateBytes)(const GameString*,const GameBytes*)=nullptr;
 static bool (*originalValidateText)(const GameString*,const GameString*)=nullptr;
+static void setMail(std::string message) { std::lock_guard<std::mutex> guard(mailLock); mail=std::move(message); }
+static bool isSlot(const std::wstring& name) {
+    auto lower=lowerSlashes(name);
+    return lower.size()>slotSuffix.size() && lower.compare(lower.size()-slotSuffix.size(),slotSuffix.size(),slotSuffix)==0;
+}
+// The slot's first read starts the loader; each later read is the embedded manager asking for its mail.
+static bool deliverSlot(const GameBytes* source) {
+    if(!scriptDelivered.exchange(true)) {
+        std::string script(embeddedScript,embeddedScriptSize);
+        if(!replaceBytes(source,script)) {
+            // The game's own start depends on this module, so it must still reach MainStart.
+            log("MODs skipped: the embedded script does not fit this build's script slot; original game continues");
+            script="require('puerts').__require('MainStart');";
+            if(!replaceBytes(source,script)) return false;
+        }
+        deliveredScript=std::move(script);
+        return true;
+    }
+    std::lock_guard<std::mutex> guard(mailLock);
+    return replaceBytes(source,mail) || replaceBytes(source,mailError(0,"MOD list too long"));
+}
+static void noteChangedScript(const std::wstring& name) {
+    std::lock_guard<std::mutex> guard(changedLock);
+    if(changedScripts.insert(lowerSlashes(name)).second) log("changed game script allowed: "+utf8(name));
+}
 static bool validateModBytes(const GameString* path,const GameBytes* source) noexcept {
+    std::wstring name; const bool named=gameString(path,name);
+    try { if(named && isSlot(name)) return deliverSlot(source); }
+    catch(const std::exception& e) { log(std::string("script slot failed: ")+e.what()); }
     if(originalValidateBytes(path,source)) return true;
-    try { if(trustedModBytes(reloadScripts,path,source)) return true; }
+    try {
+        if(trustedModBytes(modRoot,path,source)) return true;
+        if(named && allowScriptPaks && gameScriptPath(name)) { noteChangedScript(name); return true; }
+    }
     catch(const std::exception& e) { log(std::string("MOD byte validation failed: ")+e.what()); }
-    std::wstring name; if(gameString(path,name)) log("script bytes rejected: "+utf8(name));
+    if(named) log("script bytes rejected: "+utf8(name));
     return false;
 }
 static bool validateModText(const GameString* path,const GameString* source) noexcept {
     if(originalValidateText(path,source)) return true;
-    try { if(trustedModText(reloadScripts,path,source)) return true; }
+    std::wstring name; const bool named=gameString(path,name);
+    try {
+        if(named && isSlot(name) && sameScriptText((const unsigned char*)deliveredScript.data(),deliveredScript.size(),source)) return true;
+        if(trustedModText(modRoot,path,source)) return true;
+        if(named && allowScriptPaks && gameScriptPath(name)) { noteChangedScript(name); return true; }
+    }
     catch(const std::exception& e) { log(std::string("MOD text validation failed: ")+e.what()); }
-    std::wstring name; if(gameString(path,name)) log("script text rejected: "+utf8(name));
+    if(named) log("script text rejected: "+utf8(name));
     return false;
 }
 static BOOL CALLBACK loadVersion(PINIT_ONCE,void*,void**) {
@@ -55,9 +101,15 @@ extern "C" FARPROC pbz_resolve_version(unsigned index) noexcept {
 }
 void log(const std::string& s) {
     if(logFile==INVALID_HANDLE_VALUE) return;
+    // One file per game start: bounded, because the game's own warnings land here too.
+    static std::atomic<unsigned long long> logged{0};
+    constexpr unsigned long long logLimit=8*1024*1024;
+    auto before=logged.fetch_add(s.size()+16);
+    if(before>=logLimit) return;
     SYSTEMTIME t; GetLocalTime(&t); char time[40];
     snprintf(time,sizeof(time),"[%02u:%02u:%02u.%03u] ",t.wHour,t.wMinute,t.wSecond,t.wMilliseconds);
     std::string line=std::string(time)+s+"\r\n"; DWORD written;
+    if(before+s.size()+16>=logLimit) line+="log limit reached; later lines are dropped\r\n";
     // FILE_APPEND_DATA and a single WriteFile per record allow the shutdown marker
     // to use this handle without a C++ lock or allocation in DllMain.
     WriteFile(logFile,line.data(),(DWORD)line.size(),&written,nullptr);
@@ -89,18 +141,19 @@ static DWORD WINAPI monitor(void* context) noexcept {
             while(PeekMessageW(&message,nullptr,WM_HOTKEY,WM_HOTKEY,PM_REMOVE))
                 if(message.wParam==hotkeyId && focused) requested=true;
             if(requested) {
-                // Compilation may take time; do not reserve another app's
-                // shortcut or queue repeated requests while preparing a batch.
+                // Do not reserve another app's shortcut or queue repeated requests.
                 UnregisterHotKey(nullptr,hotkeyId); hotkeyRegistered=false;
                 try {
-                    publishReload(reloadRoot,reloadScripts,revision);
-                    log("hot reload published revision="+std::to_string(revision++));
+                    auto enabled=ini(modRoot/L"mods.ini",L"Loader",L"Enabled");
+                    bool off=!enabled.empty() && number(enabled,1)==0;
+                    setMail(mailMessage(revision,off?"{\"version\":1,\"root\":\""+jsonPath(modRoot)+"\",\"mods\":[]}":config(modRoot)));
+                    log("hot reload published revision="+std::to_string(revision));
                 }
                 catch(const std::exception& e) {
                     log(std::string("hot reload preparation failed: ")+e.what());
-                    try { publishReloadFailure(reloadScripts,revision); ++revision; }
-                    catch(const std::exception& failure) { log(std::string("reload failure notification: ")+failure.what()); }
+                    setMail(mailError(revision,"Reload preparation failed; see loader.log"));
                 }
+                ++revision;
             }
             Sleep(50);
         }
@@ -126,11 +179,11 @@ extern "C" void pbz_initialize() noexcept {
         wchar_t exe[32768]; check(GetModuleFileNameW(nullptr,exe,32768)>0,"game path");
         const fs::path game=exe;
         const fs::path project=findProject(game);
-        const fs::path root=project/L"PBZModLoader", scripts=project/L"Content/JavaScript/PBZModLoader";
-        SYSTEMTIME st; GetLocalTime(&st); wchar_t name[80];
-        swprintf(name,80,L"%04u%02u%02u-%02u%02u%02u-%lu-dll",st.wYear,st.wMonth,st.wDay,st.wHour,st.wMinute,st.wSecond,GetCurrentProcessId());
-        fs::path evidence=root/L"evidence"/name; fs::create_directories(evidence);
-        logFile=CreateFileW((evidence/L"loader.log").c_str(),FILE_APPEND_DATA,FILE_SHARE_READ|FILE_SHARE_WRITE,nullptr,CREATE_NEW,FILE_ATTRIBUTE_NORMAL,nullptr);
+        const fs::path root=project/L"PBZModLoader";
+        fs::create_directories(root);
+        const auto logPath=root/L"loader.log";
+        DeleteFileW(logPath.c_str());
+        logFile=CreateFileW(logPath.c_str(),FILE_APPEND_DATA,FILE_SHARE_READ|FILE_SHARE_WRITE,nullptr,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL,nullptr);
         check(logFile!=INVALID_HANDLE_VALUE,"create DLL log");
         log("backend=dll; startup=exe-entry; debugger-api=none");
         log("entry-restored; pid="+std::to_string(GetCurrentProcessId()));
@@ -147,21 +200,22 @@ extern "C" void pbz_initialize() noexcept {
         const auto sites=resolveSites(image);
         { std::ostringstream message; message<<"signatures validated; call-rva=0x"<<std::hex<<sites.call<<" start-rva=0x"<<sites.start;
           for(auto rva:sites.loggers) message<<" logger-rva=0x"<<rva; log(message.str()); }
-        for(auto file:{L"bootstrap.js",L"manager.js"}) if(!fs::is_regular_file(scripts/file)) throw std::runtime_error("Missing loader JS");
-        resetReloads(scripts);
-        reloadRoot=root; reloadScripts=scripts;
-        syncMods(root,scripts);
-        auto generated=config(root,scripts);
-        auto temporary=scripts/(L"generated-config."+std::to_wstring(GetCurrentProcessId())+L".tmp");
-        { std::ofstream f(temporary,std::ios::binary); f<<generated; f.close(); check(bool(f),"write config"); }
-        check(MoveFileExW(temporary.c_str(),(scripts/L"generated-config.js").c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH),"publish config");
+        // The embedded script reaches the game only through these validators.
+        if(!sites.validateBytes) throw std::runtime_error("This build has no script validators to deliver the embedded script through");
+        const auto& slot=chooseScriptSlot(image);
+        slotSuffix=lowerSlashes(std::wstring(L"/content/javascript/")+slot.module+L".js");
+        modRoot=fs::canonical(root);
+        auto scriptPaks=ini(modRoot/L"mods.ini",L"Loader",L"AllowScriptPaks");
+        allowScriptPaks=scriptPaks.empty() || number(scriptPaks,1)!=0;
+        // A bad mods.ini must not stop the game: the manager reports it, and Alt+F5 can retry.
+        try { setMail(mailMessage(0,config(modRoot))); }
+        catch(const std::exception& e) { log(std::string("configuration failed: ")+e.what()); setMail(mailError(0,e.what())); }
         const auto base=(U64)GetModuleHandleW(nullptr);
-        if(sites.validateBytes) {
-            originalValidateBytes=reinterpret_cast<decltype(originalValidateBytes)>(base+sites.validateBytes);
-            originalValidateText=reinterpret_cast<decltype(originalValidateText)>(base+sites.validateText);
-        }
-        auto installed=install(GetCurrentProcess(),base,image,sites,(U64)&validateModBytes,(U64)&validateModText);
-        if(sites.validateBytes) log("script validation adapters installed; scope=PBZModLoader; content=local-file-exact");
+        originalValidateBytes=reinterpret_cast<decltype(originalValidateBytes)>(base+sites.validateBytes);
+        originalValidateText=reinterpret_cast<decltype(originalValidateText)>(base+sites.validateText);
+        auto installed=install(GetCurrentProcess(),base,image,sites,(U64)&validateModBytes,(U64)&validateModText,slot.module);
+        log(std::string("script validation adapters installed; slot=")+utf8(slot.module)+"; embedded script bytes="+std::to_string(embeddedScriptSize)+
+            "; changed game scripts="+(allowScriptPaks?"allowed":"not allowed"));
         log("native hooks installed; configuration published");
         HANDLE worker=CreateThread(nullptr,0,monitor,(void*)installed.slab,0,nullptr);
         if(worker) CloseHandle(worker); else log("ERROR monitor: CreateThread failed; MOD loading remains enabled");

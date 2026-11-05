@@ -52,11 +52,13 @@ int main() {
     assert(fs::create_directory(temp)); fs::create_directories(temp/L"mods/a");
     {
         auto root=temp/L"validation";
-        fs::create_directories(root/L"generated-mods/test");
+        fs::create_directories(root/L"mods/test");
         const std::string code="module.exports = '\xe4\xb8\xad\xe6\x96\x87';";
-        { std::ofstream f(root/L"generated-mods/test/main.js",std::ios::binary); f<<code; }
+        { std::ofstream f(root/L"mods/test/main.js",std::ios::binary); f<<code; }
+        { std::ofstream f(root/L"manager.js",std::ios::binary); f<<code; }
         auto string=[](const std::wstring& value) { return GameString{value.c_str(),(int)value.size()+1,(int)value.size()+1}; };
-        std::wstring path=L"../../../ProjectPBZ/Content/JavaScript/PBZModLoader/generated-mods/test/main.js";
+        const auto base=fs::canonical(root).generic_wstring();
+        std::wstring path=base+L"/mods/test/main.js";
         auto name=string(path);
         GameBytes bytes{(const unsigned char*)code.data(),(int)code.size(),(int)code.size()};
         assert(trustedModBytes(root,&name,&bytes));
@@ -66,13 +68,36 @@ int main() {
         source=string(wrapped); assert(trustedModText(root,&name,&source));
         wrapped+=L"evil()"; source=string(wrapped); assert(!trustedModText(root,&name,&source));
         bytes.count--; assert(!trustedModBytes(root,&name,&bytes)); bytes.count++;
-        for(const auto& denied:{L"project/mainstart.js",L"PBZModLoader/../MainStart.js",L"PBZModLoader/generated-mods/../manager.js",L"OtherPBZModLoader/generated-mods/test/main.js",L"PBZModLoader/generated-mods/test/main.js:stream"}) {
-            std::wstring value=denied; auto rejected=string(value);
+        // Hot reload spells the root differently per revision: the same file, the same trust.
+        std::wstring alias=path;
+        for(size_t i=0;i<base.size();++i) if(alias[i]>=L'a' && alias[i]<=L'z') { alias[i]-=32; break; }
+        alias[base.size()+1]=L'M';
+        auto aliased=string(alias); assert(trustedModBytes(root,&aliased,&bytes));
+        for(const auto& denied:{std::wstring(L"project/mainstart.js"),base+L"/mods/../manager.js",base+L"/mods/test/../../manager.js",
+            base+L"/manager.js",base+L"X/mods/test/main.js",base+L"/mods/test/main.js:stream",base+L"/mods//test/main.js"}) {
+            auto rejected=string(denied);
             assert(!trustedModBytes(root,&rejected,&bytes));
         }
         assert(!trustedModBytes(root,nullptr,&bytes));
         source.count=0; assert(!trustedModText(root,&name,&source));
-        std::cout<<"PASS MOD validation: exact bytes, UTF-8, CommonJS wrapper, game paths, traversal and content mismatch\n";
+        std::cout<<"PASS MOD validation: exact bytes, UTF-8, CommonJS wrapper, spelling of the root, paths outside mods, traversal and content mismatch\n";
+    }
+    {
+        for(const auto& allowed:{L"../../../ProjectPBZ/Content/JavaScript/UI/Widget/Foundation/WeaponAdvancdNumricEntry.js",
+            L"../../../ProjectPBZ/Content/JavaScript/Mods/data.json",L"T:\\Games\\ProjectPBZ\\Content\\JavaScript\\MainStart.js"})
+            assert(gameScriptPath(allowed));
+        for(const auto& denied:{L"project/mainstart.js",L"../../../ProjectPBZ/Content/JavaScript/../../escape.js",
+            L"../../../ProjectPBZ/Content/JavaScript/main.ts",L"../../../ProjectPBZ/Content/JavaScript/",
+            L"../../../ProjectPBZ/PBZModLoader/mods/a/main.js",L"../../../ProjectPBZ/Content/JavaScript/a//b.js"})
+            assert(!gameScriptPath(denied));
+        std::string memory(40,'x');
+        GameBytes target{(const unsigned char*)memory.data(),40,40};
+        assert(replaceBytes(&target,"short") && target.count==5 && memory.substr(0,5)=="short");
+        assert(!replaceBytes(&target,std::string(41,'y')) && target.count==5);
+        assert(!replaceBytes(nullptr,"x"));
+        assert(mailMessage(3,"{}")=="{\"revision\":3,\"config\":{}}");
+        assert(mailError(4,"bad \"quote\"\n")=="{\"revision\":4,\"error\":\"bad \\\"quote\\\" \"}");
+        std::cout<<"PASS changed game script paths, replacing a script in its own memory, mail messages\n";
     }
     { std::ofstream f(temp/L"mods/a/main.js"); f<<"module.exports={};"; }
     auto iniTest=[&](const std::string& content,bool expected) {
@@ -84,19 +109,6 @@ int main() {
     };
     const std::string prefix="[Loader]\nVersion=1\nCount=1\n[Mod.0]\nId=a\n";
     iniTest(prefix+"Enabled=1\nEntry=mods/a/main.js\n",true);
-    fs::create_directories(temp/L"scripts/generated-mods/removed");
-    { std::ofstream f(temp/L"scripts/generated-mods/removed/main.js"); f<<"stale"; }
-    { std::ofstream f(temp/L"mods/a/helper.js"); f<<"module.exports=42;"; }
-    { std::ofstream f(temp/L"scripts/manager.js"); f<<"keep"; }
-    syncMods(temp,temp/L"scripts");
-    assert(fs::is_regular_file(temp/L"scripts/generated-mods/a/main.js"));
-    assert(fs::is_regular_file(temp/L"scripts/generated-mods/a/helper.js"));
-    assert(!fs::exists(temp/L"scripts/generated-mods/removed"));
-    assert(fs::is_regular_file(temp/L"scripts/manager.js"));
-    assert(fs::is_regular_file(temp/L"mods/a/main.js"));
-    fs::remove(temp/L"mods/a/helper.js");
-    syncMods(temp,temp/L"scripts");
-    assert(!fs::exists(temp/L"scripts/generated-mods/a/helper.js"));
     iniTest(prefix+"Enabled=1\nEntry=mods/missing/main.js\n",false);
     iniTest(prefix+"Enabled=0\nEntry=mods/missing/main.js\n",true);
     iniTest(prefix+"Enabled=1\nEntry=../escape.js\n",false);
@@ -128,56 +140,34 @@ int main() {
     assert(config(temp).find("\"id\":\"a\",\"enabled\":false")!=std::string::npos);
     fs::remove(temp/L"mods/z/main.js");
     assert(config(temp).find("\"id\":\"z\"")==std::string::npos);
-    { std::ofstream f(temp/L"mods/a/main.ts"); f<<"import { value } from './helper'; export const answer: number = value;"; }
-    { std::ofstream f(temp/L"mods/a/helper.ts"); f<<"export const value: number = 42;"; }
-    fs::copy(fs::current_path()/L"runtime/ProjectPBZ/PBZModLoader/compiler",temp/L"compiler",fs::copy_options::recursive);
-    iniTest(automatic,true);
-    syncMods(temp,temp/L"scripts");
-    generated=config(temp,temp/L"scripts");
-    assert(generated.find("\"id\":\"a\",\"enabled\":true")!=std::string::npos);
-    assert(fs::is_regular_file(temp/L"scripts/generated-mods/a/helper.js"));
-    { std::ofstream f(temp/L"mods/a/main.ts"); f<<"export const broken: = ;"; }
-    syncMods(temp,temp/L"scripts");
-    generated=config(temp,temp/L"scripts");
-    assert(generated.find("\"id\":\"a\",\"enabled\":false")!=std::string::npos);
-    resetReloads(temp/L"scripts");
-    assert(!fs::exists(temp/L"scripts/generated-reloads/1"));
-    { std::ofstream f(temp/L"mods/a/main.ts"); f<<"import { value } from './helper'; export const answer = value;"; }
-    publishReload(temp,temp/L"scripts",1);
-    assert(fs::exists(temp/L"scripts/generated-reloads/1/config.js"));
-    auto first=sha256(temp/L"scripts/generated-reloads/1/generated-mods/a/helper.js");
-    { std::ofstream f(temp/L"mods/a/helper.ts"); f<<"export const value: number = 43;"; }
-    publishReload(temp,temp/L"scripts",2);
-    assert(fs::exists(temp/L"scripts/generated-reloads/2/config.js"));
-    assert(first==sha256(temp/L"scripts/generated-reloads/1/generated-mods/a/helper.js"));
-    assert(first!=sha256(temp/L"scripts/generated-reloads/2/generated-mods/a/helper.js"));
-    { std::ofstream f(temp/L"mods/a/main.ts"); f<<"export const broken: = ;"; }
-    bool rejected=false; try { publishReload(temp,temp/L"scripts",3); } catch(const std::exception&) { rejected=true; }
-    assert(rejected && !fs::exists(temp/L"scripts/generated-reloads/3"));
-    publishReloadFailure(temp/L"scripts",3);
-    { std::ifstream f(temp/L"scripts/generated-reloads/3/config.js"); std::ostringstream content; content<<f.rdbuf();
-      assert(content.str().find("error:")!=std::string::npos); }
+    // No mods.ini at all: every discovered MOD loads.
+    fs::remove(temp/L"mods.ini");
+    assert(config(temp).find("\"id\":\"a\",\"enabled\":true")!=std::string::npos);
+    { std::ofstream f(temp/L"mods.ini"); f<<automatic; }
+    WritePrivateProfileStringW(nullptr,nullptr,nullptr,(temp/L"mods.ini").c_str());
+    assert(config(temp).find("\"root\":\""+utf8(fs::absolute(temp).generic_wstring())+"\"")!=std::string::npos);
+    // JavaScript wins over a TypeScript source; TypeScript alone is reported, not compiled.
+    { std::ofstream f(temp/L"mods/a/main.ts"); f<<"export const answer: number = 1;"; }
+    assert(config(temp).find("\"id\":\"a\",\"enabled\":true,\"entry\":\"mods/a/main.js\"")!=std::string::npos);
+    fs::remove(temp/L"mods/a/main.js");
+    generated=config(temp);
+    assert(generated.find("\"id\":\"a\",\"enabled\":false,\"entry\":\"mods/a/main.js\",\"note\":\"TypeScript source without main.js\"")!=std::string::npos);
+    { std::ofstream f(temp/L"mods/a/main.js"); f<<"module.exports={};"; }
     fs::remove(temp/L"mods/a/main.ts");
-    publishReload(temp,temp/L"scripts",4);
-    assert(fs::exists(temp/L"scripts/generated-reloads/4/config.js"));
-    std::cout<<"PASS hot reload immutable dependencies, compile failure and recovery\n";
+    std::cout<<"PASS optional mods.ini, JavaScript before TypeScript, TypeScript alone reported\n";
     fs::remove_all(temp/L"mods");
     iniTest(automatic,true);
     assert(config(temp).find("\"mods\":[]")!=std::string::npos);
     fs::remove_all(temp);
     auto layout=fs::temp_directory_path()/(L"pbz-layout-test-"+std::to_wstring(GetCurrentProcessId()));
-    fs::create_directories(layout/L"ProjectPBZ/Content/JavaScript/PBZModLoader");
-    fs::create_directories(layout/L"ProjectPBZ/PBZModLoader");
-    { std::ofstream f(layout/L"ProjectPBZ/PBZModLoader/mods.ini"); f<<"fixture"; }
-    { std::ofstream f(layout/L"ProjectPBZ/Content/JavaScript/PBZModLoader/bootstrap.js"); f<<"fixture"; }
+    fs::create_directories(layout/L"ProjectPBZ/Content");
     for(const auto& relative:{L"platform/steam/PBZ.exe",L"platform/wegame/PBZ.exe",L"ProjectPBZ/Binaries/Win64/PBZ.exe",L"PBZ.exe"})
         assert(findProject(layout/relative)==fs::canonical(layout/L"ProjectPBZ"));
-    fs::remove(layout/L"ProjectPBZ/PBZModLoader/mods.ini");
+    fs::remove_all(layout/L"ProjectPBZ/Content");
     bool missing=false; try { findProject(layout/L"platform/wegame/PBZ.exe"); } catch(const std::exception&) { missing=true; } assert(missing);
     fs::remove_all(layout);
-    std::cout<<"PASS platform-independent project discovery and missing runtime rejection\n";
-    std::cout<<"PASS MOD cache: nested dependencies, stale cleanup, source and loader preservation\n";
+    std::cout<<"PASS platform-independent project discovery and missing project rejection\n";
     std::cout<<"PASS native redirect, argv, counter, relocated flags, filtering, bounds, concurrency, ring wrap\n";
-    std::cout<<"PASS native config: valid, missing, disabled, traversal, TS, invalid switch, duplicate ID\n";
+    std::cout<<"PASS native config: valid, missing, disabled, traversal, invalid switch, duplicate ID\n";
     std::cout<<"PASS automatic discovery: sorting, dependencies ignored, switches, legacy merge, removal, empty directory\n";
 }

@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <tlhelp32.h>
 #include <bcrypt.h>
+#include <algorithm>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -58,45 +59,25 @@ int number(const std::wstring& s,int max) {
     if(s.empty() || s.find_first_not_of(L"0123456789")!=std::wstring::npos) throw std::runtime_error("Invalid numeric config");
     auto n=std::stoul(s); if(n>(unsigned)max) throw std::runtime_error("Config number out of range"); return (int)n;
 }
-// Compile in a separate bundled native compiler process; diagnostics stay in cache.
-void compileTs(const fs::path& root,const fs::path& scripts,const std::string& entry) {
-    auto source=root/fs::u8path(entry);
-    auto destination=scripts/L"generated-mods"/fs::u8path(entry.substr(5)).parent_path();
-    fs::create_directories(destination);
-    auto compiler=root/L"compiler/tsc.exe";
-    if(!fs::is_regular_file(compiler)) throw std::runtime_error("Missing bundled compiler/tsc.exe");
-    auto quote=[](const fs::path& p){return L"\""+p.wstring()+L"\"";};
-    std::wstring command=quote(compiler)+L" --ignoreConfig --noCheck --noEmitOnError --target ES2020 --module commonjs --pretty false --rootDir "+quote(source.parent_path())+L" --outDir "+quote(destination)+L" "+quote(source);
-    SECURITY_ATTRIBUTES security{sizeof(SECURITY_ATTRIBUTES),nullptr,TRUE};
-    auto diagnostic=destination/L"compile.log";
-    Handle out(CreateFileW(diagnostic.c_str(),GENERIC_WRITE,FILE_SHARE_READ,&security,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,nullptr));
-    check(out.h!=INVALID_HANDLE_VALUE,"compiler log");
-    Handle input(CreateFileW(L"NUL",GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE,&security,OPEN_EXISTING,0,nullptr));
-    STARTUPINFOW startup{}; startup.cb=sizeof(startup); startup.dwFlags=STARTF_USESTDHANDLES;
-    startup.hStdOutput=out.h; startup.hStdError=out.h; startup.hStdInput=input.h;
-    PROCESS_INFORMATION info{};
-    check(CreateProcessW(compiler.c_str(),command.data(),nullptr,nullptr,TRUE,CREATE_NO_WINDOW,nullptr,root.c_str(),&startup,&info),"start TS compiler");
-    Handle process(info.hProcess),thread(info.hThread);
-    if(WaitForSingleObject(process.h,60000)!=WAIT_OBJECT_0) {
-        TerminateProcess(process.h,1); WaitForSingleObject(process.h,INFINITE);
-        throw std::runtime_error("TS compiler timed out");
+std::string jsonPath(const fs::path& path) {
+    auto text=utf8(path.generic_wstring());
+    std::string result;
+    for(char c:text) {
+        if(c=='"' || c=='\\') result+='\\';
+        if((unsigned char)c<32) throw std::runtime_error("Control character in path");
+        result+=c;
     }
-    DWORD code=1; check(GetExitCodeProcess(process.h,&code),"compiler exit");
-    if(code) {
-        std::ifstream f(diagnostic); std::ostringstream message; message<<f.rdbuf();
-        throw std::runtime_error("TS compilation failed: "+message.str());
-    }
-    auto output=destination/source.filename(); output.replace_extension(L".js");
-    if(!fs::is_regular_file(output)) throw std::runtime_error("TS compiler produced no entry");
+    return result;
 }
-std::string config(const fs::path& root,const fs::path& scripts={},bool strict=false) {
-    fs::path p=root/L"mods.ini"; if(!fs::is_regular_file(p)) throw std::runtime_error("Missing mods.ini");
-    if(ini(p,L"Loader",L"Version")!=L"1") throw std::runtime_error("Unsupported config version");
+// mods.ini is optional: without it, every discovered MOD loads. The result is JSON.
+std::string config(const fs::path& root) {
+    fs::path p=root/L"mods.ini";
+    if(fs::is_regular_file(p) && ini(p,L"Loader",L"Version")!=L"1") throw std::runtime_error("Unsupported config version");
     auto countValue=ini(p,L"Loader",L"Count");
     int count=countValue.empty()?0:number(countValue,128); std::set<std::string> ids;
     struct Mod { std::string id,entry; bool enabled; };
     std::vector<Mod> mods;
-    std::string result="'use strict';\nmodule.exports = {\"version\":1,\"mods\":[";
+    std::string result="{\"version\":1,\"root\":\""+jsonPath(fs::absolute(root))+"\",\"mods\":[";
     for(int i=0;i<count;++i) {
         auto section=L"Mod."+std::to_wstring(i);
         auto id=utf8(ini(p,section,L"Id")), entry=utf8(ini(p,section,L"Entry"));
@@ -114,7 +95,8 @@ std::string config(const fs::path& root,const fs::path& scripts={},bool strict=f
         auto id=utf8(item.path().filename().wstring());
         if(!item.is_directory() || !std::regex_match(id,std::regex("[A-Za-z0-9_-]+")) ||
            (!fs::is_regular_file(item.path()/L"main.js") && !fs::is_regular_file(item.path()/L"main.ts"))) continue;
-        auto entry="mods/"+id+(fs::is_regular_file(item.path()/L"main.ts")?"/main.ts":"/main.js");
+        // JavaScript wins: a TypeScript source next to it is the author's, not for the player.
+        auto entry="mods/"+id+(fs::is_regular_file(item.path()/L"main.js")?"/main.js":"/main.ts");
         bool configured=false;
         for(const auto& mod:mods) if(_stricmp(mod.id.c_str(),id.c_str())==0 ||
             _stricmp(fs::u8path(mod.entry).replace_extension().string().c_str(),fs::u8path(entry).replace_extension().string().c_str())==0) { configured=true; break; }
@@ -133,68 +115,31 @@ std::string config(const fs::path& root,const fs::path& scripts={},bool strict=f
             auto relative=file.lexically_relative(fs::canonical(root/L"mods"));
             if(relative.empty() || *relative.begin()==L".." || !fs::is_regular_file(file)) throw std::runtime_error("Missing or escaped entry: "+entry);
         }
-        if(fs::u8path(entry).extension()==L".ts") {
-            if(enabled && !scripts.empty()) {
-                try { compileTs(root,scripts,entry); }
-                catch(const std::exception& e) { if(strict) throw; enabled=false; log("MOD "+id+" skipped: "+e.what()); }
-            }
+        // The player package holds no compiler. Say why such a MOD does not run.
+        bool typescriptOnly=fs::u8path(entry).extension()==L".ts";
+        if(typescriptOnly) {
+            if(enabled) log("MOD "+id+" skipped: TypeScript source without main.js; its author must ship compiled JavaScript");
+            enabled=false;
             entry=entry.substr(0,entry.size()-3)+".js";
         }
         if(i) result+=",";
-        result+="{\"id\":\""+id+"\",\"enabled\":"+(enabled?"true":"false")+",\"entry\":\""+entry+"\"}";
+        result+="{\"id\":\""+id+"\",\"enabled\":"+(enabled?"true":"false")+",\"entry\":\""+entry+"\"";
+        if(typescriptOnly) result+=",\"note\":\"TypeScript source without main.js\"";
+        result+="}";
     }
-    return result+"]};\n";
+    return result+"]}";
 }
-// PuerTS still reads from its JavaScript search root. Only this disposable cache
-// is replaced; user scripts and configuration live together under ProjectPBZ/PBZModLoader.
-void syncMods(const fs::path& root,const fs::path& scripts) {
-    const auto source=root/L"mods", cache=scripts/L"generated-mods";
-    // Reject reparse points so neither copying nor cleanup follows a junction.
-    auto rejectLink=[](const fs::path& path) {
-        auto attributes=GetFileAttributesW(path.c_str());
-        if(attributes!=INVALID_FILE_ATTRIBUTES && (attributes&FILE_ATTRIBUTE_REPARSE_POINT))
-            throw std::runtime_error("MOD source/cache must not contain reparse points");
-    };
-    rejectLink(source); rejectLink(cache);
-    if(fs::exists(source)) for(const auto& item:fs::recursive_directory_iterator(source)) rejectLink(item.path());
-    if(fs::exists(cache)) for(const auto& item:fs::recursive_directory_iterator(cache)) rejectLink(item.path());
-    fs::remove_all(cache);
-    if(fs::exists(source)) fs::copy(source,cache,fs::copy_options::recursive);
-    else fs::create_directories(cache);
+// What the embedded manager reads from the DLL: the current MOD list or the reason there is none.
+std::string mailMessage(unsigned revision,const std::string& configuration) {
+    return "{\"revision\":"+std::to_string(revision)+",\"config\":"+configuration+"}";
 }
-
-void resetReloads(const fs::path& scripts) {
-    auto cache=scripts/L"generated-reloads";
-    auto reject=[](const fs::path& p) {
-        auto a=GetFileAttributesW(p.c_str());
-        if(a!=INVALID_FILE_ATTRIBUTES && (a&FILE_ATTRIBUTE_REPARSE_POINT))
-            throw std::runtime_error("Hot reload cache contains reparse point");
-    };
-    reject(cache);
-    if(fs::exists(cache)) for(const auto& item:fs::recursive_directory_iterator(cache)) reject(item.path());
-    fs::remove_all(cache); fs::create_directories(cache);
-}
-
-void publishReload(const fs::path& root,const fs::path& scripts,unsigned revision) {
-    auto cache=scripts/L"generated-reloads";
-    auto stage=cache/L"pending";
-    fs::create_directories(stage);
-    // Owned staging directory; reuse syncMods' reparse checks before cleanup.
-    syncMods(root,stage);
-    auto generated=config(root,stage,true);
-    auto enabled=ini(root/L"mods.ini",L"Loader",L"Enabled");
-    if(!enabled.empty() && number(enabled,1)==0) generated="module.exports={version:1,mods:[]};\n";
-    { std::ofstream f(stage/L"config.js",std::ios::binary); f<<generated; f.close(); check(bool(f),"write reload config"); }
-    fs::rename(stage,cache/std::to_wstring(revision));
-}
-
-void publishReloadFailure(const fs::path& scripts,unsigned revision) {
-    auto cache=scripts/L"generated-reloads", stage=cache/L"pending";
-    fs::create_directories(stage);
-    { std::ofstream f(stage/L"config.js",std::ios::binary);
-      f<<"module.exports={error:'Reload preparation failed; see loader.log'};\n";
-      f.close(); check(bool(f),"write reload failure"); }
-    fs::rename(stage,cache/std::to_wstring(revision));
+std::string mailError(unsigned revision,const std::string& error) {
+    std::string escaped;
+    for(char c:error) {
+        if(c=='"' || c=='\\') escaped+='\\';
+        escaped+=(unsigned char)c<32?' ':c;
+    }
+    return "{\"revision\":"+std::to_string(revision)+",\"error\":\""+escaped+"\"}";
 }
 
 #ifdef PBZ_DLL
@@ -304,8 +249,10 @@ Bytes loggerStub(U64 at,U64 ring,U64 original,const Bytes& stolen,bool captureAl
 }
 struct Patch { U64 address; Bytes old; };
 struct Installed { U64 slab=0; std::vector<Patch> patches; };
-Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& sites,U64 validateBytesHook=0,U64 validateTextHook=0) {
+Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& sites,U64 validateBytesHook,U64 validateTextHook,const std::wstring& module) {
     Installed state;
+    // The name lies between the FString at +4128 and the logger ring at +8192.
+    if(module.empty() || (module.size()+1)*sizeof(wchar_t)>8192-4160) throw std::runtime_error("Invalid start module name");
     const auto& loggers=sites.loggers;
     std::array<Bytes,3> signatures;
     for(int i=0;i<3;++i) signatures[i]=Bytes(image.bytes.begin()+loggers[i],image.bytes.begin()+loggers[i]+7);
@@ -330,9 +277,9 @@ Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& site
             std::copy(logger.begin(),logger.end(),blob.begin()+256+i*512);
         }
         write(p,state.slab,blob.data(),blob.size());
-        const wchar_t module[]=L"PBZModLoader/bootstrap";
-        struct String { U64 data; int count; int capacity; } name={state.slab+4160,(int)std::size(module),(int)std::size(module)};
-        write(p,state.slab+4128,&name,sizeof(name)); write(p,state.slab+4160,module,sizeof(module));
+        const int length=(int)module.size()+1;
+        struct String { U64 data; int count; int capacity; } name={state.slab+4160,length,length};
+        write(p,state.slab+4128,&name,sizeof(name)); write(p,state.slab+4160,module.c_str(),length*sizeof(wchar_t));
         // Executable code is RX; counters, FString and bounded ring are on RW pages.
         DWORD ignored; check(protect(p,(void*)state.slab,4096,PAGE_EXECUTE_READ,&ignored),"stub RX");
         check(FlushInstructionCache(p,(void*)state.slab,4096),"flush stubs");

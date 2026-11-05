@@ -6,7 +6,7 @@ const os = require('node:os');
 const path = require('node:path');
 const vm = require('node:vm');
 const { spawnSync } = require('node:child_process');
-const { load } = require('../runtime/ProjectPBZ/Content/JavaScript/PBZModLoader/manager.js');
+const { load } = require('../src/script-manager.js');
 const template = path.resolve(__dirname, '../templates/ts-mod');
 const compiler = path.join(path.dirname(require.resolve('typescript/package.json')), 'bin/tsc');
 
@@ -55,7 +55,7 @@ test('TS template compiles and works with the current CommonJS manager', async t
             }
         });
         const result = load({ version: 1, mods: [{ id: 'my-mod', enabled: true, entry: 'mods/my-mod/main.js' }] }, entry => {
-            assert.equal(entry, './generated-mods/my-mod/main.js');
+            assert.equal(entry, 'mods/my-mod/main.js');
             vm.runInContext(source, context);
             return exports;
         }, line => logs.push(line));

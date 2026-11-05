@@ -1,20 +1,25 @@
 param([string]$Version='1.0.0')
 $ErrorActionPreference='Stop'
 if ($Version -notmatch '^\d+\.\d+\.\d+(?:-[A-Za-z0-9-]+)?$') { throw 'Invalid release version' }
+# The player's package: the proxy DLLs, one license file, an empty mods folder. The loader's own
+# scripts are inside the DLL, and TypeScript belongs to the developer package.
 $files=@(
-    'PBZModLoader-安装说明.txt',
-    'ProjectPBZ/PBZModLoader/mods.ini',
-    'ProjectPBZ/PBZModLoader/TOOLCHAIN-LICENSE.txt',
-    'ProjectPBZ/Content/JavaScript/PBZModLoader/bootstrap.js',
-    'ProjectPBZ/Content/JavaScript/PBZModLoader/manager.js'
+    'PBZModLoader-安装说明.txt'
 )
-$files += @(Get-ChildItem "$PSScriptRoot/runtime/ProjectPBZ/PBZModLoader/compiler" -File | ForEach-Object { 'ProjectPBZ/PBZModLoader/compiler/'+$_.Name })
-if (!($files -contains 'ProjectPBZ/PBZModLoader/compiler/tsc.exe')) { throw 'Build bundled compiler first.' }
+$licenseFile='ProjectPBZ/PBZModLoader/LICENSES.txt'
+$licenseParts=@(
+    @{Title='PBZModLoader: GNU General Public License, version 3';Path="$PSScriptRoot/LICENSE"},
+    @{Title='LLVM runtime libraries in the DLLs';Path="$PSScriptRoot/runtime/ProjectPBZ/PBZModLoader/TOOLCHAIN-LICENSE.txt"},
+    @{Title='MinGW-w64 runtime in the DLLs';Path="$PSScriptRoot/runtime/ProjectPBZ/PBZModLoader/COPYING.MinGW-w64-runtime.txt"}
+)
 $release=Join-Path $PSScriptRoot "releases/PBZModLoader-$Version-win64"
 $zip="$release.zip"
 if ((Test-Path -LiteralPath $release) -or (Test-Path -LiteralPath $zip)) { throw 'Release already exists; choose a new version or archive the existing release first.' }
 foreach ($relative in $files) {
     if (!(Test-Path -LiteralPath (Join-Path "$PSScriptRoot/runtime" $relative) -PathType Leaf)) { throw "Missing runtime file: $relative" }
+}
+foreach ($part in $licenseParts) {
+    if (!(Test-Path -LiteralPath $part.Path -PathType Leaf)) { throw "Missing license file: $($part.Path)" }
 }
 foreach($proxy in @('version','hid','winmm','dsound','dxgi')) {
     if (!(Test-Path -LiteralPath "$PSScriptRoot/build/$proxy.dll")) { throw "Build $proxy.dll first." }
@@ -25,6 +30,13 @@ foreach ($relative in $files) {
     New-Item -ItemType Directory -Force (Split-Path $destination) | Out-Null
     Copy-Item -LiteralPath (Join-Path "$PSScriptRoot/runtime" $relative) -Destination $destination
 }
+# One file in the game for every license text the DLLs and their source need.
+$licenseTarget=Join-Path $release $licenseFile
+New-Item -ItemType Directory -Force (Split-Path $licenseTarget) | Out-Null
+$rule='='*78
+$text=foreach ($part in $licenseParts) { "$rule`n$($part.Title)`n$rule`n`n$((Get-Content -LiteralPath $part.Path -Raw -Encoding utf8).Replace("`r`n","`n").TrimEnd())`n`n" }
+[IO.File]::WriteAllText($licenseTarget,($text -join ''),[Text.UTF8Encoding]::new($false))
+$files += $licenseFile
 foreach ($platform in @('steam','wegame')) {
     $dllRelative="platform/$platform/version.dll"
     $dllDestination=Join-Path $release $dllRelative

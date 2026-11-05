@@ -142,9 +142,30 @@ HookSites resolveSites(const ImageView& image) {
 fs::path findProject(const fs::path& executable) {
     for(auto dir=fs::absolute(executable).parent_path();!dir.empty();) {
         auto candidate=dir.filename()==L"ProjectPBZ"?dir:dir/L"ProjectPBZ";
-        if(fs::is_directory(candidate/L"Content") && fs::is_regular_file(candidate/L"PBZModLoader/mods.ini") &&
-           fs::is_regular_file(candidate/L"Content/JavaScript/PBZModLoader/bootstrap.js")) return fs::canonical(candidate);
+        if(fs::is_directory(candidate/L"Content")) return fs::canonical(candidate);
         auto parent=dir.parent_path(); if(parent==dir) break; dir=parent;
     }
-    throw std::runtime_error("ProjectPBZ runtime not found above game executable");
+    throw std::runtime_error("ProjectPBZ not found above game executable");
+}
+// The script the loader's own code stands in for, as the module the game asks for and as its
+// name in the game's list of scripts. Nothing in the game loads these; the first is a stale copy.
+struct ScriptSlot { const wchar_t* module; const wchar_t* listed; };
+inline constexpr ScriptSlot SCRIPT_SLOTS[]={
+    {L"UI/Widget/Foundation/BookSwitcher copy",L"project/ui/widget/foundation/bookswitcher copy.js"},
+    {L"puerts/callable",L"project/puerts/callable.js"},
+};
+// The game lists every script it knows, so a later build that dropped a slot is seen
+// here: the module must exist, or the game's own start would fail.
+bool imageListsScript(const ImageView& image,const std::wstring& listed) {
+    auto first=(const unsigned char*)listed.data();
+    auto size=listed.size()*sizeof(wchar_t);
+    for(auto s:image.sections) if(!(s.flags&IMAGE_SCN_MEM_EXECUTE) && s.size>=size) {
+        auto begin=image.bytes.data()+s.begin,end=begin+s.size;
+        if(std::search(begin,end,first,first+size)!=end) return true;
+    }
+    return false;
+}
+const ScriptSlot& chooseScriptSlot(const ImageView& image) {
+    for(const auto& slot:SCRIPT_SLOTS) if(imageListsScript(image,slot.listed)) return slot;
+    throw std::runtime_error("No script slot in this game build");
 }

@@ -14,17 +14,42 @@ function validate(config) {
         ids.add(mod.id);
     }
 }
-exports.load = function load(config, importMod, log, prefix = './generated-mods/') {
+// The game's module cache keys on the full path and cannot forget one. Windows paths ignore
+// case, so each reload revision spells the root's last folder differently: a new identity
+// for a MOD's whole module tree, with nothing copied. Modules of an older revision keep
+// their spelling, so their delayed require() calls still resolve, against the files as they
+// are now. Modules outside the root (the game's own) keep one identity.
+exports.aliasRoot = function aliasRoot(root, revision) {
+    const at = root.lastIndexOf('/') + 1;
+    const letters = [...root.slice(at)];
+    const positions = letters.map((c, i) => (/[A-Za-z]/.test(c) ? i : -1)).filter(i => i >= 0);
+    if (revision < 0 || revision >= 2 ** positions.length) throw new Error('Too many reloads; restart the game');
+    positions.forEach((position, bit) => {
+        if (Math.floor(revision / 2 ** bit) % 2) {
+            const c = letters[position];
+            letters[position] = c === c.toLowerCase() ? c.toUpperCase() : c.toLowerCase();
+        }
+    });
+    return root.slice(0, at) + letters.join('');
+};
+exports.createImporter = function createImporter(genRequire, root, revision) {
+    const alias = exports.aliasRoot(root, revision);
+    return entry => {
+        const slash = entry.lastIndexOf('/');
+        return genRequire(alias + '/' + entry.slice(0, slash))('./' + entry.slice(slash + 1));
+    };
+};
+exports.load = function load(config, importMod, log) {
     validate(config);
     const result = [];
     for (const mod of config.mods) {
         if (!mod.enabled) {
             result.push({ id: mod.id, status: 'disabled' });
-            log('disabled ' + mod.id);
+            log('disabled ' + mod.id + (mod.note ? ': ' + mod.note : ''));
             continue;
         }
         try {
-            const instance = importMod(prefix + mod.entry.slice('mods/'.length));
+            const instance = importMod(mod.entry);
             result.push({ id: mod.id, status: 'loaded', instance });
             log('loaded ' + mod.id);
         } catch (error) {
@@ -37,7 +62,7 @@ exports.load = function load(config, importMod, log, prefix = './generated-mods/
 
 // A failed import may already have registered callbacks. Do not retry it in this
 // session: there is no exported instance with which to clean up those effects.
-exports.reload = async function reload(previous, config, importMod, log, prefix) {
+exports.reload = async function reload(previous, config, importMod, log) {
     validate(config);
     const blocked = new Map();
     for (const mod of previous) {
@@ -63,34 +88,32 @@ exports.reload = async function reload(previous, config, importMod, log, prefix)
             next.push(blocked.get(mod.id));
             blocked.delete(mod.id);
         } else {
-            next.push(...exports.load({ version: 1, mods: [mod] }, importMod, log, prefix));
+            next.push(...exports.load({ version: 1, mods: [mod] }, importMod, log));
         }
     }
     // Keep failed cleanup instances reachable even if removed from configuration.
     return next.concat(Array.from(blocked.values()));
 };
 
-exports.watch = function watch(state, importMod, log, schedule = setInterval, notify = () => {}) {
-    let revision = 1, busy = false;
+exports.watch = function watch(state, readMail, importerFor, log, schedule = setInterval, notify = () => {}) {
+    let revision = 0, busy = false;
     return schedule(async () => {
         if (busy) return;
         busy = true;
         try {
-            let config;
-            const prefix = './generated-reloads/' + revision + '/';
-            // Publication is atomic. A missing next revision is the normal idle state.
-            try { config = importMod(prefix + 'config'); } catch (_) { return; }
-            if (config.error) throw new Error(config.error);
-            state.mods = await exports.reload(state.mods, config, importMod, log, prefix + 'generated-mods/');
+            const mail = readMail();
+            // The DLL's revision only moves on Alt+F5. No change is the normal idle state.
+            if (mail.revision === revision) return;
+            revision = mail.revision;
+            if (mail.error) throw new Error(mail.error);
+            state.mods = await exports.reload(state.mods, mail.config, importerFor(revision), log);
             log('reload complete revision=' + revision);
             const failed = state.mods.filter(mod => mod.status === 'failed' || mod.reloadError).length;
             const loaded = state.mods.filter(mod => mod.status === 'loaded' && !mod.reloadError).length;
             notify(failed ? 'MOD 重载完成：成功 ' + loaded + '，失败或跳过 ' + failed : 'MOD 重载成功（' + loaded + ' 个）', failed > 0);
-            revision++;
         } catch (error) {
             log('reload failed: ' + String(error && error.stack || error));
             notify('MOD 重载失败，请查看 loader.log', true);
-            revision++;
         } finally { busy = false; }
     }, 1000);
 };
