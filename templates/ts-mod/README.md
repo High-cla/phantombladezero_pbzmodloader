@@ -131,9 +131,9 @@ function setLabel(widget: UE.TextBlock, label: string): void {
 模拟测试应覆盖文本转换与读回，避免用“`SetText` 接受任意字符串”的 mock 掩盖原生 FText 要求。
 即使构建、类型检查和模拟测试全部通过，仍需在游戏内确认标题、中文功能名、数字及按钮文字完整可见，
 并检查热重载、关闭后重新打开的显示效果。文本读回正确也不能替代画面确认。
-在本加载器项目内启动测试时，使用 `scripts/影之刃零-窗口模式1280x720.cmd`，
+在本加载器项目内启动测试时，使用 `scripts/PhantomBladeZero-Windowed-1280x720.cmd`，
 确认窗口模式及客户区 **1280×720**；游戏已运行或尺寸异常时使用
-`scripts/影之刃零-恢复1280x720.cmd`，恢复并确认后再测试。
+`scripts/PhantomBladeZero-Restore-1280x720.cmd`，恢复并确认后再测试。
 这些脚本位于加载器仓库，不随本模板复制。
 
 模板的编译和模拟加载检查不等于游戏实测；发布自己的 MOD 前仍需验证实际启动、切图和退出。

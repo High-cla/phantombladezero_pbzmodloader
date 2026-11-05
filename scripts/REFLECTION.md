@@ -22,11 +22,11 @@ EAxis 及采集前后一致性校验。定位证据在 `build/game-api-audit-202
 需要 Windows x64、64 位 Python 3.10+。按项目约束启动游戏：
 
 ```powershell
-& './scripts/影之刃零-窗口模式1280x720.cmd'
+& './scripts/PhantomBladeZero-Windowed-1280x720.cmd'
 ```
 
 确认实际为 1280×720 客户区的普通窗口模式（可用 `scripts/PBZ-Windowed.ps1 -Status` 检查），
-已运行或尺寸异常时先执行 `scripts/影之刃零-恢复1280x720.cmd`，等待主菜单或存档地图加载稳定，再在仓库根目录执行：
+已运行或尺寸异常时先执行 `scripts/PhantomBladeZero-Restore-1280x720.cmd`，等待主菜单或存档地图加载稳定，再在仓库根目录执行：
 
 ```powershell
 ./scripts/export-reflection.ps1 -Python 'C:\path\to\python.exe' -Label PBZ_Xigu_WP
@@ -103,7 +103,7 @@ Vector 字段、Actor 继承、GetPlayerPawn 签名、EAxis 枚举。
 
 1. 备份游戏安装目录的 `PBZModLoader/mods.ini`，临时禁用其他 MOD。
 2. 将探针复制为 `PBZModLoader/mods/asset-inventory-dev/main.js`。
-3. 必须通过 `scripts/影之刃零-窗口模式1280x720.cmd` 启动；已运行时用恢复脚本。
+3. 必须通过 `scripts/PhantomBladeZero-Windowed-1280x720.cmd` 启动；已运行时用恢复脚本。
    `powershell -NoProfile -File scripts/PBZ-Windowed.ps1 -Status` 提供只读客户区检查，
    返回 `valid=true` 才能开始测试。探针另外检查游戏设置的 1280×720、窗口模式 2。
 4. 等待探针的 `end` 记录全部输出，将 `PBZModLoader/loader.log` 复制到新的本地采集目录（每次启动游戏时重新生成，请在下次启动前复制）。

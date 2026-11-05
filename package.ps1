@@ -4,7 +4,7 @@ if ($Version -notmatch '^\d+\.\d+\.\d+(?:-[A-Za-z0-9-]+)?$') { throw 'Invalid re
 # The player's package: the default proxy DLL per platform, the spare proxies and one license file.
 # The loader's own scripts are inside the DLL. The developer tools are a separate zip.
 $files=@(
-    'PBZModLoader-安装说明.txt'
+    'PBZModLoader-Install-Guide.txt'
 )
 $licenseFile='ProjectPBZ/PBZModLoader/LICENSES.txt'
 $licenseParts=@(

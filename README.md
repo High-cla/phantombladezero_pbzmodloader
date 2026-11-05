@@ -169,7 +169,7 @@ package.ps1 拒绝覆盖已有版本，并检查 ZIP 根目录、白名单及解
 来源记录为 build/tested-build-info.json；完整游戏证据保存在 archive/installed-development-0.2/evidence/20261029-132016-33200-dll。
 
 玩家不需要本主工程、Node.js、额外安装的编译器、Python、独立启动器或测试观察器。
-玩家安装、配置及卸载说明在 runtime/PBZModLoader-安装说明.txt，并随 ZIP 发布。
+玩家安装、配置及卸载说明在 runtime/PBZModLoader-Install-Guide.txt，并随 ZIP 发布。
 
 ### 启动时编译 TypeScript
 

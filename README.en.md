@@ -128,7 +128,7 @@ Check runtime logs with `tests/verify-run.ps1 -Log <loader.log>`. It expects zer
 
 The first reorganized release, 0.2.0, used the same DLL that had already passed full Steam in-game testing, without recompiling or changing in-game code. Its SHA-256 is `0727d3c15b7453425df0538f30de9a6e6372e03ba9e41da4e77ee425ad0cb54b`. Provenance is recorded in `build/tested-build-info.json`; full game evidence is stored in `archive/installed-development-0.2/evidence/20261029-132016-33200-dll`.
 
-Players do not need this source project, Node.js, a separately installed compiler, Python, a standalone launcher, or a test observer. Player installation, configuration, and uninstall instructions are in `runtime/PBZModLoader-安装说明.txt` (Chinese), included in the release ZIP.
+Players do not need this source project, Node.js, a separately installed compiler, Python, a standalone launcher, or a test observer. Player installation, configuration, and uninstall instructions are in `runtime/PBZModLoader-Install-Guide.txt` (Chinese), included in the release ZIP.
 
 ### Compiling TypeScript at startup
 

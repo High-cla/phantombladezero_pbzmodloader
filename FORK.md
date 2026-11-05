@@ -14,7 +14,7 @@ into KintaroModding's mod manager.
 ## What this fork does differently
 
 The goal is the fewest files in the game. A player installs one DLL and one license file, and no other tool. The upstream READMEs below still describe
-the upstream layout; this section and [docs/MOD-MANAGER.md](docs/MOD-MANAGER.md) describe this fork, and `runtime/PBZModLoader-安装说明.txt` is its install guide.
+the upstream layout; this section and [docs/MOD-MANAGER.md](docs/MOD-MANAGER.md) describe this fork, and `runtime/PBZModLoader-Install-Guide.txt` is its install guide.
 
 | | Upstream 1.0.0 | This fork |
 |---|---|---|
@@ -63,6 +63,7 @@ on top of them.
 | 2026-11-05 | `LICENSE`, `FORK.md` | The placeholder is replaced by the author's GPL-3.0 file, merged from upstream. |
 | 2026-11-05 | `src/signatures.hpp`, `tests/signatures.cpp` | The loader also finds a script validator that another tool has already hooked with a 5-byte jump. Before this, the loader skipped all mods when such a tool started first (seen with UE4SS C++ BYPASS). Any other changed entry byte is still rejected. |
 | 2026-11-05 | `src/`, `scripts/embed-script.cjs`, `build.ps1`, `package.ps1`, `runtime/`, `tests/`, `docs/MOD-MANAGER.md`, READMEs, template README | The layout described in "What this fork does differently". `runtime/.../bootstrap.js` and `manager.js` moved to `src/script-bootstrap.js` and `src/script-manager.js`. |
+| 2026-11-05 | `runtime/PBZModLoader-Install-Guide.txt`, `scripts/PhantomBladeZero-*.cmd` | File names in English only: `PBZModLoader-安装说明.txt`, `影之刃零-恢复1280x720.cmd`, `影之刃零-最大化.cmd` and `影之刃零-窗口模式1280x720.cmd` renamed. Content unchanged. |
 
 ## Build
 
