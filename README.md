@@ -33,9 +33,13 @@ The loader writes nothing else: no copies of mods, no caches, no generated scrip
 
 ## Install
 
+**The easiest way:** install it with one click in the mod manager [UE MM](https://github.com/KintaroModding/uemodmanager).
+
+To install by hand:
+
 1. Close the game and open its install folder, the one that holds `ProjectPBZ`.
 2. Look next to the real game exe (`platform/steam` or `platform/wegame`). If another tool already has a `version.dll` there, do not overwrite it: use one of the DLLs in `alternative-entries/` instead.
-3. For the default entry, copy `ProjectPBZ/` and the DLL from the matching platform folder into the game installation. If `version.dll` belongs to another tool, copy only `ProjectPBZ/` and place one selected alternative DLL beside the game exe. Keep its original name. In that case, do not copy the packaged `version.dll` or the whole `alternative-entries/` folder.
+3. For the default entry, copy `ProjectPBZ/` into the install folder, and `version.dll` from the matching platform folder next to the game exe. If `version.dll` belongs to another tool, copy only `ProjectPBZ/` and place one selected alternative DLL beside the game exe. Keep its original name. In that case, do not copy the packaged `version.dll` or the whole `alternative-entries/` folder.
 4. Start the game from its platform as usual.
 
 The [install guide](runtime/PBZModLoader-Install-Guide.txt) in the zip explains the alternative entries, updates and removal. Mod managers: see [docs/MOD-MANAGER.md](docs/MOD-MANAGER.md).
@@ -151,9 +155,13 @@ GNU General Public License, version 3: see [LICENSE](LICENSE). The DLLs include 
 
 ## 安装
 
+**最简单的方式：** 在 MOD 管理器 [UE MM](https://github.com/KintaroModding/uemodmanager) 中一键安装。
+
+手动安装步骤如下：
+
 1. 退出游戏，打开游戏安装目录（能看到 `ProjectPBZ` 的位置）。
 2. 检查实际游戏 EXE 旁（`platform/steam` 或 `platform/wegame`）。如果其他工具已有 `version.dll`，请勿覆盖，改用 `alternative-entries/` 中的一个 DLL。
-3. 使用默认入口时，将 `ProjectPBZ/` 和对应平台文件夹中的 DLL 复制到游戏安装目录。如果 `version.dll` 属于其他工具，则只复制 `ProjectPBZ/`，并将一个选定的备用 DLL 放到游戏 EXE 旁，保持原文件名。此时不要复制压缩包中的 `version.dll`，也不要复制整个 `alternative-entries/` 文件夹。
+3. 使用默认入口时，将 `ProjectPBZ/` 复制到游戏安装目录，并将对应平台文件夹中的 `version.dll` 放到游戏 EXE 旁。如果 `version.dll` 属于其他工具，则只复制 `ProjectPBZ/`，并将一个选定的备用 DLL 放到游戏 EXE 旁，保持原文件名。此时不要复制压缩包中的 `version.dll`，也不要复制整个 `alternative-entries/` 文件夹。
 4. 从原游戏平台启动游戏。
 
 压缩包内的[安装说明](runtime/PBZModLoader-Install-Guide.txt)介绍了备用入口、更新和卸载。MOD 管理器请参阅 [docs/MOD-MANAGER.md](docs/MOD-MANAGER.md)。

@@ -42,10 +42,10 @@ The manager decides, or offers a selection. The manifest's `entries` names every
 | Line | Meaning |
 |---|---|
 | `[PBZMOD] ready loaded=N failed=M` | The loader runs: N mods loaded, M failed. |
-| `MODs skipped: ...; original game continues` | This game build is not supported. The game runs without mods. |
+| `MODs skipped: <reason>; original game continues` | Loader initialization failed, for the reason named. Mods that depend on the loader may not work. |
 | `disabled <id>: TypeScript source without main.js` | That mod ships no JavaScript. |
 
-A game update can end support, because the loader finds the game's code by its bytes. It does not use fixed addresses, so many patches pass, and it
+A game update may require a loader update, even though the loader finds the game's code by its bytes and uses no fixed addresses. It
 refuses a build it cannot match. Nothing else needs a change per patch.
 
 ## Update and removal
