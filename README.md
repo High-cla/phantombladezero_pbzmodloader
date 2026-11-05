@@ -6,9 +6,12 @@ PBZModLoader 是《影之刃零》（Phantom Blade Zero）的 MOD 加载器，�
 
 ### MOD 开发模板
 
+**直接下载：[MOD 开发模板 ZIP（模板 0.2.0 / SDK 0.3.3）](https://github.com/zoneoflkf/PBZModLoader/releases/download/v1.0.0/PBZModLoader-TS-Template-0.2.0-SDK-0.3.3.zip)**
+
 想制作自己的 MOD，可从 [TypeScript MOD 最小模板](templates/ts-mod/) 开始，详细步骤见 [模板开发说明](templates/ts-mod/README.md)。模板包含示例入口、构建脚本和游戏 API SDK，提供 UE / PuerTS 类型补全与严格类型检查；复制整个模板目录即可独立开发，无需编译加载器 C++ 工程。
 
 开发电脑安装 Node.js 和 npm 后，在模板副本中依次执行 `npm ci`、`npm run check`、`npm run build`。修改 `src/main.ts` 编写逻辑，将构建生成的 `dist/my-mod/` 整个文件夹放入游戏的 `ProjectPBZ/PBZModLoader/mods/`，即可由加载器自动发现。玩家只需安装加载器和构建后的 MOD，无需安装开发工具。
+
 ### 技术路线
 
 - **原生 DLL 代理引导**：以 `version.dll` 为默认入口，并提供 `hid.dll`、`winmm.dll`、`dsound.dll`、`dxgi.dll` 备用入口。代理转发系统 DLL 导出，在游戏启动阶段接入加载器；安装时只使用一个入口。
