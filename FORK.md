@@ -34,7 +34,7 @@ memory, after the game read it and before the game turns it into text. Later rea
 Limits of this design: an old mod instance that calls `require` after a reload reads the file as it is now, because no old copy exists. Hot reload has about
 4000 spellings per game run. A build whose script validators are missing is refused, so builds before 2026-11-04 are not supported.
 
-Not updated yet: the reflection tools in `scripts/` (`REFLECTION.md`, `load-types-probe.js`) still expect the upstream layout. To regenerate the SDK, use upstream `v1.0.0`.
+Not tested yet: the reflection tools that regenerate the SDK after a game update (`scripts/REFLECTION.md`). Their scripts name no loader paths, and their guide now names the new ones, but nobody has run them on this layout.
 
 ## License
 

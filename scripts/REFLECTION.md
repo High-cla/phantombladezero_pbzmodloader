@@ -106,7 +106,7 @@ Vector 字段、Actor 继承、GetPlayerPawn 签名、EAxis 枚举。
 3. 必须通过 `scripts/影之刃零-窗口模式1280x720.cmd` 启动；已运行时用恢复脚本。
    `powershell -NoProfile -File scripts/PBZ-Windowed.ps1 -Status` 提供只读客户区检查，
    返回 `valid=true` 才能开始测试。探针另外检查游戏设置的 1280×720、窗口模式 2。
-4. 等待探针的 `end` 记录全部输出，将本次 `evidence/<run>/loader.log` 复制到新的本地采集目录。
+4. 等待探针的 `end` 记录全部输出，将 `PBZModLoader/loader.log` 复制到新的本地采集目录（每次启动游戏时重新生成，请在下次启动前复制）。
    同时保留游戏 EXE 哈希、探针哈希、启动命令和采集前后窗口检查结果。
 5. 使用下列命令生成报告；输出目录必须尚不存在：
 
@@ -142,8 +142,8 @@ PBZCombatAsset、Game、HuaShira、其他目录排序，只处理有登记表依
   "batches": "build/type-batches/batches.json",
   "archive": "build/type-batches/checkpoints",
   "reflectionRoot": "build/reflection",
-  "log": "D:/game/ProjectPBZ/PBZModLoader/evidence/<run>/loader.log",
-  "commandDir": "D:/game/ProjectPBZ/Content/JavaScript/PBZModLoader/generated-mods/load-types-dev/commands"
+  "log": "D:/game/ProjectPBZ/PBZModLoader/loader.log",
+  "commandDir": "D:/game/ProjectPBZ/PBZModLoader/mods/load-types-dev/commands"
 }
 ```
 
@@ -163,7 +163,7 @@ SDK 合并使用原有两次采集和检查点指向的有效 `reflection.json`�
 ## 属性映射定向验证
 
 `tests/property-mapping-probe.js` 是命令门控的临时 MOD。启动并通过 `PBZ-Windowed.ps1 -Status`
-后，才向其 generated-mods 目录写入 `command.js`，导出 `{targets:[{owner,member,kind,typeKind}]}`。
+后，才向其 MOD 目录（`PBZModLoader/mods/<ID>/`）写入 `command.js`，导出 `{targets:[{owner,member,kind,typeKind}]}`。
 目标由旧版 `generation-report.json` 的 `unresolvedProperties` 与 `type-index.json` 的类型种类生成。
 探针检查全部目标的 getter/setter、读取可取得的类默认对象或临时结构体；不会写类默认对象。
 可选 `write` 只用于已核对存储类型的临时结构字段，不批量向不同 FieldPath 子类型写同一路径。
