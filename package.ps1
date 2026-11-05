@@ -1,8 +1,8 @@
 param([string]$Version='1.0.0')
 $ErrorActionPreference='Stop'
 if ($Version -notmatch '^\d+\.\d+\.\d+(?:-[A-Za-z0-9-]+)?$') { throw 'Invalid release version' }
-# The player's package: the proxy DLLs, one license file, an empty mods folder. The loader's own
-# scripts are inside the DLL, and TypeScript belongs to the developer package.
+# The player's package: the default proxy DLL per platform and one license file. The loader's own
+# scripts are inside the DLL. The spare proxies and the developer tools are separate zips.
 $files=@(
     'PBZModLoader-安装说明.txt'
 )
@@ -12,16 +12,21 @@ $licenseParts=@(
     @{Title='LLVM runtime libraries in the DLLs';Path="$PSScriptRoot/runtime/ProjectPBZ/PBZModLoader/TOOLCHAIN-LICENSE.txt"},
     @{Title='MinGW-w64 runtime in the DLLs';Path="$PSScriptRoot/runtime/ProjectPBZ/PBZModLoader/COPYING.MinGW-w64-runtime.txt"}
 )
+$alternatives=@('hid','winmm','dsound','dxgi')
 $release=Join-Path $PSScriptRoot "releases/PBZModLoader-$Version-win64"
 $zip="$release.zip"
-if ((Test-Path -LiteralPath $release) -or (Test-Path -LiteralPath $zip)) { throw 'Release already exists; choose a new version or archive the existing release first.' }
+$alternativeZip=Join-Path $PSScriptRoot "releases/PBZModLoader-$Version-alternative-entries.zip"
+$developerZip=Join-Path $PSScriptRoot "releases/PBZModLoader-$Version-developer.zip"
+foreach ($existing in @($release,$zip,$alternativeZip,$developerZip)) {
+    if (Test-Path -LiteralPath $existing) { throw 'Release already exists; choose a new version or archive the existing release first.' }
+}
 foreach ($relative in $files) {
     if (!(Test-Path -LiteralPath (Join-Path "$PSScriptRoot/runtime" $relative) -PathType Leaf)) { throw "Missing runtime file: $relative" }
 }
 foreach ($part in $licenseParts) {
     if (!(Test-Path -LiteralPath $part.Path -PathType Leaf)) { throw "Missing license file: $($part.Path)" }
 }
-foreach($proxy in @('version','hid','winmm','dsound','dxgi')) {
+foreach($proxy in @('version')+$alternatives) {
     if (!(Test-Path -LiteralPath "$PSScriptRoot/build/$proxy.dll")) { throw "Build $proxy.dll first." }
 }
 New-Item -ItemType Directory -Path $release | Out-Null
@@ -43,13 +48,6 @@ foreach ($platform in @('steam','wegame')) {
     New-Item -ItemType Directory -Force (Split-Path $dllDestination) | Out-Null
     Copy-Item -LiteralPath "$PSScriptRoot/build/version.dll" -Destination $dllDestination
     $files += $dllRelative
-}
-foreach($proxy in @('hid','winmm','dsound','dxgi')) {
-    $relative="备用入口/$proxy.dll"
-    $destination=Join-Path $release $relative
-    New-Item -ItemType Directory -Force (Split-Path $destination) | Out-Null
-    Copy-Item -LiteralPath "$PSScriptRoot/build/$proxy.dll" -Destination $destination
-    $files += $relative
 }
 $directories=@('ProjectPBZ/PBZModLoader/mods/')
 foreach ($relative in $directories) {
@@ -77,7 +75,39 @@ foreach ($relative in $files) {
     if ($actual -ne $expected) { throw "Extracted content mismatch: $relative" }
     $hashes[$relative]=$actual.ToLower()
 }
-[ordered]@{version=$Version;zipSha256=(Get-FileHash -LiteralPath $zip).Hash.ToLower();directories=$directories;files=$hashes;verified=$true} |
-    ConvertTo-Json -Depth 5 | Set-Content -LiteralPath "$zip.manifest.json" -Encoding utf8
+# The spare proxies: each one is a choice for a game where another tool holds version.dll. Never install more than one.
+$alternativeDir=Join-Path $PSScriptRoot ('build/alternatives-'+[guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $alternativeDir | Out-Null
+$alternativeHashes=[ordered]@{}
+foreach($proxy in $alternatives) {
+    Copy-Item -LiteralPath "$PSScriptRoot/build/$proxy.dll" -Destination $alternativeDir
+    $alternativeHashes["$proxy.dll"]=(Get-FileHash -LiteralPath "$PSScriptRoot/build/$proxy.dll").Hash.ToLower()
+}
+[IO.Compression.ZipFile]::CreateFromDirectory($alternativeDir,$alternativeZip,[IO.Compression.CompressionLevel]::Optimal,$false)
+# For MOD authors: the TypeScript template with its SDK, and the license. Never for the game folder.
+$developerDir=Join-Path $PSScriptRoot ('build/developer-'+[guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $developerDir | Out-Null
+Copy-Item -LiteralPath "$PSScriptRoot/templates/ts-mod" -Destination (Join-Path $developerDir 'ts-mod') -Recurse -Exclude 'node_modules','dist'
+Copy-Item -LiteralPath "$PSScriptRoot/LICENSE" -Destination $developerDir
+[IO.Compression.ZipFile]::CreateFromDirectory($developerDir,$developerZip,[IO.Compression.CompressionLevel]::Optimal,$false)
+# What a mod manager needs: see docs/MOD-MANAGER.md.
+[ordered]@{
+    version=$Version
+    zipSha256=(Get-FileHash -LiteralPath $zip).Hash.ToLower()
+    directories=$directories
+    files=$hashes
+    verified=$true
+    entries=[ordered]@{
+        default='version.dll'
+        locations=[ordered]@{steam='platform/steam/version.dll';wegame='platform/wegame/version.dll'}
+        alternatives=$alternativeHashes
+        alternativesZip=[ordered]@{name=(Split-Path $alternativeZip -Leaf);sha256=(Get-FileHash -LiteralPath $alternativeZip).Hash.ToLower()}
+    }
+    owned=@($licenseFile,'ProjectPBZ/PBZModLoader/loader.log')
+    playerOwned=@('ProjectPBZ/PBZModLoader/mods/','ProjectPBZ/PBZModLoader/mods.ini')
+    oldLayout=@('ProjectPBZ/Content/JavaScript/PBZModLoader/','ProjectPBZ/PBZModLoader/compiler/','ProjectPBZ/PBZModLoader/evidence/','ProjectPBZ/PBZModLoader/TOOLCHAIN-LICENSE.txt')
+} | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath "$zip.manifest.json" -Encoding utf8
 Write-Output "PASS ZIP root layout, exact allowlist ($($files.Count) files), extraction and SHA-256 checks"
 Write-Output $zip
+Write-Output $alternativeZip
+Write-Output $developerZip

@@ -180,7 +180,7 @@ extern "C" void pbz_initialize() noexcept {
         const fs::path game=exe;
         const fs::path project=findProject(game);
         const fs::path root=project/L"PBZModLoader";
-        fs::create_directories(root);
+        fs::create_directories(root/L"mods");
         const auto logPath=root/L"loader.log";
         DeleteFileW(logPath.c_str());
         logFile=CreateFileW(logPath.c_str(),FILE_APPEND_DATA,FILE_SHARE_READ|FILE_SHARE_WRITE,nullptr,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL,nullptr);

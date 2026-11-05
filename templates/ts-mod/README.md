@@ -46,16 +46,16 @@ ID 只使用英文字母、数字、下划线、连字符，并选择不与其�
 
 发布时打包整个 `my-mod/` 文件夹；不要携带 `node_modules`、`src`、`types`、`vendor` 或开发脚本。
 模板不会自动复制 JSON、图片等资源，也不会打包 npm 运行时依赖；需要这些能力时再扩展构建过程。
-不要把 `dist/` 这一层安装到 `mods/`，也不要把产物写进 `Content/JavaScript` 的加载器缓存。
+不要把 `dist/` 这一层安装到 `mods/`。
 更新已有 MOD 时，退出游戏后用新构建的整个目录替换旧目录，避免遗留脚本。
-尤其不要保留旧 `main.ts`：加载器自动发现时会优先选择它，而不是新 `main.js`。
+玩家包不含编译器：只有 `main.ts` 的 MOD 不会运行，日志会说明原因，请发布编译后的 `main.js`。
 
 无需添加配置即可自动发现。若被禁用，在 `ProjectPBZ/PBZModLoader/mods.ini` 的已有 `[Mods]` 段中
 删除 `my-mod=0` 或改成 `my-mod=1`。禁用时设为 `0`，卸载时退出游戏后移除对应 MOD 文件夹。
 
 ## 调试与运行边界
 
-- 在 `ProjectPBZ/PBZModLoader/evidence/<本次运行>/loader.log` 中查找 `[PBZMOD] my-mod`。
+- 在 `ProjectPBZ/PBZModLoader/loader.log` 中查找 `[PBZMOD] my-mod`（每次启动游戏时重新生成）。
   示例保留 `[PBZMOD]` 前缀，使日志能进入加载器捕获范围。
 - 加载器通过执行入口的顶层代码启动 MOD，不会寻找或调用导出的 `start()`。
   热重载前会调用并等待旧实例导出的 `stop()`；在其中清除全部定时器和事件订阅，支持返回 Promise。
@@ -67,9 +67,9 @@ ID 只使用英文字母、数字、下划线、连字符，并选择不与其�
   缺少 `stop()` 或清理失败会保留旧实例并阻止该 MOD 重载；未结束的 Promise 会阻塞后续重载。
   入口执行失败后，为避免部分注册重复执行，该 MOD 本次运行不再重试，修复后需重启游戏。
   初始化代码应自行清理抛错前已创建的资源。
-- 热重载隔离入口和 MOD 目录内相对依赖的 CommonJS 缓存，不要用加载器缓存的绝对路径引用模块。
-  `Content/JavaScript/PBZModLoader/generated-mods/` 和 `generated-reloads/` 均为自动缓存，勿直接编辑。
-  重载版本保留至下次启动，供旧实例及延迟 `require` 使用；长期大量重载会增加磁盘和模块缓存占用。
+- 热重载隔离入口和 MOD 目录内相对依赖的 CommonJS 缓存，请始终使用相对路径引用自己的模块，不要写绝对路径。
+  MOD 直接从 `mods/` 加载，没有副本：旧实例的延迟 `require` 读取的是文件当前的内容。
+  长期大量重载会增加模块缓存占用；约 4000 次重载后请重启游戏。
   排查时在日志中搜索 `hot reload published`、`stopped`、`reload complete` 和 `reload blocked`。
 - 游戏提供 `ue`、`puerts` 模块，不能在普通 Node.js 中直接运行 `main.js`。
   开发构建脚本可以用 Node API，MOD 源码不要假定存在 `fs`、`process`、浏览器 `window` 等 API。

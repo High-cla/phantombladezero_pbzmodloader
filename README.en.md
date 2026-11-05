@@ -4,6 +4,9 @@
 
 [简体中文](README.md) | **English**
 
+> **This is an unofficial fork.** It installs far fewer files: one DLL and one license file. It differs from the text below in many places, so read
+> [FORK.md](FORK.md) first. The text below is the original author's and describes the upstream layout.
+
 PBZModLoader is a mod loader for **Phantom Blade Zero**. It provides a shared entry point for script mods, JavaScript / TypeScript development templates, and a game API type declaration SDK. It supports automatic mod discovery, enabling and disabling mods through configuration, and **Alt+F5 hot reload** for mods that implement the cleanup lifecycle.
 
 **Downloads and releases: [Nexus Mods · PBZModLoader](https://www.nexusmods.com/phantombladezero/mods/113)**

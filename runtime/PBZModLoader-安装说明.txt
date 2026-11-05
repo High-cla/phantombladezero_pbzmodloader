@@ -1,84 +1,114 @@
-PBZModLoader 1.0.0 正式版安装说明
+PBZModLoader: install guide (English below, 中文在后)
+This is the KintaroModding fork of PBZModLoader by LKF: https://github.com/KintaroModding/phantombladezero_pbzmodloader
 
+INSTALL
+1. Close the game. Open its install folder, the one that holds ProjectPBZ.
+2. Look next to the real game exe (platform\steam or platform\wegame). If another tool already has a version.dll
+   there, do not overwrite it: see ANOTHER ENTRY below.
+3. Extract this zip into the install folder. Correct: D:\Games\PBZ\ProjectPBZ. Wrong: D:\Games\PBZ\PBZModLoader\ProjectPBZ.
+4. Start the game from its platform as usual. You need no Node.js, no compiler and no UE4SS.
+
+WHAT GOES INTO THE GAME
+- version.dll next to the game exe: the loader, with its scripts inside.
+- ProjectPBZ\PBZModLoader\LICENSES.txt: the license texts.
+- ProjectPBZ\PBZModLoader\mods\: your mods.
+While it runs, the loader writes one file: ProjectPBZ\PBZModLoader\loader.log. It starts new with each game start.
+
+MODS
+- Put the whole mod folder into ProjectPBZ\PBZModLoader\mods, for example mods\my-mod\main.js. The folder name is the mod's ID:
+  English letters, digits, _ or - only. New mods are found by themselves.
+- A mod must ship JavaScript. A mod with only main.ts does not run, and loader.log says so. Authors compile TypeScript with the
+  developer package.
+- Pak mods that change game scripts work too: keep them in ProjectPBZ\Content\Paks\~mods. They need no other tool.
+
+SETTINGS (optional)
+Without ProjectPBZ\PBZModLoader\mods.ini, every mod loads. Create the file only to change something:
+    [Loader]
+    Version=1
+    ; 0 turns the whole loader off.
+    Enabled=1
+    ; 0 refuses pak mods that change game scripts.
+    AllowScriptPaks=1
+    [Mods]
+    ; my-mod=0 turns one mod off.
+
+RELOAD WHILE PLAYING (Alt+F5)
+Save your files, return to the game and press Alt+F5. A message shows at the top left for about four seconds. All mods reload, also
+new and removed ones and changes in [Mods]. A mod must export stop() and clean up its timers and events there; without stop() the
+old copy stays, and that mod is skipped until the next game start. A mod that failed at its start is not tried again until then.
+The log line "reload complete" confirms it. After about 4000 reloads, restart the game.
+
+ANOTHER ENTRY
+If another tool holds version.dll, keep it. Take one DLL from PBZModLoader-<version>-alternative-entries.zip (hid.dll, winmm.dll, dsound.dll,
+dxgi.dll), keep its name, and put it next to the game exe. Install only one entry of this loader. A DLL file name that is free does not
+prove that the game loads it early enough: if loader.log stays empty, try another one.
+
+UPDATE FROM VERSION 1.0.0
+Close the game, replace the DLL as above, and delete what the old version left, all of it safe to remove:
+    ProjectPBZ\Content\JavaScript\PBZModLoader\
+    ProjectPBZ\PBZModLoader\compiler\
+    ProjectPBZ\PBZModLoader\evidence\
+    ProjectPBZ\PBZModLoader\TOOLCHAIN-LICENSE.txt
+Keep ProjectPBZ\PBZModLoader\mods\ and your mods.ini.
+
+UNINSTALL
+Close the game. Delete the entry DLL of this loader (not another tool's), and ProjectPBZ\PBZModLoader\LICENSES.txt and loader.log.
+Your mods and mods.ini stay in ProjectPBZ\PBZModLoader until you delete them.
+
+IF SOMETHING IS WRONG
+Read ProjectPBZ\PBZModLoader\loader.log. "MODs skipped" means this game build is not supported yet: the game still runs, without mods.
+Without the entry DLL, the game runs as if the loader was never there.
+
+
+PBZModLoader 安装说明
+这是 KintaroModding 基于 LKF 的 PBZModLoader 的分支：https://github.com/KintaroModding/phantombladezero_pbzmodloader
+
+安装
 1. 退出游戏，打开游戏安装目录（能看到 ProjectPBZ 文件夹的位置）。
-2. 先检查实际游戏 EXE 旁是否已有其他工具的 version.dll；如有，请按下方“备用入口”安装，勿覆盖。
-   无冲突时，将本 MOD 压缩包的内容解压到游戏安装目录。
-   例如：游戏装在 D:\Games\PBZ，就解压到 D:\Games\PBZ。
-   正确：D:\Games\PBZ\ProjectPBZ
-   错误：D:\Games\PBZ\PBZModLoader\ProjectPBZ（多了一层文件夹）
-3. 确认 version.dll 位于实际游戏进程的 EXE 旁（不是启动器旁）。
-   压缩包同时包含 platform\steam\version.dll 和 platform\wegame\version.dll，分别对应 Steam 和 WeGame。
-4. 从原游戏平台启动游戏即可。玩家无需安装 Node.js、npm 或额外编译器。
+2. 检查实际游戏 EXE 旁（platform\steam 或 platform\wegame）是否已有其他工具的 version.dll；如有，请勿覆盖，见下方“备用入口”。
+3. 将本压缩包解压到游戏安装目录。正确：D:\Games\PBZ\ProjectPBZ；错误：D:\Games\PBZ\PBZModLoader\ProjectPBZ。
+4. 从原游戏平台启动游戏即可。无需 Node.js、编译器或 UE4SS。
 
-WeGame：主程序目录已确认为 platform\wegame，解压后无需再手动复制 version.dll。
-WeGame 平台已实测可用，已确认 DLL 自动加载及 MOD 运行。
+安装到游戏中的文件
+- 游戏 EXE 旁的 version.dll：加载器，脚本已内置其中。
+- ProjectPBZ\PBZModLoader\LICENSES.txt：许可证文本。
+- ProjectPBZ\PBZModLoader\mods\：你的 MOD。
+运行时加载器只写入一个文件：ProjectPBZ\PBZModLoader\loader.log，每次启动游戏时重新生成。
 
-更新前请备份自己的配置和 MOD；不要覆盖其他工具的同名 version.dll。
-使用备用入口更新时也不要把包内默认 version.dll 解压到 EXE 旁；只更新已选择的入口 DLL。
-更新加载器时需一并更新 DLL、bootstrap.js、manager.js 和随包编译器，保留自己的 mods.ini 配置。
-旧版若使用 ProjectPBZ\Mods\PBZModLoader，请将其中配置、mods 等内容整体迁移到
-ProjectPBZ\PBZModLoader，并同步更新 DLL；mods.ini 中原有相对 Entry 无需修改。
+MOD
+- 将整个 MOD 文件夹放入 ProjectPBZ\PBZModLoader\mods，例如 mods\my-mod\main.js。文件夹名即 MOD ID，只使用英文字母、数字、下划线或连字符。新 MOD 自动发现。
+- MOD 必须提供 JavaScript。只有 main.ts 的 MOD 不会运行，loader.log 会说明原因。作者请用开发包编译 TypeScript。
+- 修改游戏脚本的 pak MOD 同样可用：放在 ProjectPBZ\Content\Paks\~mods，无需其他工具。
 
-备用入口（五选一）
-
-默认入口是对应平台目录中的 version.dll（platform\steam 或 platform\wegame）。备用入口文件夹提供 hid.dll、winmm.dll、
-dsound.dll、dxgi.dll；本加载器只需选择其中一个入口安装，不要同时安装多个。
-这些 DLL 分别实现对应接口，不能把 version.dll 简单重命名来替代。
-
-如果其他 MOD 占用了 version.dll：
-1. 退出游戏，保留其他 MOD 的 version.dll，不覆盖或删除它。
-2. 将包内 ProjectPBZ 文件夹合并到游戏根目录；不要安装包内 platform 文件夹中的默认 version.dll。
-3. 从“备用入口”文件夹选择一个未被其他工具占用的 DLL，保持原文件名，复制到实际游戏 EXE 旁。
-4. 如果之前装过本加载器的其他入口，先移走那个入口，只留下本加载器新选的一个。
-   不确定 DLL 来源时先备份并核实，切勿删除其他 MOD 的文件。
-5. 从游戏平台启动。日志中的 proxy-system 显示本次入口转发的系统 DLL 路径。
-
-备用入口放在“备用入口”子目录时不会自动启用，必须按上面说明复制到 EXE 旁。
-四个备用入口均已在当前 Steam 构建验证启动；WeGame 平台已实测可用；四个备用入口在 WeGame 上的逐项验证、其他游戏版本及与其他 MOD 共存仍需单独验证。
-备用入口解决文件名冲突，不保证多个 MOD 修改同一游戏逻辑时兼容。无需修改 mods.ini 来选择入口。
-
-安装和管理 MOD
-
-- 将整个 MOD 文件夹放入 ProjectPBZ\PBZModLoader\mods，例如 mods\my-mod\main.js。
-  入口支持 main.ts 或 main.js；两者同时存在时优先使用 main.ts。
-  文件夹名即 MOD ID，只使用英文字母、数字、下划线或连字符，不要多套一层 dist 目录。
-- 新 MOD 自动发现，无需添加配置。依赖脚本和资源应随 MOD 一起安装。
-- 在 ProjectPBZ\PBZModLoader\mods.ini 的已有 [Mods] 段添加 my-mod=0 可禁用；
-  删除该行或改为 my-mod=1 可恢复。旧 Count / Mod.N 配置仍兼容，[Mods] 开关优先。
-- 更新 MOD 时建议退出游戏，用新版本的整个 MOD 目录替换旧目录，避免遗留脚本。
-  从 TS 版换成 JS 版时应移除旧 main.ts，否则仍会优先加载它。
-- TS 使用随包编译器转换，不做完整类型检查，也不读取 MOD 的 tsconfig.json。
-  启动时编译失败只跳过对应 MOD，详情见日志；开发者应在发布前完成类型检查。
+设置（可选）
+没有 ProjectPBZ\PBZModLoader\mods.ini 时，所有 MOD 都会加载。只有需要更改时才创建：
+    [Loader]
+    Version=1
+    ; 0 表示关闭整个加载器。
+    Enabled=1
+    ; 0 表示拒绝修改游戏脚本的 pak MOD。
+    AllowScriptPaks=1
+    [Mods]
+    ; my-mod=0 表示关闭单个 MOD。
 
 热重载（Alt+F5）
+保存文件后切回游戏按 Alt+F5，左上角显示约 4 秒提示。所有 MOD 都会重载，包括新增、删除的 MOD 和 [Mods] 的变化。MOD 必须导出 stop() 并在其中清理定时器和事件；
+缺少 stop() 时旧实例保留，该 MOD 在下次启动前被跳过。启动时失败的 MOD 在下次启动前不会重试。日志中的 “reload complete” 表示完成。约 4000 次重载后请重启游戏。
 
-修改 ProjectPBZ\PBZModLoader\mods 下的 JS/TS 或依赖文件，保存完成后切回游戏按 Alt+F5。
-本地构建的 MOD 需先将新产物复制到上述安装目录。每次重载整组 MOD，包括未修改的 MOD。
-新增、删除 MOD 及 mods.ini 的 [Mods] 开关变化也会生效。
-仅游戏窗口在前台时响应；不监听文件变化，按住快捷键不连发。
-请求约每秒检查一次，TS 还需等待编译；完成后左上角显示约 4 秒成功、失败或跳过提示。
+备用入口
+如果其他工具占用了 version.dll，请保留它。从 PBZModLoader-<版本>-alternative-entries.zip 中选择一个 DLL（hid.dll、winmm.dll、dsound.dll、dxgi.dll），
+保持原文件名，放到游戏 EXE 旁。本加载器只安装一个入口。文件名未被占用不代表游戏会足够早地加载它：如果 loader.log 没有内容，请换一个。
 
-MOD 必须导出 stop() 清理定时器、事件订阅和资源；无持久资源也需导出空 stop()。
-加载器等待旧 stop 完成后才加载新入口，支持 Promise；切图和退出游戏不会自动调用 stop。
-缺少 stop 或清理失败会保留旧实例并跳过该 MOD，删除或禁用时也受此限制；此时请退出游戏后操作。
-stop 一直不结束会阻塞后续重载。TS 编译失败时保留旧实例，修复后可再次按 Alt+F5。
-入口执行失败（包括 TS 转换后的 JS）可能已产生部分副作用，本次游戏运行不再重试，需修复并重启。
-保存完成后再触发重载，编译期间避免继续改写文件。
+从 1.0.0 更新
+退出游戏，按上述方式替换 DLL，然后删除旧版本留下的内容（均可安全删除）：
+    ProjectPBZ\Content\JavaScript\PBZModLoader\
+    ProjectPBZ\PBZModLoader\compiler\
+    ProjectPBZ\PBZModLoader\evidence\
+    ProjectPBZ\PBZModLoader\TOOLCHAIN-LICENSE.txt
+保留 ProjectPBZ\PBZModLoader\mods\ 和你的 mods.ini。
 
-日志和缓存
+卸载
+退出游戏，删除本加载器的入口 DLL（不要删除其他工具的 DLL），以及 ProjectPBZ\PBZModLoader\LICENSES.txt 和 loader.log。MOD 和 mods.ini 由你自行决定是否删除。
 
-日志：ProjectPBZ\PBZModLoader\evidence\<本次运行>\loader.log。
-可查找 failed、reload blocked、reload complete；快捷键无响应时也检查注册失败记录。
-TS 编译诊断另存于对应缓存 MOD 目录内的 compile.log。
-ProjectPBZ\Content\JavaScript\PBZModLoader 下的 generated-mods、generated-reloads
-均为自动缓存，请勿编辑或在游戏运行中删除。启动时重建/清理，重载版本保留至下次启动。
-长期大量重载会增加磁盘和模块缓存占用，可退出并重新启动游戏。
-
-停用和卸载
-
-临时停用全部 MOD：将 mods.ini 的 [Loader] 段 Enabled 改为 0，然后重新启动游戏。
-卸载单个 MOD：退出游戏后移除 mods 下对应文件夹，并清理它在配置中的旧条目。
-卸载加载器：退出游戏，备份自己的 MOD 和配置后，删除本加载器安装的那个入口 DLL
-（version.dll、hid.dll、winmm.dll、dsound.dll、dxgi.dll 五选一）、
-ProjectPBZ\PBZModLoader 和 ProjectPBZ\Content\JavaScript\PBZModLoader。
-仅删除本加载器的文件，不要删除其他工具的 DLL 或游戏原有的 Content\JavaScript 目录。
+遇到问题
+查看 ProjectPBZ\PBZModLoader\loader.log。“MODs skipped” 表示尚不支持当前游戏版本：游戏仍可运行，但不加载 MOD。删除入口 DLL 后，游戏与未安装加载器时相同。

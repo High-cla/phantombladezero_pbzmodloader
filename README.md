@@ -4,6 +4,8 @@
 
 **简体中文** | [English](README.en.md)
 
+> **这是非官方分支。** 它安装的文件少得多：一个 DLL 和一个许可证文件，与下文有多处不同，请先阅读 [FORK.md](FORK.md)。下文是原作者的文字，描述的是上游布局。
+
 PBZModLoader 是《影之刃零》（Phantom Blade Zero）的 MOD 加载器，为玩家提供统一的脚本 MOD 加载入口，也为开发者提供 JavaScript / TypeScript 开发模板和游戏 API 类型声明 SDK。支持自动发现 MOD、配置启用或禁用，以及通过 `Alt+F5` 热重载支持清理生命周期的 MOD。
 
 **下载与发布页面：[Nexus Mods · PBZModLoader](https://www.nexusmods.com/phantombladezero/mods/113)**
