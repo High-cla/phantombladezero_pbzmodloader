@@ -2,6 +2,15 @@
 
 这是后续开发入口。玩家运行包位于 releases，游戏安装目录只保留运行文件。
 
+## 1.0.0：首个正式发布版
+
+将原 0.3.7-preview 的打包内容作为 1.0.0 正式发布，后续发布不再默认使用 preview 后缀。
+
+已确认 WeGame 主程序位于 `platform/wegame`。安装包同时包含
+`platform/steam/version.dll` 和 `platform/wegame/version.dll`，两份文件来自同一构建。
+无同名 DLL 冲突时，两个平台均可直接解压到游戏根目录，无需手动搬移 DLL。
+本次仅调整打包布局和安装说明，沿用 0.3.6 的 DLL；WeGame 自动加载与 MOD 运行仍待实机验证。
+
 ## 0.3.6-preview：11 月 4 日游戏更新兼容
 
 新增此次 Steam 更新的 MainStart 指令布局，修复启动日志出现
@@ -25,7 +34,7 @@ PuerTS 警告和错误现在也写入 loader.log，便于定位引导脚本执�
 ## 0.3.4-preview：备用 DLL 入口
 
 默认使用 `version.dll`，正式构建同时提供 `hid.dll`、`winmm.dll`、`dsound.dll`、`dxgi.dll`。
-安装包默认入口仍位于 `platform/steam/version.dll`；其余四个放在顶层 `备用入口/`，不会自动启用。
+安装包默认入口位于 `platform/steam/version.dll` 和 `platform/wegame/version.dll`；其余四个放在顶层 `备用入口/`，不会自动启用。
 **本加载器只选择一个入口安装到实际游戏 EXE 旁，保持原文件名，不要同时安装多个。**
 
 如果其他 MOD 已占用 `version.dll`，只合并包内 `ProjectPBZ`，再从 `备用入口/` 选择一个未被占用的
@@ -45,7 +54,7 @@ DLL 复制到实际 EXE 旁；不要解压默认 `version.dll` 覆盖其他 MOD�
 
 `build.ps1 -Test` 验证五种代理的静态加载、入口恢复、代表性 API 转发、并发调用、导出数量，
 以及重复入口与晚加载保护；原有 version 多布局、ABI 和游戏特征测试继续保留。
-`package.ps1` 默认生成 `0.3.6-preview`，检查全部五个 DLL、ZIP 白名单及解压哈希。
+`package.ps1` 默认生成正式版 `1.0.0`，检查全部五种 DLL、两个平台的默认入口、ZIP 白名单及解压哈希。
 
 ## 0.3.0-preview：平台无关引导
 
@@ -60,20 +69,20 @@ Start 跳板指令、JSLogger.cpp 源文件引用、日志等级和共享日志�
 特征不匹配或歧义时跳过 MOD，继续原游戏；不会回退到旧固定地址。
 
 这组特征来自 CL-301524_JKS-17219，并补充了 2026-11-04 Steam 更新的 MainStart 布局，允许地址和相对位移变化，但不是任意版本的通用 ABI。
-编译器、运行时结构或保护机制变化仍可能需要新特征。WeGame 尚无实机验证；测试中的
-platform/wegame 只是目录布局夹具，并非对 WeGame 实际目录、DLL 加载行为的断言。
+编译器、运行时结构或保护机制变化仍可能需要新特征。WeGame 主程序目录已确认为
+platform/wegame；目录布局测试不代表 DLL 自动加载与 MOD 运行已通过 WeGame 实机验证。
 
 新增检查：
 ```powershell
 .\build.ps1 -Compiler C:\path\to\clang++.exe -Test -GameExe C:\path\to\PBZ.exe
-.\package.ps1 -Version 0.3.0-preview
+.\package.ps1 -Version 1.0.0
 ```
 -GameExe 只读文件，不启动或修改游戏；该回归测试针对已知 Steam 基准文件，
 验证扫描结果、地址重排、ASLR、调用位移变化及歧义/损坏拒绝。
-安装包顶层为 ProjectPBZ、platform 和安装说明，DLL 位于 platform/steam/version.dll。
-Steam 首次安装可直接解压到游戏根目录，合并同名文件夹，DLL 随包放到 PBZ.exe 旁。
-WeGame 只需合并 ProjectPBZ，再将包内 platform/steam/version.dll 手动放到实际游戏 EXE 旁；
-不假定 WeGame 的目录结构。遇到已有同名 DLL 应先确认来源，更新时保留自己的配置和 MOD。
+安装包包含 ProjectPBZ、platform、备用入口和安装说明，默认 DLL 分别位于
+platform/steam/version.dll 和 platform/wegame/version.dll。
+Steam 和 WeGame 首次安装均可直接解压到游戏根目录，合并同名文件夹，DLL 随包放到对应主程序目录。
+遇到已有同名 DLL 应先确认来源，更新时保留自己的配置和 MOD。
 当前新版通过静态匹配、原生/JS 测试及多布局代理宿主测试，尚待实际游戏启动、切图和退出验收。
 
 ## 目录
@@ -107,7 +116,7 @@ WeGame 只需合并 ProjectPBZ，再将包内 platform/steam/version.dll 手动�
 ```powershell
 npm ci
 .\build.ps1 -Compiler C:\path\to\llvm-mingw\bin\clang++.exe -Test
-.\package.ps1 -Version 0.3.0-preview
+.\package.ps1 -Version 1.0.0
 ```
 
 主工程和发布包均不预装 MOD；开发自己的 MOD 请使用上述独立模板。

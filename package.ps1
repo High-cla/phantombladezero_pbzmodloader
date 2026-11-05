@@ -1,4 +1,4 @@
-param([string]$Version='0.3.6-preview')
+param([string]$Version='1.0.0')
 $ErrorActionPreference='Stop'
 if ($Version -notmatch '^\d+\.\d+\.\d+(?:-[A-Za-z0-9-]+)?$') { throw 'Invalid release version' }
 $files=@(
@@ -25,11 +25,13 @@ foreach ($relative in $files) {
     New-Item -ItemType Directory -Force (Split-Path $destination) | Out-Null
     Copy-Item -LiteralPath (Join-Path "$PSScriptRoot/runtime" $relative) -Destination $destination
 }
-$dllRelative='platform/steam/version.dll'
-$dllDestination=Join-Path $release $dllRelative
-New-Item -ItemType Directory -Force (Split-Path $dllDestination) | Out-Null
-Copy-Item -LiteralPath "$PSScriptRoot/build/version.dll" -Destination $dllDestination
-$files += $dllRelative
+foreach ($platform in @('steam','wegame')) {
+    $dllRelative="platform/$platform/version.dll"
+    $dllDestination=Join-Path $release $dllRelative
+    New-Item -ItemType Directory -Force (Split-Path $dllDestination) | Out-Null
+    Copy-Item -LiteralPath "$PSScriptRoot/build/version.dll" -Destination $dllDestination
+    $files += $dllRelative
+}
 foreach($proxy in @('hid','winmm','dsound','dxgi')) {
     $relative="备用入口/$proxy.dll"
     $destination=Join-Path $release $relative

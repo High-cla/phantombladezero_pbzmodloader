@@ -1,4 +1,4 @@
-PBZModLoader 安装说明
+PBZModLoader 1.0.0 正式版安装说明
 
 1. 退出游戏，打开游戏安装目录（能看到 ProjectPBZ 文件夹的位置）。
 2. 先检查实际游戏 EXE 旁是否已有其他工具的 version.dll；如有，请按下方“备用入口”安装，勿覆盖。
@@ -7,11 +7,11 @@ PBZModLoader 安装说明
    正确：D:\Games\PBZ\ProjectPBZ
    错误：D:\Games\PBZ\PBZModLoader\ProjectPBZ（多了一层文件夹）
 3. 确认 version.dll 位于实际游戏进程的 EXE 旁（不是启动器旁）。
-   压缩包默认放在 platform\steam\version.dll；其他目录布局需自行复制到实际游戏 EXE 旁。
+   压缩包同时包含 platform\steam\version.dll 和 platform\wegame\version.dll，分别对应 Steam 和 WeGame。
 4. 从原游戏平台启动游戏即可。玩家无需安装 Node.js、npm 或额外编译器。
 
-WeGame：启动前，还需将包内 platform\steam\version.dll 复制到实际游戏 EXE 旁。
-WeGame 尚未实机验证，具体 EXE 位置需自行确认。
+WeGame：主程序目录已确认为 platform\wegame，解压后无需再手动复制 version.dll。
+WeGame 的 DLL 自动加载及 MOD 运行兼容性仍待实机验证。
 
 更新前请备份自己的配置和 MOD；不要覆盖其他工具的同名 version.dll。
 使用备用入口更新时也不要把包内默认 version.dll 解压到 EXE 旁；只更新已选择的入口 DLL。
@@ -21,13 +21,13 @@ ProjectPBZ\PBZModLoader，并同步更新 DLL；mods.ini 中原有相对 Entry �
 
 备用入口（五选一）
 
-默认入口是 platform\steam\version.dll。备用入口文件夹提供 hid.dll、winmm.dll、
+默认入口是对应平台目录中的 version.dll（platform\steam 或 platform\wegame）。备用入口文件夹提供 hid.dll、winmm.dll、
 dsound.dll、dxgi.dll；本加载器只需选择其中一个入口安装，不要同时安装多个。
 这些 DLL 分别实现对应接口，不能把 version.dll 简单重命名来替代。
 
 如果其他 MOD 占用了 version.dll：
 1. 退出游戏，保留其他 MOD 的 version.dll，不覆盖或删除它。
-2. 将包内 ProjectPBZ 文件夹合并到游戏根目录；不要安装包内 platform\steam\version.dll。
+2. 将包内 ProjectPBZ 文件夹合并到游戏根目录；不要安装包内 platform 文件夹中的默认 version.dll。
 3. 从“备用入口”文件夹选择一个未被其他工具占用的 DLL，保持原文件名，复制到实际游戏 EXE 旁。
 4. 如果之前装过本加载器的其他入口，先移走那个入口，只留下本加载器新选的一个。
    不确定 DLL 来源时先备份并核实，切勿删除其他 MOD 的文件。
