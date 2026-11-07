@@ -14,13 +14,14 @@ into KintaroModding's mod manager.
 
 ## What this fork does differently
 
-The goal is the fewest files in the game. A player installs one DLL and one license file, and no other tool. [README.md](README.md), this section and
+The goal is the fewest files in the game. A player installs one DLL, its start file and one license file, and no other tool. [README.md](README.md), this section and
 [docs/MOD-MANAGER.md](docs/MOD-MANAGER.md) describe this fork, and `runtime/PBZModLoader-Install-Guide.txt` is its install guide. The original README is in the [upstream repository](https://github.com/zoneoflkf/PBZModLoader).
 
 | | Upstream 1.0.0 | This fork |
 |---|---|---|
-| Player package | 122 files, 13.4 MB | 8 files, about 3.4 MB, of which a player needs 2 in the game; developer tools in their own zip |
-| Loader scripts | loose `bootstrap.js` and `manager.js` | inside the DLL |
+| Player package | 122 files, 13.4 MB | 9 files, about 3.4 MB, of which a player needs 3 in the game; developer tools in their own zip |
+| Loader scripts | loose `bootstrap.js` and `manager.js` | inside the DLL; a 32 KiB placeholder `bootstrap.js` gives them their name |
+| Mods Menu 0.9.0 | runs beside it in chain mode, by Mods Menu's own tests | runs beside it in chain mode, tested in the game with this fork |
 | Mods | copied to `Content/JavaScript/.../generated-mods` at each start | loaded from `PBZModLoader/mods`, no copies |
 | Hot reload | copied to `generated-reloads` | no copies: each reload spells the root path differently, so the game's module cache sees new modules |
 | TypeScript | compiled at game start by a bundled compiler | authors ship JavaScript; a TypeScript-only mod is reported in the log |
@@ -28,9 +29,12 @@ The goal is the fewest files in the game. A player installs one DLL and one lice
 | Log | a new folder per run | one `loader.log` per start, about 8 MB at most |
 | Pak mods that change game scripts | refused by the game | allowed; `[Loader] AllowScriptPaks=0` turns it off |
 
-How the scripts reach the game without a file: the game asks for its first module on disk. The loader names a game script that nothing else uses
-(`SCRIPT_SLOTS` in `src/signatures.hpp`, checked against the game's own script list) and replaces its bytes at the existing validator call, inside that script's own
-memory, after the game read it and before the game turns it into text. Later reads of that script answer with the current MOD list.
+How the scripts reach the game without a script file: the game asks for its first module on disk. The loader names its start file,
+`Content/JavaScript/PBZModLoader/bootstrap.js` (module `PBZModLoader/bootstrap`, the name upstream uses), and replaces its bytes at the existing validator
+call, inside that file's own memory, after the game read it and before the game turns it into text. Later reads of that file answer with the current MOD list.
+The file is a 32 KiB placeholder made by `scripts/embed-script.cjs`: its size is the room for the script and the list. It exists because Mods Menu 0.9.0
+runs beside a loader only when that file exists, and then starts it by that name. Without the file, the loader names a game script that nothing else uses
+(`SCRIPT_SLOTS` in `src/signatures.hpp`, checked against the game's own script list), as 2.0.x did.
 
 Limits of this design: an old mod instance that calls `require` after a reload reads the file as it is now, because no old copy exists. Hot reload has about
 4000 spellings per game run. A build whose script validators are missing is refused, so builds before 2026-11-04 are not supported.
@@ -68,6 +72,7 @@ on top of them.
 | 2026-11-05 | `README.md`, `templates/ts-mod/README.md`, `sdk/README.md` | English first, Chinese further down. `README.md` is rewritten for this fork in both languages, and `README.en.md` is gone. The two guides have an English translation; their Chinese text is the author's, with the outdated version, TypeScript and game build lines corrected. |
 | 2026-11-05 | `src/script-manager.js`, `tests/manager.test.cjs` | The Alt+F5 message on screen is English, then a dash, then the author's Chinese text. Its box is wider, 1600 instead of 800, so that the longer text fits. |
 | 2026-11-05 | `README.md`, `FORK.md`, `openmods.json` | The texts now call this an official fork: the author gave the source code, added the license and trusts KintaroModding to take the project forward. |
+| 2026-11-07 | `src/signatures.hpp`, `src/proxy.cpp`, `scripts/embed-script.cjs`, `package.ps1`, `tests/`, READMEs, install guide, `docs/MOD-MANAGER.md` | Version 2.1.0. The package ships the placeholder start file `ProjectPBZ/Content/JavaScript/PBZModLoader/bootstrap.js`, and the loader starts from it as `PBZModLoader/bootstrap`, so Mods Menu 0.9.0 runs beside it. `oldLayout` no longer removes that folder, only the files 1.0.x left in it. |
 
 ## Build
 

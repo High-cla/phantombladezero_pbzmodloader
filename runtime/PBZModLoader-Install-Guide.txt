@@ -18,6 +18,8 @@ To install by hand:
 
 WHAT GOES INTO THE GAME
 - version.dll next to the game exe: the loader, with its scripts inside.
+- ProjectPBZ\Content\JavaScript\PBZModLoader\bootstrap.js: the start file. The DLL puts its scripts in place of its content.
+  Do not edit or delete it.
 - ProjectPBZ\PBZModLoader\LICENSES.txt: the license texts.
 - ProjectPBZ\PBZModLoader\mods\: your mods.
 While it runs, the loader writes one file: ProjectPBZ\PBZModLoader\loader.log. It starts new with each game start.
@@ -28,6 +30,11 @@ MODS
 - A mod must ship JavaScript. A mod with only main.ts does not run, and loader.log says so. Authors compile TypeScript with the
   developer package.
 - Pak mods that change game scripts work too: keep them in ProjectPBZ\Content\Paks\~mods. They need no other tool.
+
+MODS MENU
+Mods Menu 0.9.0 or later runs beside this loader. Install it by hand from its own page. It needs this loader's start file:
+without it, Mods Menu stays off. With both, Mods Menu starts its mods first, then this loader starts the mods in its own folder.
+Older Mods Menu versions conflict with this loader. Mods Menu uses hid.dll, so do not use this loader's hid entry next to it.
 
 SETTINGS (optional)
 Without ProjectPBZ\PBZModLoader\mods.ini, every mod loads. Create the file only to change something:
@@ -54,16 +61,25 @@ Do not extract that folder into the game. Take one DLL, keep its name, and put i
 name that is free does not prove that the game loads it early enough: if no new loader.log is created or it stays empty, try another one.
 Before switching, close the game and remove the previously selected loader DLL. Keep other tools' DLLs.
 
-UPDATE FROM VERSION 1.0.0
-Close the game, replace the DLL as above, and delete what the old version left, all of it safe to remove:
-    ProjectPBZ\Content\JavaScript\PBZModLoader\
+UPDATE FROM VERSION 2.0.x
+Close the game, replace the DLL and LICENSES.txt, and add the start file: copy ProjectPBZ into the install folder as above.
+Keep ProjectPBZ\PBZModLoader\mods\ and your mods.ini.
+
+UPDATE FROM VERSION 1.0.x
+Do the same, then delete what the old version left, all of it safe to remove:
+    ProjectPBZ\Content\JavaScript\PBZModLoader\manager.js
+    ProjectPBZ\Content\JavaScript\PBZModLoader\generated-config.js
+    ProjectPBZ\Content\JavaScript\PBZModLoader\generated-mods\
+    ProjectPBZ\Content\JavaScript\PBZModLoader\generated-reloads\
     ProjectPBZ\PBZModLoader\compiler\
     ProjectPBZ\PBZModLoader\evidence\
     ProjectPBZ\PBZModLoader\TOOLCHAIN-LICENSE.txt
+Keep the new bootstrap.js in ProjectPBZ\Content\JavaScript\PBZModLoader: it replaces the old one.
 Keep ProjectPBZ\PBZModLoader\mods\ and your mods.ini.
 
 UNINSTALL
-Close the game. Delete the entry DLL of this loader (not another tool's), and ProjectPBZ\PBZModLoader\LICENSES.txt and loader.log.
+Close the game. Delete the entry DLL of this loader (not another tool's), ProjectPBZ\Content\JavaScript\PBZModLoader\bootstrap.js,
+and ProjectPBZ\PBZModLoader\LICENSES.txt and loader.log.
 Your mods and mods.ini stay in ProjectPBZ\PBZModLoader until you delete them.
 
 IF SOMETHING IS WRONG
@@ -89,6 +105,7 @@ PBZModLoader 安装说明
 
 安装到游戏中的文件
 - 游戏 EXE 旁的 version.dll：加载器，脚本已内置其中。
+- ProjectPBZ\Content\JavaScript\PBZModLoader\bootstrap.js：启动文件。DLL 会用自己的脚本替换其内容。请勿修改或删除。
 - ProjectPBZ\PBZModLoader\LICENSES.txt：许可证文本。
 - ProjectPBZ\PBZModLoader\mods\：你的 MOD。
 运行时加载器只写入一个文件：ProjectPBZ\PBZModLoader\loader.log，每次启动游戏时重新生成。
@@ -97,6 +114,11 @@ MOD
 - 将整个 MOD 文件夹放入 ProjectPBZ\PBZModLoader\mods，例如 mods\my-mod\main.js。文件夹名即 MOD ID，只使用英文字母、数字、下划线或连字符。新 MOD 自动发现。
 - MOD 必须提供 JavaScript。只有 main.ts 的 MOD 不会运行，loader.log 会说明原因。作者请用开发包编译 TypeScript。
 - 修改游戏脚本的 pak MOD 同样可用：放在 ProjectPBZ\Content\Paks\~mods，无需其他工具。
+
+MODS MENU
+Mods Menu 0.9.0 或更高版本可与本加载器同时运行。请从其页面手动安装。它需要本加载器的启动文件：没有启动文件时，Mods Menu 不会启动。
+两者同时安装时，Mods Menu 先启动它的 MOD，然后本加载器启动自己文件夹中的 MOD。
+更早的 Mods Menu 版本会与本加载器冲突。Mods Menu 使用 hid.dll，因此请勿同时使用本加载器的 hid 入口。
 
 设置（可选）
 没有 ProjectPBZ\PBZModLoader\mods.ini 时，所有 MOD 都会加载。只有需要更改时才创建：
@@ -121,16 +143,25 @@ MOD 必须导出 stop() 并在其中清除定时器和取消事件订阅。如�
 不要把该文件夹解压到游戏中。选择一个 DLL，保持原文件名，放到游戏 EXE 旁。本加载器只安装一个入口。文件名未被占用不代表游戏会足够早地加载它：如果没有生成新的 loader.log，或日志为空，请尝试另一个入口。
 更换前请退出游戏，并移除此前选用的本加载器 DLL。保留其他工具的 DLL。
 
-从 1.0.0 更新
-退出游戏，按上述方式替换 DLL，然后删除旧版本留下的内容（均可安全删除）：
-    ProjectPBZ\Content\JavaScript\PBZModLoader\
+从 2.0.x 更新
+退出游戏，替换 DLL 和 LICENSES.txt，并添加启动文件：按上述方式将 ProjectPBZ 复制到游戏安装目录。
+保留 ProjectPBZ\PBZModLoader\mods\ 和你的 mods.ini。
+
+从 1.0.x 更新
+按上述步骤操作，然后删除旧版本留下的内容（均可安全删除）：
+    ProjectPBZ\Content\JavaScript\PBZModLoader\manager.js
+    ProjectPBZ\Content\JavaScript\PBZModLoader\generated-config.js
+    ProjectPBZ\Content\JavaScript\PBZModLoader\generated-mods\
+    ProjectPBZ\Content\JavaScript\PBZModLoader\generated-reloads\
     ProjectPBZ\PBZModLoader\compiler\
     ProjectPBZ\PBZModLoader\evidence\
     ProjectPBZ\PBZModLoader\TOOLCHAIN-LICENSE.txt
+保留 ProjectPBZ\Content\JavaScript\PBZModLoader 中新的 bootstrap.js：它会替换旧文件。
 保留 ProjectPBZ\PBZModLoader\mods\ 和你的 mods.ini。
 
 卸载
-退出游戏，删除本加载器的入口 DLL（不要删除其他工具的 DLL），以及 ProjectPBZ\PBZModLoader\LICENSES.txt 和 loader.log。MOD 和 mods.ini 由你自行决定是否删除。
+退出游戏，删除本加载器的入口 DLL（不要删除其他工具的 DLL）、ProjectPBZ\Content\JavaScript\PBZModLoader\bootstrap.js，
+以及 ProjectPBZ\PBZModLoader\LICENSES.txt 和 loader.log。MOD 和 mods.ini 由你自行决定是否删除。
 
 遇到问题
 查看 ProjectPBZ\PBZModLoader\loader.log。“MODs skipped” 表示加载器初始化失败。请查看其后的具体原因。依赖此加载器的 MOD 可能无法正常运行。删除入口 DLL 后，游戏与未安装加载器时相同。
