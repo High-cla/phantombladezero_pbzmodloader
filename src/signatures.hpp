@@ -169,3 +169,14 @@ const ScriptSlot& chooseScriptSlot(const ImageView& image) {
     for(const auto& slot:SCRIPT_SLOTS) if(imageListsScript(image,slot.listed)) return slot;
     throw std::runtime_error("No script slot in this game build");
 }
+// The start file of LKF's loader, which the package ships as a placeholder. Mods Menu 0.9 runs
+// beside another loader only when this file exists, and then starts that loader by this name.
+// So the placeholder is the slot when it can hold the embedded script; else a game script is.
+inline constexpr wchar_t START_FILE_MODULE[]=L"PBZModLoader/bootstrap";
+inline constexpr wchar_t START_FILE_PATH[]=L"Content/JavaScript/PBZModLoader/bootstrap.js";
+bool usableStartFile(const fs::path& file,size_t need) {
+    std::error_code error;
+    if(!fs::is_regular_file(file,error) || error) return false;
+    auto size=fs::file_size(file,error);
+    return !error && size>=need;
+}

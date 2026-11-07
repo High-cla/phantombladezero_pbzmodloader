@@ -6,7 +6,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const base = path.resolve(__dirname, '../src');
 const manager = require(path.join(base, 'script-manager.js'));
-const { compose, limit } = require('../scripts/embed-script.cjs');
+const { compose, limit, startFile, startFileSize } = require('../scripts/embed-script.cjs');
 const { load, reload, watch, createNotifier, aliasRoot, createImporter } = manager;
 const mod = (id, enabled = true, entry = 'mods/' + id + '/main.js') => ({ id, enabled, entry });
 test('ordered loading, disabled entries, failure isolation', () => {
@@ -82,6 +82,17 @@ test('the embedded script is one file that fits the smallest script slot, with t
     assert.deepEqual(run.imported, [[root + '/mods/a', './main.js']]);
     assert.equal(run.context.__PBZModLoader.status, 'ready');
     assert.equal(run.timers.length, 1);
+});
+test('the start file has a fixed size that holds the embedded script, and on its own only starts the game', () => {
+    const text = startFile();
+    assert.equal(Buffer.byteLength(text), startFileSize);
+    assert.ok(Buffer.byteLength(compose()) <= startFileSize);
+    assert.equal(startFile(), text);
+    const run = bootstrapContext();
+    execute(text, run);
+    assert.deepEqual(run.started, ['MainStart']);
+    assert.equal(run.imported.length, 0);
+    assert.equal(run.context.__PBZModLoader, undefined);
 });
 test('each reload revision has its own spelling of the root and the same real folder', () => {
     assert.equal(aliasRoot(root, 0), root);

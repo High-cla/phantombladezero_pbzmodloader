@@ -1,8 +1,8 @@
 param([string]$Version='1.0.0')
 $ErrorActionPreference='Stop'
 if ($Version -notmatch '^\d+\.\d+\.\d+(?:-[A-Za-z0-9-]+)?$') { throw 'Invalid release version' }
-# The player's package: the default proxy DLL per platform, the spare proxies and one license file.
-# The loader's own scripts are inside the DLL. The developer tools are a separate zip.
+# The player's package: the default proxy DLL per platform, the spare proxies, one license file and the
+# start file. The loader's own scripts are inside the DLL. The developer tools are a separate zip.
 $files=@(
     'PBZModLoader-Install-Guide.txt'
 )
@@ -28,6 +28,9 @@ foreach ($part in $licenseParts) {
 foreach($proxy in @('version')+$alternatives) {
     if (!(Test-Path -LiteralPath "$PSScriptRoot/build/$proxy.dll")) { throw "Build $proxy.dll first." }
 }
+# A placeholder that the DLL fills with its script: see startFile in scripts/embed-script.cjs.
+$startFile='ProjectPBZ/Content/JavaScript/PBZModLoader/bootstrap.js'
+if (!(Test-Path -LiteralPath "$PSScriptRoot/build/start-file.js" -PathType Leaf)) { throw 'Build the start file first (build.ps1).' }
 New-Item -ItemType Directory -Path $release | Out-Null
 foreach ($relative in $files) {
     $destination=Join-Path $release $relative
@@ -41,6 +44,10 @@ $rule='='*78
 $text=foreach ($part in $licenseParts) { "$rule`n$($part.Title)`n$rule`n`n$((Get-Content -LiteralPath $part.Path -Raw -Encoding utf8).Replace("`r`n","`n").TrimEnd())`n`n" }
 [IO.File]::WriteAllText($licenseTarget,($text -join ''),[Text.UTF8Encoding]::new($false))
 $files += $licenseFile
+$startTarget=Join-Path $release $startFile
+New-Item -ItemType Directory -Force (Split-Path $startTarget) | Out-Null
+Copy-Item -LiteralPath "$PSScriptRoot/build/start-file.js" -Destination $startTarget
+$files += $startFile
 foreach ($platform in @('steam','wegame')) {
     $dllRelative="platform/$platform/version.dll"
     $dllDestination=Join-Path $release $dllRelative
@@ -103,9 +110,12 @@ Copy-Item -LiteralPath "$PSScriptRoot/LICENSE" -Destination $developerDir
         locations=[ordered]@{steam='platform/steam/version.dll';wegame='platform/wegame/version.dll'}
         alternatives=$alternativePaths
     }
-    owned=@($licenseFile,'ProjectPBZ/PBZModLoader/loader.log')
+    owned=@($licenseFile,$startFile,'ProjectPBZ/PBZModLoader/loader.log')
     playerOwned=@('ProjectPBZ/PBZModLoader/mods/','ProjectPBZ/PBZModLoader/mods.ini')
-    oldLayout=@('ProjectPBZ/Content/JavaScript/PBZModLoader/','ProjectPBZ/PBZModLoader/compiler/','ProjectPBZ/PBZModLoader/evidence/','ProjectPBZ/PBZModLoader/TOOLCHAIN-LICENSE.txt')
+    # Version 1.0.x put its scripts next to the start file. The start file itself is replaced, not removed.
+    oldLayout=@('ProjectPBZ/Content/JavaScript/PBZModLoader/manager.js','ProjectPBZ/Content/JavaScript/PBZModLoader/generated-config.js',
+        'ProjectPBZ/Content/JavaScript/PBZModLoader/generated-mods/','ProjectPBZ/Content/JavaScript/PBZModLoader/generated-reloads/',
+        'ProjectPBZ/PBZModLoader/compiler/','ProjectPBZ/PBZModLoader/evidence/','ProjectPBZ/PBZModLoader/TOOLCHAIN-LICENSE.txt')
 } | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath "$zip.manifest.json" -Encoding utf8
 Write-Output "PASS ZIP root layout, exact allowlist ($($files.Count) files), extraction and SHA-256 checks"
 Write-Output $zip

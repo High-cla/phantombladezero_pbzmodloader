@@ -167,6 +167,20 @@ int main() {
     bool missing=false; try { findProject(layout/L"platform/wegame/PBZ.exe"); } catch(const std::exception&) { missing=true; } assert(missing);
     fs::remove_all(layout);
     std::cout<<"PASS platform-independent project discovery and missing project rejection\n";
+    {
+        auto folder=fs::temp_directory_path()/(L"pbz-start-file-test-"+std::to_wstring(GetCurrentProcessId()));
+        auto file=folder/L"bootstrap.js";
+        fs::create_directories(folder);
+        assert(!usableStartFile(file,100));
+        { std::ofstream f(file,std::ios::binary); f<<std::string(100,' '); }
+        assert(usableStartFile(file,100) && !usableStartFile(file,101));
+        fs::remove(file); fs::create_directories(file);
+        assert(!usableStartFile(file,0));
+        fs::remove_all(folder);
+        // The module name the game asks for and the file the package ships must be the same script.
+        assert(lowerSlashes(std::wstring(L"/content/javascript/")+START_FILE_MODULE+L".js")==lowerSlashes(std::wstring(L"/")+START_FILE_PATH));
+        std::cout<<"PASS start file: missing, too small, large enough, a folder instead of a file, name and path agree\n";
+    }
     std::cout<<"PASS native redirect, argv, counter, relocated flags, filtering, bounds, concurrency, ring wrap\n";
     std::cout<<"PASS native config: valid, missing, disabled, traversal, invalid switch, duplicate ID\n";
     std::cout<<"PASS automatic discovery: sorting, dependencies ignored, switches, legacy merge, removal, empty directory\n";

@@ -202,8 +202,15 @@ extern "C" void pbz_initialize() noexcept {
           for(auto rva:sites.loggers) message<<" logger-rva=0x"<<rva; log(message.str()); }
         // The embedded script reaches the game only through these validators.
         if(!sites.validateBytes) throw std::runtime_error("This build has no script validators to deliver the embedded script through");
-        const auto& slot=chooseScriptSlot(image);
-        slotSuffix=lowerSlashes(std::wstring(L"/content/javascript/")+slot.module+L".js");
+        const auto startFile=project/START_FILE_PATH;
+        std::wstring slot;
+        if(usableStartFile(startFile,embeddedScriptSize)) slot=START_FILE_MODULE;
+        else {
+            std::error_code missing;
+            if(fs::exists(startFile,missing)) log("start file too small or unreadable; a game script is the slot");
+            slot=chooseScriptSlot(image).module;
+        }
+        slotSuffix=lowerSlashes(std::wstring(L"/content/javascript/")+slot+L".js");
         modRoot=fs::canonical(root);
         auto scriptPaks=ini(modRoot/L"mods.ini",L"Loader",L"AllowScriptPaks");
         allowScriptPaks=scriptPaks.empty() || number(scriptPaks,1)!=0;
@@ -213,8 +220,8 @@ extern "C" void pbz_initialize() noexcept {
         const auto base=(U64)GetModuleHandleW(nullptr);
         originalValidateBytes=reinterpret_cast<decltype(originalValidateBytes)>(base+sites.validateBytes);
         originalValidateText=reinterpret_cast<decltype(originalValidateText)>(base+sites.validateText);
-        auto installed=install(GetCurrentProcess(),base,image,sites,(U64)&validateModBytes,(U64)&validateModText,slot.module);
-        log(std::string("script validation adapters installed; slot=")+utf8(slot.module)+"; embedded script bytes="+std::to_string(embeddedScriptSize)+
+        auto installed=install(GetCurrentProcess(),base,image,sites,(U64)&validateModBytes,(U64)&validateModText,slot);
+        log(std::string("script validation adapters installed; slot=")+utf8(slot)+"; embedded script bytes="+std::to_string(embeddedScriptSize)+
             "; changed game scripts="+(allowScriptPaks?"allowed":"not allowed"));
         log("native hooks installed; configuration published");
         HANDLE worker=CreateThread(nullptr,0,monitor,(void*)installed.slab,0,nullptr);

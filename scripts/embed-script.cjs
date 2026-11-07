@@ -18,9 +18,33 @@ function compose() {
     return bootstrap.replace(marker, () => inlined);
 }
 
+// The start file the package ships at ProjectPBZ/Content/JavaScript/PBZModLoader/bootstrap.js. The DLL puts the
+// embedded script, and later the mail, in place of its bytes, inside the buffer the game read it into. So its
+// size is the room for both. Its own text runs only if something reads it without the DLL: then it starts the game.
+const startFileSize = 32 * 1024;
+function startFile() {
+    const text = "'use strict';\n" +
+        '// PBZModLoader start file. Do not edit or delete it.\n' +
+        "// The loader's script is inside its DLL. When the game reads this file, the DLL puts that script in\n" +
+        '// place of these bytes. The file gives it a name and room. The name is the one of the original loader,\n' +
+        '// so tools that start this loader by that name find it.\n' +
+        "require('puerts').__require('MainStart');\n" +
+        '/* Room for the loader script.\n';
+    const end = '*/\n';
+    const line = ' '.repeat(79) + '\n';
+    let padding = '';
+    while (Buffer.byteLength(text + padding + line + end) <= startFileSize) padding += line;
+    padding += ' '.repeat(startFileSize - Buffer.byteLength(text + padding + end));
+    return text + padding + end;
+}
+
 function write() {
     const bytes = Buffer.from(compose(), 'utf8');
     if (bytes.length > limit) throw new Error('Embedded script is ' + bytes.length + ' bytes; the limit is ' + limit);
+    const start = startFile();
+    if (Buffer.byteLength(start) !== startFileSize || bytes.length > startFileSize) throw new Error('Start file does not hold the embedded script');
+    fs.mkdirSync(path.join(root, 'build'), { recursive: true });
+    fs.writeFileSync(path.join(root, 'build/start-file.js'), start);
     const rows = [];
     for (let i = 0; i < bytes.length; i += 32) rows.push(Array.from(bytes.subarray(i, i + 32)).join(','));
     const out = path.join(root, 'build/embedded_script.hpp');
@@ -33,4 +57,4 @@ function write() {
 }
 
 if (require.main === module) write();
-module.exports = { compose, limit };
+module.exports = { compose, limit, startFile, startFileSize };
