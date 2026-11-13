@@ -257,12 +257,44 @@ Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& site
     std::array<Bytes,3> signatures;
     for(int i=0;i<3;++i) signatures[i]=Bytes(image.bytes.begin()+loggers[i],image.bytes.begin()+loggers[i]+7);
     const Bytes originalCall(image.bytes.begin()+sites.call,image.bytes.begin()+sites.call+5);
-    auto verify=[&](U64 addr,const Bytes& expected) { Bytes got(expected.size()); read(p,addr,got.data(),got.size()); if(got!=expected) throw std::runtime_error("Instruction signature mismatch"); };
-    verify(base+sites.call,originalCall);
-    verify(base+sites.start,{0x48,0x8b,0x09,0x48,0x8b,0x01,0x48,0xff,0x20});
-    if(sites.validateBytes && (!validateBytesHook || !validateTextHook)) throw std::runtime_error("Missing script validation adapters");
-    for(auto at:sites.validationCalls) if(at) verify(base+at,Bytes(image.bytes.begin()+at,image.bytes.begin()+at+5));
-    for(int i=0;i<3;++i) verify(base+loggers[i],signatures[i]);
+    auto verify=[&](const char* label,U64 addr,const Bytes& expected) {
+        Bytes got(expected.size());
+        read(p,addr,got.data(),got.size());
+        if(got!=expected) {
+            auto hex=[](const Bytes& bytes) {
+                std::ostringstream out;
+                for(auto b:bytes)
+                    out<<std::hex<<std::uppercase<<std::setfill('0')
+                       <<std::setw(2)<<(unsigned)b<<' ';
+                return out.str();
+            };
+            std::ostringstream message;
+            message<<"Instruction signature mismatch"
+                   <<"; site="<<label
+                   <<"; rva=0x"<<std::hex<<(addr-base)
+                   <<"; expected=["<<hex(expected)<<"]"
+                   <<"; actual=["<<hex(got)<<"]";
+            log(message.str());
+            throw std::runtime_error(message.str());
+        }
+    };
+    verify("MainStart call",base+sites.call,originalCall);
+    verify("MainStart thunk",base+sites.start,
+           {0x48,0x8b,0x09,0x48,0x8b,0x01,0x48,0xff,0x20});
+    if(sites.validateBytes && (!validateBytesHook || !validateTextHook))
+        throw std::runtime_error("Missing script validation adapters");
+    for(size_t i=0;i<sites.validationCalls.size();++i) {
+        auto at=sites.validationCalls[i];
+        if(at) {
+            auto label="Validation call "+std::to_string(i);
+            verify(label.c_str(),base+at,
+                   Bytes(image.bytes.begin()+at,image.bytes.begin()+at+5));
+        }
+    }
+    for(size_t i=0;i<3;++i) {
+        auto label="Logger "+std::to_string(i);
+        verify(label.c_str(),base+loggers[i],signatures[i]);
+    }
     state.slab=allocateNear(p,base+sites.call);
     try {
         Bytes blob(3072); auto stub=startStub(state.slab,base+sites.start); std::copy(stub.begin(),stub.end(),blob.begin());
