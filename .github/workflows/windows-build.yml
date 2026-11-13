@@ -1,0 +1,61 @@
+name: Windows x64 build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - compat/ue4ss-hook-diagnostics
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Set up PowerShell 7
+        shell: pwsh
+        run: |
+          $PSVersionTable
+
+      - name: Install llvm-mingw
+        shell: pwsh
+        run: |
+          $version = "20261020"
+          $archive = "llvm-mingw-$version-ucrt-x86_64.zip"
+          $url = "https://github.com/mstorsjo/llvm-mingw/releases/download/$version/$archive"
+          Invoke-WebRequest -Uri $url -OutFile "$env:RUNNER_TEMP\$archive"
+          Expand-Archive "$env:RUNNER_TEMP\$archive" "$env:RUNNER_TEMP\llvm-mingw"
+          $compiler = Get-ChildItem "$env:RUNNER_TEMP\llvm-mingw" -Filter clang++.exe -Recurse | Select-Object -First 1
+          if (-not $compiler) { throw "clang++.exe not found in llvm-mingw archive" }
+          "LLVM_MINGW_COMPILER=$($compiler.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and run build-time tests
+        shell: pwsh
+        run: .\build.ps1 -Compiler "$env:LLVM_MINGW_COMPILER" -Test
+
+      - name: Run test suite
+        run: npm test
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: PBZModLoader-windows-x64
+          path: |
+            releases/**
+            build/**
+            dist/**
+          if-no-files-found: error
+          retention-days: 14
