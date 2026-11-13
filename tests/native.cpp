@@ -11,6 +11,13 @@ void capture(void* context,const FString* name,void* argv) {
     assert(name->count==22 && name->capacity==22);
 }
 int main() {
+    {
+        const U64 call=0x100000000ULL;
+        const Bytes original={0xe8,0x30,0x8a,0xc0,0xff};
+        const Bytes redirected={0xe8,0x30,0xc2,0x9f,0x17};
+        assert(relativeCallTarget(call,original)==call+5-0x3f75d0);
+        assert(relativeCallTarget(call,redirected)==call+5+0x179fc230);
+    }
     HANDLE process=GetCurrentProcess();
     auto slab=(U64)VirtualAlloc(nullptr,SLAB_SIZE,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE); assert(slab);
     auto start=startStub(slab,(U64)&capture); write(process,slab,start.data(),start.size());
