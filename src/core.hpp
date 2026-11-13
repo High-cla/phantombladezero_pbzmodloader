@@ -180,11 +180,11 @@ void rel32(Bytes& b,U64 from,U64 to) {
 void absoluteJump(Bytes& b,U64 target) { b.insert(b.end(),{0xff,0x25,0,0,0,0}); imm64(b,target); }
 U64 relativeCallTarget(U64 address,const Bytes& instruction) {
     if(instruction.size()!=5 || instruction[0]!=0xe8)
-        throw std::runtime_error("MainStart redirect is not a five-byte CALL rel32");
+        throw std::runtime_error("Redirect is not a five-byte CALL rel32");
     int32_t displacement=0;
     std::memcpy(&displacement,instruction.data()+1,sizeof(displacement));
     const auto target=(long long)address+5+(long long)displacement;
-    if(target<=0) throw std::runtime_error("MainStart CALL target is invalid");
+    if(target<=0) throw std::runtime_error("CALL target is invalid");
     return (U64)target;
 }
 bool executableAddress(U64 address,MEMORY_BASIC_INFORMATION& region) {
