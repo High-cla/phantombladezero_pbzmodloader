@@ -61,6 +61,6 @@ jobs:
             build/winmm.dll
             build/dsound.dll
             build/dxgi.dll
-            releases/PBZModLoader-2.1.1-ue4ss-call-chain.zip
+            releases/PBZModLoader-2.1.1-ue4ss-call-chain-win64.zip
             releases/PBZModLoader-2.1.1-ue4ss-call-chain-developer.zip
-            releases/PBZModLoader-2.1.1-ue4ss-call-chain.zip.manifest.json
+            releases/PBZModLoader-2.1.1-ue4ss-call-chain-win64.zip.manifest.json
