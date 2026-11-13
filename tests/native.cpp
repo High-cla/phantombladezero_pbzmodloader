@@ -18,6 +18,13 @@ int main() {
         assert(relativeCallTarget(call,original)==call+5-0x3f75d0);
         assert(relativeCallTarget(call,redirected)==call+5+0x179fc230);
     }
+    {
+        const U64 validationCall=0x1461ec4daULL;
+        const Bytes original={0xe8,0xc1,0xa0,0x10,0x00};
+        const Bytes redirected={0xe8,0x21,0x3b,0xed,0x17};
+        assert(relativeCallTarget(validationCall,original)==0x1462f65a0ULL);
+        assert(relativeCallTarget(validationCall,redirected)==0x15e0c0000ULL);
+    }
     HANDLE process=GetCurrentProcess();
     auto slab=(U64)VirtualAlloc(nullptr,SLAB_SIZE,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE); assert(slab);
     auto start=startStub(slab,(U64)&capture); write(process,slab,start.data(),start.size());
