@@ -284,7 +284,44 @@ Bytes loggerStub(U64 at,U64 ring,U64 original,const Bytes& stolen,bool captureAl
 }
 struct Patch { U64 address; Bytes old; };
 struct Installed { U64 slab=0; std::vector<Patch> patches; };
-Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& sites,U64 validateBytesHook,U64 validateTextHook,const std::wstring& module) {
+struct ValidationCalls {
+    std::array<Bytes,5> instructions;
+    std::array<U64,5> targets{};
+};
+ValidationCalls captureValidationCalls(HANDLE p,U64 base,const ImageView& image,const HookSites& sites) {
+    ValidationCalls result{};
+    for(size_t i=0;i<sites.validationCalls.size();++i) {
+        const auto at=sites.validationCalls[i];
+        if(!at) throw std::runtime_error("Missing script validation call site; index="+std::to_string(i));
+        const U64 address=base+at;
+        const Bytes snapshot(image.bytes.begin()+at,image.bytes.begin()+at+5);
+        const U64 expectedTarget=base+(i==4?sites.validateText:sites.validateBytes);
+        if(relativeCallTarget(address,snapshot)!=expectedTarget)
+            throw std::runtime_error("Validation call snapshot target disagrees with resolved validator; index="+std::to_string(i));
+        result.instructions[i].resize(5);
+        read(p,address,result.instructions[i].data(),result.instructions[i].size());
+        result.targets[i]=relativeCallTarget(address,result.instructions[i]);
+        MEMORY_BASIC_INFORMATION region{};
+        if(!executableAddress(result.targets[i],region)) {
+            std::ostringstream message;
+            message<<"Validation CALL target is not committed executable memory; index="<<i
+                   <<"; target=0x"<<std::hex<<result.targets[i]<<"; "<<describeAddress(result.targets[i]);
+            throw std::runtime_error(message.str());
+        }
+        if(result.instructions[i]!=snapshot) {
+            std::ostringstream message;
+            message<<"Validation CALL redirect preserved; index="<<i
+                   <<"; original-target=0x"<<std::hex<<expectedTarget
+                   <<"; active-target=0x"<<result.targets[i]
+                   <<"; owner="<<describeAddress(result.targets[i]);
+            log(message.str());
+        }
+    }
+    return result;
+}
+Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& sites,
+                  const ValidationCalls& validationCalls,const std::array<U64,5>& validationHooks,
+                  const std::wstring& module) {
     Installed state;
     // The name lies between the FString at +4128 and the logger ring at +8192.
     if(module.empty() || (module.size()+1)*sizeof(wchar_t)>8192-4160) throw std::runtime_error("Invalid start module name");
@@ -336,16 +373,11 @@ Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& site
     };
     verify("MainStart thunk",base+sites.start,
            {0x48,0x8b,0x09,0x48,0x8b,0x01,0x48,0xff,0x20});
-    if(sites.validateBytes && (!validateBytesHook || !validateTextHook))
-        throw std::runtime_error("Missing script validation adapters");
-    for(size_t i=0;i<sites.validationCalls.size();++i) {
-        auto at=sites.validationCalls[i];
-        if(at) {
-            auto label="Validation call "+std::to_string(i);
-            verify(label.c_str(),base+at,
-                   Bytes(image.bytes.begin()+at,image.bytes.begin()+at+5));
-        }
-    }
+    if(!sites.validateBytes || !sites.validateText)
+        throw std::runtime_error("Missing script validation sites");
+    for(size_t i=0;i<validationHooks.size();++i)
+        if(!validationHooks[i] || !validationCalls.targets[i] || validationCalls.instructions[i].size()!=5)
+            throw std::runtime_error("Missing per-call validation chain; index="+std::to_string(i));
     for(size_t i=0;i<3;++i) {
         auto label="Logger "+std::to_string(i);
         verify(label.c_str(),base+loggers[i],signatures[i]);
@@ -353,9 +385,10 @@ Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& site
     state.slab=allocateNear(p,base+sites.call);
     try {
         Bytes blob(3072); auto stub=startStub(state.slab,activeTarget); std::copy(stub.begin(),stub.end(),blob.begin());
-        if(sites.validateBytes) {
-            Bytes gate; absoluteJump(gate,validateBytesHook); std::copy(gate.begin(),gate.end(),blob.begin()+2048);
-            gate.clear(); absoluteJump(gate,validateTextHook); std::copy(gate.begin(),gate.end(),blob.begin()+2080);
+        // One adapter per call site preserves each pre-existing validation hook chain.
+        for(size_t i=0;i<validationHooks.size();++i) {
+            Bytes gate; absoluteJump(gate,validationHooks[i]);
+            std::copy(gate.begin(),gate.end(),blob.begin()+2048+i*32);
         }
         for(int i=0;i<3;++i) {
             // PuerTS startup errors occur before bootstrap can add our prefix.
@@ -375,12 +408,16 @@ Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& site
         std::array<Bytes,3> hooks;
         for(int i=0;i<3;++i) { hooks[i]={0xe9}; rel32(hooks[i],base+loggers[i]+5,state.slab+256+i*512); hooks[i].insert(hooks[i].end(),{0x90,0x90}); }
         std::array<Bytes,5> validators;
-        for(size_t i=0;i<validators.size();++i) if(sites.validationCalls[i]) {
-            validators[i]={0xe8}; rel32(validators[i],base+sites.validationCalls[i]+5,state.slab+(i==4?2080:2048));
+        for(size_t i=0;i<validators.size();++i) {
+            validators[i]={0xe8}; rel32(validators[i],base+sites.validationCalls[i]+5,state.slab+2048+i*32);
         }
-        for(size_t i=0;i<validators.size();++i) if(sites.validationCalls[i]) {
+        for(size_t i=0;i<validators.size();++i) {
             auto at=sites.validationCalls[i];
-            state.patches.push_back({base+at,Bytes(image.bytes.begin()+at,image.bytes.begin()+at+5)});
+            Bytes live(5);
+            read(p,base+at,live.data(),live.size());
+            if(live!=validationCalls.instructions[i])
+                throw std::runtime_error("Validation CALL changed during hook install; refusing to overwrite another hook; index="+std::to_string(i));
+            state.patches.push_back({base+at,validationCalls.instructions[i]});
             patch(p,base+at,validators[i]);
         }
         for(int i=0;i<3;++i) {
