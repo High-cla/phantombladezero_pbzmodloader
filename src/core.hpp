@@ -178,6 +178,41 @@ void rel32(Bytes& b,U64 from,U64 to) {
     auto d=(long long)to-(long long)from; if(d<INT32_MIN||d>INT32_MAX) throw std::runtime_error("rel32 out of range"); imm32(b,(int)d);
 }
 void absoluteJump(Bytes& b,U64 target) { b.insert(b.end(),{0xff,0x25,0,0,0,0}); imm64(b,target); }
+U64 relativeCallTarget(U64 address,const Bytes& instruction) {
+    if(instruction.size()!=5 || instruction[0]!=0xe8)
+        throw std::runtime_error("MainStart redirect is not a five-byte CALL rel32");
+    int32_t displacement=0;
+    std::memcpy(&displacement,instruction.data()+1,sizeof(displacement));
+    const auto target=(long long)address+5+(long long)displacement;
+    if(target<=0) throw std::runtime_error("MainStart CALL target is invalid");
+    return (U64)target;
+}
+bool executableAddress(U64 address,MEMORY_BASIC_INFORMATION& region) {
+    if(!address || !VirtualQuery((const void*)address,&region,sizeof(region)) ||
+       region.State!=MEM_COMMIT || (region.Protect&(PAGE_NOACCESS|PAGE_GUARD))) return false;
+    const DWORD protection=region.Protect&0xff;
+    return protection==PAGE_EXECUTE || protection==PAGE_EXECUTE_READ ||
+           protection==PAGE_EXECUTE_READWRITE || protection==PAGE_EXECUTE_WRITECOPY;
+}
+std::string describeAddress(U64 address) {
+    HMODULE owner=nullptr;
+    if(GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|
+                          GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                          reinterpret_cast<LPCWSTR>(address),&owner)) {
+        wchar_t path[32768]{};
+        DWORD n=GetModuleFileNameW(owner,path,(DWORD)(sizeof(path)/sizeof(path[0])));
+        if(n) return "module="+utf8(std::wstring(path,n));
+    }
+    MEMORY_BASIC_INFORMATION region{};
+    if(VirtualQuery((const void*)address,&region,sizeof(region))) {
+        std::ostringstream detail;
+        detail<<"allocation=0x"<<std::hex<<(U64)region.AllocationBase
+              <<" type="<<(region.Type==MEM_PRIVATE?"private":region.Type==MEM_IMAGE?"image":"mapped")
+              <<" protect=0x"<<region.Protect;
+        return detail.str();
+    }
+    return "unmapped";
+}
 #include "signatures.hpp"
 ImageView snapshotImage(HANDLE p,U64 base) {
     IMAGE_DOS_HEADER dos{}; read(p,base,&dos,sizeof(dos));
@@ -257,6 +292,27 @@ Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& site
     std::array<Bytes,3> signatures;
     for(int i=0;i<3;++i) signatures[i]=Bytes(image.bytes.begin()+loggers[i],image.bytes.begin()+loggers[i]+7);
     const Bytes originalCall(image.bytes.begin()+sites.call,image.bytes.begin()+sites.call+5);
+    const U64 callAddress=base+sites.call;
+    const U64 originalTarget=relativeCallTarget(callAddress,originalCall);
+    if(originalTarget!=base+sites.start)
+        throw std::runtime_error("MainStart CALL target disagrees with resolved thunk");
+    Bytes activeCall(5);
+    read(p,callAddress,activeCall.data(),activeCall.size());
+    const U64 activeTarget=relativeCallTarget(callAddress,activeCall);
+    MEMORY_BASIC_INFORMATION targetRegion{};
+    if(!executableAddress(activeTarget,targetRegion)) {
+        std::ostringstream message;
+        message<<"MainStart CALL target is not committed executable memory; target=0x"
+               <<std::hex<<activeTarget<<"; "<<describeAddress(activeTarget);
+        throw std::runtime_error(message.str());
+    }
+    if(activeCall!=originalCall) {
+        std::ostringstream message;
+        message<<"MainStart CALL redirect preserved; original-target=0x"<<std::hex<<originalTarget
+               <<"; active-target=0x"<<activeTarget
+               <<"; owner="<<describeAddress(activeTarget);
+        log(message.str());
+    }
     auto verify=[&](const char* label,U64 addr,const Bytes& expected) {
         Bytes got(expected.size());
         read(p,addr,got.data(),got.size());
@@ -278,7 +334,6 @@ Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& site
             throw std::runtime_error(message.str());
         }
     };
-    verify("MainStart call",base+sites.call,originalCall);
     verify("MainStart thunk",base+sites.start,
            {0x48,0x8b,0x09,0x48,0x8b,0x01,0x48,0xff,0x20});
     if(sites.validateBytes && (!validateBytesHook || !validateTextHook))
@@ -297,7 +352,7 @@ Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& site
     }
     state.slab=allocateNear(p,base+sites.call);
     try {
-        Bytes blob(3072); auto stub=startStub(state.slab,base+sites.start); std::copy(stub.begin(),stub.end(),blob.begin());
+        Bytes blob(3072); auto stub=startStub(state.slab,activeTarget); std::copy(stub.begin(),stub.end(),blob.begin());
         if(sites.validateBytes) {
             Bytes gate; absoluteJump(gate,validateBytesHook); std::copy(gate.begin(),gate.end(),blob.begin()+2048);
             gate.clear(); absoluteJump(gate,validateTextHook); std::copy(gate.begin(),gate.end(),blob.begin()+2080);
@@ -332,8 +387,12 @@ Installed install(HANDLE p,U64 base,const ImageView& image,const HookSites& site
             state.patches.push_back({base+loggers[i],signatures[i]});
             patch(p,base+loggers[i],hooks[i]);
         }
-        state.patches.push_back({base+sites.call,originalCall});
-        patch(p,base+sites.call,call);
+        Bytes liveCall(5);
+        read(p,callAddress,liveCall.data(),liveCall.size());
+        if(liveCall!=activeCall)
+            throw std::runtime_error("MainStart CALL changed during hook install; refusing to overwrite another hook");
+        state.patches.push_back({callAddress,activeCall});
+        patch(p,callAddress,call);
         return state;
     } catch(...) {
         bool restored=true; for(auto it=state.patches.rbegin();it!=state.patches.rend();++it) try{patch(p,it->address,it->old);}catch(...){restored=false;}
