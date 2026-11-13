@@ -1,0 +1,66 @@
+name: PBZ UE4SS call-chain build
+
+on:
+  push:
+    branches:
+      - fix/ue4ss-mainstart-call-chain
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-build:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install pinned llvm-mingw toolchain
+        shell: pwsh
+        run: |
+          $archive = Join-Path $env:RUNNER_TEMP "llvm-mingw-20261020-ucrt-x86_64.zip"
+          $destination = Join-Path $env:RUNNER_TEMP "llvm-mingw"
+          Invoke-WebRequest -Uri "https://github.com/mstorsjo/llvm-mingw/releases/download/20261020/llvm-mingw-20261020-ucrt-x86_64.zip" -OutFile $archive
+          Expand-Archive -LiteralPath $archive -DestinationPath $destination -Force
+          $compiler = Get-ChildItem -LiteralPath $destination -Filter clang++.exe -File -Recurse | Select-Object -First 1
+          if (-not $compiler) { throw "llvm-mingw clang++.exe was not found after extraction" }
+          "PBZ_COMPILER=$($compiler.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          $compiler.Directory.FullName | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          Write-Host "Compiler: $($compiler.FullName)"
+
+      - name: Install JavaScript dependencies
+        run: npm ci
+
+      - name: Build DLLs and run native/proxy tests
+        shell: pwsh
+        run: ./build.ps1 -Compiler "$env:PBZ_COMPILER" -Test
+
+      - name: Run JavaScript test suite
+        run: npm test
+
+      - name: Package test build
+        shell: pwsh
+        run: ./package.ps1 -Version "2.1.1-ue4ss-call-chain"
+
+      - name: Upload compiled DLLs and install packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: PBZModLoader-UE4SS-call-chain
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            build/version.dll
+            build/hid.dll
+            build/winmm.dll
+            build/dsound.dll
+            build/dxgi.dll
+            releases/PBZModLoader-2.1.1-ue4ss-call-chain.zip
+            releases/PBZModLoader-2.1.1-ue4ss-call-chain-developer.zip
+            releases/PBZModLoader-2.1.1-ue4ss-call-chain.zip.manifest.json
